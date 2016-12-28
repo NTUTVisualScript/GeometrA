@@ -62,6 +62,7 @@ class ADBRobot(Robot):
         if not os.path.isdir(PATH(os.getcwd() + "/resources/taipeibus")):
             os.makedirs(path)
         os.popen("adb pull /data/local/tmp/uidump.xml " + path + "/uidump.xml")
+        time.sleep(3)
         print(path + "/uidump.xml")
         return path + "/uidump.xml"
 
