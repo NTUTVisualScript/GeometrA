@@ -69,7 +69,6 @@ class MyTestCase(unittest.TestCase):
         time.sleep(1)
         _test_assert_finder(IMG_PATH(IMG_PATH("AssertGuangHuaStation.png")))
 
-
     # def test_AssertAddAllStationToFavorite(self):
     #     time.sleep(2)
     #     robot = ADBRobot()
