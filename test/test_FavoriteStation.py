@@ -40,8 +40,8 @@ def _test_assert_finder(target_path):
     result = matcher.next()
 
     result_image = source.crop(result)
-    result_image.show()
-    target.show()
+    #result_image.show()
+    #target.show()
     assert result_image == target
 
 class MyTestCase(unittest.TestCase):

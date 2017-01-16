@@ -1,16 +1,17 @@
 from tkinter import *
-from tkinter.filedialog import asksaveasfile, asksaveasfilename
-
+from tkinter import ttk
+from tkinter.filedialog import asksaveasfilename
 from adb_roboot import ADBRobot
 from PIL import Image, ImageTk
 import xml.etree.cElementTree as ET
+import xml.dom.minidom as dom
 import os
 
 ROOT_DIR = os.path.dirname(__file__)
 RESOURCES_DIR = os.path.join(ROOT_DIR, "resources/taipeibus")
 
 filePath = None
-dumpfilePath = None
+dumpXMLfilePath = None
 
 def IMG_PATH(name):
     return os.path.join(RESOURCES_DIR, name)
@@ -23,15 +24,14 @@ def Get_PhoneScreen():
     return filePath
 
 def Dump_UI():
-    global dumpfilePath
+    global dumpXMLfilePath
     robot = ADBRobot()
-    dumpfilePath = IMG_PATH(robot.get_uiautomator_dump())
-    print(dumpfilePath)
-    return dumpfilePath
+    dumpXMLfilePath = IMG_PATH(robot.get_uiautomator_dump())
+    print(dumpXMLfilePath)
+    return dumpXMLfilePath
 
 ImageType = [
     ('PNG', '*.png'),
-    ('JPEG / JPG', '*.jpg'),
     ]
 
 class View(Frame):
@@ -42,7 +42,7 @@ class View(Frame):
         self.ScreenShotUI()
         self.XMLTreeUI()
         self.SaveIMGButton()
-        self.cropImage()
+        self.cropImageUI()
         self.getmouseEvent()
 
     def formatButton(self):
@@ -70,8 +70,25 @@ class View(Frame):
         self.screenshot_photo = ImageTk.PhotoImage(self.photo)
         self.screenshot.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
 
+    def resetScreenShot(self):
+        self.screenshot.delete("all")
+        self.screenshot.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
+
+    def drawRectangle(self, left, top, right, bottom):
+        self.screenshot.create_rectangle(left +3 , top + 3 , right -3 , bottom -3 , outline='red', width=2)
+
     def XMLTreeUI(self):
+        # self.XMLTree = ttk.Treeview(self.master, height=15)
+        # self.XMLTree.grid(column=25 + 1, row=3, rowspan=15, columnspan=20)
+        # ysb = ttk.Scrollbar(self.master, orient='vertical', command=self.XMLTree.yview)
+        # xsb = ttk.Scrollbar(self.master, orient='horizontal', command=self.XMLTree.xview)
+        # self.XMLTree.configure(yscroll=ysb.set, xscroll=xsb.set)
+        # self.XMLTree.heading('#0', text='Path', anchor='w')
+        # self.XMLTree.column("#0", minwidth=0, width=500, stretch=NO)
+        #
+        #root_node = self.tree.insert('', 'end', text=abspath, open=True)
         self.XMLTree = Listbox(self.master, height=15, width=80)
+        self.XMLTree.bind('<<ListboxSelect>>', self.onselect)
         self.XMLTree.grid(column=25 + 1, row=3, rowspan=15, columnspan=20)
 
         self.vertscroll = Scrollbar(self.master, orient=VERTICAL)
@@ -85,12 +102,47 @@ class View(Frame):
         self.XMLTree.config(yscrollcommand=self.vertscroll.set)
         self.XMLTree.config(xscrollcommand=self.Xvertscroll.set)
 
+    def onselect(self, event):   #取得所選擇的List  value  中的Bounds
+        self.resetScreenShot()
+        w = event.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        #print('You selected item %d: "%s"' % (index, value))
+        mylist = value.split('[')
+        right = str(mylist[1]).split(']')
+        right = str(right[0]).split(',')
+
+        left = str(mylist[2]).split(']')
+        left = str(left[0]).split(',')
+
+        self.left = float(right[0]) / self.resize
+        self.top = float(right[1]) / self.resize
+        self.right = float(left[0]) / self.resize
+        self.bottom = float(left[1]) / self.resize
+
+        self.cropImage(self.left , self.top ,
+                       self.right , self.bottom)
+
+        self.drawRectangle(self.left , self.top ,
+                       self.right , self.bottom)
+
     def getXMLTree(self):
         self.tree = ET.ElementTree(file = Dump_UI())
         self.tree_bounds(self.tree, 0)
+        #self.tree = dom.parse(file=Dump_UI())
+        # self.add_element_to_treestore(self.tree.childNodes , None)
 
     def clear_XML_Tree(self):
         self.XMLTree.delete( 0 , END )  #clear List box
+        # for row in self.XMLTree.get_children():
+        #     self.XMLTree.delete(row)
+
+    # def add_element_to_treestore(self, e, parent):
+    #     if isinstance(e, dom.Element):
+    #         me = self.model.append(parent, [e.nodeName])
+    #         for ch in e.childNodes:
+    #             self.add_element_to_treestore(ch, me)
+    #             print(me)
 
     def tree_bounds(self, tree, num):
         for elem in tree.findall('node'):
@@ -120,9 +172,16 @@ class View(Frame):
         savePath = fileName + ".png"
         cropIMG.save(savePath)
 
-    def cropImage(self):
-        self.canvas = Canvas(self.master, bg='white', width=200, height=200)
-        self.canvas.grid(column=25 + 1, row=24)
+    def cropImageUI(self):
+        self.crop = Canvas(self.master, bg='white', width=200, height=200)
+        self.crop.grid(column=25 + 1, row=24)
+
+    def cropImage(self, left, top, right, bottom):
+        self.cropped = self.photo.crop((left, top, right, bottom))
+        self.cropped.thumbnail((200, 200))
+        # self.cropped.show()
+        self.tk_im = ImageTk.PhotoImage(self.cropped)
+        self.crop.create_image(0, 0, anchor=NW, image=self.tk_im)
 
     def getmouseEvent(self):
         self.mousePosition = StringVar()  # displays mouse position
@@ -133,10 +192,10 @@ class View(Frame):
         self.screenshot.bind("<ButtonRelease-1>", self.clickup)  # clickup
         # self.screenshot.bind("<Enter>", self.enteredWindow)
         # self.screenshot.bind("<Leave>", self.exitedWindow)
-        self.screenshot.bind("<B1-Motion>", self.mouseDragged)
+        self.screenshot.bind("<B1-Motion>", self.mouseDragged)  #滑鼠拖拉動作
 
     def clickdown(self, event):
-        self.screenshot.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
+        self.resetScreenShot()
         self.mousePosition.set("Pressed at [ " + str(event.x) + ", " + str(event.y) + " ]")
 
         self.clickstartX = event.x
@@ -145,18 +204,10 @@ class View(Frame):
     def clickup(self, event):
         self.clickendX = event.x
         self.clickendY = event.y
-
         self.left, self.right = sorted([self.clickendX, self.clickstartX])
         self.top, self.bottom = sorted([self.clickstartY, self.clickendY])
 
-        self.cropped = self.photo.crop((self.left, self.top, self.right, self.bottom))
-        #time.sleep(2)
-        self.cropped.thumbnail((200, 200))
-        #self.cropped.show()
-        #
-        self.tk_im = ImageTk.PhotoImage(self.cropped)
-        self.canvas.create_image(0, 0, anchor=NW,image=self.tk_im)
-
+        self.cropImage(self.left, self.top, self.right, self.bottom)
 
     #def enteredWindow(self, event):
         #self.mousePosition.set("Mouse in window")
@@ -167,14 +218,15 @@ class View(Frame):
     def mouseDragged(self, event):
         self.screenshot.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
         if event.x < 0 :
-            event.x = 0 + 3
+            event.x = 0
         if event.y < 0 :
-            event.y = 0 + 3
+            event.y = 0
         if event.x > self.screenshot_photo.width():
-            event.x = self.screenshot_photo.width()-3
+            event.x = self.screenshot_photo.width()
         if event.y > self.screenshot_photo.height():
-            event.y = self.screenshot_photo.height()-3
-        self.screenshot.create_rectangle(self.clickstartX, self.clickstartY, event.x, event.y, outline='red' ,width = 2)
+            event.y = self.screenshot_photo.height()
+
+        self.drawRectangle(self.clickstartX, self.clickstartY, event.x, event.y )
         self.mousePosition.set("Rectangle at [ " + str(self.clickstartX * self.resize ) + ", " + str(self.clickstartY * self.resize) + " To " + str(event.x * self.resize) + ", " + str(event.y * self.resize) + " ]")
 
 
