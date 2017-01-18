@@ -32,11 +32,11 @@ class ADBRobot(Robot):
         subprocess.check_output([subp, "shell", "input", "swipe", str(start_x), str(start_y), str(end_x), str(end_y) ], shell=True)
 
     def screenshot(self):
-        path = PATH(os.getcwd() + "/resources/taipeibus")
+        path = PATH(os.getcwd() + "/screenshot_pic")
         os.popen("adb wait-for-device")
         os.popen("adb shell screencap -p /data/local/tmp/tmp.png")
         time.sleep(3)
-        if not os.path.isdir(PATH(os.getcwd() + "/resources/taipeibus")):
+        if not os.path.isdir(PATH(os.getcwd() + "/screenshot_pic")):
             os.makedirs(path)
         os.popen("adb pull /data/local/tmp/tmp.png " + str(PATH(path + "/tmp.png")))
         time.sleep(3)
@@ -55,11 +55,11 @@ class ADBRobot(Robot):
 
 
     def get_uiautomator_dump(self):
-        path = PATH(os.getcwd() + "/resources/taipeibus")
+        path = PATH(os.getcwd() + "/dumpXML")
         os.popen("adb wait-for-device")
         os.popen("adb shell uiautomator dump /data/local/tmp/uidump.xml")
         time.sleep(3)
-        if not os.path.isdir(PATH(os.getcwd() + "/resources/taipeibus")):
+        if not os.path.isdir(PATH(os.getcwd() + "/dumpXML")):
             os.makedirs(path)
         os.popen("adb pull /data/local/tmp/uidump.xml " + path + "/uidump.xml")
         time.sleep(3)
