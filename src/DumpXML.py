@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import ttk
 import xml.etree.cElementTree as ET
 from adb_roboot import ADBRobot
+from NotificationSenter import Singleton
+
 
 ROOT_DIR = os.path.dirname(__file__)
 RESOURCES_DIR = os.path.join(ROOT_DIR, "dumpXML")
@@ -19,7 +21,7 @@ def Dump_UI():
     print(dumpXMLfilePath)
     return dumpXMLfilePath
 
-class dumpXML(Frame):
+class dump(Frame):
 
     def XMLTreeUI(self):
         self.treeview = ttk.Treeview(self.master)
@@ -41,7 +43,6 @@ class dumpXML(Frame):
         self.treeview.config(xscrollcommand=self.Xvertscroll.set)
         self.treeview.bind("<<TreeviewSelect>>", self.on_tree_select)
 
-
     def Tree_infomation(self):
         self.XMLFile = ET.ElementTree(file=Dump_UI())
         self.tree_info("", self.XMLFile)
@@ -58,7 +59,7 @@ class dumpXML(Frame):
         for row in self.treeview.get_children():
             self.treeview.delete(row)
 
-    def on_tree_select(self, event):   #取得所選擇的List  value  中的Bounds
+    def on_tree_select(self, event):   #取得所選擇的item value  中的Bounds
         for item in self.treeview.selection():
             item_value = self.treeview.item(item, "value")
 
@@ -69,28 +70,17 @@ class dumpXML(Frame):
         right_top = right_bounds[0].split(',')
         left_bottom = left_bounds[0].split(',')
 
-        rigth = int(right_top[0])
-        top = int(right_top[1])
-        left = int(left_bottom[0])
-        bottom = int(left_bottom[1])
-        print(str(rigth) + "\n" + str(top) + "\n" + str(left) + "\n" + str(bottom) + "\n" )
+        self.rigth = int(right_top[0])
+        self.top = int(right_top[1])
+        self.left = int(left_bottom[0])
+        self.bottom = int(left_bottom[1])
+        print(str(self.rigth) + "\n" + str(self.top) + "\n" + str(self.left) + "\n" + str(self.bottom) + "\n" )
+
+        singleton = Singleton.getSingleton()
+        singleton.doSomething()
 
         #
         # self.resetScreenShot()
-        # w = event.widget
-        # index = int(w.curselection()[0])
-        # value = w.get(index)
-        # mylist = value.split('[')
-        # right = str(mylist[1]).split(']')
-        # right = str(right[0]).split(',')
-        #
-        # left = str(mylist[2]).split(']')
-        # left = str(left[0]).split(',')
-        #
-        # self.left = float(right[0]) / self.resize
-        # self.top = float(right[1]) / self.resize
-        # self.right = float(left[0]) / self.resize
-        # self.bottom = float(left[1]) / self.resize
         #
         # self.cropImage(self.left , self.top ,
         #                self.right , self.bottom)

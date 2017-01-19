@@ -10,6 +10,8 @@ class saveImg:
 
     def Save(self, screen, croprange):
         savefilepath = asksaveasfilename(initialdir = "/", filetypes=ImageType,title="Save the crop image as...")
+
+        if savefilepath is None : return
         saveIMG = Image.open(screen)
         left, top, right, bottom, multiple = croprange
 

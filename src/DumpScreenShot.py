@@ -1,7 +1,7 @@
 from tkinter import *
 from adb_roboot import ADBRobot
 from PIL import Image, ImageTk
-
+from NotificationSenter import Singleton
 import os
 
 ROOT_DIR = os.path.dirname(__file__)
@@ -23,7 +23,7 @@ class dumpScreenShot(Frame):
 
     def ScreenShotUI(self):
         self.screenshot = Canvas(self.master, bg='white', height=800, width=450)
-        self.screenshot.grid(row=3, column=1, rowspan=50, columnspan = 25)
+        self.screenshot.grid(row=3, column=0, rowspan=50, columnspan = 25)
         self.multiple = 1
 
     def getScreenShot(self):
@@ -69,11 +69,13 @@ class dumpScreenShot(Frame):
         self.screenshot.bind("<B1-Motion>", self.mouseDragged)  #滑鼠拖拉動作
 
     def clickdown(self, event):
+        if filePath is None: return
         self.resetScreenShot()
         self.clickstartX = event.x
         self.clickstartY = event.y
 
     def clickup(self, event):
+        if filePath is None: return
         self.clickendX = event.x
         self.clickendY = event.y
         self.left, self.right = sorted([self.clickendX, self.clickstartX])
@@ -83,8 +85,11 @@ class dumpScreenShot(Frame):
 
     def motion(self,event):
         self.mousePosition.set("Mouse in window [ " + str(event.x * self.multiple) + ", " + str(event.y * self.multiple) + " ]")
+        singleton = Singleton.getSingleton()
+        singleton.doSomething()
 
     def mouseDragged(self, event):
+        if filePath is None: return
         self.screenshot.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
         if event.x < 0 :
             event.x = 0
