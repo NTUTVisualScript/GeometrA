@@ -19,13 +19,14 @@ def Get_PhoneScreen():
     print(filePath)
     return filePath
 
-class dumpScreenShot(Frame):
+class ScreenShotOBJ(Frame):
 
     def ScreenShotUI(self):
         self.screenshot = Canvas(self.master, bg='white', height=800, width=450)
-        self.screenshot.grid(row=3, column=0, rowspan=50, columnspan = 25)
+        self.screenshot.place(x=0, y=30)
         self.multiple = 1
 
+class dumpscreenshot(ScreenShotOBJ):
     def getScreenShot(self):
         self.photo = Image.open(Get_PhoneScreen())
         self.photo_width, self.photo_height = self.photo.size

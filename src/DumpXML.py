@@ -21,26 +21,26 @@ def Dump_UI():
     print(dumpXMLfilePath)
     return dumpXMLfilePath
 
-class dump(Frame):
-
+class dumpTreeView(Frame):
     def XMLTreeUI(self):
-        self.treeview = ttk.Treeview(self.master)
+        self.Yvertscroll = Scrollbar(self.master, orient=VERTICAL)
+        #self.Yvertscroll.pack( side = RIGHT, fill=Y )
+        self.Xvertscroll = Scrollbar(self.master, orient=HORIZONTAL)
+        #self.Xvertscroll.grid(column=25 + 1, row=18, rowspan=1, columnspan=20, sticky='WE')
+        self.treeview = ttk.Treeview(self.master,yscrollcommand=self.Yvertscroll.set , xscrollcommand=self.Xvertscroll.set)
         self.treeview["columns"] = ("one")
         self.treeview.column("one", width=150)
         self.treeview.heading("one", text="Bounds")
         self.treeview.column('#0', stretch=YES, minwidth=0, width=500)
-        self.treeview.grid(column=25 + 1, row=3, rowspan=15, columnspan=20, sticky='WE')
+        self.treeview.place( x = 460, y = 30)
 
-        self.Yvertscroll = Scrollbar(self.master, orient=VERTICAL)
         self.Yvertscroll.config(command=self.treeview.yview)
-        self.Yvertscroll.grid(column=25 + 22, row=3, rowspan=15, columnspan=1, sticky='NS')
-
-        self.Xvertscroll = Scrollbar(self.master, orient=HORIZONTAL)
         self.Xvertscroll.config(command=self.treeview.xview)
-        self.Xvertscroll.grid(column=25 + 1, row=18, rowspan=1, columnspan=20, sticky='WE')
 
-        self.treeview.config(yscrollcommand=self.Yvertscroll.set)
-        self.treeview.config(xscrollcommand=self.Xvertscroll.set)
+class dump(dumpTreeView):
+    def XMLTree(self):
+        singleton = Singleton.getSingleton()
+        singleton.doSomething()
         self.treeview.bind("<<TreeviewSelect>>", self.on_tree_select)
 
     def Tree_infomation(self):
@@ -76,8 +76,7 @@ class dump(Frame):
         self.bottom = int(left_bottom[1])
         print(str(self.rigth) + "\n" + str(self.top) + "\n" + str(self.left) + "\n" + str(self.bottom) + "\n" )
 
-        singleton = Singleton.getSingleton()
-        singleton.doSomething()
+
 
         #
         # self.resetScreenShot()

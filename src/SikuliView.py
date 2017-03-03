@@ -4,6 +4,7 @@ import xml.etree.cElementTree as ET
 from SaveIMG import saveImg
 from adb_roboot import ADBRobot
 from PIL import Image, ImageTk
+from TestCase import TestCase
 import os
 
 ROOT_DIR = os.path.dirname(__file__)
@@ -36,7 +37,9 @@ def Get_PhoneScreen():
 class View(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
-        self.grid()
+        self.master = master
+        master.minsize(width=1350, height=840)
+
         self.formatButton()
 
         self.savecropImg = saveImg()
@@ -47,10 +50,12 @@ class View(Frame):
         self.SaveIMGButton()
         self.cropImageUI()
         self.getmouseEvent()
+        self.TestCaseTable = TestCase(self.master)
+        self.TestCaseTable.view()
 
     def ScreenShotUI(self):
         self.screenshot = Canvas(self.master, bg='white', height=800, width=450)
-        self.screenshot.grid(row=3, column=0, rowspan=50, columnspan = 25)
+        self.screenshot.place( x = 0, y = 30)
         self.multiple = 1
 
     def getScreenShot(self):
@@ -87,7 +92,7 @@ class View(Frame):
         self.mousePosition = StringVar()  # displays mouse position
         self.mousePosition.set("Mouse outside window")
         self.positionLabel = Label(self.master, textvariable=self.mousePosition)
-        self.positionLabel.grid(column=25 + 1, row=20, columnspan=20)
+        self.positionLabel.place(x = 460, y = 270)
         self.screenshot.bind("<Button-1>", self.clickdown)  # clickdown
         self.screenshot.bind("<ButtonRelease-1>", self.clickup)  # clickup
         #self.screenshot.bind("<Motion>", self.motion)  #get mouse coordination
@@ -129,23 +134,22 @@ class View(Frame):
         self.mousePosition.set("Rectangle at [ " + str(self.clickstartX * self.multiple ) + ", " + str(self.clickstartY * self.multiple) + " To " + str(event.x * self.multiple) + ", " + str(event.y * self.multiple) + " ]")
 
     def XMLTreeUI(self):
-        self.treeview = ttk.Treeview(self.master)
+        self.Yvertscroll = Scrollbar(self.master, orient=VERTICAL)
+        #self.Yvertscroll.pack( side = RIGHT, fill=Y )
+
+        self.Xvertscroll = Scrollbar(self.master, orient=HORIZONTAL)
+        #self.Xvertscroll.grid(column=25 + 1, row=18, rowspan=1, columnspan=20, sticky='WE')
+
+        self.treeview = ttk.Treeview(self.master,yscrollcommand=self.Yvertscroll.set , xscrollcommand=self.Xvertscroll.set)
         self.treeview["columns"] = ("one")
         self.treeview.column("one", width=150)
         self.treeview.heading("one", text="Bounds")
         self.treeview.column('#0', stretch=YES, minwidth=0, width=500)
-        self.treeview.grid(column=25 + 1, row=3, rowspan=15, columnspan=20, sticky='WE')
+        self.treeview.place( x = 460, y = 30)
 
-        self.Yvertscroll = Scrollbar(self.master, orient=VERTICAL)
         self.Yvertscroll.config(command=self.treeview.yview)
-        self.Yvertscroll.grid(column=25 + 22, row=3, rowspan=15, columnspan=1, sticky='NS')
-
-        self.Xvertscroll = Scrollbar(self.master, orient=HORIZONTAL)
         self.Xvertscroll.config(command=self.treeview.xview)
-        self.Xvertscroll.grid(column=25 + 1, row=18, rowspan=1, columnspan=20, sticky='WE')
 
-        self.treeview.config(yscrollcommand=self.Yvertscroll.set)
-        self.treeview.config(xscrollcommand=self.Xvertscroll.set)
         self.treeview.bind("<<TreeviewSelect>>", self.on_tree_select)
 
     def Tree_infomation(self):
@@ -188,8 +192,8 @@ class View(Frame):
                        self.right , self.bottom)
 
     def formatButton(self):
-        self.dumpUI = Button(self.master, command=self.formatButtonClick, text="Dump UI")
-        self.dumpUI.grid(row=0, column=0, rowspan=2, columnspan = 5)
+        self.dumpUI = Button(self.master, command=self.formatButtonClick, text="Dump UI",width=15)
+        self.dumpUI.place(x = 0, y = 0)
 
     def formatButtonClick(self):
         self.getScreenShot()
@@ -197,8 +201,8 @@ class View(Frame):
         self.Tree_infomation()
 
     def SaveIMGButton(self):
-        self.SaveIMG = Button(self.master, command=self.SaveIMGButtonClick, text="Save Crop Image")
-        self.SaveIMG.grid(row=0, column=6, rowspan=3, columnspan=8)
+        self.SaveIMG = Button(self.master, command=self.SaveIMGButtonClick, text="Save Crop Image",width=15)
+        self.SaveIMG.place(x = 120, y = 0)
 
     def SaveIMGButtonClick(self):
         if filePath is None: return
@@ -206,7 +210,7 @@ class View(Frame):
 
     def cropImageUI(self):
         self.crop = Canvas(self.master, bg='white', width=200, height=200)
-        self.crop.grid(column=25 + 1, row=24)
+        self.crop.place(x = 1130, y = 30)
 
 
 if __name__ == '__main__':
@@ -214,10 +218,11 @@ if __name__ == '__main__':
     root.title("Sikuli Viewer")
     app = View(master=root)
     app.mainloop()
+
 # from tkinter import *
-# from DumpXML import dump
+# from DumpXML import *
 # from SaveIMG import saveImg
-# from DumpScreenShot import dumpScreenShot
+# from DumpScreenShot import *
 # from PIL import Image, ImageTk
 # import os
 #
@@ -230,11 +235,12 @@ if __name__ == '__main__':
 # class View(Frame):
 #     def __init__(self, master=None):
 #         Frame.__init__(self, master)
+#         master.minsize(width=1350, height=840)
 #         self.grid()
 #         self.formatButton()
 #
 #         self.treeUI = dump(self.master)
-#         self.screenshotUI = dumpScreenShot(self.master)
+#         self.screenshotUI = dumpscreenshot(self.master)
 #         self.savecropImg = saveImg()
 #
 #         self.screenshotUI.ScreenShotUI()
