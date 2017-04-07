@@ -1,4 +1,5 @@
 # Sikuli-Img
+Branch from https://github.com/Swind/Sikuli-Img
 
 # 設定開發環境 (Windows)
 
