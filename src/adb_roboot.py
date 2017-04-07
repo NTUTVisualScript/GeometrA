@@ -21,6 +21,9 @@ class ADBRobot(Robot):
     def close_app(self, appName):
         subprocess.check_output([subp, "shell", "am", "force-stop", appName], shell=True)
 
+    def get_devices(self):
+        return os.popen("adb devices").readlines()
+
     def send_keys(self, keys):
         for key in keys:
             self.send_key(KEYCODE[key])
@@ -46,13 +49,15 @@ class ADBRobot(Robot):
     def tap(self, x, y, duration=None):
         if duration:
             subprocess.check_output(
-                [subp, "shell", "input", "swipe", str(x), str(y), str(x), str(y), str(duration)],
+                [subp, "shell", "input", "swipe", str(x), str(y), str(x), str(y), str(3000)],
                 shell=True)
         else:
             subprocess.check_output(
                 [subp, "shell", "input", "tap", str(x), str(y)],
                 shell=True)
 
+    def input_text(self, inputtext):
+        os.system("adb shell input text " + inputtext)
 
     def get_uiautomator_dump(self):
         path = PATH(os.getcwd() + "/dumpXML")

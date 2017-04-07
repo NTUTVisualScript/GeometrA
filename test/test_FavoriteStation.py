@@ -15,10 +15,10 @@ def _test_template_finder(target_path):
     robot = ADBRobot()
     source = CV2Img()
     source.load_file(IMG_PATH(robot.screenshot()), 1)
-
+    source.show()
     target = CV2Img()
     target.load_file(IMG_PATH(target_path), 1)
-
+    target.show()
     finder = TemplateFinder(source)
     results = finder.find_all(target, 0.9)
 
@@ -40,26 +40,24 @@ def _test_assert_finder(target_path):
     result = matcher.next()
 
     result_image = source.crop(result)
-    #result_image.show()
-    #target.show()
     assert result_image == target
 
 class MyTestCase(unittest.TestCase):
 
-    def setUp(self):
-        robot = ADBRobot()
-        time.sleep(3)
-        _test_template_finder(IMG_PATH(IMG_PATH("TaipeiBus.png")))
-
-    def tearDown(self):
-        robot = ADBRobot()
-        robot.close_app("nexti.android.bustaipei")
-
-    def test_AssertNearlyStation(self):
-        time.sleep(2)
-        _test_template_finder(IMG_PATH("NearlyStation.png"))
-        time.sleep(3)
-        _test_assert_finder(IMG_PATH(IMG_PATH("AssertNearlyStation.png")))
+    # def setUp(self):
+    #     robot = ADBRobot()
+    #     time.sleep(3)
+    #     _test_template_finder(IMG_PATH("TaipeiBus.png"))
+    #
+    # def tearDown(self):
+    #     robot = ADBRobot()
+    #     robot.close_app("nexti.android.bustaipei")
+    #
+    # def test_AssertNearlyStation(self):
+    #     time.sleep(2)
+    #     _test_template_finder(IMG_PATH("NearlyStation.png"))
+    #     time.sleep(3)
+    #     _test_assert_finder(IMG_PATH("AssertNearlyStation.png"))
 
     def test_AssertGuangHuaStation(self):
         time.sleep(2)
@@ -67,7 +65,7 @@ class MyTestCase(unittest.TestCase):
         time.sleep(3)
         _test_template_finder(IMG_PATH("GuangHuaStation.png"))
         time.sleep(1)
-        _test_assert_finder(IMG_PATH(IMG_PATH("AssertGuangHuaStation.png")))
+        _test_assert_finder(IMG_PATH("AssertGuangHuaStation.png"))
 
     # def test_AssertAddAllStationToFavorite(self):
     #     time.sleep(2)
@@ -106,11 +104,11 @@ class MyTestCase(unittest.TestCase):
     #     _test_assert_finder(IMG_PATH(IMG_PATH("AssertFavoriteBusStationNull.png")))
     #     _test_template_finder(IMG_PATH("back.png"))
 
-    def test_AssertFavoriteBusStation(self):
-        time.sleep(2)
-        _test_template_finder(IMG_PATH("FavoriteStation.png"))
-        time.sleep(1)
-        _test_assert_finder(IMG_PATH(IMG_PATH("AssertFavoriteBusStation.png")))
+    # def test_AssertFavoriteBusStation(self):
+    #     time.sleep(2)
+    #     _test_template_finder(IMG_PATH("FavoriteStation.png"))
+    #     time.sleep(1)
+    #     _test_assert_finder(IMG_PATH("AssertFavoriteBusStation.png"))
 
 
 

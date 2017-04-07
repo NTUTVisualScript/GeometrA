@@ -1,58 +1,145 @@
-from tkinter import *
-from DumpXML import dump
-from SaveIMG import saveImg
-from DumpScreenShot import dumpScreenShot
-from PIL import Image, ImageTk
+from cv2img import CV2Img
+from adb_roboot import ADBRobot
+from finder.template_finder import TemplateFinder
+from finder.template_matcher import TemplateMatcher
+from uiautomator import device as d
+import time
 import os
 
 ROOT_DIR = os.path.dirname(__file__)
-RESOURCES_DIR = os.path.join(ROOT_DIR, "resources/taipeibus")
+RESOURCES_DIR = os.path.join(ROOT_DIR, "screenshot_pic")
 
 def IMG_PATH(name):
     return os.path.join(RESOURCES_DIR, name)
 
-class View(Frame):
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.grid()
-        self.formatButton()
+def template_finder(target_image):
+    robot = ADBRobot()
+    source = CV2Img()
+    source.load_file(IMG_PATH(robot.screenshot()), 0)
+    source.show()
+    target = CV2Img()
+    target.load_PILimage(target_image)
+    target.show()
+    finder = TemplateFinder(source)
+    results = finder.find_all(target, 0.9)
 
-        self.treeUI = dump(self.master)
-        self.screenshotUI = dumpScreenShot(self.master)
-        self.savecropImg = saveImg()
+    for item in results :
+        coordinate_x, coordinate_y = source.coordinate(item)
+        robot.tap(coordinate_x, coordinate_y)
 
-        self.screenshotUI.ScreenShotUI()
-        self.treeUI.XMLTreeUI()
+def assert_finder(target_path):
+    robot = ADBRobot()
+    source = CV2Img()
+    source.load_file(IMG_PATH(robot.screenshot()), -1)
 
-        self.SaveIMGButton()
-        self.cropImageUI()
-        self.screenshotUI.getmouseEvent()
+    target = CV2Img()
+    target.load_file(IMG_PATH(target_path), -1)
 
-    def formatButton(self):
-        self.dumpUI = Button(self.master, command=self.formatButtonClick, text="Dump UI")
-        self.dumpUI.grid(row=0, column=0, rowspan=2, columnspan = 5)
+    ratio = min(target.rows / 12, target.cols / 12)
 
-    def formatButtonClick(self):
-        self.screenshotUI.getScreenShot()
-        self.treeUI.clear_XML_Tree()
-        self.treeUI.Tree_infomation()
+    matcher = TemplateMatcher(source, target, 1, ratio)
+    result = matcher.next()
 
-    def SaveIMGButton(self):
-        self.SaveIMG = Button(self.master, command=self.SaveIMGButtonClick, text="Save Crop Image")
-        self.SaveIMG.grid(row=0, column=6, rowspan=3, columnspan=8)
+    result_image = source.crop(result)
+    assert result_image == target
 
-    def SaveIMGButtonClick(self):
-        ImgPath = self.screenshotUI.getImgPath()
-        if ImgPath is None: return
-        self.savecropImg.Save(ImgPath, self.screenshotUI.getCropRange())
+class TestAdepter():
+    def Test(self, actioncomboboxlist, typecomboboxlist, valuelist, valueImagelist):
+        self.robot = ADBRobot()
+        self.action = []
+        self.type = []
+        self.value = []
+        self.image = []
 
-    def cropImageUI(self):
-        self.crop = Canvas(self.master, bg='white', width=200, height=200)
-        self.crop.grid(column=25 + 1, row=24)
+        print(len(actioncomboboxlist))
+        for i in range(len(actioncomboboxlist)):
+            self.action.append(actioncomboboxlist[i].get())
+            self.type.append(typecomboboxlist[i].get())
+            if valueImagelist[i] != None:
+                print(valueImagelist[i])
+                self.value.append(None)
+            else:
+                self.value.append(valuelist[i].get())
+
+            if i < len(valueImagelist):
+                self.image.append(valueImagelist[i])
+
+        os.popen("adb kill-server")
+        time.sleep(1)
+        os.popen("adb devices")
+        time.sleep(5)
+        self.Action()
+
+    def Action(self):
+        index = 0
+        for i in self.action:
+            time.sleep(2)
+            if str(i) == "":
+                break
+            if str(i) == "Click":
+                print(index)
+                self.ClickType(index)
+            elif str(i) == "Drag":
+                print(self.action.index(i))
+                self.DragType(index)
+            elif str(i) == "Assert":
+                print(self.action.index(i))
+                self.AssertType(index)
+            index = index+1
+
+    def ClickType(self,index):
+        if self.type[index] == 'text':
+            self.TextValue(index)
+
+        elif self.type[index] == 'image':
+            self.ImageValue(index)
+
+        elif self.type[index] == 'coordinate':
+            self.CoordinateValue(index)
+
+    def DragType(self,index):
+        if self.type[index] == 'coordinate':
+            self.DragCoordinateValue(index)
+
+    def AssertType(self,index):
+        if self.type[index] == 'image':
+            self.ImageValue(index)
+
+    def TextValue(self,index):
+        print(str(self.value[index]))
+        textstr = str(self.value[index])
+        print(textstr)
+        d(text=textstr).click()
+
+    def ImageValue(self,index):
+        template_finder(self.image[index])
+
+    def CoordinateValue(self,index):
+        coordinatevalue = str(self.value[index])
+        coordinate = coordinatevalue.split(",")
+        X_coordinate = coordinate[0].split('=')
+        X_value = X_coordinate[1]
+        Y_coordinate = coordinate[1].split('=')
+        Y_value = Y_coordinate[1]
+        #self.robot.tap(int(int(X_value)),int(int(Y_value)))
+        print("click Coordinate is x = ", int(int(X_value)), " , y = ", int(int(Y_value)))
+        d.click(int (int(X_value)), int(int(Y_value)))
 
 
-if __name__ == '__main__':
-    root = Tk()
-    root.title("Sikuli Viewer")
-    app = View(master=root)
-    app.mainloop()
+    def DragCoordinateValue(self,index):
+        coordinatevalue = str(self.value[index])
+        coordinate = coordinatevalue.split(",")
+        X_coordinate_start = coordinate[0].split('=')
+        X_start = X_coordinate_start[1]
+        Y_coordinate_start = coordinate[1].split('=')
+        Y_start = Y_coordinate_start[1]
+
+        X_coordinate_end = coordinate[2].split('=')
+        X_end = X_coordinate_end[1]
+        Y_coordinate_end = coordinate[3].split('=')
+        Y_end = Y_coordinate_end[1]
+        #self.robot.drag_and_drop(int(X_start),int(Y_start),int(X_end),int(Y_end))
+        d.drag(int(X_start) , int(Y_start) , int(X_end) , int(Y_end), steps=1000)
+        print("Drag Coordinate is start x = ",int(X_start)," y = ",int(Y_start),"to  x = ",int(X_end)," y = ",int(Y_end))
+
+
