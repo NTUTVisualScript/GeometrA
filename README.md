@@ -1,6 +1,3 @@
-
-- **[Visual Script](#Visual-Script)**
-
 # Sikuli-Img
 Branch from https://github.com/Swind/Sikuli-Img
 
