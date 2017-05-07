@@ -56,14 +56,10 @@ class CV2Img:
 
     def load_base64(self, encoded_string):
         self.load_binary(base64.b64decode(encoded_string))
-
         return self
 
     def load_PILimage(self, image):
-
-        #file = cStringIO.StringIO(image).read()
-        self.source = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2GRAY)
-
+        self.source = cv2.cvtColor(np.array(image), cv2.COLOR_RGBA2BGR)
         return self
 
     def is_same_color(self):

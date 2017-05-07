@@ -1,11 +1,6 @@
-import re
-
 import subprocess
-from cv2img import CV2Img
 from keycode import ANDROID_KEYCODE
 from robot import Robot
-
-import time
 import os
 
 PATH = lambda p: os.path.abspath(p)
@@ -22,7 +17,7 @@ class ADBRobot(Robot):
         subprocess.check_output([subp, "shell", "am", "force-stop", appName], shell=True)
 
     def get_devices(self):
-        return os.popen("adb devices").readlines()
+        return subprocess.check_output('adb devices')
 
     def send_keys(self, keys):
         for key in keys:
@@ -36,13 +31,11 @@ class ADBRobot(Robot):
 
     def screenshot(self):
         path = PATH(os.getcwd() + "/screenshot_pic")
-        os.popen("adb wait-for-device")
-        os.popen("adb shell screencap -p /data/local/tmp/tmp.png")
-        time.sleep(3)
+        subprocess.check_output([subp, "wait-for-device"], shell=True)
+        subprocess.check_output([subp, "shell", "screencap", "-p", "/data/local/tmp/tmp.png"], shell=True)
         if not os.path.isdir(PATH(os.getcwd() + "/screenshot_pic")):
             os.makedirs(path)
-        os.popen("adb pull /data/local/tmp/tmp.png " + str(PATH(path + "/tmp.png")))
-        time.sleep(3)
+        subprocess.check_output([subp, "pull", "/data/local/tmp/tmp.png", str(PATH(path + "/tmp.png"))], shell=True)
         print("success")
         return "tmp.png"
 
@@ -57,17 +50,15 @@ class ADBRobot(Robot):
                 shell=True)
 
     def input_text(self, inputtext):
-        os.system("adb shell input text " + inputtext)
+        subprocess.check_output([subp, "shell", "input", "text", inputtext], shell=True)
 
     def get_uiautomator_dump(self):
         path = PATH(os.getcwd() + "/dumpXML")
-        os.popen("adb wait-for-device")
-        os.popen("adb shell uiautomator dump /data/local/tmp/uidump.xml")
-        time.sleep(3)
+        subprocess.check_output([subp, "wait-for-device"], shell=True)
+        subprocess.check_output([subp, "shell", "uiautomator", "dump", "/data/local/tmp/uidump.xml"], shell=True)
         if not os.path.isdir(PATH(os.getcwd() + "/dumpXML")):
             os.makedirs(path)
-        os.popen("adb pull /data/local/tmp/uidump.xml " + path + "/uidump.xml")
-        time.sleep(3)
+        subprocess.check_output([subp, "pull", "/data/local/tmp/uidump.xml", path + "/uidump.xml"], shell=True)
         print(path + "/uidump.xml")
         return path + "/uidump.xml"
 

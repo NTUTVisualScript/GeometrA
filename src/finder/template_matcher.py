@@ -63,6 +63,7 @@ class TemplateMatcher:
         target_img = self.target_img
 
         if roi:
+            print("_find_best: ",roi)
             source_img = source_img.crop(roi)
 
         if target_img.is_same_color():
