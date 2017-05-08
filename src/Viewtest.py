@@ -1,15 +1,10 @@
-import subprocess
 from tkinter import ttk
-import cv2
 from cv2img import CV2Img
 from adb_roboot import ADBRobot
 import xml.etree.cElementTree as ET
-from PIL import Image, ImageTk
-from rectangle import Rectangle
+from PIL import Image
 from finder.template_finder import TemplateFinder
 from finder.template_matcher import TemplateMatcher
-from uiautomator import device as d
-import unittest
 import time
 import os
 
@@ -65,7 +60,7 @@ def assert_finder(target_image,left, top, right, bottom):
     else:
         return False
 
-class TestAdepter(unittest.TestCase):
+class TestAdepter():
     def Single_Test(self, actioncombobox , value, valueImage , node_path):
         self.robot = ADBRobot()
         self.action = []
@@ -82,7 +77,7 @@ class TestAdepter(unittest.TestCase):
         self.image.append(valueImage)
         self.path_list.append(node_path)
 
-        self.Action()
+        return self.Action()
 
     # def Test(self, actioncomboboxlist, valuelist, valueImagelist , node_path_list):
     #     self.robot = ADBRobot()
@@ -106,31 +101,31 @@ class TestAdepter(unittest.TestCase):
     #     self.Action()
 
     def Action(self):
-        subprocess.check_output('adb kill-server')
-        subprocess.check_output('adb devices')
         index = 0
-        self.ActionError = False
+        self.ActionStatus = "Success"
         for i in self.action:
-            if self.ActionError == False:
+            if self.ActionStatus == "Success":
                 time.sleep(1)
                 if str(i) == "":
                     break
                 if str(i) == "Click":
                     #print(index)
-                    self.ClickValue(index)
+                    self.ActionStatus = self.ClickValue(index)
                 elif str(i) == "Drag":
                     #print(self.action.index(i))
-                    self.DragValue(index)
+                    self.ActionStatus = self.DragValue(index)
                 elif str(i) == "Input":
                     #print(self.action.index(i))
-                    self.InputValue(index)
+                    self.ActionStatus = self.InputValue(index)
                 elif str(i) == "Send Key":
                     #print(self.action.index(i))
-                    self.Send_Key_Value(index)
+                    self.ActionStatus = self.Send_Key_Value(index)
                 elif str(i) == "Exists":
                     #print(self.action.index(i))
-                    self.ExistsValue(index)
+                    self.ActionStatus = self.ExistsValue(index)
                 index = index+1
+
+        return self.ActionStatus
 
     def ExistsValue(self, index):
         filePath = IMG_PATH(self.robot.screenshot())
@@ -143,7 +138,9 @@ class TestAdepter(unittest.TestCase):
         self.Find_image_Path(index, 1, "")
 
         if self.node_item != None:
-            self.ExistsImage(index)
+            return self.ExistsImage(index)
+        else:
+            return "Error"
 
     def ClickValue(self,index):
         #filePath = IMG_PATH(self.robot.screenshot())
@@ -156,7 +153,9 @@ class TestAdepter(unittest.TestCase):
         self.Find_image_Path(index, 1, "")
 
         if self.node_item != None:
-            self.ClickImage(index)
+            return self.ClickImage(index)
+        else:
+            return "Error"
 
     def ExistsImage(self, index):
         left, top, right, bottom = self.bounds_split(self.treeview.item(self.node_item)["values"][1])
@@ -165,9 +164,10 @@ class TestAdepter(unittest.TestCase):
         status = assert_finder(self.image[index],left, top, right, bottom)
         if status == True:
             print("Success : Find This Image and Node")
+            return "Success"
         else:
             print("Error : Not Find Image and Node")
-            self.ActionError = True
+            return "Error"
 
     def ClickImage(self, index):
         left, top, right, bottom = self.bounds_split(self.treeview.item(self.node_item)["values"][1])
@@ -177,9 +177,10 @@ class TestAdepter(unittest.TestCase):
         if status =="success":
             self.robot.tap((right + left)/2, (bottom + top)/2 )
             print((right + left)/2, (bottom + top)/2 )
+            return "Success"
         else:
             print("Error : Not Find Template Image")
-            self.ActionError = True
+            return "Error"
 
     def tree_info(self,id , treeinfo):
         for elem in treeinfo.findall('node'):
@@ -231,27 +232,46 @@ class TestAdepter(unittest.TestCase):
 
     def DragValue(self, index):
         coordinatevalue = str(self.value[index])
-        coordinate = coordinatevalue.split(",")
-        print(coordinate)
-        X_coordinate_start = coordinate[0].split('=')
-        X_start = X_coordinate_start[1]
-        print(X_start)
-        Y_coordinate_start = coordinate[1].split('=')
-        Y_start = Y_coordinate_start[1]
-        print(Y_start)
+        try:
+            coordinate = coordinatevalue.split(",")
+            print(coordinate)
+            X_coordinate_start = coordinate[0].split('=')
+            X_start = X_coordinate_start[1]
+            print(X_start)
+            Y_coordinate_start = coordinate[1].split('=')
+            Y_start = Y_coordinate_start[1]
+            print(Y_start)
 
-        X_coordinate_end = coordinate[2].split('=')
-        X_end = X_coordinate_end[1]
-        Y_coordinate_end = coordinate[3].split('=')
-        Y_end = Y_coordinate_end[1]
-        self.robot.drag_and_drop(int(X_start),int(Y_start),int(X_end),int(Y_end))
-        print("Drag Coordinate is start x = ",int(X_start)," y = ",int(Y_start),"to  x = ",int(X_end)," y = ",int(Y_end))
+            X_coordinate_end = coordinate[2].split('=')
+            X_end = X_coordinate_end[1]
+            Y_coordinate_end = coordinate[3].split('=')
+            Y_end = Y_coordinate_end[1]
+
+        except:
+            print("Coordinate Value split Error : ", coordinatevalue)
+            return "Error"
+
+        try:
+            self.robot.drag_and_drop(int(X_start), int(Y_start), int(X_end), int(Y_end))
+            print("Drag Coordinate is start x = ", int(X_start), " y = ", int(Y_start), "to  x = ", int(X_end), " y = ",
+                  int(Y_end))
+            return "Success"
+        except:
+            print("Drag and drop Error")
+            return "Error"
+
 
     def InputValue(self, index):
         print(self.value[index])
-        self.robot.input_text(self.value[index])
+        return self.robot.input_text(self.value[index])
 
     def Send_Key_Value(self, index):
-        self.robot.send_key(self.value[index])
+        try:
+            self.robot.send_key(self.value[index])
+            return "Success"
+        except:
+            print("Input Value Error")
+            return "Error"
+
 
 

@@ -40,7 +40,7 @@ class View(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master = master
-        master.minsize(width=1150, height=840)
+        master.minsize(width=1470, height=840)
         self.focus = None
         self.focusOBJImage = None
         self.Drag_image = None
@@ -50,12 +50,20 @@ class View(Frame):
         self.savecropImg = saveImg()
         self.ScreenShotUI()
         self.XMLTreeUI()
+        self.MessageUI()
         self.SaveIMGButton()
         self.RunButton()
         self.SaveButton()
         self.ResetButton()
         self.getmouseEvent()
         self.TestCaseFrame()
+
+    def MessageUI(self):
+        self.messagetitle = Label(self.master, text="Message Log", font=("Helvetica",16))
+        self.messagetitle.place(x=1150, y=30)
+        self.message = Text(self.master, bg='white', height=32, width=25, font=("Helvetica",16))
+        #self.message.config(state=DISABLED)
+        self.message.place(x=1150, y=60)
 
     def ScreenShotUI(self):
         self.screenshot = Canvas(self.master, bg='white', height=800, width=450)
@@ -417,20 +425,50 @@ class View(Frame):
         self.line = self.line - 1
 
     def Run_single_actionButtonClick(self, n):
-        print(n)
         run = TestAdepter()
-        run.Single_Test(self.actioncombolist[n], self.valuelist[n], self.valueImagelist[n], self.node_path_list[n])
+        self.message.delete(1.0, END)
+        self.checkADB_Connection()
+        status = "Success"
+        status = run.Single_Test(self.actioncombolist[n], self.valuelist[n], self.valueImagelist[n], self.node_path_list[n])
+        if status == "Error":
+            statusstr = "Action " + str(n + 1) + " Status Error\n"
+            self.message.insert('end', statusstr)
+        else:
+            statusstr = "Action " + str(n + 1) + " Status Success\n"
+            self.message.insert('end', statusstr)
+
         self.formatButtonClick()
 
     def RunButtonClick(self):
         run = TestAdepter()
-
+        self.message.delete(1.0, END)
+        self.checkADB_Connection()
+        status = "Success"
         for i in range(len(self.actioncombolist)):
             if self.actioncombolist[i].get() != "":
-                run.Single_Test(self.actioncombolist[i], self.valuelist[i], self.valueImagelist[i],
+                status = run.Single_Test(self.actioncombolist[i], self.valuelist[i], self.valueImagelist[i],
                                 self.node_path_list[i])
+                if status == "Error":
+                    statusstr = "Action "+ str(i+1) + " Status Error\nTest Case Interrupted!\n"
+                    self.message.insert('end', statusstr)
+                    break
+                else:
+                    statusstr = "Action "+ str(i+1) + " Status Success\n"
+                    self.message.insert('end', statusstr)
 
+        finish = "The Test Case Finish!"
+        self.message.insert('end', finish)
         self.formatButtonClick()
+
+    def checkADB_Connection(self):
+        try:
+            output = subprocess.check_output('adb devices')
+            self.message.insert('end', output)
+        except subprocess.CalledProcessError as e:
+            print(e.returncode)
+        # subprocess.check_output('adb kill-server')
+        # output = subprocess.check_output('adb devices')
+        # self.message.insert('end',output)
 
 
     def TestCaseFrame(self):
@@ -475,20 +513,22 @@ class View(Frame):
         values_image.image = image
         self.valuelist[line].grid_remove()
         self.valuelist[line] = values_image
-        self.valuelist[line].grid(row=line + 1, column=5, padx=(5, 0), pady=(5, 2.5))
-        self.showimagelist[line].grid(row=line + 1, column=6, padx = ( 5, 0) , pady = ( 5 , 2.5))
+        self.valuelist[line].grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
+        self.showimagelist[line].grid(row=line + 1, column=7, padx = ( 5, 0) , pady = ( 5 , 2.5))
 
     def TestcaseEntry(self, line):
-        value = Entry(self.listFrame, width=37)
+        value = Entry(self.listFrame, width=35)
         value['font'] = ('Times', 13, 'bold italic')
         value.bind("<FocusIn>", lambda event, i=line: self.valueFocusIn(event, i))
         self.valuelist[line].grid_remove()
         self.showimagelist[line].grid_remove()
         self.valuelist[line] = value
-        self.valuelist[line].grid(row=line + 1, column=5, padx=(5, 0), pady=(5, 2.5))
+        self.valuelist[line].grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
 
     def new_line(self,n):
         action_value = StringVar()
+
+        lineStr = Label(self.listFrame, text=str(n+1)+". ", width=3)
 
         addline = Button(self.listFrame, command=lambda:self.AddLineButtonClick(n), text="+", width=3)
         self.addlinelist.append(addline)
@@ -507,7 +547,7 @@ class View(Frame):
         actioncombo.current(0)
         self.actioncombolist.append(actioncombo)
 
-        value = Entry(self.listFrame,width=37)
+        value = Entry(self.listFrame,width=35)
         value['font'] = ('Times', 13, 'bold italic')
         value.bind("<FocusIn>", lambda event, i=n: self.valueFocusIn(event, i))
 
@@ -518,11 +558,12 @@ class View(Frame):
         self.valueImagelist.append(None)
         self.node_path_list.append(None)
 
-        addline.grid(row = n+1 , column = 1 )
-        removeline.grid(row=n+1, column=2)
-        run_single_action.grid(row=n+1, column=3)
-        actioncombo.grid(row = n+1 , column = 4 , padx = ( 5 , 0 ) , pady = ( 5 , 2.5))
-        value.grid(row = n+1 , column = 5 , padx = ( 5, 0) , pady = ( 5 , 2.5))
+        lineStr.grid(row = n+1 , column = 1 )
+        addline.grid(row = n+1 , column = 2 )
+        removeline.grid(row=n+1, column=3)
+        run_single_action.grid(row=n+1, column=4)
+        actioncombo.grid(row = n+1 , column = 5 , padx = ( 5 , 0 ) , pady = ( 5 , 2.5))
+        value.grid(row = n+1 , column = 6 , padx = ( 5, 0) , pady = ( 5 , 2.5))
 
     def ActionSelect(self,event, n):
         self.focus = n
@@ -531,7 +572,6 @@ class View(Frame):
 
     def valueFocusIn(self,event, n):
         self.focus = n
-        self.Action_FocusIn()
 
     def Action_FocusIn(self):
         if self.actioncombolist[self.focus].get() == 'Drag':

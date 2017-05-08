@@ -50,7 +50,12 @@ class ADBRobot(Robot):
                 shell=True)
 
     def input_text(self, inputtext):
-        subprocess.check_output([subp, "shell", "input", "text", inputtext], shell=True)
+        try:
+            subprocess.check_output([subp, "shell", "input", "text", inputtext], shell=True)
+            return "Success"
+        except:
+            print("Input Text Error", inputtext)
+            return "Error"
 
     def get_uiautomator_dump(self):
         path = PATH(os.getcwd() + "/dumpXML")
