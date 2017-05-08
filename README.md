@@ -177,11 +177,9 @@ cv2.__version__
 # Visual Script
 Branch from https://github.com/Swind/Sikuli-Img
 
-<<<<<<< HEAD
-#使用教學
-=======
+
 # 使用教學
->>>>>>> origin/master
+
 [Clone本專案](https://github.com/Yamiyo/Visual_Script.git)
 
 設定系統環境變數
@@ -195,11 +193,10 @@ Branch from https://github.com/Swind/Sikuli-Img
 
 	python D:\VS_project\Visual_Script\src\VisualScript.py
 
-<<<<<<< HEAD
-##介面介紹
-=======
+
+
 ## 介面介紹
->>>>>>> origin/master
+
 ![](/pic/View_Introduction.png)
 
 	================================
@@ -232,28 +229,17 @@ Branch from https://github.com/Swind/Sikuli-Img
 	根據動作自動或被動地填入內容
 
 
-<<<<<<< HEAD
-##Action動作介紹
-###Click
-=======
+
 ## Action動作介紹
 ### Click
->>>>>>> origin/master
+
 可從ScreenShot中點選物件，或從Tree View中直接點擊節點
 ![](/pic/Click.gif)
 
 也可以用拖拉的方式，來尋找物件中的某個畫面
 ![](/pic/Click2.gif)
 
-<<<<<<< HEAD
-###Drag
-![](/pic/Drag.gif)
 
-###Input
-![](/pic/Input.gif)
-
-###Send Key
-=======
 ### Drag
 ![](/pic/Drag.gif)
 
@@ -261,7 +247,7 @@ Branch from https://github.com/Swind/Sikuli-Img
 ![](/pic/Input.gif)
 
 ### Send Key
->>>>>>> origin/master
+
 ![](/pic/Send_key.gif)
 
 可根據自行想使用的ADB keycode來自行輸入
@@ -356,10 +342,7 @@ keycode指令請參考
 	84 -->  "KEYCODE_SEARCH"
 	85 -->  "TAG_LAST_KEYCODE"
 
-<<<<<<< HEAD
-###Exists
-與Click功能用法一樣，是用來驗證該物件的節點路徑是否相同，以及該物件的畫面是否一致
-=======
+
 ### Exists
 與Click功能用法一樣，是用來驗證該物件的節點路徑是否相同，以及該物件的畫面是否一致
->>>>>>> origin/master
+
