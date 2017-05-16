@@ -5,6 +5,7 @@ import xml.etree.cElementTree as ET
 from PIL import Image
 from finder.template_finder import TemplateFinder
 from finder.template_matcher import TemplateMatcher
+from LoadFile import LoadFile
 import time
 import os
 
@@ -16,49 +17,57 @@ sorce_image = None
 def IMG_PATH(name):
     return os.path.join(RESOURCES_DIR, name)
 
-def template_finder(target_image,left, top, right, bottom):
+def template_finder(target_image):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(IMG_PATH(robot.screenshot()), 1)
-    # cropimg = source.crop(Rectangle(left, top, right - left, bottom - top))
-    # cropimg.show()
-    # source = cropimg
-    #source.load_PILimage(source_image)
-    #source.show()
+    source.load_file(IMG_PATH(robot.screenshot()), 0)
     target = CV2Img()
     target.load_PILimage(target_image)
-    #target.show()
     finder = TemplateFinder(source)
     results = finder.find_all(target, 0.9)
-    print(results)
-    if results != []:
-        return "success"
-    else:
+    print(len(results))
+    for i in range(len(results)):
+        print(results[i].x,"  ", results[i].y,"  ", results[i].w,"  ", results[i].h,"\n")
+    if len(results) < 1:
         return "faile"
-    #return "success"
-    # coordinate_x, coordinate_y = source.coordinate(results[0])
-    # robot.tap(coordinate_x, coordinate_y)
+    elif len(results) == 1:
+        coordinate_x, coordinate_y = source.coordinate(results[0])
+        robot.tap(coordinate_x, coordinate_y)
+        return "success"
+    elif len(results) > 1:
+        return "too more"
 
 
-def assert_finder(target_image,left, top, right, bottom):
+def assert_finder(target_image):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(IMG_PATH(robot.screenshot()), 1)
-    # source.show()
-    # cropimg = source.crop(Rectangle(left, top, right - left, bottom - top))
-    # cropimg.show()
-    # source = cropimg
+    source.load_file(IMG_PATH(robot.screenshot()), 0)
     target = CV2Img()
     target.load_PILimage(target_image)
-    #target.show()
-    ratio = min(target.rows / 12, target.cols / 12)
-    matcher = TemplateMatcher(source, target, 1, ratio)
-    result = matcher.next()
-    result_image = source.crop(result)
-    if result_image == target:
-        return True
-    else:
+    finder = TemplateFinder(source)
+    results = finder.find_all(target, 0.9)
+    print(len(results))
+
+    if len(results) < 1:
         return False
+    elif len(results) == 1:
+        return True
+    elif len(results) > 1:
+        return True
+    # robot = ADBRobot()
+    # source = CV2Img()
+    # source.load_file(IMG_PATH(robot.screenshot()), 0)
+    # target = CV2Img()
+    # target.load_PILimage(target_image)
+    # ratio = min(target.rows / 12, target.cols / 12)
+    # matcher = TemplateMatcher(source, target, 1, ratio)
+    # result = matcher.next()
+    # print(result)
+    # result_image = source.crop(result)
+    # if result_image == target:
+    #     return True
+    # else:
+    #     return False
 
 class TestAdepter():
     def Single_Test(self, actioncombobox , value, valueImage , node_path):
@@ -79,7 +88,25 @@ class TestAdepter():
 
         return self.Action()
 
-    # def Test(self, actioncomboboxlist, valuelist, valueImagelist , node_path_list):
+    def Open_Single_Test(self, actioncombobox , value, valueImage , node_path):
+        self.robot = ADBRobot()
+        self.action = []
+        self.value = []
+        self.image = []
+        self.path_list = []
+
+        self.action.append(actioncombobox)
+        if valueImage != None:
+            self.value.append(None)
+        else:
+            self.value.append(value)
+
+        self.image.append(valueImage)
+        self.path_list.append(node_path)
+
+        return self.Action()
+
+    # def All_Test(self, actioncomboboxlist, valuelist, valueImagelist , node_path_list):
     #     self.robot = ADBRobot()
     #     self.action = []
     #     self.value = []
@@ -97,8 +124,7 @@ class TestAdepter():
     #         if i < len(valueImagelist):
     #             self.image.append(valueImagelist[i])
     #             self.path_list.append(node_path_list[i])
-    #
-    #     self.Action()
+    #     return self.Action()
 
     def Action(self):
         index = 0
@@ -110,26 +136,35 @@ class TestAdepter():
                     break
                 if str(i) == "Click":
                     #print(index)
-                    self.ActionStatus = self.ClickValue(index)
+                    self.ActionStatus = self.ClickImage(index)
                 elif str(i) == "Drag":
                     #print(self.action.index(i))
                     self.ActionStatus = self.DragValue(index)
                 elif str(i) == "Input":
                     #print(self.action.index(i))
                     self.ActionStatus = self.InputValue(index)
-                elif str(i) == "Send Key":
+                elif str(i) == "TestCase":
+                    #print(self.action.index(i))
+                    self.ActionStatus = self.TestCasePath(index)
+                elif str(i) == "Android Keycode":
                     #print(self.action.index(i))
                     self.ActionStatus = self.Send_Key_Value(index)
-                elif str(i) == "Exists":
+                elif str(i) == "Assert Exist":
                     #print(self.action.index(i))
-                    self.ActionStatus = self.ExistsValue(index)
+                    self.ActionStatus = self.ExistsImage(index)
+                elif str(i) == "Assert Not Exist":
+                    #print(self.action.index(i))
+                    self.ActionStatus = self.ExistsImage(index)
+                    if self.ActionStatus == "Success":
+                        self.ActionStatus = "Error"
+                    else:
+                        self.ActionStatus = "Success"
+
                 index = index+1
 
         return self.ActionStatus
 
     def ExistsValue(self, index):
-        filePath = IMG_PATH(self.robot.screenshot())
-        self.photo = Image.open(filePath)
         self.treeview = ttk.Treeview()
         self.XMLFile = ET.ElementTree(file=self.robot.get_uiautomator_dump())
         self.tree_info("", self.XMLFile)
@@ -138,13 +173,11 @@ class TestAdepter():
         self.Find_image_Path(index, 1, "")
 
         if self.node_item != None:
-            return self.ExistsImage(index)
+            return "Success"
         else:
             return "Error"
 
     def ClickValue(self,index):
-        #filePath = IMG_PATH(self.robot.screenshot())
-        #self.photo = Image.open(filePath)
         self.treeview = ttk.Treeview()
         self.XMLFile = ET.ElementTree(file=self.robot.get_uiautomator_dump())
         self.tree_info("", self.XMLFile)
@@ -153,15 +186,14 @@ class TestAdepter():
         self.Find_image_Path(index, 1, "")
 
         if self.node_item != None:
-            return self.ClickImage(index)
+            left, top, right, bottom = self.bounds_split(self.treeview.item(self.node_item)["values"][1])
+            self.robot.tap((right+left)/2, (bottom+top)/2)
+            return "Success"
         else:
             return "Error"
 
     def ExistsImage(self, index):
-        left, top, right, bottom = self.bounds_split(self.treeview.item(self.node_item)["values"][1])
-        #img = self.photo.crop((left, top, right, bottom))
-        #print(left, top, right, bottom)
-        status = assert_finder(self.image[index],left, top, right, bottom)
+        status = assert_finder(self.image[index])
         if status == True:
             print("Success : Find This Image and Node")
             return "Success"
@@ -170,16 +202,13 @@ class TestAdepter():
             return "Error"
 
     def ClickImage(self, index):
-        left, top, right, bottom = self.bounds_split(self.treeview.item(self.node_item)["values"][1])
-        # img = self.photo.crop((left, top, right, bottom))
-        # print(left, top, right, bottom)
-        status = template_finder(self.image[index],left, top, right, bottom)
+        status = template_finder(self.image[index])
         if status =="success":
-            self.robot.tap((right + left)/2, (bottom + top)/2 )
-            print((right + left)/2, (bottom + top)/2 )
             return "Success"
+        elif status == "too more":
+            return self.ClickValue(index)
         else:
-            print("Error : Not Find Template Image")
+            print("Error : Not Find Image")
             return "Error"
 
     def tree_info(self,id , treeinfo):
@@ -194,25 +223,27 @@ class TestAdepter():
         if depth < self.path_range:
             children_node = self.treeview.get_children(item)
             for child in children_node:
-                if self.path_list[index][depth-1][0] == self.treeview.item(child)["text"] :
-                    print("find ", self.path_list[index][depth - 1][0],",  treeview node :", self.treeview.item(child)["text"])
-                    depth = depth + 1
-                    self.Find_image_Path(index, depth,child)
-                else :
-                    print("not find ", self.path_list[index][depth-1][0],",  treeview node :", self.treeview.item(child)["text"])
+                if self.node_item == None:
+                    if self.path_list[index][depth-1][0] == self.treeview.item(child)["text"] :
+                        print("find ", self.path_list[index][depth - 1][0],",  treeview node :", self.treeview.item(child)["text"])
+                        depth = depth + 1
+                        self.Find_image_Path(index, depth,child)
+                    else :
+                        print("not find ", self.path_list[index][depth-1][0],",  treeview node :", self.treeview.item(child)["text"])
 
         if depth == self.path_range:
             children_node = self.treeview.get_children(item)
             for child in children_node:
-                if self.path_list[index][depth-1][0] == self.treeview.item(child)["text"] :
-                    text = self.treeview.item(child)["values"][0]
-                    if str(text) == self.path_list[index][depth-1][1]:
-                        self.node_item = child
-                        print("Find Node ", self.path_list[index][depth - 1][0])
+                if self.node_item == None:
+                    if self.path_list[index][depth-1][0] == self.treeview.item(child)["text"] :
+                        text = self.treeview.item(child)["values"][0]
+                        if str(text) == self.path_list[index][depth-1][1]:
+                            self.node_item = child
+                            print("Find Node ", self.path_list[index][depth - 1][0])
+                        else:
+                            print("Text not same between ", str(text), self.path_list[index][depth - 1][0])
                     else:
-                        print("Text not same between ", str(text), self.path_list[index][depth - 1][0])
-                else:
-                    print("Not Find ", self.path_list[index][depth - 1][0])
+                        print("Not Find ", self.path_list[index][depth - 1][0])
 
     def bounds_split(self,obj_bounds):
         bounds = obj_bounds.split('[')
@@ -264,6 +295,59 @@ class TestAdepter():
     def InputValue(self, index):
         print(self.value[index])
         return self.robot.input_text(self.value[index])
+
+    def TestCasePath(self, index):
+        testcase_load = LoadFile()
+        testcase_load.Decoder_Json(self.value[index])
+        actioncombo_list, value_list, valueImage_list, nodepath_list = testcase_load.get_Loading_Data()
+        run_testcase = TestAdepter()
+        self.start = None
+        self.end = None
+        self.forloop = None
+        for i in range(len(actioncombo_list)):
+            if i == len(actioncombo_list)-1 and self.end == None and self.start != None:
+                self.end = len(actioncombo_list)
+                self.ForLoop(actioncombo_list, value_list, valueImage_list, nodepath_list)
+            if actioncombo_list[i] == "Loop":
+                self.start = i+1
+                self.forloop = int(value_list[i])
+            elif actioncombo_list[i] == "Stop":
+                self.end = i
+                self.ForLoop(actioncombo_list, value_list, valueImage_list, nodepath_list)
+            elif actioncombo_list[i] == "Sleep":
+                time.sleep(int(value_list[i]))
+            elif actioncombo_list[i] != "":
+                status = run_testcase.Open_Single_Test(actioncombo_list, value_list, valueImage_list, nodepath_list)
+                if status == "Error":
+                    break
+        return status
+
+    def ForLoop(self,actioncombo_list, value_list, valueImage_list, nodepath_list):
+        if self.CheckLoop():
+            run_testcase = TestAdepter()
+            for i in range(self.forloop):
+                index = self.start
+                while index < self.end:
+                    if actioncombo_list[index] != "":
+                        status = run_testcase.Open_Single_Test(actioncombo_list[index], value_list[index], valueImage_list[index],
+                                                          nodepath_list[index])
+                        index = index + 1
+                        if status == "Error":
+                            break
+        else:
+            status =  "Error"
+
+        self.forloop = None
+        self.start = None
+        self.end = None
+        return status
+
+    def CheckLoop(self):
+        if self.forloop!=None and self.start!=None and self.end != None:
+            return True
+        else:
+            return False
+
 
     def Send_Key_Value(self, index):
         try:

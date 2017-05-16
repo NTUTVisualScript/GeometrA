@@ -59,7 +59,8 @@ class CV2Img:
         return self
 
     def load_PILimage(self, image):
-        self.source = cv2.cvtColor(np.array(image), cv2.COLOR_RGBA2BGR)
+        #self.source = cv2.cvtColor(np.array(image), cv2.COLOR_RGBA2BGR)
+        self.source = cv2.cvtColor(np.array(image), cv2.COLOR_RGBA2GRAY)
         return self
 
     def is_same_color(self):

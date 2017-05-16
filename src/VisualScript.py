@@ -6,6 +6,8 @@ from SaveIMG import saveImg
 from adb_roboot import ADBRobot
 from PIL import Image, ImageTk
 from Viewtest import TestAdepter
+from SaveFile import SaveFile
+from LoadFile import LoadFile
 import time
 import os
 
@@ -40,6 +42,7 @@ class View(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master = master
+        self.MenuBar()
         master.minsize(width=1470, height=840)
         self.focus = None
         self.focusOBJImage = None
@@ -53,10 +56,18 @@ class View(Frame):
         self.MessageUI()
         self.SaveIMGButton()
         self.RunButton()
-        self.SaveButton()
         self.ResetButton()
         self.getmouseEvent()
         self.TestCaseFrame()
+
+    def MenuBar(self):
+        self.menubar = Menu(self.master)
+        self.master.config(menu=self.menubar)
+
+        filemenu = Menu(self.menubar, tearoff=0)
+        self.menubar.add_cascade(label="File", menu=filemenu)
+        filemenu.add_command(label="Save  Test Case as...", command = self.SaveButtonClick)
+        filemenu.add_command(label="Open  Test Case as...", command = self.LoadButtonClick)
 
     def MessageUI(self):
         self.messagetitle = Label(self.master, text="Message Log", font=("Helvetica",16))
@@ -103,8 +114,9 @@ class View(Frame):
         photo2 = Image.open(filePath)
         img = photo2.crop((left, top, right, bottom))
         img.thumbnail((100, 100))
-        self.image = ImageTk.PhotoImage(img)
-        self.TestcaseImage(line, self.image)
+        image = ImageTk.PhotoImage(img)
+
+        self.TestcaseImage(line, image)
 
 
     def drawRectangle(self, line, left, top, right, bottom):
@@ -149,7 +161,7 @@ class View(Frame):
         #     print(node_path[i])
 
         if self.focus != None:
-            if self.actioncombolist[self.focus].get() == 'Click'or self.actioncombolist[self.focus].get() == 'Exists':
+            if self.actioncombolist[self.focus].get() == 'Click'or self.actioncombolist[self.focus].get() == 'Assert Exist':
                 self.valuelist[self.focus].delete(0, 'end')
                 for item in self.treeview.selection():
                     value = self.treeview.item(item, "value")
@@ -170,7 +182,7 @@ class View(Frame):
 
         if (self.right - self.left) > 5  or (self.bottom - self.top) > 5 or (self.right - self.left) < -5 or (self.right - self.left) < -5:
             if self.focus != None:
-                if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Exists':
+                if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist':
                     self.valuelist[self.focus].delete(0, 'end')
                     self.cropImage(self.focus, self.left * self.multiple, self.top * self.multiple, self.right * self.multiple, self.bottom * self.multiple)
 
@@ -219,7 +231,7 @@ class View(Frame):
             event.y = self.screenshot_photo.height()
 
         self.mousePosition.set("Rectangle at [ " + str(self.clickstartX * self.multiple ) + ", " + str(self.clickstartY * self.multiple) + " To " + str((event.x + x) * self.multiple) + ", " + str((event.y + y) * self.multiple) + " ]")
-        #if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Exists':
+        #if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist':
         self.drawRectangle(line, self.clickstartX - x, self.clickstartY - y, event.x, event.y)
 
     def XMLTreeUI(self):
@@ -314,7 +326,7 @@ class View(Frame):
         self.resetScreenShot()
         #print(self.focus)
         if self.focus != None:
-            if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Exists':
+            if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist':
                 self.cropImage(self.focus, self.left, self.top, self.right, self.bottom)
 
             if self.actioncombolist[self.focus].get() == 'Drag':
@@ -327,12 +339,19 @@ class View(Frame):
         self.dumpUI = Button(self.master, command=self.formatButtonClick, text="Dump UI",width=15)
         self.dumpUI.place(x = 0, y = 3)
 
-    def formatButtonClick(self):
-        subprocess.check_output('adb kill-server')
-        subprocess.check_output('adb devices')
-        self.clear_XML_Tree()
-        self.getScreenShot()
-        self.Tree_infomation()
+    def formatButtonClick(self, getdevices =None):
+        self.focus = None
+        if getdevices ==None:
+            self.message.delete(1.0, END)
+            if self.checkADB_Connection() == "Connect":
+                self.clear_XML_Tree()
+                self.getScreenShot()
+                self.Tree_infomation()
+        else:
+            self.clear_XML_Tree()
+            self.getScreenShot()
+            self.Tree_infomation()
+
 
     def SaveIMGButton(self):
         self.SaveIMG = Button(self.master, command=self.SaveIMGButtonClick, text="Crop Image",width=15)
@@ -355,13 +374,37 @@ class View(Frame):
         self.runbutton = Button(self.master, command=self.RunButtonClick, text="Run",width=15)
         self.runbutton.place(x = 460, y = 270)
 
-    def SaveButton(self):
-        self.runbutton = Button(self.master, text="Save Testcase",width=15)
-        self.runbutton.place(x = 580, y = 270)
-
     def ResetButton(self):
         self.runbutton = Button(self.master, command=self.ResetButtonClick, text="Reset Testcase", width=15)
-        self.runbutton.place(x=700, y=270)
+        self.runbutton.place(x = 580, y = 270)
+
+    def SaveButtonClick(self):
+        Save_File = SaveFile()
+        Save_File.SaveTestCase(self.actioncombolist, self.valuelist, self.valueImagelist,self.node_path_list)
+
+    def LoadButtonClick(self):
+        Load_File = LoadFile()
+        dirpath = Load_File.LoadTestCasePath()
+        if  dirpath != None:
+            print("dirpath : ", dirpath)
+            self.ResetButtonClick()
+            Load_File.Decoder_Json(dirpath)
+            actioncombo_list, value_list, valueImage_list, nodepath_list = Load_File.get_Loading_Data()
+            for i in range(len(actioncombo_list)):
+                self.actioncombolist[i].set(str(actioncombo_list[i]))
+
+                self.valuelist[i].delete(0, 'end')
+                self.valuelist[i].insert('end', str(value_list[i]))
+
+                self.node_path_list[i] = nodepath_list[i]
+                if valueImage_list[i] != None:
+                    self.valueImagelist[i] = valueImage_list[i]
+                    width, height = valueImage_list[i].size
+                    img = valueImage_list[i].crop((0, 0, width, height))
+                    img.thumbnail((100, 100))
+                    image = ImageTk.PhotoImage(img)
+                    self.TestcaseImage(i,image)
+
 
     def ResetButtonClick(self):
         self.TestCaseFrame()
@@ -379,7 +422,7 @@ class View(Frame):
             self.actioncombolist[i].set(str(getactionstr))
             self.actioncombolist[i-1].set('')
 
-            if getactionstr == "Click" or getactionstr == "Exists":
+            if getactionstr == "Click" or getactionstr == "Assert Exist":
                 self.TestcaseImage(i, self.valuelist[i-1].image)
                 self.TestcaseEntry(i-1)
 
@@ -399,7 +442,7 @@ class View(Frame):
             getactionstr = self.actioncombolist[i + 1].get()
             self.actioncombolist[i].set(str(getactionstr))
 
-            if getactionstr == "Click" or getactionstr == "Exists":
+            if getactionstr == "Click" or getactionstr == "Assert Exist":
                 self.TestcaseImage(i, self.valuelist[i+1].image)
                 self.TestcaseEntry(i+1)
 
@@ -412,63 +455,143 @@ class View(Frame):
 
             i = i + 1
 
+        self.lineStrlist[self.line].grid_remove()
         self.actioncombolist[self.line].grid_remove()
         self.valuelist[self.line].grid_remove()
         self.addlinelist[self.line].grid_remove()
         self.removelinelist[self.line].grid_remove()
         self.run_single_actionlist[self.line].grid_remove()
 
+        self.lineStrlist.pop()
         self.actioncombolist.pop()
         self.valuelist.pop()
         self.addlinelist.pop()
         self.removelinelist.pop()
+        self.run_single_actionlist.pop()
         self.line = self.line - 1
 
     def Run_single_actionButtonClick(self, n):
         run = TestAdepter()
         self.message.delete(1.0, END)
-        self.checkADB_Connection()
-        status = "Success"
-        status = run.Single_Test(self.actioncombolist[n], self.valuelist[n], self.valueImagelist[n], self.node_path_list[n])
-        if status == "Error":
-            statusstr = "Action " + str(n + 1) + " Status Error\n"
-            self.message.insert('end', statusstr)
-        else:
-            statusstr = "Action " + str(n + 1) + " Status Success\n"
-            self.message.insert('end', statusstr)
+        if self.checkADB_Connection() == "Connect":
+            status = "Success"
+            status = run.Single_Test(self.actioncombolist[n], self.valuelist[n], self.valueImagelist[n], self.node_path_list[n])
+            if status == "Error":
+                statusstr = "Action " + str(n + 1) + " Status Error\n"
+                self.message.insert('end', statusstr)
+            else:
+                statusstr = "Action " + str(n + 1) + " Status Success\n"
+                self.message.insert('end', statusstr)
 
-        self.formatButtonClick()
+            self.formatButtonClick("no")
+
+    def TestCaseData(self, actioncombolist, valuelist, valueImagelist, node_path_list):
+        action = []
+        value = []
+        image = []
+        path_list = []
+
+        for i in range(len(actioncombolist)):
+            action.append(actioncombolist[i].get())
+            if valueImagelist[i] != None:
+                value.append(None)
+            else:
+                value.append(valuelist[i].get())
+            if i < len(valueImagelist):
+                image.append(valueImagelist[i])
+                path_list.append(node_path_list[i])
+        return action, value, image, path_list
+
 
     def RunButtonClick(self):
         run = TestAdepter()
         self.message.delete(1.0, END)
-        self.checkADB_Connection()
-        status = "Success"
-        for i in range(len(self.actioncombolist)):
-            if self.actioncombolist[i].get() != "":
-                status = run.Single_Test(self.actioncombolist[i], self.valuelist[i], self.valueImagelist[i],
-                                self.node_path_list[i])
-                if status == "Error":
-                    statusstr = "Action "+ str(i+1) + " Status Error\nTest Case Interrupted!\n"
-                    self.message.insert('end', statusstr)
-                    break
-                else:
-                    statusstr = "Action "+ str(i+1) + " Status Success\n"
-                    self.message.insert('end', statusstr)
+        if self.checkADB_Connection() =="Connect":
+            self.start = None
+            self.end = None
+            self.forloop = None
+            for i in range(len(self.actioncombolist)):
+                if i == len(self.actioncombolist) - 1 and self.end == None and self.start != None:
+                    self.end = len(self.actioncombolist)
+                    self.ForLoop(self.actioncombolist, self.valuelist, self.valueImagelist, self.node_path_list)
+                if self.actioncombolist[i].get()  == "Loop":
+                    self.start = i + 1
+                    self.forloop = int(self.valuelist[i].get()) - 1
+                elif self.actioncombolist[i].get()  == "Stop":
+                    self.end = i
+                    self.ForLoop(self.actioncombolist, self.valuelist, self.valueImagelist,self.node_path_list)
+                elif self.actioncombolist[i].get()  == "Sleep":
+                    time.sleep(int(self.valuelist[i].get()))
+                    print(self.valuelist[i].get())
+                elif self.actioncombolist[i].get() != "":
+                    status = run.Single_Test(self.actioncombolist[i], self.valuelist[i], self.valueImagelist[i],
+                                    self.node_path_list[i])
+                    if status == "Error":
+                        statusstr = "Action "+ str(i+1) + " Status Error\nTest Case Interrupted!\n"
+                        self.message.insert('end', statusstr)
+                        break
+                    else:
+                        statusstr = "Action "+ str(i+1) + " Status Success\n"
+                        self.message.insert('end', statusstr)
 
-        finish = "The Test Case Finish!"
-        self.message.insert('end', finish)
-        self.formatButtonClick()
+            finish = "The Test Case Finish!"
+            self.message.insert('end', finish)
+            self.formatButtonClick("no")
+
+    def ForLoop(self, actioncombo_list, value_list, valueImage_list, nodepath_list):
+        if self.CheckLoop():
+            run = TestAdepter()
+            for i in range(self.forloop):
+                index = self.start
+                while index < self.end:
+                    if actioncombo_list[index].get() != "":
+                        status = run.Single_Test(self.actioncombolist[index], self.valuelist[index], self.valueImagelist[index],
+                                                          self.node_path_list[index])
+                        index = index + 1
+                        if status == "Error":
+                            break
+        else:
+            status =  "Error"
+
+        self.forloop = None
+        self.start = None
+        self.end = None
+        return status
+
+    def CheckLoop(self):
+        if self.forloop!=None and self.start!=None and self.end != None:
+            return True
+        else:
+            return False
+
 
     def checkADB_Connection(self):
         try:
-            output = subprocess.check_output('adb devices')
-            self.message.insert('end', output)
+            deviceInfo = subprocess.getoutput('adb devices')
+            self.deviceNames = deviceInfo.splitlines()
+            print(self.deviceNames)
+            finddevices = []
+            for i in range(len(self.deviceNames)):
+                if self.deviceNames[i].find("emulator") >= 0:
+                    subprocess.check_call('adb kill-server')
+                    self.checkADB_Connection()
+
+                if self.deviceNames[i].find("device") >= 0:
+                    finddevices.append(self.deviceNames[i])
+
+            finddevices.pop(0)
+
+            if len(finddevices) == 0:
+                self.message.insert(END, "No Devices connect...\n")
+                return "No Connect"
+            else:
+                self.message.insert(END, "Get devices :\n")
+                for i in range(len(finddevices)):
+                    self.message.insert(END, finddevices[i] + "\n\n\n")
+                return "Connect"
+
         except subprocess.CalledProcessError as e:
-            print(e.returncode)
-        # subprocess.check_output('adb kill-server')
-        # output = subprocess.check_output('adb devices')
-        # self.message.insert('end',output)
+            self.message.insert(END, e.returncode)
 
 
     def TestCaseFrame(self):
@@ -488,6 +611,7 @@ class View(Frame):
 
         self.canvas.pack(side="left")
 
+        self.lineStrlist = []
         self.addlinelist = []
         self.removelinelist = []
         self.run_single_actionlist = []
@@ -507,6 +631,7 @@ class View(Frame):
 
     def TestcaseImage(self,line, image):
         #print("image : ",line)
+
         values_image = Canvas(self.listFrame, height=100, width=100)
         values_image.create_image(0, 0, anchor=NW, image=image)
         values_image.bind("<Button-1>", lambda event, i=line: self.valueFocusIn(event, i))
@@ -529,7 +654,7 @@ class View(Frame):
         action_value = StringVar()
 
         lineStr = Label(self.listFrame, text=str(n+1)+". ", width=3)
-
+        self.lineStrlist.append(lineStr)
         addline = Button(self.listFrame, command=lambda:self.AddLineButtonClick(n), text="+", width=3)
         self.addlinelist.append(addline)
 
@@ -541,9 +666,10 @@ class View(Frame):
 
         actioncombo = ttk.Combobox(self.listFrame, textvariable=action_value, width=10, height=22,
                                    state='readonly')
-        actioncombo['values'] = ('', 'Click', 'Drag', 'Input', 'Send Key', 'Exists')
+        actioncombo['values'] = ('', 'Click', 'Drag', 'Input', 'TestCase', 'Loop', 'Stop', 'Sleep', 'Android Keycode', 'Assert Exist', 'Assert Not Exist')
         actioncombo['font'] = ('Times', 11, 'bold italic')
         actioncombo.bind("<<ComboboxSelected>>", lambda event, i=n: self.ActionSelect(event, i))
+        actioncombo.bind("<MouseWheel>", lambda event, i=n: self.ActionSelect(event, i))
         actioncombo.current(0)
         self.actioncombolist.append(actioncombo)
 
@@ -567,6 +693,7 @@ class View(Frame):
 
     def ActionSelect(self,event, n):
         self.focus = n
+        self.valueImagelist[n] = None
         self.TestcaseEntry(n)
         self.Action_FocusIn()
 
@@ -586,6 +713,13 @@ class View(Frame):
             self.Drag_image.bind("<Motion>", self.Dragmotion)  # get mouse coordination
             self.Drag_image.bind("<Enter>", self.DragEnter)
             self.Drag_image.bind("<B1-Motion>", self.Dragged)  # 滑鼠拖拉動作
+        elif self.actioncombolist[self.focus].get() == 'TestCase':
+            openfile = LoadFile()
+            path = openfile.LoadTestCasePath()
+            if path is not None:
+                if path !="":
+                    self.valuelist[self.focus].delete(0, 'end')
+                    self.valuelist[self.focus].insert('end', path)
         else:
             if self.Drag_image != None:
                 self.Drag_image.place_forget()

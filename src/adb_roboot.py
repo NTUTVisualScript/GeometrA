@@ -24,34 +24,34 @@ class ADBRobot(Robot):
             self.send_key(KEYCODE[key])
 
     def send_key(self, keycode):
-        return subprocess.check_output([subp, "shell", "input", "keyevent", str(keycode)], shell=True)
+        return subprocess.call([subp, "shell", "input", "keyevent", str(keycode)], shell=True)
 
     def drag_and_drop(self, start_x, start_y, end_x, end_y):
-        subprocess.check_output([subp, "shell", "input", "swipe", str(start_x), str(start_y), str(end_x), str(end_y) ], shell=True)
+        subprocess.call([subp, "shell", "input", "swipe", str(start_x), str(start_y), str(end_x), str(end_y) ], shell=True)
 
     def screenshot(self):
         path = PATH(os.getcwd() + "/screenshot_pic")
-        subprocess.check_output([subp, "wait-for-device"], shell=True)
-        subprocess.check_output([subp, "shell", "screencap", "-p", "/data/local/tmp/tmp.png"], shell=True)
+        subprocess.call([subp, "wait-for-device"], shell=True)
+        subprocess.call([subp, "shell", "screencap", "-p", "/data/local/tmp/tmp.png"], shell=True)
         if not os.path.isdir(PATH(os.getcwd() + "/screenshot_pic")):
             os.makedirs(path)
-        subprocess.check_output([subp, "pull", "/data/local/tmp/tmp.png", str(PATH(path + "/tmp.png"))], shell=True)
+        subprocess.call([subp, "pull", "/data/local/tmp/tmp.png", str(PATH(path + "/tmp.png"))], shell=True)
         print("success")
         return "tmp.png"
 
     def tap(self, x, y, duration=None):
         if duration:
-            subprocess.check_output(
+            subprocess.call(
                 [subp, "shell", "input", "swipe", str(x), str(y), str(x), str(y), str(3000)],
                 shell=True)
         else:
-            subprocess.check_output(
+            subprocess.call(
                 [subp, "shell", "input", "tap", str(x), str(y)],
                 shell=True)
 
     def input_text(self, inputtext):
         try:
-            subprocess.check_output([subp, "shell", "input", "text", inputtext], shell=True)
+            subprocess.call([subp, "shell", "input", "text", inputtext], shell=True)
             return "Success"
         except:
             print("Input Text Error", inputtext)
@@ -59,11 +59,11 @@ class ADBRobot(Robot):
 
     def get_uiautomator_dump(self):
         path = PATH(os.getcwd() + "/dumpXML")
-        subprocess.check_output([subp, "wait-for-device"], shell=True)
-        subprocess.check_output([subp, "shell", "uiautomator", "dump", "/data/local/tmp/uidump.xml"], shell=True)
+        subprocess.call([subp, "wait-for-device"], shell=True)
+        subprocess.call([subp, "shell", "uiautomator", "dump", "/data/local/tmp/uidump.xml"], shell=True)
         if not os.path.isdir(PATH(os.getcwd() + "/dumpXML")):
             os.makedirs(path)
-        subprocess.check_output([subp, "pull", "/data/local/tmp/uidump.xml", path + "/uidump.xml"], shell=True)
+        subprocess.call([subp, "pull", "/data/local/tmp/uidump.xml", path + "/uidump.xml"], shell=True)
         print(path + "/uidump.xml")
         return path + "/uidump.xml"
 
