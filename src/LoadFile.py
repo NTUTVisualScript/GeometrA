@@ -3,10 +3,6 @@ import os
 import tkinter.filedialog
 from PIL import Image
 
-class JSONObject:
-    def __init__(self, d):
-        self.__dict__ = d
-
 class LoadFile():
 
     def LoadTestCasePath(self):

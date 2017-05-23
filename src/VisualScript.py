@@ -84,6 +84,7 @@ class View(Frame):
         self.multiple = 1
 
     def getScreenShot(self):
+        self.screenshot.delete("all")
         self.photo = Image.open(Get_PhoneScreen())
         self.photo_width, self.photo_height = self.photo.size
         print(str(self.photo_width) + " , " + str(self.photo_height))
@@ -120,7 +121,7 @@ class View(Frame):
 
 
     def drawRectangle(self, line, left, top, right, bottom):
-        self.tree_obj_image_list[line].create_rectangle(left  , top  , right  , bottom  , outline='red', width=2)
+        self.tree_obj_image_list[line][1].create_rectangle(left  , top  , right  , bottom  , outline='red', width=2)
 
     def getmouseEvent(self):
         self.mousePosition = StringVar()  # displays mouse position
@@ -144,10 +145,10 @@ class View(Frame):
         if filePath is None: return
         self.resetScreenShot()
 
-        x = int(self.tree_obj_image_list[line].place_info().get('x'))
-        y = int(self.tree_obj_image_list[line].place_info().get('y'))
-        w = self.tree_obj_image_list[line].winfo_width()
-        h = self.tree_obj_image_list[line].winfo_height()
+        x = int(self.tree_obj_image_list[line][1].place_info().get('x'))
+        y = int(self.tree_obj_image_list[line][1].place_info().get('y'))
+        w = self.tree_obj_image_list[line][1].winfo_width()
+        h = self.tree_obj_image_list[line][1].winfo_height()
         self.clickstartX = event.x + x
         self.clickstartY = event.y + y
 
@@ -161,7 +162,7 @@ class View(Frame):
         #     print(node_path[i])
 
         if self.focus != None:
-            if self.actioncombolist[self.focus].get() == 'Click'or self.actioncombolist[self.focus].get() == 'Assert Exist':
+            if self.actioncombolist[self.focus].get() == 'Click'or self.actioncombolist[self.focus].get() == 'Assert Exist'or self.actioncombolist[self.focus].get() == 'Assert Not Exist':
                 self.valuelist[self.focus].delete(0, 'end')
                 for item in self.treeview.selection():
                     value = self.treeview.item(item, "value")
@@ -173,8 +174,8 @@ class View(Frame):
     def clickup(self, event, line):
         if filePath is None: return
 
-        x = int(self.tree_obj_image_list[line].place_info().get('x'))
-        y = int(self.tree_obj_image_list[line].place_info().get('y'))
+        x = int(self.tree_obj_image_list[line][1].place_info().get('x'))
+        y = int(self.tree_obj_image_list[line][1].place_info().get('y'))
         self.clickendX = event.x + x
         self.clickendY = event.y + y
         self.left, self.right = sorted([self.clickendX, self.clickstartX])
@@ -182,7 +183,7 @@ class View(Frame):
 
         if (self.right - self.left) > 5  or (self.bottom - self.top) > 5 or (self.right - self.left) < -5 or (self.right - self.left) < -5:
             if self.focus != None:
-                if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist':
+                if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist' or self.actioncombolist[self.focus].get() =='Assert Not Exist':
                     self.valuelist[self.focus].delete(0, 'end')
                     self.cropImage(self.focus, self.left * self.multiple, self.top * self.multiple, self.right * self.multiple, self.bottom * self.multiple)
 
@@ -193,13 +194,13 @@ class View(Frame):
                     self.valuelist[self.focus].insert('end', text)
 
     def motion(self,event, line):
-        x = int(self.tree_obj_image_list[line].place_info().get('x'))
-        y = int(self.tree_obj_image_list[line].place_info().get('y'))
+        x = int(self.tree_obj_image_list[line][1].place_info().get('x'))
+        y = int(self.tree_obj_image_list[line][1].place_info().get('y'))
         self.mousePosition.set("Mouse in window [ " + str(int((x + event.x) * self.multiple)) + ", " + str(int((y + event.y) * self.multiple)) + " ]")
 
     def mouseEnter(self, event, line, w, h):
-        self.focusOBJImage = self.tree_obj_image_list[line].image
-        self.tree_obj_image_list[line].create_rectangle(0, 0 , w-3 , h -3, outline='red', width=5)
+        self.focusOBJImage = self.tree_obj_image_list[line][1].image
+        self.tree_obj_image_list[line][1].create_rectangle(0, 0 , w-3 , h -3, outline='red', width=5)
         text = [""]
         text.insert(0, self.tree_obj_list[line])
         self.treeview.selection_set(text)
@@ -207,18 +208,18 @@ class View(Frame):
         #print(self.treeview.parent(self.tree_obj_list[line]))
 
     def mouseLeave(self, event, line):
-        self.tree_obj_image_list[line].delete("all")
-        self.tree_obj_image_list[line].create_image(0, 0, anchor=NW, image=self.focusOBJImage)
-        self.tree_obj_image_list[line].image = self.focusOBJImage
+        self.tree_obj_image_list[line][1].delete("all")
+        self.tree_obj_image_list[line][1].create_image(0, 0, anchor=NW, image=self.focusOBJImage)
+        self.tree_obj_image_list[line][1].image = self.focusOBJImage
 
     def mouseDragged(self, event, line):
         if filePath is None: return
-        self.tree_obj_image_list[line].delete("all")
-        self.tree_obj_image_list[line].create_image(0, 0, anchor=NW, image=self.focusOBJImage)
-        self.tree_obj_image_list[line].image = self.focusOBJImage
+        self.tree_obj_image_list[line][1].delete("all")
+        self.tree_obj_image_list[line][1].create_image(0, 0, anchor=NW, image=self.focusOBJImage)
+        self.tree_obj_image_list[line][1].image = self.focusOBJImage
 
-        x = int(self.tree_obj_image_list[line].place_info().get('x'))
-        y = int(self.tree_obj_image_list[line].place_info().get('y'))
+        x = int(self.tree_obj_image_list[line][1].place_info().get('x'))
+        y = int(self.tree_obj_image_list[line][1].place_info().get('y'))
 
 
         if event.x < 0 :
@@ -258,19 +259,22 @@ class View(Frame):
         if self.tree_obj_image_list != None:
             del self.tree_obj_image_list[:]
             del self.tree_obj_list[:]
+        self.rankMax = 0
+        self.tree_info("", 0, self.XMLFile)
+        #self.Set_Tree_image_place()
 
-        self.tree_info("", self.XMLFile)
-
-    def tree_info(self,id , treeinfo):
+    def tree_info(self,id , rank, treeinfo):
         for elem in treeinfo.findall('node'):
             if elem is None: return
             #print(elem.attrib)
             id_child = self.treeview.insert(id, "end", elem , text="(" + str(elem.get('index')) + ") "
                                                                    + str(elem.get('class')) + "  "
                                                                    ,  values=( str(elem.get('text')),str(elem.get('bounds'))) , open=True)
-            self.tree_obj_image(str(elem.get('bounds')))
+            self.tree_obj_image(rank ,str(elem.get('bounds')))
             self.tree_obj_list.append(id_child)
-            self.tree_info(id_child, elem)
+            if self.rankMax <= rank:
+                self.rankMax = rank
+            self.tree_info(id_child, rank+1, elem)
 
     def bounds_split(self,obj_bounds):
         bounds = obj_bounds.split('[')
@@ -284,11 +288,11 @@ class View(Frame):
         top = int(right_top[1])
         right = int(left_bottom[0])
         bottom = int(left_bottom[1])
-        #print(left, top, right, bottom)
         return left, top, right, bottom
 
-    def tree_obj_image(self, obj_bounds):
+    def tree_obj_image(self,rank , obj_bounds):
 
+        obj_image_info = []
         left, top, right, bottom = self.bounds_split(obj_bounds)
         left, top, right, bottom = left/ self.multiple, top/ self.multiple, right/ self.multiple, bottom/ self.multiple
 
@@ -302,7 +306,6 @@ class View(Frame):
         obj_image.create_image(0, 0, anchor=NW, image=image)
         obj_image.image = image
 
-        #print(len(self.tree_obj_image_list))
         obj_image.bind("<Button-1>", lambda event, i=len(self.tree_obj_image_list) : self.clickdown(event, i))  # clickdown
         obj_image.bind("<ButtonRelease-1>", lambda event, i=len(self.tree_obj_image_list) : self.clickup(event, i))  # clickup
         obj_image.bind("<Motion>", lambda event, i=len(self.tree_obj_image_list) : self.motion(event, i))  # get mouse coordination
@@ -310,7 +313,24 @@ class View(Frame):
         obj_image.bind("<Leave>", lambda event, i=len(self.tree_obj_image_list) : self.mouseLeave(event, i))
         obj_image.bind("<B1-Motion>", lambda event, i=len(self.tree_obj_image_list) : self.mouseDragged(event, i))  # 滑鼠拖拉動作
 
-        self.tree_obj_image_list.append(obj_image)
+        obj_image_info.append(rank)
+        obj_image_info.append(obj_image)
+        obj_image_info.append(left)
+        obj_image_info.append(top)
+        print(obj_image_info)
+        self.tree_obj_image_list.append(obj_image_info)
+
+    def Set_Tree_image_place(self):
+        for i in range(self.rankMax + 1):
+            for j in range(len(self.tree_obj_image_list)):
+                if int(self.tree_obj_image_list[j][0]) == i:
+                    left = self.tree_obj_image_list[j][2]
+                    top = self.tree_obj_image_list[j][3]
+                    self.tree_obj_image_list[j][1].configure(borderwidth=-3)
+                    self.tree_obj_image_list[j][1].place(x = left, y = top)
+                    print("rank " , i, " x = ", left, " y = ",  top)
+
+        print(self.rankMax)
 
     def clear_XML_Tree(self):
         for row in self.treeview.get_children():
@@ -326,7 +346,7 @@ class View(Frame):
         self.resetScreenShot()
         #print(self.focus)
         if self.focus != None:
-            if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist':
+            if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist' or self.actioncombolist[self.focus].get() == 'Assert Not Exist':
                 self.cropImage(self.focus, self.left, self.top, self.right, self.bottom)
 
             if self.actioncombolist[self.focus].get() == 'Drag':
@@ -422,7 +442,7 @@ class View(Frame):
             self.actioncombolist[i].set(str(getactionstr))
             self.actioncombolist[i-1].set('')
 
-            if getactionstr == "Click" or getactionstr == "Assert Exist":
+            if getactionstr == "Click" or getactionstr == "Assert Exist" or getactionstr == "Assert Not Exist":
                 self.TestcaseImage(i, self.valuelist[i-1].image)
                 self.TestcaseEntry(i-1)
 
@@ -442,7 +462,7 @@ class View(Frame):
             getactionstr = self.actioncombolist[i + 1].get()
             self.actioncombolist[i].set(str(getactionstr))
 
-            if getactionstr == "Click" or getactionstr == "Assert Exist":
+            if getactionstr == "Click" or getactionstr == "Assert Exist" or getactionstr =="Assert Not Exist":
                 self.TestcaseImage(i, self.valuelist[i+1].image)
                 self.TestcaseEntry(i+1)
 
@@ -511,28 +531,35 @@ class View(Frame):
             self.end = None
             self.forloop = None
             for i in range(len(self.actioncombolist)):
-                if i == len(self.actioncombolist) - 1 and self.end == None and self.start != None:
-                    self.end = len(self.actioncombolist)
-                    self.ForLoop(self.actioncombolist, self.valuelist, self.valueImagelist, self.node_path_list)
-                if self.actioncombolist[i].get()  == "Loop":
-                    self.start = i + 1
-                    self.forloop = int(self.valuelist[i].get()) - 1
-                elif self.actioncombolist[i].get()  == "Stop":
-                    self.end = i
-                    self.ForLoop(self.actioncombolist, self.valuelist, self.valueImagelist,self.node_path_list)
-                elif self.actioncombolist[i].get()  == "Sleep":
-                    time.sleep(int(self.valuelist[i].get()))
-                    print(self.valuelist[i].get())
-                elif self.actioncombolist[i].get() != "":
-                    status = run.Single_Test(self.actioncombolist[i], self.valuelist[i], self.valueImagelist[i],
+                if self.actioncombolist[i].get() != "":
+                    if self.actioncombolist[i].get() == "Loop":
+                        self.start = i + 1
+                        if self.valuelist[i].get() == "":
+                            statusstr = "Action " + str(i + 1) + " Status Error\nForLoop no Input times\nTest Case Interrupted!\n"
+                            self.message.insert('end', statusstr)
+                            break
+                        else:
+                            self.forloop = int(self.valuelist[i].get()) - 1
+                    elif self.actioncombolist[i].get() == "Stop":
+                        self.end = i
+                        self.ForLoop(self.actioncombolist, self.valuelist, self.valueImagelist, self.node_path_list)
+                    elif self.actioncombolist[i].get() == "Sleep(s)":
+                        time.sleep(int(self.valuelist[i].get()))
+                        print(self.valuelist[i].get())
+                    else:
+                        status = run.Single_Test(self.actioncombolist[i], self.valuelist[i], self.valueImagelist[i],
                                     self.node_path_list[i])
-                    if status == "Error":
-                        statusstr = "Action "+ str(i+1) + " Status Error\nTest Case Interrupted!\n"
+                        if status == "Error":
+                            statusstr = "Action "+ str(i+1) + " Status Error\nTest Case Interrupted!\n"
+                            self.message.insert('end', statusstr)
+                            break
+                        else:
+                            statusstr = "Action "+ str(i+1) + " Status Success\n"
+                            self.message.insert('end', statusstr)
+                    if i == len(self.actioncombolist) - 1 and self.end == None and self.start != None:
+                        statusstr = "Action ForLoop Status Error\nForLoop no set stop\nTest Case Interrupted!\n"
                         self.message.insert('end', statusstr)
                         break
-                    else:
-                        statusstr = "Action "+ str(i+1) + " Status Success\n"
-                        self.message.insert('end', statusstr)
 
             finish = "The Test Case Finish!"
             self.message.insert('end', finish)
@@ -545,8 +572,8 @@ class View(Frame):
                 index = self.start
                 while index < self.end:
                     if actioncombo_list[index].get() != "":
-                        status = run.Single_Test(self.actioncombolist[index], self.valuelist[index], self.valueImagelist[index],
-                                                          self.node_path_list[index])
+                        status = run.Single_Test(actioncombo_list[index], value_list[index], valueImage_list[index],
+                                                 nodepath_list[index])
                         index = index + 1
                         if status == "Error":
                             break
@@ -631,7 +658,6 @@ class View(Frame):
 
     def TestcaseImage(self,line, image):
         #print("image : ",line)
-
         values_image = Canvas(self.listFrame, height=100, width=100)
         values_image.create_image(0, 0, anchor=NW, image=image)
         values_image.bind("<Button-1>", lambda event, i=line: self.valueFocusIn(event, i))
@@ -666,7 +692,7 @@ class View(Frame):
 
         actioncombo = ttk.Combobox(self.listFrame, textvariable=action_value, width=10, height=22,
                                    state='readonly')
-        actioncombo['values'] = ('', 'Click', 'Drag', 'Input', 'TestCase', 'Loop', 'Stop', 'Sleep', 'Android Keycode', 'Assert Exist', 'Assert Not Exist')
+        actioncombo['values'] = ('', 'Click', 'Drag', 'Input', 'TestCase', 'Loop', 'Stop', 'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist')
         actioncombo['font'] = ('Times', 11, 'bold italic')
         actioncombo.bind("<<ComboboxSelected>>", lambda event, i=n: self.ActionSelect(event, i))
         actioncombo.bind("<MouseWheel>", lambda event, i=n: self.ActionSelect(event, i))

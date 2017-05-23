@@ -60,7 +60,7 @@ class SaveFile():
             dataArray[i+1] = data
         print(dataArray)
         with open(dirpath +'/testcase.json', 'w', encoding='utf-8') as fp:
-            json.dump(dataArray, fp, indent=2, ensure_ascii=False)
+            json.dump(dataArray, fp, indent=2)
 
         json_str = json.dumps(dataArray)
         print(json_str)

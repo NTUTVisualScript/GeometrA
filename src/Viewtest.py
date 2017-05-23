@@ -305,20 +305,25 @@ class TestAdepter():
         self.end = None
         self.forloop = None
         for i in range(len(actioncombo_list)):
-            if i == len(actioncombo_list)-1 and self.end == None and self.start != None:
-                self.end = len(actioncombo_list)
-                self.ForLoop(actioncombo_list, value_list, valueImage_list, nodepath_list)
-            if actioncombo_list[i] == "Loop":
-                self.start = i+1
-                self.forloop = int(value_list[i])
-            elif actioncombo_list[i] == "Stop":
-                self.end = i
-                self.ForLoop(actioncombo_list, value_list, valueImage_list, nodepath_list)
-            elif actioncombo_list[i] == "Sleep":
-                time.sleep(int(value_list[i]))
-            elif actioncombo_list[i] != "":
-                status = run_testcase.Open_Single_Test(actioncombo_list, value_list, valueImage_list, nodepath_list)
-                if status == "Error":
+            if actioncombo_list[i] != "":
+                if actioncombo_list[i] == "Loop":
+                    if value_list[i] =="":
+                        return "Error"
+                    else:
+                        self.start = i + 1
+                        self.forloop = int(value_list[i]) - 1
+                if actioncombo_list[i] == "Stop":
+                    print(actioncombo_list[i])
+                    self.end = i
+                    self.ForLoop(actioncombo_list, value_list, valueImage_list, nodepath_list)
+                if actioncombo_list[i] == "Sleep(s)":
+                    time.sleep(int(value_list[i]))
+                else:
+                    status = run_testcase.Open_Single_Test(actioncombo_list[i], value_list[i], valueImage_list[i], nodepath_list[i])
+                    if status == "Error":
+                        break
+                if i == len(actioncombo_list) - 1 and self.end == None and self.start != None:
+                    status == "Error"
                     break
         return status
 
