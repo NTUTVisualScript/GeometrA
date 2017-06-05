@@ -5,6 +5,7 @@ import xml.etree.cElementTree as ET
 from PIL import Image
 from finder.template_finder import TemplateFinder
 from finder.template_matcher import TemplateMatcher
+from MessageUI import Message
 from LoadFile import LoadFile
 import time
 import os
@@ -28,6 +29,7 @@ def template_finder(target_image):
     print(len(results))
     for i in range(len(results)):
         print(results[i].x,"  ", results[i].y,"  ", results[i].w,"  ", results[i].h,"\n")
+
     if len(results) < 1:
         return "faile"
     elif len(results) == 1:
@@ -127,6 +129,7 @@ class TestAdepter():
     #     return self.Action()
 
     def Action(self):
+        self.message = Message.getMessage(self)
         index = 0
         self.ActionStatus = "Success"
         for i in self.action:
@@ -196,19 +199,23 @@ class TestAdepter():
         status = assert_finder(self.image[index])
         if status == True:
             print("Success : Find This Image and Node")
+            self.message.InsertText("Success : Find This Image and Node")
             return "Success"
         else:
             print("Error : Not Find Image and Node")
+            self.message.InsertText("Error : Not Find Image and Node")
             return "Error"
 
     def ClickImage(self, index):
         status = template_finder(self.image[index])
         if status =="success":
+            self.message.InsertText("Success : Click Image\n")
             return "Success"
         elif status == "too more":
             return self.ClickValue(index)
         else:
             print("Error : Not Find Image")
+            self.message.InsertText("Error : Not Find Image\n")
             return "Error"
 
     def tree_info(self,id , treeinfo):
@@ -360,6 +367,7 @@ class TestAdepter():
             return "Success"
         except:
             print("Input Value Error")
+            self.message.InsertText("The Android Keycade Error\n")
             return "Error"
 
 
