@@ -4,7 +4,7 @@ class Message(Text):
     __single = None
 
     def __init__(self, parent = None):
-        Text.__init__(self, parent , bg='white', height=32, width=25, font=("Helvetica",16))
+        Text.__init__(self, parent , bg='white', height=44, width=33, font=("Helvetica", 12))
         if Message.__single:
             raise Message.__single
             Message.__single = self

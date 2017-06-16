@@ -22,20 +22,45 @@ class DumpScreenshot(Canvas):
     __single = None
 
     def __init__(self, parent=None, *args, **kwargs):
-        Canvas.__init__(self, parent, *args, **kwargs)
+        Canvas.__init__(self, parent, *args, **kwargs,  height=800, width=450, borderwidth=-1)
         if DumpScreenshot.__single:
             raise DumpScreenshot.__single
             DumpScreenshot.__single = self
 
-        self.configure(borderwidth=-1)
+        #self.configure(borderwidth=-1, height=800, width=450)
         self.multiple = 1
         self.focusOBJImage = None
         self.Drag_image = None
+        self.image_list = []
+
 
     def getDumpscreenshot(parent):
         if not DumpScreenshot.__single:
             DumpScreenshot.__single = DumpScreenshot(parent)
         return DumpScreenshot.__single
+
+    def clear(self):
+        self.delete("all")
+        if self.image_list != None:
+            for i in range(len(self.image_list)):
+                self.image_list[i].place_forget()
+
+    def set_ScreenShot(self, pic):
+        self.original_image = pic
+        self.compressed_image = pic.thumbnail((450, 800))
+        self.original_width, self.original_height = self.original_image.size
+        self.compressed_width, self.compressed_height = self.compressed_image.size
+        self.multiple = self.original_width / self.compressed_width
+
+
+    def set_OBJ_image(self, left, top, right, bottom):
+        self.original_cropped = self.original_image.crop((left, top, right, bottom))
+
+        left, top, right, bottom = left/self.multiple, top/self.multiple, right/self.multiple, bottom/self.multiple
+        self.compressed_cropped = self.compressed_image.crop((left, top, right, bottom))
+
+
+
 
     def getScreenShot(self):
         self.delete("all")
@@ -56,7 +81,7 @@ class DumpScreenshot(Canvas):
 
     def cropImage(self,line, left, top, right, bottom):
         photo = Image.open(filePath)
-        self.cropped = photo.crop((left , top , right  , bottom ))
+        self.cropped = photo.crop((left , top , right , bottom ))
 
         self.valueImagelist[line] = self.cropped
         # print("valueImagelist = " + str(line))

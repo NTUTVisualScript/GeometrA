@@ -4,6 +4,9 @@ import tkinter.filedialog
 from PIL import Image
 
 class LoadFile():
+    def __init__(self):
+        self.folderpath = ""
+        self.foldername = ""
 
     def LoadTestCasePath(self):
 
@@ -11,7 +14,17 @@ class LoadFile():
         print(dirpath)
         if dirpath is None or dirpath == "": return
 
+        self.folderpath = dirpath
+
+        name = dirpath.split('/')
+        self.foldername = str(name.pop())
+
+
         return dirpath
+
+    def get_folderName(self):
+        print(self.foldername)
+        return self.foldername
 
 
     def Decoder_Json(self, dirpath):

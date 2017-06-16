@@ -5,7 +5,6 @@ import xml.etree.cElementTree as ET
 from SaveIMG import saveImg
 from adb_roboot import ADBRobot
 from PIL import Image, ImageTk
-from Viewtest import TestAdepter
 from SaveFile import SaveFile
 from LoadFile import LoadFile
 import CommandManager
@@ -13,10 +12,13 @@ from TestCaseEntry import TestCaseValue
 from TestCaseActionCombobox import TestCaseAction
 from MessageUI import Message
 from CheckADBConnection import checkADB_Connection
+from Viewtest import TestAdepter
+import threading
 import time
 import os
 
 ROOT_DIR = os.path.dirname(__file__)
+PIC_LOADING = os.path.join(ROOT_DIR, "img")
 RESOURCES_PIC = os.path.join(ROOT_DIR, "screenshot_pic")
 RESOURCES_XML = os.path.join(ROOT_DIR, "dumpXML")
 
@@ -43,7 +45,7 @@ def Get_PhoneScreen():
     print(filePath)
     return filePath
 
-class View(Frame):
+class View(Frame, threading.Thread):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master = master
@@ -60,7 +62,7 @@ class View(Frame):
         self.ScreenShotUI()
         self.XMLTreeUI()
         self.MessageUI()
-        self.SaveIMGButton()
+        #self.SaveIMGButton()
         self.RunButton()
         self.ResetButton()
         self.getmouseEvent()
@@ -79,25 +81,25 @@ class View(Frame):
         self.menubar.add_cascade(label="Action", menu=actionmenu)
         actionmenu.add_command(label="Undo", command=self.undo)
         actionmenu.add_command(label="Redo", command=self.redo)
-        self.bind("<Control-z>", self.undo)
-        self.bind("<Control-y>", self.redo)
+        # self.bind("<Control-z>", self.undo)
+        # self.bind("<Control-y>", self.redo)
 
     def MessageUI(self):
         self.messagetitle = Label(self.master, text="Message Log", font=("Helvetica",16))
-        self.messagetitle.place(x=1150, y=30)
+        self.messagetitle.place(x=1150, y=0)
         self.message = Message.getMessage(self.master)
         #self.message.config(state=DISABLED)
-        self.message.place(x=1150, y=60)
+        self.message.place(x=1150, y=30)
 
     def ScreenShotUI(self):
         self.screenshot = Canvas(self.master, bg='white', height=800, width=450)
         self.screenshot.configure(borderwidth=-1)
         self.screenshot.place( x = 0, y = 30)
-        self.screenshot.place_info().get('x')
         self.multiple = 1
 
     def getScreenShot(self):
         self.screenshot.delete("all")
+        threading.Thread(target=self.LoadingFile).start()
         self.photo = Image.open(Get_PhoneScreen())
         self.photo_width, self.photo_height = self.photo.size
         print(str(self.photo_width) + " , " + str(self.photo_height))
@@ -106,8 +108,22 @@ class View(Frame):
         self.multiple = self.photo_width / self.width
         print(str(self.multiple))
         self.screenshot_photo = ImageTk.PhotoImage(self.photo)
+        self.message.InsertText("Loading finish\n")
         self.screenshot.create_image(0, 0, anchor=NW)
         self.screenshot.image = self.screenshot_photo
+
+    def LoadingFile(self):
+        self.message.InsertText("Loading files...\nPlease wait...\n")
+        if self.tree_obj_image_list != None:
+            for i in range(len(self.tree_obj_image_list)):
+                self.tree_obj_image_list[i][1].place_forget()
+
+        loadimgpath = os.path.join(PIC_LOADING, "loading.gif")
+        print(loadimgpath)
+        pilImage = Image.open(loadimgpath)
+        self.loading = ImageTk.PhotoImage(pilImage)
+        self.screenshot.create_image(0, 0, anchor=CENTER)
+        self.screenshot.image = self.loading
 
     def getImgPath(self):
         return filePath
@@ -272,12 +288,16 @@ class View(Frame):
         self.treeview.bind("<ButtonRelease-1>", self.on_tree_select)
 
     def Tree_infomation(self):
+        self.message.InsertText("Analysis files...\n")
         self.XMLFile = ET.ElementTree(file=Dump_UI())
+
         if self.tree_obj_image_list != None:
             del self.tree_obj_image_list[:]
             del self.tree_obj_list[:]
+
         self.rankMax = 0
         self.tree_info("", 0, self.XMLFile)
+        self.message.InsertText("Analysis finish\n")
         #self.Set_Tree_image_place()
 
     def tree_info(self,id , rank, treeinfo):
@@ -355,10 +375,15 @@ class View(Frame):
 
     def on_tree_select(self, event):   #取得所選擇的item value  中的Bounds
         for item in self.treeview.selection():
+            child = item
             item_value = self.treeview.item(item, "value")
 
         self.left, self.top, self.right, self.bottom = self.bounds_split(item_value[1])
 
+        left, top, right, bottom = self.left / self.multiple, self.top / self.multiple, self.right / self.multiple, self.bottom / self.multiple
+
+        #self.tree_obj_image_list[i][1].create_rectangle(0, 0, right - left - 3, bottom - top - 3, outline='red', width=5)
+        #self.mouseEnter(event, i,right - left,bottom - top)
         #print(str(self.left) + "\n" + str(self.top) + "\n" + str(self.right) + "\n" + str(self.bottom) + "\n" )
         self.resetScreenShot()
         #print(self.focus)
@@ -381,13 +406,15 @@ class View(Frame):
         if getdevices ==None:
             self.message.clear()
             if checkADB_Connection.check(self) == "Connect":
-                self.clear_XML_Tree()
-                self.getScreenShot()
-                self.Tree_infomation()
+                threading.Thread(target=self.format).start()
         else:
-            self.clear_XML_Tree()
-            self.getScreenShot()
-            self.Tree_infomation()
+            threading.Thread(target=self.format).start()
+
+    def format(self):
+        self.clear_XML_Tree()
+        threading.Thread(target=self.getScreenShot).start()
+        self.Tree_infomation()
+        #threading.Thread(target=self.Tree_infomation).start()
 
 
     def SaveIMGButton(self):
@@ -521,19 +548,48 @@ class View(Frame):
         self.line = self.line - 1
 
     def Run_single_actionButtonClick(self, n):
-        run = TestAdepter()
+        self.focus = n
+        threading.Thread(target=self.Run_SingleTestCase).start()
+
+    def RunButtonClick(self):
+        threading.Thread(target=self.Run_ALLTestCase).start()
+
+    def Run_SingleTestCase(self):
+        data = TestAdepter()
         self.message.clear()
         if checkADB_Connection.check(self) == "Connect":
-            status = "Success"
-            status = run.Single_Test(self.actioncombolist[n], self.valuelist[n], self.valueImagelist[n], self.node_path_list[n])
-            if status == "Error":
-                statusstr = "Action " + str(n + 1) + " Status Error\n"
-                self.message.InsertText(statusstr)
+            n = self.focus
+            action = []
+            value = []
+            image = []
+            path_list = []
+            action.append(self.actioncombolist[n])
+            value.append(self.valuelist[n])
+            image.append(self.valueImagelist[n])
+            path_list.append(self.node_path_list[n])
+            check_data = data.set_data(action, value, image, path_list)
+            if check_data:
+                action, value, image, path_list = data.get_data()
+                data.run_single(n, action, value, image, path_list)
             else:
-                statusstr = "Action " + str(n + 1) + " Status Success\n"
-                self.message.InsertText(statusstr)
+                self.message.InsertText("The Test case have some problem, please check action " + str(n + 1) + " !\n")
 
             self.formatButtonClick("no")
+
+    def Run_ALLTestCase(self):
+        data = TestAdepter()
+
+        self.message.clear()
+        if checkADB_Connection.check(self) == "Connect":
+            check_data = data.set_data(self.actioncombolist, self.valuelist, self.valueImagelist, self.node_path_list)
+
+            if check_data:
+                data.run_all()
+
+            finish = "\nThe Test Case Finish!\n"
+            self.message.InsertText(finish)
+            self.formatButtonClick("no")
+
 
     def undo(self):
         if len(self.testcase_undo) != 0:
@@ -596,92 +652,6 @@ class View(Frame):
 
         self.testcase_undo.append(testcase_line)
         del self.testcase_redo[:]
-
-    def TestCaseData(self, actioncombolist, valuelist, valueImagelist, node_path_list):
-        action = []
-        value = []
-        image = []
-        path_list = []
-
-        for i in range(len(actioncombolist)):
-            action.append(actioncombolist[i].get())
-            if valueImagelist[i] != None:
-                value.append(None)
-            else:
-                value.append(valuelist[i].get())
-            if i < len(valueImagelist):
-                image.append(valueImagelist[i])
-                path_list.append(node_path_list[i])
-        return action, value, image, path_list
-
-
-    def RunButtonClick(self):
-        run = TestAdepter()
-        self.message.clear()
-        if checkADB_Connection.check(self) =="Connect":
-            self.start = None
-            self.end = None
-            self.forloop = None
-            for i in range(len(self.actioncombolist)):
-                if self.actioncombolist[i].get() != "":
-                    if self.actioncombolist[i].get() == "Loop":
-                        self.start = i + 1
-                        if self.valuelist[i].get() == "":
-                            statusstr = "Action " + str(i + 1) + " Status Error\nForLoop no Input times\nTest Case Interrupted!\n"
-                            self.message.InsertText(statusstr)
-                            break
-                        else:
-                            self.forloop = int(self.valuelist[i].get()) - 1
-                    elif self.actioncombolist[i].get() == "Stop":
-                        self.end = i
-                        self.ForLoop(self.actioncombolist, self.valuelist, self.valueImagelist, self.node_path_list)
-                    elif self.actioncombolist[i].get() == "Sleep(s)":
-                        time.sleep(int(self.valuelist[i].get()))
-                        print(self.valuelist[i].get())
-                    else:
-                        status = run.Single_Test(self.actioncombolist[i], self.valuelist[i], self.valueImagelist[i],
-                                    self.node_path_list[i])
-                        if status == "Error":
-                            statusstr = "Action "+ str(i+1) + " Status Error\nTest Case Interrupted!\n"
-                            self.message.InsertText(statusstr)
-                            break
-                        else:
-                            statusstr = "Action "+ str(i+1) + " Status Success\n"
-                            self.message.InsertText(statusstr)
-                    if i == len(self.actioncombolist) - 1 and self.end == None and self.start != None:
-                        statusstr = "Action ForLoop Status Error\nForLoop no set stop\nTest Case Interrupted!\n"
-                        self.message.InsertText(statusstr)
-                        break
-
-            finish = "The Test Case Finish!"
-            self.message.InsertText(finish)
-            self.formatButtonClick("no")
-
-    def ForLoop(self, actioncombo_list, value_list, valueImage_list, nodepath_list):
-        if self.CheckLoop():
-            run = TestAdepter()
-            for i in range(self.forloop):
-                index = self.start
-                while index < self.end:
-                    if actioncombo_list[index].get() != "":
-                        status = run.Single_Test(actioncombo_list[index], value_list[index], valueImage_list[index],
-                                                 nodepath_list[index])
-                        index = index + 1
-                        if status == "Error":
-                            break
-        else:
-            status =  "Error"
-
-        self.forloop = None
-        self.start = None
-        self.end = None
-        return status
-
-    def CheckLoop(self):
-        if self.forloop!=None and self.start!=None and self.end != None:
-            return True
-        else:
-            return False
 
 
     def TestCaseFrame(self):

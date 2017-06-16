@@ -83,7 +83,7 @@ class DumpXML(ttk.Treeview):
         else:
             return path
 
-    def bounds_split(self,obj_bounds):
+    def get_boundingbox(self,obj_bounds):
         bounds = obj_bounds.split('[')
         right_bounds = bounds[1].split(']')
         left_bounds = bounds[2].split(']')
@@ -101,7 +101,7 @@ class DumpXML(ttk.Treeview):
         for item in self.selection():
             item_value = self.item(item, "value")
 
-        self.left, self.top, self.right, self.bottom = self.bounds_split(item_value[1])
+        self.left, self.top, self.right, self.bottom = self.get_boundingbox(item_value[1])
 
 
         #self.resetScreenShot()
@@ -119,7 +119,7 @@ class DumpXML(ttk.Treeview):
     def tree_obj_image(self, rank, obj_bounds):
 
         obj_image_info = []
-        left, top, right, bottom = self.bounds_split(obj_bounds)
+        left, top, right, bottom = self.get_boundingbox(obj_bounds)
         left, top, right, bottom = left / self.multiple, top / self.multiple, right / self.multiple, bottom / self.multiple
 
         img = self.screenshotImage.photo.crop((left, top, right, bottom))

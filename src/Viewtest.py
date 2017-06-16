@@ -2,9 +2,8 @@ from tkinter import ttk
 from cv2img import CV2Img
 from adb_roboot import ADBRobot
 import xml.etree.cElementTree as ET
-from PIL import Image
 from finder.template_finder import TemplateFinder
-from finder.template_matcher import TemplateMatcher
+from TestCaseData import TestCaseData
 from MessageUI import Message
 from LoadFile import LoadFile
 import time
@@ -71,65 +70,68 @@ def assert_finder(target_image):
     # else:
     #     return False
 
-class TestAdepter():
-    def Single_Test(self, actioncombobox , value, valueImage , node_path):
+class TestAdepter(TestCaseData):
+    def __init__(self):
         self.robot = ADBRobot()
         self.action = []
         self.value = []
         self.image = []
-        self.path_list = []
+        self.node_path = []
+        self.actionlist = []
+        self.valuelist = []
+        self.imagelist = []
+        self.node_path_list = []
+        self.loop_begin = []
+        self.loop_end = []
+        self.testcaseName = ""
+        self.message = Message.getMessage(self)
 
-        self.action.append(actioncombobox.get())
-        if valueImage != None:
-            self.value.append(None)
-        else:
-            self.value.append(value.get())
+    def Run(self, actioncombobox , value, valueImage , node_path):
 
-        self.image.append(valueImage)
-        self.path_list.append(node_path)
-
-        return self.Action()
-
-    def Open_Single_Test(self, actioncombobox , value, valueImage , node_path):
-        self.robot = ADBRobot()
-        self.action = []
-        self.value = []
-        self.image = []
-        self.path_list = []
-
-        self.action.append(actioncombobox)
-        if valueImage != None:
-            self.value.append(None)
-        else:
-            self.value.append(value)
-
-        self.image.append(valueImage)
-        self.path_list.append(node_path)
+        self.action, self.value, self.image, self.node_path = actioncombobox , value, valueImage , node_path
 
         return self.Action()
 
-    # def All_Test(self, actioncomboboxlist, valuelist, valueImagelist , node_path_list):
-    #     self.robot = ADBRobot()
-    #     self.action = []
-    #     self.value = []
-    #     self.image = []
-    #     self.path_list = []
-    #
-    #     print(len(actioncomboboxlist))
-    #     for i in range(len(actioncomboboxlist)):
-    #         self.action.append(actioncomboboxlist[i].get())
-    #         if valueImagelist[i] != None:
-    #             self.value.append(None)
-    #         else:
-    #             self.value.append(valuelist[i].get())
-    #
-    #         if i < len(valueImagelist):
-    #             self.image.append(valueImagelist[i])
-    #             self.path_list.append(node_path_list[i])
-    #     return self.Action()
+    def run_single(self, line, action, value, image, node_path):
+        status = self.Run( action, value, image, node_path)
+        self.run_status(line, status, self.testcaseName)
+
+        return status
+
+    def run_all(self, start = None, end = None):
+        if end is None:
+            end = len(self.actionlist)
+        if start is None:
+            start = 0
+        for n in range(start, end, +1):
+            if self.actionlist[n] != "":
+                if self.actionlist[n] == "Loop Begin":
+                    self.run_loop(n)
+                else:
+                    action = []
+                    value = []
+                    image = []
+                    node_path = []
+                    action.append(self.actionlist[n])
+                    value.append(self.valuelist[n])
+                    image.append(self.imagelist[n])
+                    node_path.append(self.node_path_list[n])
+                    status = self.run_single( n, action, value, image, node_path)
+                    if status == "Error":
+                        break
+
+
+    def run_loop(self, start):
+        print(self.loop_begin)
+        print(self.loop_end)
+        index = self.loop_begin.index(start)
+        end = self.loop_end[index]
+
+        for i in range(int(self.valuelist[start]) - 1):
+            self.run_all(start+1, end)
 
     def Action(self):
-        self.message = Message.getMessage(self)
+
         index = 0
         self.ActionStatus = "Success"
         for i in self.action:
@@ -149,6 +151,9 @@ class TestAdepter():
                 elif str(i) == "TestCase":
                     #print(self.action.index(i))
                     self.ActionStatus = self.TestCasePath(index)
+                elif str(i) == "Sleep(s)":
+                    #print(self.action.index(i))
+                    self.ActionStatus = self.Sleep(index)
                 elif str(i) == "Android Keycode":
                     #print(self.action.index(i))
                     self.ActionStatus = self.Send_Key_Value(index)
@@ -171,7 +176,7 @@ class TestAdepter():
         self.treeview = ttk.Treeview()
         self.XMLFile = ET.ElementTree(file=self.robot.get_uiautomator_dump())
         self.tree_info("", self.XMLFile)
-        self.path_range = len(self.path_list[index])
+        self.path_range = len(self.node_path[index])
         self.node_item = None
         self.Find_image_Path(index, 1, "")
 
@@ -184,7 +189,7 @@ class TestAdepter():
         self.treeview = ttk.Treeview()
         self.XMLFile = ET.ElementTree(file=self.robot.get_uiautomator_dump())
         self.tree_info("", self.XMLFile)
-        self.path_range =len(self.path_list[index])
+        self.path_range =len(self.node_path[index])
         self.node_item = None
         self.Find_image_Path(index, 1, "")
 
@@ -199,7 +204,7 @@ class TestAdepter():
         status = assert_finder(self.image[index])
         if status == True:
             print("Success : Find This Image and Node")
-            self.message.InsertText("Success : Find This Image and Node")
+            #self.message.InsertText("Success : Find This Image and Node")
             return "Success"
         else:
             print("Error : Not Find Image and Node")
@@ -208,8 +213,9 @@ class TestAdepter():
 
     def ClickImage(self, index):
         status = template_finder(self.image[index])
+
         if status =="success":
-            self.message.InsertText("Success : Click Image\n")
+            #self.message.InsertText("Success : Click Image\n")
             return "Success"
         elif status == "too more":
             return self.ClickValue(index)
@@ -231,26 +237,26 @@ class TestAdepter():
             children_node = self.treeview.get_children(item)
             for child in children_node:
                 if self.node_item == None:
-                    if self.path_list[index][depth-1][0] == self.treeview.item(child)["text"] :
-                        print("find ", self.path_list[index][depth - 1][0],",  treeview node :", self.treeview.item(child)["text"])
+                    if self.node_path[index][depth-1][0] == self.treeview.item(child)["text"] :
+                        print("find ", self.node_path[index][depth - 1][0],",  treeview node :", self.treeview.item(child)["text"])
                         depth = depth + 1
                         self.Find_image_Path(index, depth,child)
                     else :
-                        print("not find ", self.path_list[index][depth-1][0],",  treeview node :", self.treeview.item(child)["text"])
+                        print("not find ", self.node_path[index][depth-1][0],",  treeview node :", self.treeview.item(child)["text"])
 
         if depth == self.path_range:
             children_node = self.treeview.get_children(item)
             for child in children_node:
                 if self.node_item == None:
-                    if self.path_list[index][depth-1][0] == self.treeview.item(child)["text"] :
+                    if self.node_path[index][depth-1][0] == self.treeview.item(child)["text"] :
                         text = self.treeview.item(child)["values"][0]
-                        if str(text) == self.path_list[index][depth-1][1]:
+                        if str(text) == self.node_path[index][depth-1][1]:
                             self.node_item = child
-                            print("Find Node ", self.path_list[index][depth - 1][0])
+                            print("Find Node ", self.node_path[index][depth - 1][0])
                         else:
-                            print("Text not same between ", str(text), self.path_list[index][depth - 1][0])
+                            print("Text not same between ", str(text), self.node_path[index][depth - 1][0])
                     else:
-                        print("Not Find ", self.path_list[index][depth - 1][0])
+                        print("Not Find ", self.node_path[index][depth - 1][0])
 
     def bounds_split(self,obj_bounds):
         bounds = obj_bounds.split('[')
@@ -306,60 +312,27 @@ class TestAdepter():
     def TestCasePath(self, index):
         testcase_load = LoadFile()
         testcase_load.Decoder_Json(self.value[index])
-        actioncombo_list, value_list, valueImage_list, nodepath_list = testcase_load.get_Loading_Data()
-        run_testcase = TestAdepter()
-        self.start = None
-        self.end = None
-        self.forloop = None
-        for i in range(len(actioncombo_list)):
-            if actioncombo_list[i] != "":
-                if actioncombo_list[i] == "Loop":
-                    if value_list[i] =="":
-                        return "Error"
-                    else:
-                        self.start = i + 1
-                        self.forloop = int(value_list[i]) - 1
-                if actioncombo_list[i] == "Stop":
-                    print(actioncombo_list[i])
-                    self.end = i
-                    self.ForLoop(actioncombo_list, value_list, valueImage_list, nodepath_list)
-                if actioncombo_list[i] == "Sleep(s)":
-                    time.sleep(int(value_list[i]))
-                else:
-                    status = run_testcase.Open_Single_Test(actioncombo_list[i], value_list[i], valueImage_list[i], nodepath_list[i])
-                    if status == "Error":
-                        break
-                if i == len(actioncombo_list) - 1 and self.end == None and self.start != None:
-                    status == "Error"
-                    break
-        return status
 
-    def ForLoop(self,actioncombo_list, value_list, valueImage_list, nodepath_list):
-        if self.CheckLoop():
-            run_testcase = TestAdepter()
-            for i in range(self.forloop):
-                index = self.start
-                while index < self.end:
-                    if actioncombo_list[index] != "":
-                        status = run_testcase.Open_Single_Test(actioncombo_list[index], value_list[index], valueImage_list[index],
-                                                          nodepath_list[index])
-                        index = index + 1
-                        if status == "Error":
-                            break
+        name = self.value[index].split('/')
+        foldername = str(name.pop())
+
+        testcase = TestAdepter()
+        actioncombo_list, value_list, valueImage_list, node_path_list = testcase_load.get_Loading_Data()
+        testcase_status = testcase.load_file_set_data(actioncombo_list, value_list, valueImage_list, node_path_list)
+
+        testcase.testcaseName = foldername + " : "
+
+        if testcase_status:
+            testcase.run_all()
         else:
-            status =  "Error"
+            testcase.message.InsertText("The Test case have some problem, please check Test Case File : \n"+ self.value[index] +" !\n")
 
-        self.forloop = None
-        self.start = None
-        self.end = None
-        return status
-
-    def CheckLoop(self):
-        if self.forloop!=None and self.start!=None and self.end != None:
-            return True
-        else:
-            return False
-
+    def Sleep(self, index):
+        try:
+            time.sleep(int(self.value[index]))
+            return "Success"
+        except:
+            return "Error"
 
     def Send_Key_Value(self, index):
         try:
@@ -369,6 +342,3 @@ class TestAdepter():
             print("Input Value Error")
             self.message.InsertText("The Android Keycade Error\n")
             return "Error"
-
-
-
