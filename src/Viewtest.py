@@ -6,6 +6,8 @@ from finder.template_finder import TemplateFinder
 from TestCaseData import TestCaseData
 from MessageUI import Message
 from LoadFile import LoadFile
+from HTML.step import HtmlTestStep
+import threading
 import time
 import os
 
@@ -17,10 +19,23 @@ sorce_image = None
 def IMG_PATH(name):
     return os.path.join(RESOURCES_DIR, name)
 
-def template_finder(target_image):
+def Drag_image(source_image, x1,y1,x2,y2):
+    source = CV2Img()
+    source.load_file(source_image, 1)
+    source.draw_line(x1,y1,x2,y2)
+    source.draw_circle(x2,y2)
+    source.save(source_image)
+
+def Click_image(source_image, x1,y1):
+    source = CV2Img()
+    source.load_file(source_image, 1)
+    source.draw_circle( x1, y1)
+    source.save(source_image)
+
+def template_finder(source_image, target_image):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(IMG_PATH(robot.screenshot()), 0)
+    source.load_file(source_image, 0)
     target = CV2Img()
     target.load_PILimage(target_image)
     finder = TemplateFinder(source)
@@ -33,6 +48,10 @@ def template_finder(target_image):
         return "faile"
     elif len(results) == 1:
         coordinate_x, coordinate_y = source.coordinate(results[0])
+        drawcircle = CV2Img()
+        drawcircle.load_file(source_image, 1)
+        drawcircle.draw_circle(int(coordinate_x), int(coordinate_y))
+        drawcircle.save(source_image)
         robot.tap(coordinate_x, coordinate_y)
         return "success"
     elif len(results) > 1:
@@ -42,7 +61,7 @@ def template_finder(target_image):
 def assert_finder(target_image):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(IMG_PATH(robot.screenshot()), 0)
+    source.load_file(robot.screenshot(), 0)
     target = CV2Img()
     target.load_PILimage(target_image)
     finder = TemplateFinder(source)
@@ -70,7 +89,7 @@ def assert_finder(target_image):
     # else:
     #     return False
 
-class TestAdepter(TestCaseData):
+class TestAdepter(TestCaseData,  threading.Thread):
     def __init__(self):
         self.robot = ADBRobot()
         self.action = []
@@ -85,6 +104,9 @@ class TestAdepter(TestCaseData):
         self.loop_end = []
         self.testcaseName = ""
         self.message = Message.getMessage(self)
+        self.htmlstep = HtmlTestStep.getHtmlTestStep()
+        self.step_before_image = ""
+        self.step_after_image = ""
 
     def Run(self, actioncombobox , value, valueImage , node_path):
 
@@ -92,21 +114,41 @@ class TestAdepter(TestCaseData):
 
         return self.Action()
 
+    def get_action_before_Screen(self):
+        filePath = self.robot.before_screenshot()
+        self.step_before_image = filePath
+
+
+    def get_action_after_Screen(self):
+        filePath = self.robot.after_screenshot()
+        self.step_after_image = filePath
+
+
+
     def run_single(self, line, action, value, image, node_path):
+        self.get_action_before_Screen()
         status = self.Run( action, value, image, node_path)
+
         self.run_status(line, status, self.testcaseName)
+        self.get_action_after_Screen()
+        self.htmlstep.step_before(self.step_before_image)
+        self.htmlstep.step_after(self.step_after_image)
 
         return status
 
     def run_all(self, start = None, end = None):
+        self.count = 0
+        status = ""
         if end is None:
             end = len(self.actionlist)
         if start is None:
             start = 0
         for n in range(start, end, +1):
             if self.actionlist[n] != "":
+                self.count+=1
                 if self.actionlist[n] == "Loop Begin":
-                    self.run_loop(n)
+                    status ,loopcount= self.run_loop(n)
+                    self.count = self.count + loopcount
                 else:
                     action = []
                     value = []
@@ -117,8 +159,12 @@ class TestAdepter(TestCaseData):
                     image.append(self.imagelist[n])
                     node_path.append(self.node_path_list[n])
                     status = self.run_single( n, action, value, image, node_path)
+                    self.htmlstep.set_step(self.testcaseName, n, action, status, value, image)
+
                     if status == "Error":
                         break
+
+        return status, self.count
 
 
     def run_loop(self, start):
@@ -128,7 +174,8 @@ class TestAdepter(TestCaseData):
         end = self.loop_end[index]
 
         for i in range(int(self.valuelist[start]) - 1):
-            self.run_all(start+1, end)
+            status, count = self.run_all(start+1, end)
+        return status, count
 
     def Action(self):
 
@@ -136,21 +183,22 @@ class TestAdepter(TestCaseData):
         self.ActionStatus = "Success"
         for i in self.action:
             if self.ActionStatus == "Success":
-                time.sleep(1)
                 if str(i) == "":
                     break
                 if str(i) == "Click":
-                    #print(index)
                     self.ActionStatus = self.ClickImage(index)
+                    time.sleep(1)
                 elif str(i) == "Drag":
                     #print(self.action.index(i))
                     self.ActionStatus = self.DragValue(index)
+                    time.sleep(1)
                 elif str(i) == "Input":
                     #print(self.action.index(i))
                     self.ActionStatus = self.InputValue(index)
                 elif str(i) == "TestCase":
                     #print(self.action.index(i))
-                    self.ActionStatus = self.TestCasePath(index)
+                    self.ActionStatus, count = self.TestCasePath(index)
+                    self.count = self.count + count
                 elif str(i) == "Sleep(s)":
                     #print(self.action.index(i))
                     self.ActionStatus = self.Sleep(index)
@@ -196,6 +244,7 @@ class TestAdepter(TestCaseData):
         if self.node_item != None:
             left, top, right, bottom = self.bounds_split(self.treeview.item(self.node_item)["values"][1])
             self.robot.tap((right+left)/2, (bottom+top)/2)
+            Click_image(self.step_before_image, (right+left)/2, (bottom+top)/2)
             return "Success"
         else:
             return "Error"
@@ -212,7 +261,7 @@ class TestAdepter(TestCaseData):
             return "Error"
 
     def ClickImage(self, index):
-        status = template_finder(self.image[index])
+        status = template_finder(self.step_before_image, self.image[index])
 
         if status =="success":
             #self.message.InsertText("Success : Click Image\n")
@@ -296,6 +345,7 @@ class TestAdepter(TestCaseData):
             return "Error"
 
         try:
+            Drag_image(self.step_before_image, int(X_start), int(Y_start), int(X_end), int(Y_end))
             self.robot.drag_and_drop(int(X_start), int(Y_start), int(X_end), int(Y_end))
             print("Drag Coordinate is start x = ", int(X_start), " y = ", int(Y_start), "to  x = ", int(X_end), " y = ",
                   int(Y_end))
@@ -323,9 +373,11 @@ class TestAdepter(TestCaseData):
         testcase.testcaseName = foldername + " : "
 
         if testcase_status:
-            testcase.run_all()
+            status, count = testcase.run_all()
         else:
             testcase.message.InsertText("The Test case have some problem, please check Test Case File : \n"+ self.value[index] +" !\n")
+
+        return status, count
 
     def Sleep(self, index):
         try:

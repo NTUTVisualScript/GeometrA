@@ -18,7 +18,7 @@ def template_finder_Click(target_image):
     source = CV2Img()
     global source_image
     if source_image == None:
-        source.load_file(IMG_PATH(robot.screenshot()), 1)
+        source.load_file(robot.screenshot(), 1)
     else:
         source = source_image
     source.show()
@@ -37,7 +37,7 @@ def template_finder(target_image):
     source = CV2Img()
     global source_image
     if source_image == None:
-        source.load_file(IMG_PATH(robot.screenshot()), 1)
+        source.load_file(robot.screenshot(), 1)
     else:
         source = source_image
 
@@ -58,7 +58,7 @@ def template_finder(target_image):
 def assert_finder(target_image):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(IMG_PATH(robot.screenshot()), 1)
+    source.load_file(robot.screenshot(), 1)
 
     target = CV2Img()
     target.load_PILimage(target_image)

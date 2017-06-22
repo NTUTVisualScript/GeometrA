@@ -114,10 +114,19 @@ class CV2Img:
                       (find_result.x + find_result.w, find_result.y + find_result.h),
                       color, 1)
 
+    def draw_circle(self, x,y):
+        cv2.circle(self.source, (x, y), 50, (0, 0, 255), 10)
+
+    def draw_line(self,x1,y1,x2,y2):
+        cv2.line(self.source, (x1, y1), (x2, y2), (0, 0, 255), 10)
+
     def coordinate(self, find_result):
         coordinate_x = find_result.x + find_result.w/2
         coordinate_y = find_result.y + find_result.h/2
         return coordinate_x,coordinate_y
+
+    def save(self, path):
+        cv2.imwrite(path, self.source)
 
     #############################################################################
     #

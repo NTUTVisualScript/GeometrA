@@ -1,47 +1,45 @@
-import subprocess
-from tkinter import *
-from tkinter import ttk
-import xml.etree.cElementTree as ET
-from SaveIMG import saveImg
-from adb_roboot import ADBRobot
-from PIL import Image, ImageTk
-from SaveFile import SaveFile
-from LoadFile import LoadFile
-import CommandManager
-from TestCaseEntry import TestCaseValue
-from TestCaseActionCombobox import TestCaseAction
-from MessageUI import Message
-from CheckADBConnection import checkADB_Connection
-from Viewtest import TestAdepter
-import threading
-import time
 import os
+import threading
+import xml.etree.cElementTree as ET
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
+
+from PIL import Image, ImageTk
+
+import CommandManager
+from CheckADBConnection import checkADB_Connection
+from HTML.title import HtmlHead
+from HTML.devices_infomation import HTML_divices_Info
+from HTML.report_time import HTMLtime
+from HTML.step import HtmlTestStep
+from LoadFile import LoadFile
+from MessageUI import Message
+from SaveFile import SaveFile
+from SaveIMG import saveImg
+from TestCaseActionCombobox import TestCaseAction
+from TestCaseEntry import TestCaseValue
+from TestReport import Report
+from Viewtest import TestAdepter
+from adb_roboot import ADBRobot
 
 ROOT_DIR = os.path.dirname(__file__)
 PIC_LOADING = os.path.join(ROOT_DIR, "img")
-RESOURCES_PIC = os.path.join(ROOT_DIR, "screenshot_pic")
-RESOURCES_XML = os.path.join(ROOT_DIR, "dumpXML")
 
 filePath = None
 dumpXMLfilePath = None
 
-def IMG_PATH(name):
-    return os.path.join(RESOURCES_PIC, name)
-
-def XML_PATH(name):
-    return os.path.join(RESOURCES_XML, name)
-
 def Dump_UI():
     global dumpXMLfilePath
     robot = ADBRobot()
-    dumpXMLfilePath = XML_PATH(robot.get_uiautomator_dump())
+    dumpXMLfilePath = robot.get_uiautomator_dump()
     print(dumpXMLfilePath)
     return dumpXMLfilePath
 
 def Get_PhoneScreen():
     global filePath
     robot = ADBRobot()
-    filePath = IMG_PATH(robot.screenshot())
+    filePath = robot.screenshot()
     print(filePath)
     return filePath
 
@@ -56,6 +54,9 @@ class View(Frame, threading.Thread):
         self.Drag_image = None
         self.tree_obj_image_list = []
         self.tree_obj_list = []
+        self.dirpath = ""
+        self.dirName = ""
+        self.checkADB = checkADB_Connection()
         self.cmd = CommandManager
         self.formatButton()
         self.savecropImg = saveImg()
@@ -117,13 +118,13 @@ class View(Frame, threading.Thread):
         if self.tree_obj_image_list != None:
             for i in range(len(self.tree_obj_image_list)):
                 self.tree_obj_image_list[i][1].place_forget()
-
-        loadimgpath = os.path.join(PIC_LOADING, "loading.gif")
-        print(loadimgpath)
-        pilImage = Image.open(loadimgpath)
-        self.loading = ImageTk.PhotoImage(pilImage)
-        self.screenshot.create_image(0, 0, anchor=CENTER)
-        self.screenshot.image = self.loading
+        #
+        # loadimgpath = os.path.join(PIC_LOADING, "loading.gif")
+        # print(loadimgpath)
+        # pilImage = Image.open(loadimgpath)
+        # self.loading = ImageTk.PhotoImage(pilImage)
+        # self.screenshot.create_image(0, 0, anchor=CENTER)
+        # self.screenshot.image = self.loading
 
     def getImgPath(self):
         return filePath
@@ -288,7 +289,7 @@ class View(Frame, threading.Thread):
         self.treeview.bind("<ButtonRelease-1>", self.on_tree_select)
 
     def Tree_infomation(self):
-        self.message.InsertText("Analysis files...\n")
+        self.message.InsertText("Analysing files...\n")
         self.XMLFile = ET.ElementTree(file=Dump_UI())
 
         if self.tree_obj_image_list != None:
@@ -297,7 +298,7 @@ class View(Frame, threading.Thread):
 
         self.rankMax = 0
         self.tree_info("", 0, self.XMLFile)
-        self.message.InsertText("Analysis finish\n")
+        self.message.InsertText("Analysing finish\n")
         #self.Set_Tree_image_place()
 
     def tree_info(self,id , rank, treeinfo):
@@ -405,14 +406,14 @@ class View(Frame, threading.Thread):
         self.focus = None
         if getdevices ==None:
             self.message.clear()
-            if checkADB_Connection.check(self) == "Connect":
+            if self.checkADB.check() == "Connect":
                 threading.Thread(target=self.format).start()
         else:
             threading.Thread(target=self.format).start()
 
     def format(self):
         self.clear_XML_Tree()
-        threading.Thread(target=self.getScreenShot).start()
+        self.getScreenShot()
         self.Tree_infomation()
         #threading.Thread(target=self.Tree_infomation).start()
 
@@ -448,11 +449,12 @@ class View(Frame, threading.Thread):
 
     def LoadButtonClick(self):
         Load_File = LoadFile()
-        dirpath = Load_File.LoadTestCasePath()
-        if  dirpath != None:
-            print("dirpath : ", dirpath)
+        self.dirpath = Load_File.LoadTestCasePath()
+        if  self.dirpath != None:
+            print("dirpath : ", self.dirpath)
             self.ResetButtonClick()
-            Load_File.Decoder_Json(dirpath)
+            self.dirName = Load_File.get_folderName()
+            Load_File.Decoder_Json(self.dirpath)
             actioncombo_list, value_list, valueImage_list, nodepath_list = Load_File.get_Loading_Data()
             for i in range(len(actioncombo_list)):
                 self.actioncombolist[i].set(str(actioncombo_list[i]))
@@ -552,12 +554,15 @@ class View(Frame, threading.Thread):
         threading.Thread(target=self.Run_SingleTestCase).start()
 
     def RunButtonClick(self):
-        threading.Thread(target=self.Run_ALLTestCase).start()
+        if self.dirpath !="":
+            threading.Thread(target=self.Run_ALLTestCase).start()
+        else:
+            messagebox.showwarning('警告', "您的測試尚未存檔，請先進行儲存再執行!!")
 
     def Run_SingleTestCase(self):
         data = TestAdepter()
         self.message.clear()
-        if checkADB_Connection.check(self) == "Connect":
+        if self.checkADB.check() == "Connect":
             n = self.focus
             action = []
             value = []
@@ -580,14 +585,36 @@ class View(Frame, threading.Thread):
         data = TestAdepter()
 
         self.message.clear()
-        if checkADB_Connection.check(self) == "Connect":
+        if self.checkADB.check() == "Connect":
+            report = Report.getReport()
+            head = HtmlHead()
+            htmltime = HTMLtime()
+            htmlstep = HtmlTestStep.getHtmlTestStep()
+            htmlstep.clearstep()
+            report.creatReport(self.dirpath)
+            head.set_title(self.dirName)
+            info = HTML_divices_Info()
+            info.set_SerialNo(self.checkADB.get_SerialNo())
+            w,h = self.checkADB.get_Display()
+            info.set_Display(w,h)
+
             check_data = data.set_data(self.actioncombolist, self.valuelist, self.valueImagelist, self.node_path_list)
 
             if check_data:
-                data.run_all()
+                start = htmltime.get_time()
+                info.set_start_time(start)
+                status, count = data.run_all()
+                info.set_Result(status)
+                info.set_StepCount(count)
+                end = htmltime.get_time()
+                info.set_end_time(end)
+                info.report_Info()
+                htmlstep.report_step()
+                reportpath = report.outputHTML()
 
             finish = "\nThe Test Case Finish!\n"
             self.message.InsertText(finish)
+            self.message.InsertText("\nYou can see report on this path\n" + reportpath +"\n\n")
             self.formatButtonClick("no")
 
 

@@ -37,7 +37,27 @@ class ADBRobot(Robot):
             os.makedirs(path)
         subprocess.call([subp, "pull", "/data/local/tmp/tmp.png", str(PATH(path + "/tmp.png"))], shell=True)
         print("success")
-        return "tmp.png"
+        return path + "/tmp.png"
+
+    def before_screenshot(self):
+        path = PATH(os.getcwd() + "/screenshot_pic")
+        subprocess.call([subp, "wait-for-device"], shell=True)
+        subprocess.call([subp, "shell", "screencap", "-p", "/data/local/tmp/before.png"], shell=True)
+        if not os.path.isdir(PATH(os.getcwd() + "/screenshot_pic")):
+            os.makedirs(path)
+        subprocess.call([subp, "pull", "/data/local/tmp/before.png", str(PATH(path + "/before.png"))], shell=True)
+        print("success")
+        return path + "/before.png"
+
+    def after_screenshot(self):
+        path = PATH(os.getcwd() + "/screenshot_pic")
+        subprocess.call([subp, "wait-for-device"], shell=True)
+        subprocess.call([subp, "shell", "screencap", "-p", "/data/local/tmp/after.png"], shell=True)
+        if not os.path.isdir(PATH(os.getcwd() + "/screenshot_pic")):
+            os.makedirs(path)
+        subprocess.call([subp, "pull", "/data/local/tmp/after.png", str(PATH(path + "/after.png"))], shell=True)
+        print("success")
+        return path + "/after.png"
 
     def tap(self, x, y, duration=None):
         if duration:
@@ -66,6 +86,9 @@ class ADBRobot(Robot):
         subprocess.call([subp, "pull", "/data/local/tmp/uidump.xml", path + "/uidump.xml"], shell=True)
         print(path + "/uidump.xml")
         return path + "/uidump.xml"
+
+    def get_display(self):
+        print(subprocess.call([subp, "shell", "dumpsys", "display"], shell=True))
 
     # @property
     # def windows_size(self):

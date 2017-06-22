@@ -24,7 +24,7 @@ def IMG_PATH(name):
 def _test_template_finder(target_path):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(IMG_PATH(robot.screenshot()), 1)
+    source.load_file(robot.screenshot(), 1)
 
     target = CV2Img()
     target.load_file(IMG_PATH(target_path), 1)
@@ -39,7 +39,7 @@ def _test_template_finder(target_path):
 def _test_assert_finder(target_path):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(IMG_PATH(robot.screenshot()), 1)
+    source.load_file(robot.screenshot(), 1)
 
     target = CV2Img()
     target.load_file(IMG_PATH(target_path), 1)

@@ -14,7 +14,7 @@ def IMG_PATH(name):
 def Get_PhoneScreen():
     global filePath
     robot = ADBRobot()
-    filePath = IMG_PATH(robot.screenshot())
+    filePath = robot.screenshot()
     print(filePath)
     return filePath
 

@@ -1,7 +1,14 @@
 import subprocess
 from MessageUI import Message
+import re
+from adb_roboot import ADBRobot
 
 class checkADB_Connection:
+    def __init__(self):
+        self.SerialNo = ""
+        self.DisplayW = ""
+        self.DisplayH = ""
+
     def check(self):
         message = Message.getMessage(self)
         try:
@@ -18,15 +25,28 @@ class checkADB_Connection:
                     finddevices.append(deviceNames[i])
 
             finddevices.pop(0)
+            self.SerialNo = finddevices[0]
+            real_size_pattern = r"real (\d+) x (\d+),"
+            result = subprocess.check_output('adb shell dumpsys display | grep mBaseDisplayInfo').__str__()
+            match = re.search(real_size_pattern, result)
+
+            self.DisplayW, self.DisplayH = match.group(1), match.group(2)
+            print("display = ", self.DisplayW, self.DisplayH)
 
             if len(finddevices) == 0:
                 message.InsertText("No Devices connect...\n")
                 return "No Connect"
             else:
                 message.InsertText("Get devices :\n")
-                for i in range(len(finddevices)):
-                    message.InsertText(finddevices[i] + "\n\n\n")
+                #for i in range(len(finddevices)):
+                message.InsertText(finddevices[0] + "\n\n\n")
                 return "Connect"
 
         except subprocess.CalledProcessError as e:
             message.InsertText(e.returncode)
+
+    def get_SerialNo(self):
+        return self.SerialNo
+
+    def get_Display(self):
+        return self.DisplayW , self.DisplayH
