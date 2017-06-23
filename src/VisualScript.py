@@ -56,6 +56,8 @@ class View(Frame, threading.Thread):
         self.tree_obj_list = []
         self.dirpath = ""
         self.dirName = ""
+        self.select_node = None
+        self.select_image = None
         self.checkADB = checkADB_Connection()
         self.cmd = CommandManager
         self.formatButton()
@@ -375,15 +377,23 @@ class View(Frame, threading.Thread):
             self.treeview.delete(row)
 
     def on_tree_select(self, event):   #取得所選擇的item value  中的Bounds
+        if self.select_node!= None:
+            self.tree_obj_image_list[self.select_node][1].delete("all")
+            self.tree_obj_image_list[self.select_node][1].create_image(0, 0, anchor=NW, image=self.select_image)
+            self.tree_obj_image_list[self.select_node][1].image = self.select_image
+
         for item in self.treeview.selection():
-            child = item
+            node = item
             item_value = self.treeview.item(item, "value")
+
+        self.select_node = self.tree_obj_list.index(node)
 
         self.left, self.top, self.right, self.bottom = self.bounds_split(item_value[1])
 
         left, top, right, bottom = self.left / self.multiple, self.top / self.multiple, self.right / self.multiple, self.bottom / self.multiple
 
-        #self.tree_obj_image_list[i][1].create_rectangle(0, 0, right - left - 3, bottom - top - 3, outline='red', width=5)
+        self.select_image = self.tree_obj_image_list[self.select_node][1].image
+        self.tree_obj_image_list[self.select_node][1].create_rectangle(0, 0, right - left - 3, bottom - top - 3, outline='red', width=5)
         #self.mouseEnter(event, i,right - left,bottom - top)
         #print(str(self.left) + "\n" + str(self.top) + "\n" + str(self.right) + "\n" + str(self.bottom) + "\n" )
         self.resetScreenShot()
@@ -404,6 +414,8 @@ class View(Frame, threading.Thread):
 
     def formatButtonClick(self, getdevices =None):
         self.focus = None
+        self.select_node = None
+        self.select_image = None
         if getdevices ==None:
             self.message.clear()
             if self.checkADB.check() == "Connect":
@@ -474,6 +486,8 @@ class View(Frame, threading.Thread):
 
     def ResetButtonClick(self):
         self.TestCaseFrame()
+        self.select_node = None
+        self.select_image = None
 
     def AddLineButtonClick(self,n, do ):
 
@@ -788,6 +802,7 @@ class View(Frame, threading.Thread):
 
     def valueFocusIn(self,event, n):
         self.focus = n
+        self.Action_FocusIn()
 
     def Action_FocusIn(self):
         if self.actioncombolist[self.focus].get() == 'Drag':
@@ -802,13 +817,16 @@ class View(Frame, threading.Thread):
             self.Drag_image.bind("<Motion>", self.Dragmotion)  # get mouse coordination
             self.Drag_image.bind("<Enter>", self.DragEnter)
             self.Drag_image.bind("<B1-Motion>", self.Dragged)  # 滑鼠拖拉動作
+
         elif self.actioncombolist[self.focus].get() == 'TestCase':
             openfile = LoadFile()
             path = openfile.LoadTestCasePath()
+            print(path)
             if path is not None:
                 if path !="":
                     self.valuelist[self.focus].delete(0, 'end')
                     self.valuelist[self.focus].insert('end', path)
+
         else:
             if self.Drag_image != None:
                 self.Drag_image.place_forget()
@@ -844,6 +862,7 @@ class View(Frame, threading.Thread):
 
         self.mousePosition.set("Rectangle at [ " + str(self.clickstartX * self.multiple ) + ", " + str(self.clickstartY * self.multiple) + " To " + str((event.x) * self.multiple) + ", " + str((event.y) * self.multiple) + " ]")
         self.Drag_image.create_line(self.clickstartX, self.clickstartY, event.x, event.y, fill="red", width=2)
+        self.Drag_image.create_oval(event.x-25, event.y-25, event.x+25, event.y+25,  fill="", outline="red", width=6)
 
 if __name__ == '__main__':
     root = Tk()
