@@ -70,8 +70,16 @@ class ADBRobot(Robot):
                 shell=True)
 
     def input_text(self, inputtext):
+        text = list(inputtext)
+        #print("text =" + str(text))
         try:
-            subprocess.call([subp, "shell", "input", "text", inputtext], shell=True)
+            for i in range(len(text)):
+                print(text[i])
+                if text[i] == " ":
+                    subprocess.call([subp, "shell", "input", "text", "%s"], shell=True)
+                else:
+                    subprocess.call([subp, "shell", "input", "text", text[i]], shell=True)
+
             return "Success"
         except:
             print("Input Text Error", inputtext)

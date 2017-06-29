@@ -37,13 +37,13 @@ class SaveFile():
             if self.image[i] != None:
                 if not os.path.isdir(dirpath + "/image"):
                     os.makedirs(dirpath + "/image")
-                imagepath = dirpath+"/image/"+ str(self.action[i]) + "_" + str(i) + ".jpg"
+                imagepath = "/image/"+ str(self.action[i]) + "_" + str(i) + ".jpg"
                 img = self.image[i]
                 if os.path.isfile(imagepath):
                     os.remove(imagepath)
 
                 try:
-                    img.save(imagepath, "JPEG")
+                    img.save(dirpath + imagepath, "JPEG")
                 except AttributeError:
                     print("Couldn't save image {}".format(img))
 

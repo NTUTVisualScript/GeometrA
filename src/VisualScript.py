@@ -1,6 +1,7 @@
 import os
 import threading
 import xml.etree.cElementTree as ET
+import time
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
@@ -102,7 +103,7 @@ class View(Frame, threading.Thread):
 
     def getScreenShot(self):
         self.screenshot.delete("all")
-        threading.Thread(target=self.LoadingFile).start()
+        self.LoadingFile()
         self.photo = Image.open(Get_PhoneScreen())
         self.photo_width, self.photo_height = self.photo.size
         print(str(self.photo_width) + " , " + str(self.photo_height))
@@ -283,16 +284,16 @@ class View(Frame, threading.Thread):
         self.treeview.column("one", width=150)
         self.treeview.heading("one", text="Text")
         self.treeview.column("two", width=150)
-        self.treeview.heading("two", text="Bounds")
+        self.treeview.heading("two", text="Bounding Box")
 
         self.Yvertscroll.config(command=self.treeview.yview)
         self.Xvertscroll.config(command=self.treeview.xview)
 
-        self.treeview.bind("<ButtonRelease-1>", self.on_tree_select)
+        self.treeview.bind("<ButtonRelease-1>", self.on_tree_select_node)
 
     def Tree_infomation(self):
-        self.message.InsertText("Analysing files...\n")
-        self.XMLFile = ET.ElementTree(file=Dump_UI())
+        # self.message.InsertText("Analysing files...\n")
+        # self.XMLFile = ET.ElementTree(file=Dump_UI())
 
         if self.tree_obj_image_list != None:
             del self.tree_obj_image_list[:]
@@ -357,7 +358,7 @@ class View(Frame, threading.Thread):
         obj_image_info.append(obj_image)
         obj_image_info.append(left)
         obj_image_info.append(top)
-        print(obj_image_info)
+        #print(obj_image_info)
         self.tree_obj_image_list.append(obj_image_info)
 
     def Set_Tree_image_place(self):
@@ -376,7 +377,7 @@ class View(Frame, threading.Thread):
         for row in self.treeview.get_children():
             self.treeview.delete(row)
 
-    def on_tree_select(self, event):   #取得所選擇的item value  中的Bounds
+    def on_tree_select_node(self, event):   #取得所選擇的item value  中的Bounds
         if self.select_node!= None:
             self.tree_obj_image_list[self.select_node][1].delete("all")
             self.tree_obj_image_list[self.select_node][1].create_image(0, 0, anchor=NW, image=self.select_image)
@@ -425,9 +426,20 @@ class View(Frame, threading.Thread):
 
     def format(self):
         self.clear_XML_Tree()
-        self.getScreenShot()
+        self.dump_file()
+        # threading.Thread(target=self.getScreenShot).start()
+        #self.getScreenShot()
         self.Tree_infomation()
         #threading.Thread(target=self.Tree_infomation).start()
+
+    def dump_file(self):
+        threading.Thread(target=self.getScreenShot).start()
+        time.sleep(0.5)
+        self.dump_xml()
+
+    def dump_xml(self):
+        self.message.InsertText("Analysing files...\n")
+        self.XMLFile = ET.ElementTree(file=Dump_UI())
 
 
     def SaveIMGButton(self):
@@ -802,7 +814,8 @@ class View(Frame, threading.Thread):
 
     def valueFocusIn(self,event, n):
         self.focus = n
-        self.Action_FocusIn()
+        if self.actioncombolist[self.focus].get() != 'TestCase':
+            self.Action_FocusIn()
 
     def Action_FocusIn(self):
         if self.actioncombolist[self.focus].get() == 'Drag':

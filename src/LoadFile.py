@@ -47,7 +47,7 @@ class LoadFile():
             self.value_list.append(value['value'])
 
             if value['image'] !=None:
-                photo = Image.open(str(value['image']))
+                photo = Image.open(dirpath + str(value['image']))
                 self.image_list.append(photo)
             else:
                 self.image_list.append(None)

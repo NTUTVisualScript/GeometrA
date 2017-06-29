@@ -36,7 +36,7 @@ class DumpXML(ttk.Treeview):
         self.column("one", width=150)
         self.heading("one", text="Text")
         self.column("two", width=150)
-        self.heading("two", text="Bounds")
+        self.heading("two", text="Bounding Box")
 
         self.bind("<ButtonRelease-1>", self.on_tree_select)
 

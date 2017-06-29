@@ -192,7 +192,7 @@ class TestAdepter(TestCaseData,  threading.Thread):
                     #print(self.action.index(i))
                     self.ActionStatus = self.DragValue(index)
                     time.sleep(1)
-                elif str(i) == "Input":
+                elif str(i) == "Set Text":
                     #print(self.action.index(i))
                     self.ActionStatus = self.InputValue(index)
                 elif str(i) == "TestCase":
