@@ -1,7 +1,7 @@
 import os
 import threading
-import xml.etree.cElementTree as ET
 import time
+import xml.etree.cElementTree as ET
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
@@ -10,10 +10,9 @@ from PIL import Image, ImageTk
 
 import CommandManager
 from CheckADBConnection import checkADB_Connection
-from HTML.title import HtmlHead
 from HTML.devices_infomation import HTML_divices_Info
 from HTML.report_time import HTMLtime
-from HTML.step import HtmlTestStep
+from HTML.title import HtmlHead
 from LoadFile import LoadFile
 from MessageUI import Message
 from SaveFile import SaveFile
@@ -23,6 +22,7 @@ from TestCaseEntry import TestCaseValue
 from TestReport import Report
 from Viewtest import TestAdepter
 from adb_roboot import ADBRobot
+from HTML.step import HtmlTestStep
 
 ROOT_DIR = os.path.dirname(__file__)
 PIC_LOADING = os.path.join(ROOT_DIR, "img")
@@ -236,6 +236,11 @@ class View(Frame, threading.Thread):
         self.mousePosition.set("Mouse in window [ " + str(int((x + event.x) * self.multiple)) + ", " + str(int((y + event.y) * self.multiple)) + " ]")
 
     def mouseEnter(self, event, line, w, h):
+        if self.select_node!= None:
+            self.tree_obj_image_list[self.select_node][1].delete("all")
+            self.tree_obj_image_list[self.select_node][1].create_image(0, 0, anchor=NW, image=self.select_image)
+            self.tree_obj_image_list[self.select_node][1].image = self.select_image
+
         self.focusOBJImage = self.tree_obj_image_list[line][1].image
         self.tree_obj_image_list[line][1].create_rectangle(0, 0 , w-3 , h -3, outline='red', width=5)
         text = [""]
@@ -417,6 +422,7 @@ class View(Frame, threading.Thread):
         self.focus = None
         self.select_node = None
         self.select_image = None
+        self.dirpath = ""
         if getdevices ==None:
             self.message.clear()
             if self.checkADB.check() == "Connect":
@@ -426,15 +432,17 @@ class View(Frame, threading.Thread):
 
     def format(self):
         self.clear_XML_Tree()
+        if self.Drag_image != None:
+            self.Drag_image.place_forget()
         self.dump_file()
         # threading.Thread(target=self.getScreenShot).start()
         #self.getScreenShot()
+        time.sleep(1)
         self.Tree_infomation()
         #threading.Thread(target=self.Tree_infomation).start()
 
     def dump_file(self):
         threading.Thread(target=self.getScreenShot).start()
-        time.sleep(0.5)
         self.dump_xml()
 
     def dump_xml(self):
@@ -469,13 +477,14 @@ class View(Frame, threading.Thread):
 
     def SaveButtonClick(self):
         Save_File = SaveFile()
-        Save_File.SaveTestCase(self.actioncombolist, self.valuelist, self.valueImagelist,self.node_path_list)
+        self.dirpath = Save_File.SaveTestCase(self.actioncombolist, self.valuelist, self.valueImagelist,self.node_path_list)
 
     def LoadButtonClick(self):
         Load_File = LoadFile()
-        self.dirpath = Load_File.LoadTestCasePath()
-        if  self.dirpath != None:
-            print("dirpath : ", self.dirpath)
+        dirpath = Load_File.LoadTestCasePath()
+        if  dirpath != None:
+            self.dirpath = dirpath
+            print("dirpath : ", dirpath)
             self.ResetButtonClick()
             self.dirName = Load_File.get_folderName()
             Load_File.Decoder_Json(self.dirpath)

@@ -112,7 +112,10 @@ class CV2Img:
         cv2.rectangle(self.source,
                       (find_result.x, find_result.y),
                       (find_result.x + find_result.w, find_result.y + find_result.h),
-                      color, 1)
+                      color, 10)
+
+    def draw_rectangle(self, x1, y1, x2, y2):
+        cv2.rectangle(self.source, (x1, y1),(x2, y2), (0, 0, 255), 10)
 
     def draw_circle(self, x,y):
         cv2.circle(self.source, (x, y), 50, (0, 0, 255), 10)

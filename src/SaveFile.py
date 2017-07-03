@@ -64,3 +64,5 @@ class SaveFile():
 
         json_str = json.dumps(dataArray)
         print(json_str)
+
+        return dirpath
