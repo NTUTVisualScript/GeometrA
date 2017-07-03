@@ -1,15 +1,15 @@
-from tkinter import ttk
-from cv2img import CV2Img
-from adb_roboot import ADBRobot
-import xml.etree.cElementTree as ET
-from finder.template_finder import TemplateFinder
-from TestCaseData import TestCaseData
-from MessageUI import Message
-from LoadFile import LoadFile
-from HTML.step import HtmlTestStep
-import threading
-import time
 import os
+import time
+import xml.etree.cElementTree as ET
+from tkinter import ttk
+
+from LoadFile import LoadFile
+from MessageUI import Message
+from TestCaseData import TestCaseData
+from adb_roboot import ADBRobot
+from cv2img import CV2Img
+from finder.template_finder import TemplateFinder
+from HTML.step import HtmlTestStep
 
 ROOT_DIR = os.path.dirname(__file__)
 RESOURCES_DIR = os.path.join(ROOT_DIR, "screenshot_pic")
@@ -31,6 +31,12 @@ def Click_image(source_image, x1,y1):
     source.load_file(source_image, 1)
     source.draw_circle( x1, y1)
     source.save(source_image)
+
+def Exist_image(source_image, x1,y1,x2,y2):
+    drawcircle = CV2Img()
+    drawcircle.load_file(source_image, 1)
+    drawcircle.draw_rectangle(x1,y1,x2,y2)
+    drawcircle.save(source_image)
 
 def template_finder(source_image, target_image):
     robot = ADBRobot()
@@ -58,10 +64,10 @@ def template_finder(source_image, target_image):
         return "too more"
 
 
-def assert_finder(target_image):
+def assert_finder(source_image, target_image):
     robot = ADBRobot()
     source = CV2Img()
-    source.load_file(robot.screenshot(), 0)
+    source.load_file(source_image, 0)
     target = CV2Img()
     target.load_PILimage(target_image)
     finder = TemplateFinder(source)
@@ -69,11 +75,15 @@ def assert_finder(target_image):
     print(len(results))
 
     if len(results) < 1:
-        return False
+        return "faile"
     elif len(results) == 1:
-        return True
+        drawcircle = CV2Img()
+        drawcircle.load_file(source_image, 1)
+        drawcircle.draw_result_range(results[0])
+        drawcircle.save(source_image)
+        return "success"
     elif len(results) > 1:
-        return True
+        return "too more"
     # robot = ADBRobot()
     # source = CV2Img()
     # source.load_file(IMG_PATH(robot.screenshot()), 0)
@@ -89,7 +99,7 @@ def assert_finder(target_image):
     # else:
     #     return False
 
-class TestAdepter(TestCaseData,  threading.Thread):
+class TestAdepter(TestCaseData):
     def __init__(self):
         self.robot = ADBRobot()
         self.action = []
@@ -118,21 +128,19 @@ class TestAdepter(TestCaseData,  threading.Thread):
         filePath = self.robot.before_screenshot()
         self.step_before_image = filePath
 
-
     def get_action_after_Screen(self):
         filePath = self.robot.after_screenshot()
         self.step_after_image = filePath
 
-
-
     def run_single(self, line, action, value, image, node_path):
         self.get_action_before_Screen()
-        status = self.Run( action, value, image, node_path)
 
-        self.run_status(line, status, self.testcaseName)
-        self.get_action_after_Screen()
+        status = self.Run( action, value, image, node_path)
         self.htmlstep.step_before(self.step_before_image)
+        self.get_action_after_Screen()
         self.htmlstep.step_after(self.step_after_image)
+        self.run_status(line, status, self.testcaseName)
+        #self.get_action_after_Screen()
 
         return status
 
@@ -249,12 +257,29 @@ class TestAdepter(TestCaseData,  threading.Thread):
         else:
             return "Error"
 
+    def ExistsValue(self,index):
+        self.treeview = ttk.Treeview()
+        self.XMLFile = ET.ElementTree(file=self.robot.get_uiautomator_dump())
+        self.tree_info("", self.XMLFile)
+        self.path_range =len(self.node_path[index])
+        self.node_item = None
+        self.Find_image_Path(index, 1, "")
+
+        if self.node_item != None:
+            left, top, right, bottom = self.bounds_split(self.treeview.item(self.node_item)["values"][1])
+            Exist_image(self.step_before_image, left, top, right, bottom)
+            return "Success"
+        else:
+            return "Error"
+
     def ExistsImage(self, index):
-        status = assert_finder(self.image[index])
-        if status == True:
+        status = assert_finder(self.step_before_image, self.image[index])
+        if status == "success":
             print("Success : Find This Image and Node")
             #self.message.InsertText("Success : Find This Image and Node")
             return "Success"
+        elif status == "too more":
+            return self.ExistsValue(index)
         else:
             print("Error : Not Find Image and Node")
             self.message.InsertText("Error : Not Find Image and Node")
