@@ -281,8 +281,8 @@ class TestAdepter(TestCaseData):
         elif status == "too more":
             return self.ExistsValue(index)
         else:
-            print("Error : Not Find Image and Node")
-            self.message.InsertText("Error : Not Find Image and Node")
+            print("Error : Image and Node Not Find")
+            self.message.InsertText("Error : Image and Node Not Find")
             return "Error"
 
     def ClickImage(self, index):
@@ -294,8 +294,8 @@ class TestAdepter(TestCaseData):
         elif status == "too more":
             return self.ClickValue(index)
         else:
-            print("Error : Not Find Image")
-            self.message.InsertText("Error : Not Find Image\n")
+            print("Error : Image Not Find")
+            self.message.InsertText("Error : Image Not Find\n")
             return "Error"
 
     def tree_info(self,id , treeinfo):

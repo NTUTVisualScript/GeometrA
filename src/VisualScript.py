@@ -193,10 +193,10 @@ class View(Frame, threading.Thread):
         # print("len(node_path) = ",len(node_path))
         # for i in range(len(node_path)):
         #     print(node_path[i])
-
+        print(line)
         if self.focus != None:
-            self.add_changes(line, "", self.actionlist[line], self.valuelist[line], self.valueImagelist[line],
-                             self.node_path_list[line])
+            self.add_changes(self.focus, "", self.actionlist[self.focus], self.valuelist[self.focus], self.valueImagelist[self.focus], self.node_path_list[self.focus])
+
             if self.actioncombolist[self.focus].get() == 'Click'or self.actioncombolist[self.focus].get() == 'Assert Exist'or self.actioncombolist[self.focus].get() == 'Assert Not Exist':
                 self.valuelist[self.focus].delete(0, 'end')
                 for item in self.treeview.selection():
@@ -510,9 +510,9 @@ class View(Frame, threading.Thread):
         self.select_node = None
         self.select_image = None
 
-    def AddLineButtonClick(self,n, do ):
+    def AddLineButtonClick(self,n, redoundo ):
 
-        if do ==False:
+        if redoundo ==False:
             self.add_changes( n, "add", self.actionlist[n], self.valuelist[n], self.valueImagelist[n],
                             self.node_path_list[n])
 
@@ -541,6 +541,7 @@ class View(Frame, threading.Thread):
                 self.valuelist[i - 1].delete(0, 'end')
 
             i=i-1
+
 
     def RemoveLineButtonClick(self, n, do):
         if do == False:
@@ -657,9 +658,10 @@ class View(Frame, threading.Thread):
         if len(self.testcase_undo) != 0:
             testcase_line = self.testcase_undo.pop()
             line = testcase_line[0]
-            self.actioncombolist[line].set(testcase_line[2])
+            print(line)
             if testcase_line[1] == "remove":
                 self.AddLineButtonClick(line, True)
+                self.actioncombolist[line].set(testcase_line[2])
                 if testcase_line[2] == "Click" or testcase_line[2] == "Assert Exist" or \
                      testcase_line[2] == "Assert Not Exist":
                     self.TestcaseImage(line, testcase_line[3])
@@ -751,6 +753,8 @@ class View(Frame, threading.Thread):
         for self.line in range(50):
             self.new_line(n)
             n=n+1
+
+        print(self.line)
 
     def AuxscrollFunction(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=650, height=525)
