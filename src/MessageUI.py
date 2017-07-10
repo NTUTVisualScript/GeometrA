@@ -1,4 +1,5 @@
 from tkinter import *
+import webbrowser
 
 class Message(Text):
     __single = None
@@ -16,6 +17,14 @@ class Message(Text):
 
     def InsertText(self, insertStr):
         self.insert('end', insertStr)
+
+    def HyperLink(self,insertStr):
+        self.tag_config("tag1", foreground="blue", underline = True)
+        self.tag_bind("tag1", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
+        self.insert(END, insertStr, "tag1")
+
+    def HyperLinkClick(self, event, insertStr):
+        webbrowser.open_new(r"" + insertStr)
 
     def clear(self):
         self.delete(1.0,END)

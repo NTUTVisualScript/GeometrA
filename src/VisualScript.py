@@ -650,7 +650,9 @@ class View(Frame, threading.Thread):
 
             finish = "\nThe Test Case Finish!\n"
             self.message.InsertText(finish)
-            self.message.InsertText("\nYou can see report on this path\n" + reportpath +"\n\n")
+            self.message.InsertText("\nYou can see report on this path\n")
+            self.message.HyperLink(reportpath)
+            self.message.InsertText("\n\n")
             self.formatButtonClick("no")
 
 

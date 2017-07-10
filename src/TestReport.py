@@ -12,7 +12,7 @@ class Report:
     def __init__(self, parent = None):
         if Report.__single:
             raise Report.__single
-            Message.__single = self
+            Report.__single = self
         self.htmlfile = ""
         self.day = ""
         self.time = ""
