@@ -25,14 +25,6 @@ class checkADB_Connection:
                     finddevices.append(deviceNames[i])
 
             finddevices.pop(0)
-            self.SerialNo = finddevices[0]
-            real_size_pattern = r"real (\d+) x (\d+),"
-            result = subprocess.check_output('adb shell dumpsys display | grep mBaseDisplayInfo').__str__()
-            match = re.search(real_size_pattern, result)
-
-            self.DisplayW, self.DisplayH = match.group(1), match.group(2)
-            print("display = ", self.DisplayW, self.DisplayH)
-
             if len(finddevices) == 0:
                 message.InsertText("No Devices connect...\n")
                 return "No Connect"
@@ -41,6 +33,13 @@ class checkADB_Connection:
                 #for i in range(len(finddevices)):
                 message.InsertText(finddevices[0] + "\n\n\n")
                 return "Connect"
+                self.SerialNo = finddevices[0]
+                real_size_pattern = r"real (\d+) x (\d+),"
+                result = subprocess.check_output('adb shell dumpsys display | grep mBaseDisplayInfo').__str__()
+                match = re.search(real_size_pattern, result)
+
+                self.DisplayW, self.DisplayH = match.group(1), match.group(2)
+                print("display = ", self.DisplayW, self.DisplayH)
 
         except subprocess.CalledProcessError as e:
             message.InsertText(e.returncode)
