@@ -1,10 +1,12 @@
+import os
+import xml.etree.cElementTree as ET
 from tkinter import *
 from tkinter import ttk
-import os
+
+from PIL import ImageTk
+
+from GUI.DumpScreenShot import DumpScreenshot
 from adb_roboot import ADBRobot
-import xml.etree.cElementTree as ET
-from PIL import Image, ImageTk
-from DumpScreenShot import DumpScreenshot
 
 ROOT_DIR = os.path.dirname(__file__)
 RESOURCES_XML = os.path.join(ROOT_DIR, "dumpXML")
