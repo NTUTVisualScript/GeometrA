@@ -447,7 +447,8 @@ class View(Frame, threading.Thread):
 
     def dump_xml(self):
         self.message.InsertText("Analysing files...\n")
-        self.XMLFile = ET.ElementTree(file=Dump_UI())
+        f = Dump_UI()
+        self.XMLFile = ET.ElementTree(file=f)
 
 
     def SaveIMGButton(self):
