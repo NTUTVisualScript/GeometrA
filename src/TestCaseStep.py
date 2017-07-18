@@ -1,7 +1,7 @@
 from Viewtest import TestAdepter
 import time
 class Step:
-    def __init__(self, action, value, image, path):
+    def __init__(self, action, value, path):
         self.action = action
         self.value = value
         self.path = path

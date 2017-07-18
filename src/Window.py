@@ -143,8 +143,8 @@ class View(Frame, threading.Thread):
         photo = Image.open(filePath)
         self.cropped = photo.crop((left , top , right  , bottom ))
 
-        self.valueImagelist[line] = self.cropped
-        # print("valueImagelist = " + str(line))
+        self.valueImageList[line] = self.cropped
+        # print("valueImageList = " + str(line))
         photo2 = Image.open(filePath)
         img = photo2.crop((left, top, right, bottom))
         img.thumbnail((100, 100))
@@ -195,16 +195,16 @@ class View(Frame, threading.Thread):
         #     print(node_path[i])
         print(line)
         if self.focus != None:
-            self.add_changes(self.focus, "", self.actionlist[self.focus], self.valuelist[self.focus], self.valueImagelist[self.focus], self.node_path_list[self.focus])
+            self.add_changes(self.focus, "", self.actionList[self.focus], self.valueList[self.focus], self.valueImageList[self.focus], self.nodePathList[self.focus])
 
-            if self.actioncombolist[self.focus].get() == 'Click'or self.actioncombolist[self.focus].get() == 'Assert Exist'or self.actioncombolist[self.focus].get() == 'Assert Not Exist':
-                self.valuelist[self.focus].delete(0, 'end')
+            if self.actionManuList[self.focus].get() == 'Click'or self.actionManuList[self.focus].get() == 'Assert Exist'or self.actionManuList[self.focus].get() == 'Assert Not Exist':
+                self.valueList[self.focus].delete(0, 'end')
                 for item in self.treeview.selection():
                     value = self.treeview.item(item, "value")
                 bounds = value[1]
                 left, top, right, bottom = self.bounds_split(bounds)
                 self.cropImage(self.focus, left, top, right, bottom)
-                self.node_path_list[self.focus] = node_path
+                self.nodePathList[self.focus] = node_path
 
     def clickup(self, event, line):
         if filePath is None: return
@@ -218,17 +218,17 @@ class View(Frame, threading.Thread):
 
         if (self.right - self.left) > 5  or (self.bottom - self.top) > 5 or (self.right - self.left) < -5 or (self.right - self.left) < -5:
             if self.focus != None:
-                self.add_changes(line, "", self.actionlist[line], self.valuelist[line], self.valueImagelist[line],
-                                 self.node_path_list[line])
-                if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist' or self.actioncombolist[self.focus].get() =='Assert Not Exist':
-                    self.valuelist[self.focus].delete(0, 'end')
+                self.add_changes(line, "", self.actionList[line], self.valueList[line], self.valueImageList[line],
+                                 self.nodePathList[line])
+                if self.actionManuList[self.focus].get() == 'Click' or self.actionManuList[self.focus].get() == 'Assert Exist' or self.actionManuList[self.focus].get() =='Assert Not Exist':
+                    self.valueList[self.focus].delete(0, 'end')
                     self.cropImage(self.focus, self.left * self.multiple, self.top * self.multiple, self.right * self.multiple, self.bottom * self.multiple)
 
-                elif self.actioncombolist[self.focus].get() == 'Drag':
+                elif self.actionManuList[self.focus].get() == 'Drag':
                     text = "start x=" + str(int(self.clickstartX * self.multiple)) + ", y=" + str(int(self.clickstartY * self.multiple)) + " , " +\
                            "end x=" + str(int(self.clickendX * self.multiple)) + ", y=" + str(int(self.clickendY * self.multiple))
-                    self.valuelist[self.focus].delete(0, 'end')
-                    self.valuelist[self.focus].insert('end', text)
+                    self.valueList[self.focus].delete(0, 'end')
+                    self.valueList[self.focus].insert('end', text)
 
     def motion(self,event, line):
         x = int(self.tree_obj_image_list[line][1].place_info().get('x'))
@@ -274,7 +274,7 @@ class View(Frame, threading.Thread):
             event.y = self.screenshot_photo.height()
 
         self.mousePosition.set("Rectangle at [ " + str(self.clickstartX * self.multiple ) + ", " + str(self.clickstartY * self.multiple) + " To " + str((event.x + x) * self.multiple) + ", " + str((event.y + y) * self.multiple) + " ]")
-        #if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist':
+        #if self.actionManuList[self.focus].get() == 'Click' or self.actionManuList[self.focus].get() == 'Assert Exist':
         self.drawRectangle(line, self.clickstartX - x, self.clickstartY - y, event.x, event.y)
 
     def XMLTreeUI(self):
@@ -405,14 +405,14 @@ class View(Frame, threading.Thread):
         self.resetScreenShot()
         #print(self.focus)
         if self.focus != None:
-            if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist' or self.actioncombolist[self.focus].get() == 'Assert Not Exist':
+            if self.actionManuList[self.focus].get() == 'Click' or self.actionManuList[self.focus].get() == 'Assert Exist' or self.actionManuList[self.focus].get() == 'Assert Not Exist':
                 self.cropImage(self.focus, self.left, self.top, self.right, self.bottom)
 
-            if self.actioncombolist[self.focus].get() == 'Drag':
+            if self.actionManuList[self.focus].get() == 'Drag':
                 text = "x=" + str( int((self.left * self.multiple + self.left * self.multiple) / 2) ) +\
                        ",y=" + str( int((self.right * self.multiple + self.left * self.bottom) / 2) )
-                self.valuelist[self.focus].delete(0, 'end')
-                self.valuelist[self.focus].insert('end', text)
+                self.valueList[self.focus].delete(0, 'end')
+                self.valueList[self.focus].insert('end', text)
 
     def formatButton(self):
         self.dumpUI = Button(self.master, command=self.formatButtonClick, text="Dump UI",width=15)
@@ -458,15 +458,15 @@ class View(Frame, threading.Thread):
     def SaveIMGButtonClick(self):
         # if filePath is None: return
         # self.savecropImg.Save(filePath, self.getCropRange())
-        for i  in range(len(self.valueImagelist)):
-            if self.valueImagelist[i] != None:
+        for i  in range(len(self.valueImageList)):
+            if self.valueImageList[i] != None:
                 #print(i)
-                self.valueImagelist[i].show()
-                for n in range(len(self.node_path_list[i])):
-                    print(self.node_path_list[i][n])
+                self.valueImageList[i].show()
+                for n in range(len(self.nodePathList[i])):
+                    print(self.nodePathList[i][n])
 
     def ShowimageButtonClick(self, line):
-        self.valueImagelist[line].show()
+        self.valueImageList[line].show()
 
     def RunButton(self):
         self.runbutton = Button(self.master, command=self.RunButtonClick, text="Run",width=15)
@@ -478,7 +478,7 @@ class View(Frame, threading.Thread):
 
     def SaveButtonClick(self):
         Save_File = SaveFile()
-        self.dirpath = Save_File.SaveTestCase(self.actioncombolist, self.valuelist, self.valueImagelist,self.node_path_list)
+        self.dirpath = Save_File.SaveTestCase(self.actionManuList, self.valueList, self.valueImageList,self.nodePathList)
 
     def LoadButtonClick(self):
         Load_File = LoadFile()
@@ -491,14 +491,14 @@ class View(Frame, threading.Thread):
             Load_File.Decoder_Json(self.dirpath)
             actioncombo_list, value_list, valueImage_list, nodepath_list = Load_File.get_Loading_Data()
             for i in range(len(actioncombo_list)):
-                self.actioncombolist[i].set(str(actioncombo_list[i]))
+                self.actionManuList[i].set(str(actioncombo_list[i]))
 
-                self.valuelist[i].delete(0, 'end')
-                self.valuelist[i].insert('end', str(value_list[i]))
+                self.valueList[i].delete(0, 'end')
+                self.valueList[i].insert('end', str(value_list[i]))
 
-                self.node_path_list[i] = nodepath_list[i]
+                self.nodePathList[i] = nodepath_list[i]
                 if valueImage_list[i] != None:
-                    self.valueImagelist[i] = valueImage_list[i]
+                    self.valueImageList[i] = valueImage_list[i]
                     width, height = valueImage_list[i].size
                     img = valueImage_list[i].crop((0, 0, width, height))
                     img.thumbnail((100, 100))
@@ -511,82 +511,82 @@ class View(Frame, threading.Thread):
         self.select_node = None
         self.select_image = None
 
-    def AddLineButtonClick(self,n, redoundo ):
+    def addLineButtonClick(self,n, redoundo ):
 
         if redoundo ==False:
-            self.add_changes( n, "add", self.actionlist[n], self.valuelist[n], self.valueImagelist[n],
-                            self.node_path_list[n])
+            self.add_changes( n, "add", self.actionList[n], self.valueList[n], self.valueImageList[n],
+                            self.nodePathList[n])
 
         self.line  = self.line + 1
         self.new_line(self.line)
         i= self.line
 
-        self.valueImagelist.insert(n, None)
-        self.node_path_list.insert(n, None)
+        self.valueImageList.insert(n, None)
+        self.nodePathList.insert(n, None)
 
         while i > n:
-            getactionstr = self.actioncombolist[i-1].get()
-            self.actioncombolist[i].set(str(getactionstr))
-            self.actioncombolist[i-1].set('')
-            self.actionlist[i] = self.actionlist[i-1]
-            self.actionlist[i-1] = ""
+            getactionstr = self.actionManuList[i-1].get()
+            self.actionManuList[i].set(str(getactionstr))
+            self.actionManuList[i-1].set('')
+            self.actionList[i] = self.actionList[i-1]
+            self.actionList[i-1] = ""
 
-            if str(type(self.valuelist[i-1])) != "<class 'TestCaseEntry.TestCaseValue'>":
-                self.TestcaseImage(i, self.valuelist[i-1].image)
+            if str(type(self.valueList[i-1])) != "<class 'TestCaseEntry.TestCaseValue'>":
+                self.TestcaseImage(i, self.valueList[i-1].image)
                 self.TestcaseEntry(i-1)
 
             else:
-                getvaluestr = self.valuelist[i-1].get()
-                self.valuelist[i].delete(0, 'end')
-                self.valuelist[i].insert('end', getvaluestr)
-                self.valuelist[i - 1].delete(0, 'end')
+                getvaluestr = self.valueList[i-1].get()
+                self.valueList[i].delete(0, 'end')
+                self.valueList[i].insert('end', getvaluestr)
+                self.valueList[i - 1].delete(0, 'end')
 
             i=i-1
 
 
-    def RemoveLineButtonClick(self, n, do):
+    def removeLineButtonClick(self, n, do):
         if do == False:
-            self.add_changes(n, "remove", self.actionlist[n], self.valuelist[n], self.valueImagelist[n],
-                            self.node_path_list[n])
+            self.add_changes(n, "remove", self.actionList[n], self.valueList[n], self.valueImageList[n],
+                            self.nodePathList[n])
 
-        del self.valueImagelist[n]
-        del self.node_path_list[n]
+        del self.valueImageList[n]
+        del self.nodePathList[n]
         i = n
         while i < self.line:
-            getactionstr = self.actioncombolist[i + 1].get()
-            self.actioncombolist[i].set(str(getactionstr))
-            self.actionlist[i] = self.actionlist[i + 1]
-            self.actionlist[i + 1] = ""
+            getactionstr = self.actionManuList[i + 1].get()
+            self.actionManuList[i].set(str(getactionstr))
+            self.actionList[i] = self.actionList[i + 1]
+            self.actionList[i + 1] = ""
 
-            if str(type(self.valuelist[i+1])) != "<class 'TestCaseEntry.TestCaseValue'>":
-                self.TestcaseImage(i, self.valuelist[i+1].image)
+            if str(type(self.valueList[i+1])) != "<class 'TestCaseEntry.TestCaseValue'>":
+                self.TestcaseImage(i, self.valueList[i+1].image)
                 self.TestcaseEntry(i+1)
 
             else:
                 self.TestcaseEntry(i)
-                getvaluestr = self.valuelist[i+1].get()
-                self.valuelist[i].delete(0, 'end')
-                self.valuelist[i].insert('end', getvaluestr)
-                self.valuelist[i+1].delete(0, 'end')
+                getvaluestr = self.valueList[i+1].get()
+                self.valueList[i].delete(0, 'end')
+                self.valueList[i].insert('end', getvaluestr)
+                self.valueList[i+1].delete(0, 'end')
 
             i = i + 1
 
-        self.lineStrlist[self.line].grid_remove()
-        self.actioncombolist[self.line].grid_remove()
-        self.valuelist[self.line].grid_remove()
-        self.addlinelist[self.line].grid_remove()
-        self.removelinelist[self.line].grid_remove()
-        self.run_single_actionlist[self.line].grid_remove()
+        self.lineNumLIst[self.line].grid_remove()
+        self.actionManuList[self.line].grid_remove()
+        self.valueList[self.line].grid_remove()
+        self.addLineList[self.line].grid_remove()
+        self.removeLineList[self.line].grid_remove()
+        self.runStepList[self.line].grid_remove()
 
-        self.lineStrlist.pop()
-        self.actioncombolist.pop()
-        self.valuelist.pop()
-        self.addlinelist.pop()
-        self.removelinelist.pop()
-        self.run_single_actionlist.pop()
+        self.lineNumLIst.pop()
+        self.actionManuList.pop()
+        self.valueList.pop()
+        self.addLineList.pop()
+        self.removeLineList.pop()
+        self.runStepList.pop()
         self.line = self.line - 1
 
-    def Run_single_actionButtonClick(self, n):
+    def runActionButtonClick(self, n):
         self.focus = n
         threading.Thread(target=self.Run_SingleTestCase).start()
 
@@ -605,10 +605,10 @@ class View(Frame, threading.Thread):
             value = []
             image = []
             path_list = []
-            action.append(self.actioncombolist[n])
-            value.append(self.valuelist[n])
-            image.append(self.valueImagelist[n])
-            path_list.append(self.node_path_list[n])
+            action.append(self.actionManuList[n])
+            value.append(self.valueList[n])
+            image.append(self.valueImageList[n])
+            path_list.append(self.nodePathList[n])
             check_data = data.set_data(action, value, image, path_list)
             if check_data:
                 action, value, image, path_list = data.get_data()
@@ -635,7 +635,7 @@ class View(Frame, threading.Thread):
             w,h = self.checkADB.get_Display()
             info.set_Display(w,h)
 
-            check_data = data.set_data(self.actioncombolist, self.valuelist, self.valueImagelist, self.node_path_list)
+            check_data = data.set_data(self.actionManuList, self.valueList, self.valueImageList, self.nodePathList)
 
             if check_data:
                 start = htmltime.get_time()
@@ -658,79 +658,79 @@ class View(Frame, threading.Thread):
 
 
     def undo(self):
-        if len(self.testcase_undo) != 0:
-            print("undo ",self.testcase_undo)
-            testcase_line = self.testcase_undo.pop()
+        if len(self.testcaseUndo) != 0:
+            print("undo ",self.testcaseUndo)
+            testcase_line = self.testcaseUndo.pop()
             line = testcase_line[0]
 
-            if str(type(self.valuelist[line])) == "<class 'TestCaseEntry.TestCaseValue'>":
-                add_redo = [line, "", self.actioncombolist[line].get(), self.valuelist[line].get(),
-                            self.valueImagelist[line], self.node_path_list[line]]
+            if str(type(self.valueList[line])) == "<class 'TestCaseEntry.TestCaseValue'>":
+                add_redo = [line, "", self.actionManuList[line].get(), self.valueList[line].get(),
+                            self.valueImageList[line], self.nodePathList[line]]
             else:
-                add_redo = [line, "", self.actioncombolist[line].get(), self.valuelist[line].image,
-                            self.valueImagelist[line], self.node_path_list[line]]
+                add_redo = [line, "", self.actionManuList[line].get(), self.valueList[line].image,
+                            self.valueImageList[line], self.nodePathList[line]]
 
-            self.testcase_redo.append(add_redo)
+            self.testcaseRedo.append(add_redo)
 
             print(line)
             if testcase_line[1] == "remove":
-                self.AddLineButtonClick(line, True)
-                self.actioncombolist[line].set(testcase_line[2])
-                self.actionlist[line] = testcase_line[2]
+                self.addLineButtonClick(line, True)
+                self.actionManuList[line].set(testcase_line[2])
+                self.actionList[line] = testcase_line[2]
                 print("undo ", testcase_line[2])
                 if testcase_line[2] == "Click" or testcase_line[2] == "Assert Exist" or \
                      testcase_line[2] == "Assert Not Exist":
                     self.TestcaseImage(line, testcase_line[3])
                 else:
                     self.TestcaseEntry(line)
-                    self.valuelist[line].delete(0, END)
-                    self.valuelist[line].insert(0, testcase_line[3])
+                    self.valueList[line].delete(0, END)
+                    self.valueList[line].insert(0, testcase_line[3])
 
             elif testcase_line[1] == "add":
-                self.RemoveLineButtonClick(line, True)
+                self.removeLineButtonClick(line, True)
             elif testcase_line[2] == "Click" or testcase_line[2] == "Assert Exist" or \
                             testcase_line[2] == "Assert Not Exist":
-                self.actioncombolist[line].set(testcase_line[2])
+                self.actionManuList[line].set(testcase_line[2])
                 self.TestcaseImage(line, testcase_line[3])
             else:
                 self.TestcaseEntry(line)
-                self.actioncombolist[line].set(testcase_line[2])
-                self.valuelist[line].delete(0, END)
+                self.actionManuList[line].set(testcase_line[2])
+                self.valueList[line].delete(0, END)
                 if testcase_line[3]!= None:
-                   self.valuelist[line].insert(0, testcase_line[3])
+                   self.valueList[line].insert(0, testcase_line[3])
 
-            self.valueImagelist[line] = testcase_line[4]
-            self.node_path_list[line] = testcase_line[5]
+            self.valueImageList[line] = testcase_line[4]
+            self.nodePathList[line] = testcase_line[5]
 
     def redo(self):
-        if len(self.testcase_redo) != 0:
-            print("redo ",self.testcase_redo)
-            testcase_line = self.testcase_redo.pop()
+        if len(self.testcaseRedo) != 0:
+            print("redo ",self.testcaseRedo)
+            testcase_line = self.testcaseRedo.pop()
             line = testcase_line[0]
 
-            if str(type(self.valuelist[line])) == "<class 'TestCaseEntry.TestCaseValue'>":
-                add_undo = [line, "", self.actioncombolist[line].get(), self.valuelist[line].get(), self.valueImagelist[line], self.node_path_list[line]]
+            if str(type(self.valueList[line])) == "<class 'TestCaseEntry.TestCaseValue'>":
+                add_undo = [line, "", self.actionManuList[line].get(), self.valueList[line].get(), self.valueImageList[line], self.nodePathList[line]]
             else:
-                add_undo = [line, "", self.actioncombolist[line].get(), self.valuelist[line].image, self.valueImagelist[line], self.node_path_list[line]]
+                add_undo = [line, "", self.actionManuList[line].get(), self.valueList[line].image, self.valueImageList[line], self.nodePathList[line]]
 
-            self.testcase_undo.append(add_undo)
+            self.testcaseUndo.append(add_undo)
 
-            self.actioncombolist[line].set(testcase_line[2])
+            self.actionManuList[line].set(testcase_line[2])
             if testcase_line[1] == "remove":
-                self.RemoveLineButtonClick(line, True)
+                self.removeLineButtonClick(line, True)
             elif testcase_line[1] == "add":
-                self.AddLineButtonClick(line, True)
+                self.addLineButtonClick(line, True)
             elif testcase_line[2] == "Click" or testcase_line[2] == "Assert Exist" or \
                             testcase_line[2] == "Assert Not Exist":
                 self.TestcaseImage(line, testcase_line[3])
             else:
                 self.TestcaseEntry(line)
-                self.valuelist[line].delete(0, END)
+                self.valueList[line].delete(0, END)
                 if testcase_line[3] != None:
-                    self.valuelist[line].insert(0, testcase_line[3])
+                    self.valueList[line].insert(0, testcase_line[3])
 
-            self.valueImagelist[line] = testcase_line[4]
-            self.node_path_list[line] = testcase_line[5]
+            self.valueImageList[line] = testcase_line[4]
+            self.nodePathList[line] = testcase_line[5]
 
 
 
@@ -742,8 +742,8 @@ class View(Frame, threading.Thread):
             testcase_line = [line, change, action, value.image, image, path]
 
         print(action)
-        self.testcase_undo.append(testcase_line)
-        del self.testcase_redo[:]
+        self.testcaseUndo.append(testcase_line)
+        del self.testcaseRedo[:]
 
 
     def TestCaseFrame(self):
@@ -763,19 +763,19 @@ class View(Frame, threading.Thread):
 
         self.canvas.pack(side="left")
 
-        self.lineStrlist = []
-        self.addlinelist = []
-        self.removelinelist = []
-        self.run_single_actionlist = []
-        self.actioncombolist = []
-        self.actionlist = []
-        self.valuelist = []
-        self.showimagelist = []
-        self.valueImagelist = []
-        self.node_path_list = []
+        self.lineNumLIst = []
+        self.addLineList = []
+        self.removeLineList = []
+        self.runStepList = []
+        self.actionManuList = []
+        self.actionList = []
+        self.valueList = []
+        self.showImageList = []
+        self.valueImageList = []
+        self.nodePathList = []
 
-        self.testcase_undo = []
-        self.testcase_redo = []
+        self.testcaseUndo = []
+        self.testcaseRedo = []
 
         n=0
         for self.line in range(50):
@@ -793,49 +793,49 @@ class View(Frame, threading.Thread):
         values_image.create_image(0, 0, anchor=NW, image=image)
         values_image.bind("<Button-1>", lambda event, i=line: self.valueFocusIn(event, i))
         values_image.image = image
-        self.valuelist[line].grid_remove()
-        self.valuelist[line] = values_image
-        self.valuelist[line].grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
-        self.showimagelist[line].grid(row=line + 1, column=7, padx = ( 5, 0) , pady = ( 5 , 2.5))
+        self.valueList[line].grid_remove()
+        self.valueList[line] = values_image
+        self.valueList[line].grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
+        self.showImageList[line].grid(row=line + 1, column=7, padx = ( 5, 0) , pady = ( 5 , 2.5))
 
     def TestcaseEntry(self, line):
         value = TestCaseValue(self.listFrame, width=35)
         value.bind("<FocusIn>", lambda event, i=line: self.valueFocusIn(event, i))
-        self.valuelist[line].grid_remove()
-        self.showimagelist[line].grid_remove()
-        self.valuelist[line] = value
-        self.valuelist[line].grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
+        self.valueList[line].grid_remove()
+        self.showImageList[line].grid_remove()
+        self.valueList[line] = value
+        self.valueList[line].grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
 
     def new_line(self,n):
         action_value = StringVar()
 
         lineStr = Label(self.listFrame, text=str(n+1)+". ", width=3)
-        self.lineStrlist.append(lineStr)
-        addline = Button(self.listFrame, command=lambda :self.AddLineButtonClick(n, False), text="+", width=3)
-        self.addlinelist.append(addline)
+        self.lineNumLIst.append(lineStr)
+        addline = Button(self.listFrame, command=lambda :self.addLineButtonClick(n, False), text="+", width=3)
+        self.addLineList.append(addline)
 
-        removeline = Button(self.listFrame, command=lambda :self.RemoveLineButtonClick(n, False), text="-", width=3)
-        self.removelinelist.append(removeline)
+        removeline = Button(self.listFrame, command=lambda :self.removeLineButtonClick(n, False), text="-", width=3)
+        self.removeLineList.append(removeline)
 
-        run_single_action = Button(self.listFrame, command=lambda: self.Run_single_actionButtonClick(n), text="▶", width=3)
-        self.run_single_actionlist.append(run_single_action)
+        run_single_action = Button(self.listFrame, command=lambda: self.runActionButtonClick(n), text="▶", width=3)
+        self.runStepList.append(run_single_action)
 
         actioncombo = TestCaseAction(self.listFrame, textvariable=action_value, width=10, height=22,
                                    state='readonly')
         actioncombo.bind("<<ComboboxSelected>>", lambda event, i=n: self.ActionSelect(event, i))
         actioncombo.bind("<MouseWheel>", lambda event, i=n: self.ActionSelect(event, i))
-        self.actioncombolist.append(actioncombo)
+        self.actionManuList.append(actioncombo)
 
         value = TestCaseValue(self.listFrame,width=35)
         value.bind("<FocusIn>", lambda event, i=n: self.valueFocusIn(event, i))
 
         showimage = Button(self.listFrame, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
-        self.showimagelist.append(showimage)
+        self.showImageList.append(showimage)
 
-        self.valuelist.append(value)
-        self.valueImagelist.append(None)
-        self.node_path_list.append(None)
-        self.actionlist.append("")
+        self.valueList.append(value)
+        self.valueImageList.append(None)
+        self.nodePathList.append(None)
+        self.actionList.append("")
 
         lineStr.grid(row = n+1 , column = 1 )
         addline.grid(row = n+1 , column = 2 )
@@ -846,21 +846,21 @@ class View(Frame, threading.Thread):
 
     def ActionSelect(self,event, n):
         self.focus = n
-        #self.cmd.do(self.actioncombolist[n])
-        print(self.actionlist[n])
-        self.add_changes(n, "", self.actionlist[n], self.valuelist[n], self.valueImagelist[n], self.node_path_list[n])
-        self.actionlist[n] = self.actioncombolist[n].get()
-        self.valueImagelist[n] = None
+        #self.cmd.do(self.actionManuList[n])
+        print(self.actionList[n])
+        self.add_changes(n, "", self.actionList[n], self.valueList[n], self.valueImageList[n], self.nodePathList[n])
+        self.actionList[n] = self.actionManuList[n].get()
+        self.valueImageList[n] = None
         self.TestcaseEntry(n)
         self.Action_FocusIn()
 
     def valueFocusIn(self,event, n):
         self.focus = n
-        if self.actioncombolist[self.focus].get() != 'TestCase':
+        if self.actionManuList[self.focus].get() != 'TestCase':
             self.Action_FocusIn()
 
     def Action_FocusIn(self):
-        if self.actioncombolist[self.focus].get() == 'Drag':
+        if self.actionManuList[self.focus].get() == 'Drag':
             if filePath is None: return
             self.Drag_image = Canvas(self.screenshot, height=800, width=450)
             self.Drag_image.configure(borderwidth=-3)
@@ -874,15 +874,15 @@ class View(Frame, threading.Thread):
             self.Drag_image.bind("<Enter>", self.DragEnter)
             self.Drag_image.bind("<B1-Motion>", self.Dragged)  # 滑鼠拖拉動作
 
-        elif self.actioncombolist[self.focus].get() == 'TestCase':
+        elif self.actionManuList[self.focus].get() == 'TestCase':
             openfile = LoadFile()
             path = openfile.LoadTestCasePath()
             print(path)
             if path is not None:
                 if path !="":
-                    self.valuelist[self.focus].delete(0, 'end')
-                    self.valuelist[self.focus].insert('end', path)
-        elif self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist' or self.actioncombolist[self.focus].get() == 'Assert Not Exist':
+                    self.valueList[self.focus].delete(0, 'end')
+                    self.valueList[self.focus].insert('end', path)
+        elif self.actionManuList[self.focus].get() == 'Click' or self.actionManuList[self.focus].get() == 'Assert Exist' or self.actionManuList[self.focus].get() == 'Assert Not Exist':
             self.TestcaseImage(self.focus)
 
         else:
@@ -901,11 +901,11 @@ class View(Frame, threading.Thread):
         self.top, self.bottom = sorted([self.clickstartY, self.clickendY])
 
         if self.left != self.right or self.top != self.bottom:
-                if self.actioncombolist[self.focus].get() == 'Drag':
+                if self.actionManuList[self.focus].get() == 'Drag':
                     text = "start x=" + str(int(self.clickstartX * self.multiple)) + ", y=" + str(int(self.clickstartY * self.multiple)) + " , " +\
                            "end x=" + str(int(self.clickendX * self.multiple)) + ", y=" + str(int(self.clickendY * self.multiple))
-                    self.valuelist[self.focus].delete(0, 'end')
-                    self.valuelist[self.focus].insert('end', text)
+                    self.valueList[self.focus].delete(0, 'end')
+                    self.valueList[self.focus].insert('end', text)
 
     def Dragmotion(self,event):
         self.mousePosition.set("Mouse in window [ " + str(int((event.x) * self.multiple)) + ", " + str(int((event.y) * self.multiple)) + " ]")

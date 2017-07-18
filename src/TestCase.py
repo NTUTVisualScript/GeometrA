@@ -4,7 +4,7 @@ class TestCase:
     def __init__(self):
         self.steplist = []
 
-    def insert(self, n , action, value, image, path):
+    def insert(self, n , action, value, path):
         self.steplist.insert(n, Step(action, value, image, path))
 
     def run(self):
