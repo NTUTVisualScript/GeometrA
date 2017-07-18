@@ -8,5 +8,5 @@ class TestCase:
         self.steplist.insert(n, Step(action, value, image, path))
 
     def run(self):
-        TestAdepter.set_data()
+        # TestAdepter.set_data()
         #TestAdepter.run_all()
