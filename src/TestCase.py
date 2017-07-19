@@ -1,12 +1,11 @@
 from TestCaseStep import Step
 from Viewtest import TestAdepter
 class TestCase:
-    def __init__(self):
-        self.steplist = []
+    def __init__(self, n=0):
+        self.stepList = []
+        self.stepSize = n
+        for i in range(0, n):
+            stepList.append(Step())
 
-    def insert(self, n , action, value, path):
-        self.steplist.insert(n, Step(action, value, image, path))
-
-    def run(self):
-        # TestAdepter.set_data()
-        #TestAdepter.run_all()
+    def insert(self, n):
+        self.stepList.insert(n, Step())
