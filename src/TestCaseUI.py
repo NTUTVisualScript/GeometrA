@@ -48,9 +48,6 @@ class TestCaseUI():
             self.actionMenuList[i].grid(row = i+1, column = 5, padx = (5, 0), pady = (5, 2.5))
             self.valueBarList[i].grid(row = i+1, column = 6, padx = (5, 0), pady = (5, 2.5))
 
-    def addButtonClick():
-
-
-
-    def actionSelect(self, event, n):
-        self.focus = n
+    def executeButtonClick(n):
+        exe = Executor(self.case)
+        exe.run(n)
