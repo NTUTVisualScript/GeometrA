@@ -14,17 +14,20 @@ class Window(View):
         self.testCaseBlock.place(x=460, y=300)
 
         self.canvas = Canvas(self.testCaseBlock)
-        self.listFrame = Frame(self.canvas)
+        self.testCaseFrame = Frame(self.canvas)
 
         self.scroll = Scrollbar(self.testCaseBlock, orient = 'verticla' , command = self.canvas.yview)
         self.scroll.pack(side = 'right', fill = 'y')
         self.canvas['yscrollcommand'] = self.scroll.set
 
         self.canvas.create_window((0, 0), window = self.Frame, anchor='nw')
-        self.listFrame.bind('<Configure>', self.auxscrollFunction)
+        self.testCaseFrame.bind('<Configure>', self.auxscrollFunction)
         self.scroll.grid_forget()
 
         self.canvas.pack(side='left')
+
+        self.case = TestCaseUI(self.testCaseFrame)
+
 
 
     def auxscrollFunction(self, event):
