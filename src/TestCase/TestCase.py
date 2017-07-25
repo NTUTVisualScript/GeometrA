@@ -1,5 +1,4 @@
 from TestStep import Step
-from Viewtest import TestAdepter
 class TestCase:
     def __init__(self, n=0):
         self.stepList = []

@@ -22,3 +22,13 @@
     Next Step:
     1. Study how to load file as Test Case
     2. Finish TestCase and rest of actions.
+
+### 2017/07/25 10:00 ~ 10:38
+    study about how to save file and load file
+
+### 2017/07/25 14:13 ~ 17:42
+    Finish FileLoader and Save prototype
+    Executor run is done
+    Next Step:
+    1. add 'runAll' function
+    2. complete all function that needed for executor, so unit tests can truly pass

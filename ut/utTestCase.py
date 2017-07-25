@@ -1,6 +1,6 @@
 import unittest
 import sys
-sys.path.append('../src')
+sys.path.append('../src/TestCase')
 from TestCase import TestCase
 
 class TestCaseTestSuite(unittest.TestCase):

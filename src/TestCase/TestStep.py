@@ -1,4 +1,3 @@
-from Viewtest import TestAdepter
 import time
 class Step:
     def __init__(self):
