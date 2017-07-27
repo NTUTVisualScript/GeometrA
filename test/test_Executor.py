@@ -20,7 +20,7 @@ class ExecutorTestSuite(unittest.TestCase):
     def testRunNone(self):
         case = TestCase(5)
         exe = Executor(case)
-        self.assertEqual(None, exe.run(2))
+        self.assertEqual(True, exe.run(2))
 
     def testRunClick(self):
         case = TestCase(5)
@@ -65,7 +65,7 @@ class ExecutorTestSuite(unittest.TestCase):
     def testRunSleep(self):
         case = TestCase(5)
         case.setAction(2, 'Sleep(s)')
-        case.setValue(2, '1')
+        case.setValue(2, '0')
         exe = Executor(case)
         self.assertEqual(True, exe.run(2))
     def testRunSleepExcept(self):
@@ -104,3 +104,24 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setValue(2, 'Disappeared image')
         exe = Executor(case)
         self.assertEqual(True, exe.run(2))
+
+    def testRunAll(self):
+        case = TestCase(5)
+        case.setAction(1, 'Android Keycode')
+        case.setValue(1, 'KEYCODE_HOME')
+        case.setAction(2, 'Sleep(s)')
+        case.setValue(2, '0')
+        case.setAction(4, 'TestCase')
+        case.setValue(4, 'C:/test')
+        exe = Executor(case)
+        self.assertEqual(True, exe.runAll())
+    def testRunAll(self):
+        case = TestCase(5)
+        case.setAction(0, 'Android Keycode')
+        case.setValue(0, 'KEYCODE_HOME')
+        case.setAction(1, 'Sleep(s)')
+        case.setValue(1, 'Hello World')
+        case.setAction(2, 'Sleep(s)')
+        case.setValue(2, '3')
+        exe = Executor(case)
+        self.assertEqual(False, exe.runAll())
