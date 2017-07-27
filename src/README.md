@@ -32,3 +32,8 @@
     Next Step:
     1. add 'runAll' function
     2. complete all function that needed for executor, so unit tests can truly pass
+
+### 2017/07/27 16:30 ~ 17:29
+    Finished 'runAll' function in Executor
+    Next Step:
+    1. complete all functions that needed for executor. 

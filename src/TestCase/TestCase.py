@@ -14,7 +14,10 @@ class TestCase:
         return self.stepList[n]
 
     def setAction(self, n, action):
-        self.stepList[n].setAction(action)
+        try:
+            self.stepList[n].setAction(action)
+        except Exception:
+            raise Exception('Not an action')
 
     def setValue(self, n, value):
         self.stepList[n].setValue(value)

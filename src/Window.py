@@ -422,7 +422,6 @@ class View(Frame, threading.Thread):
         self.focus = None
         self.select_node = None
         self.select_image = None
-        self.dirpath = ""
         if getdevices ==None:
             self.message.clear()
             if self.checkADB.check() == "Connect":

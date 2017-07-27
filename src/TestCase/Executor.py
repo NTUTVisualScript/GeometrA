@@ -24,26 +24,34 @@ class Executor():
         self.case = case
         # self.message = Message.getMessage(self)
 
+    def runAll(self):
+        for i in range(self.case.getSize()):
+            if not self.run(i):
+                # self.message.InsertText('Step' + str(i+1) + 'Status Failed')
+                return False
+            # self.message.InsertText('Step' + str(i+1) + 'Status Success')
+        return True
+
     def run(self, n):
-        act = self.case.getSteps(n).getAction()
-        if act == '':
-            return None
-        elif act == 'Click':
-            return self.click(n)
-        elif act == 'Drag':
-            return self.drag(n)
-        elif act == 'Set Text':
-            return self.setText(n)
-        elif act == 'TestCase':
-            return self.testCase(n)
-        elif act == 'Sleep(s)':
-            return self.sleep(n)
-        elif act == 'Android Keycode':
-            return self.sendKeyValue(n)
-        elif act == 'Assert Exist':
-            return self.imageExist(n)
-        elif act == 'Assert Not Exist':
-            return self.imageNotExist(n)
+            act = self.case.getSteps(n).getAction()
+            if act == '':
+                return True
+            elif act == 'Click':
+                return self.click(n)
+            elif act == 'Drag':
+                return self.drag(n)
+            elif act == 'Set Text':
+                return self.setText(n)
+            elif act == 'TestCase':
+                return self.testCase(n)
+            elif act == 'Sleep(s)':
+                return self.sleep(n)
+            elif act == 'Android Keycode':
+                return self.sendKeyValue(n)
+            elif act == 'Assert Exist':
+                return self.imageExist(n)
+            elif act == 'Assert Not Exist':
+                return self.imageNotExist(n)
 
     def click(self, n):
         '''
@@ -76,7 +84,7 @@ class Executor():
             endY = int(coordinate[3].split('=')[1])
 
         except:
-            print('Coordinate Value Split Error: ', str(value))
+            # print('Coordinate Value Split Error: ', str(value))
             # self.message.InsertText('Invalid Coordinate')
             return False
         try:
@@ -110,7 +118,7 @@ class Executor():
             Here is comment for unittest to pass
             '''
             exe = Executor(testCaseFile.getTestCase())
-            # exe.runAll()
+            exe.runAll()
             return True
         except:
             # self.message.InsertText('Error! Please check the test case file: \n' + self.case.getSteps(n).getValue() + '\n')
