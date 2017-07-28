@@ -17,95 +17,95 @@ class ExecutorTestSuite(unittest.TestCase):
         step = Step()
         self.assertRaisesRegex(Exception, 'Not a executable case', Executor, step)
 
-    def testRunNone(self):
+    def testExecuteNone(self):
         case = TestCase(5)
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
+        self.assertEqual(True, exe.execute(2))
 
-    def testRunClick(self):
+    def testExecuteClick(self):
         case = TestCase(5)
         case.setAction(2, 'Click')
         case.setValue(2, 'Image')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
+        self.assertEqual(True, exe.execute(2))
 
-    def testRunDrag(self):
+    def testExecuteDrag(self):
         case = TestCase(5)
         case.setAction(2, 'Drag')
         case.setValue(2, 'x=2, y=3, x=4, y=3')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
-    def testRunDragExcept(self):
+        self.assertEqual(True, exe.execute(2))
+    def testExecuteDragExcept(self):
         case = TestCase(5)
         case.setAction(2, 'Drag')
         case.setValue(2, 'x=, y=3, x=4, y=3')
         exe = Executor(case)
-        self.assertEqual(False, exe.run(2))
+        self.assertEqual(False, exe.execute(2))
 
-    def testRunSetText(self):
+    def testExecuteSetText(self):
         case = TestCase(5)
         case.setAction(2, 'Set Text')
         case.setValue(2, 'Hello World')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
+        self.assertEqual(True, exe.execute(2))
 
-    def testRunTestCase(self):
+    def testExecuteTestCase(self):
         case = TestCase(5)
         case.setAction(2, 'TestCase')
         case.setValue(2, 'C:/test')     # We need to put a sample TestCase in the path
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
-    def testRunTestCaseExcept(self):
+        self.assertEqual(True, exe.execute(2))
+    def testExecuteTestCaseExcept(self):
         case = TestCase(5)
         case.setAction(2, 'TestCase')
         case.setValue(2, 'D:/test')
         exe = Executor(case)
-        self.assertEqual(False, exe.run(2))
+        self.assertEqual(False, exe.execute(2))
 
-    def testRunSleep(self):
+    def testExecuteSleep(self):
         case = TestCase(5)
         case.setAction(2, 'Sleep(s)')
         case.setValue(2, '0')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
-    def testRunSleepExcept(self):
+        self.assertEqual(True, exe.execute(2))
+    def testExecuteSleepExcept(self):
         case = TestCase(5)
         case.setAction(2, 'Sleep(s)')
         case.setValue(2, 'Hello World')
         exe = Executor(case)
-        self.assertEqual(False, exe.run(2))
+        self.assertEqual(False, exe.execute(2))
 
-    def testRunAndroidKeycode(self):
+    def testExecuteAndroidKeycode(self):
         case = TestCase(5)
         case.setAction(2, 'Android Keycode')
         case.setValue(2, 'KEYCODE_HOME')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
+        self.assertEqual(True, exe.execute(2))
     '''
     It seems like there is no checking for key code in ADBRobot
     '''
-    # def testRunAndroidKeycodeExcept(self):
+    # def testExecuteAndroidKeycodeExcept(self):
     #     case = TestCase(5)
     #     case.setAction(2, 'Android Keycode')
     #     case.setValue(2, 'Hello World')
     #     exe = Executor(case)
-    #     self.assertEqual(False, exe.run(2))
+    #     self.assertEqual(False, exe.execute(2))
 
-    def testRunAssertExist(self):
+    def testExecuteAssertExist(self):
         case = TestCase(5)
         case.setAction(2, 'Assert Exist')
         case.setValue(2, 'Image')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
+        self.assertEqual(True, exe.execute(2))
 
-    def testRunAssertNotExist(self):
+    def testExecuteAssertNotExist(self):
         case = TestCase(5)
         case.setAction(2, 'Assert Not Exist')
         case.setValue(2, 'Disappeared image')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
+        self.assertEqual(True, exe.execute(2))
 
-    def testRunAll(self):
+    def testExecuteAll(self):
         case = TestCase(5)
         case.setAction(1, 'Android Keycode')
         case.setValue(1, 'KEYCODE_HOME')
@@ -115,7 +115,7 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setValue(4, 'C:/test')
         exe = Executor(case)
         self.assertEqual(True, exe.runAll())
-    def testRunAll(self):
+    def testExecuteAll(self):
         case = TestCase(5)
         case.setAction(0, 'Android Keycode')
         case.setValue(0, 'KEYCODE_HOME')

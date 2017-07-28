@@ -22,17 +22,18 @@ class Executor():
         if str(case.__class__) != '<class \'TestCase.TestCase\'>':
             raise Exception('Not a executable case')
         self.case = case
+        self.robot = ADBRobot()
         # self.message = Message.getMessage(self)
 
     def runAll(self):
         for i in range(self.case.getSize()):
-            if not self.run(i):
+            if not self.execute(i):
                 # self.message.InsertText('Step' + str(i+1) + 'Status Failed')
                 return False
             # self.message.InsertText('Step' + str(i+1) + 'Status Success')
         return True
 
-    def run(self, n):
+    def execute(self, n):
             act = self.case.getSteps(n).getAction()
             if act == '':
                 return True
@@ -64,13 +65,15 @@ class Executor():
             '''
             Here is commented for unittest
             '''
-            # ADBRobot().tap(coordinate_x, coordinate_y)
+            # self.robot.tap(coordinate_x, coordinate_y)
             return True
         else:
             # self.message.InsertText('Error: Image Not Find\n')
             return False
 
     def imageFinder(self, target):
+        self.robot.before_screenshot()
+
         return True
 
     def drag(self, n):
@@ -92,7 +95,7 @@ class Executor():
             Here is comment for unittest to pass
             '''
             # dragImage(startX, startY, endX, endY)
-            # ADBRobot().drag_and_drop(startX, startY, endX, endY)
+            # self.robot.drag_and_drop(startX, startY, endX, endY)
             return True
         except:
             print('Drag and drop error')
@@ -103,7 +106,7 @@ class Executor():
         '''
         Here is comment for unittest to pass
         '''
-        # ADBRobot().input_text(self.case.getSteps(n).getValue())
+        # self.robot.input_text(self.case.getSteps(n).getValue())
         return True
 
     def testCase(self, n):
@@ -134,7 +137,7 @@ class Executor():
 
     def sendKeyValue(self, n):
         try:
-            ADBRobot().send_key(self.case.getSteps(n).getValue())
+            self.robot.send_key(self.case.getSteps(n).getValue())
             return True
         except:
             # self.message.InsertText('Invalid Android Keycode\n')
