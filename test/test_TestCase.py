@@ -26,3 +26,12 @@ class TestCaseTestSuite(unittest.TestCase):
         case.insert(2)
         self.assertEqual(6, case.getSize())
         self.assertEqual('KEYCODE_HOME', case.getSteps(3).getValue())
+
+    def testSetStatus(self):
+        case = TestCase(5)
+        self.assertEqual('Success', case.setStatus(2, 'Success'))
+
+    def testGetStatus(self):
+        case = TestCase(5)
+        case.setStatus(2, 'Success')
+        self.assertEqual('Success', case.getStatus(2))

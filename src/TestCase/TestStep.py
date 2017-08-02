@@ -3,6 +3,7 @@ class Step:
     def __init__(self):
         self.act = ''
         self.val = ''
+        self.status = ''
 
     def setAction(self, act):
         actList = ['Click', 'Drag', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
@@ -19,3 +20,14 @@ class Step:
 
     def getValue(self):
         return self.val
+
+    def setStatus(self, status):
+        if (status == 'Success') | (status == 'Failed') | (status == 'Error'):
+            self.status = status
+            return self.status
+        raise Exception('setStatus Function Invalid Used Error')
+
+    def getStatus(self):
+        if self.status != '':
+            return self.status
+        raise Exception('Step Not Executed')

@@ -6,6 +6,8 @@ from cv2img import CV2Img
 from adb_roboot import ADBRobot
 from Load import FileLoader
 from MessageUI import Message
+from HTML.step import HtmlTestStep
+
 
 def dragImage(x1,y1,x2,y2):
     '''
@@ -23,7 +25,16 @@ class Executor():
             raise Exception('Not a executable case')
         self.case = case
         self.robot = ADBRobot()
+        self.htmlstep = HtmlTestStep.getHtmlTestStep()
         # self.message = Message.getMessage(self)
+
+    def getOriginalScreen(self):
+        filePath = self.robot.before_screenshot()
+        self.originalScreen = filePath
+
+    def getCurrentScreen(self):
+        filePath = self.robot.before_screenshot()
+        self.currentScreen = filePath
 
     def runAll(self):
         for i in range(self.case.getSize()):
@@ -33,26 +44,39 @@ class Executor():
             # self.message.InsertText('Step' + str(i+1) + 'Status Success')
         return True
 
+    def run(self, n):
+        self.getOriginalScreen()
+        self.htmlstep.step_before(self.originalScreen)
+
+        status = self.execute(n)
+
+        self.getCurrentScreen()
+        self.htmlstep.step_after(self.currentScreen)
+
+        self.stepResult(n)
+
+        return status
+
     def execute(self, n):
             act = self.case.getSteps(n).getAction()
             if act == '':
-                return True
+                return self.case.setStatus(n, 'Success')
             elif act == 'Click':
-                return self.click(n)
+                return self.case.setStatus(n, self.click(n))
             elif act == 'Drag':
-                return self.drag(n)
+                return self.case.setStatus(n, self.drag(n))
             elif act == 'Set Text':
-                return self.setText(n)
+                return self.case.setStatus(n, self.setText(n))
             elif act == 'TestCase':
-                return self.testCase(n)
+                return self.case.setStatus(n, self.testCase(n))
             elif act == 'Sleep(s)':
-                return self.sleep(n)
+                return self.case.setStatus(n, self.sleep(n))
             elif act == 'Android Keycode':
-                return self.sendKeyValue(n)
+                return self.case.setStatus(n, self.sendKeyValue(n))
             elif act == 'Assert Exist':
-                return self.imageExist(n)
+                return self.case.setStatus(n, self.imageExist(n))
             elif act == 'Assert Not Exist':
-                return self.imageNotExist(n)
+                return self.case.setStatus(n, self.imageNotExist(n))
 
     def click(self, n):
         '''
@@ -66,10 +90,10 @@ class Executor():
             Here is commented for unittest
             '''
             # self.robot.tap(coordinate_x, coordinate_y)
-            return True
+            return 'Success'
         else:
             # self.message.InsertText('Error: Image Not Find\n')
-            return False
+            return 'Failed'
 
     def imageFinder(self, target):
         self.robot.before_screenshot()
@@ -89,25 +113,28 @@ class Executor():
         except:
             # print('Coordinate Value Split Error: ', str(value))
             # self.message.InsertText('Invalid Coordinate')
-            return False
+            return 'Error'
         try:
             '''
             Here is comment for unittest to pass
             '''
             # dragImage(startX, startY, endX, endY)
             # self.robot.drag_and_drop(startX, startY, endX, endY)
-            return True
+            return 'Success'
         except:
             print('Drag and drop error')
             # self.message.InsertText('Drag and drop error')
-            return False
+            return 'Failed'
 
     def setText(self, n):
         '''
         Here is comment for unittest to pass
         '''
-        # self.robot.input_text(self.case.getSteps(n).getValue())
-        return True
+        try:
+            # self.robot.input_text(self.case.getSteps(n).getValue())
+            return 'Success'
+        except:
+            return 'Failed'
 
     def testCase(self, n):
 
@@ -122,36 +149,54 @@ class Executor():
             '''
             exe = Executor(testCaseFile.getTestCase())
             exe.runAll()
-            return True
+            return 'Success'
         except:
             # self.message.InsertText('Error! Please check the test case file: \n' + self.case.getSteps(n).getValue() + '\n')
-            return False
+            return 'Error'
 
     def sleep(self, n):
         try:
-            time.sleep(int(self.case.getSteps(n).getValue()))
-            return True
+            t = int(self.case.getSteps(n).getValue())
         except:
-            # self.message.InsertText('Invalid Time\n')
-            return False
+            self.message.InsertText('Invalid Time')
+            return 'Error'
+        try:
+            time.sleep(t)
+            return 'Success'
+        except:
+            # self.message.InsertText('Time Sleep Failed\n')
+            return 'Failed'
 
     def sendKeyValue(self, n):
         try:
             self.robot.send_key(self.case.getSteps(n).getValue())
-            return True
+            return 'Success'
         except:
             # self.message.InsertText('Invalid Android Keycode\n')
-            return False
+            return 'Error'
 
     def imageExist(self, n):
         '''
         Here is waiting for imageFinder too
         '''
-        return self.imageFinder(self.case.getSteps(n).getValue())
+        if self.imageFinder(self.case.getSteps(n).getValue()):
+            return 'Success'
+        self.message.InsertText('Failed: image and node Not Found')
+        return 'Failed'
 
     def imageNotExist(self, n):
         '''
         Here return true for unittest, the comment line is real code
         '''
-        # return !self.imageExist(n)
-        return True
+        # if self.imageFinder(self.case.getSteps(n).getValue()):
+        #     return 'Failed'
+        return 'Success'
+
+    def stepResult(self, n):
+        if self.case.getStatus(n) == True:
+            result = 'Action ' + str(n+1) + ' Success'
+        else:
+            result = 'Action ' + str(n+1) + ' Failed'
+
+        # self.message.InsertText(result)
+        return result

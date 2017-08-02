@@ -14,7 +14,7 @@ class StepTestSuite(unittest.TestCase):
         step.setAction('Click')
         self.assertEqual('Click', step.getAction())
 
-    def testSetAction(self):
+    def testSetActionExcept(self):
         step = Step()
         self.assertRaisesRegex(Exception, 'Not an action', step.setAction, 'clik')
 
@@ -22,3 +22,20 @@ class StepTestSuite(unittest.TestCase):
         step = Step()
         step.setValue('KEYCODE_HOME')
         self.assertEqual('KEYCODE_HOME', step.getValue())
+
+    def testSetStatus(self):
+        step = Step()
+        self.assertEqual('Success', step.setStatus('Success'))
+        self.assertEqual('Failed', step.setStatus('Failed'))
+        self.assertEqual('Error', step.setStatus('Error'))
+    def testSetStatusExcept(self):
+        step = Step()
+        self.assertRaisesRegex(Exception, 'setStatus Function Invalid Used Error', step.setStatus, 'Hello World')
+
+    def testGetStatus(self):
+        step = Step()
+        step.setStatus('Success')
+        self.assertEqual('Success', step.getStatus())
+    def testGetStatusExcept(self):
+        step = Step()
+        self.assertRaisesRegex(Exception, 'Step Not Executed', step.getStatus)

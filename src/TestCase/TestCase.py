@@ -24,3 +24,9 @@ class TestCase:
 
     def insert(self, n):
         self.stepList.insert(n, Step())
+
+    def setStatus(self, n, status):
+        return self.stepList[n].setStatus(status)
+
+    def getStatus(self, n):
+        return self.stepList[n].getStatus()
