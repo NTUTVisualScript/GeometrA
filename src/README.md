@@ -36,4 +36,10 @@
 ### 2017/07/27 16:30 ~ 17:29
     Finished 'runAll' function in Executor
     Next Step:
-    1. complete all functions that needed for executor. 
+    1. complete all functions that needed for executor.
+
+### 2017/08/02 15:00 ~ 17:55
+    1. Complete run() function
+    2. Do refactor of status from boolean to 'Success', 'Failed', and 'Error'
+    Next Step:
+    1. Complete all functions that needed for executor. 

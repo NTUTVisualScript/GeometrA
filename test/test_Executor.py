@@ -110,15 +110,17 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setAction(2, 'Sleep(s)')
         case.setValue(2, '0')
         exe = Executor(case)
-        self.assertEqual(True, exe.run(2))
+        self.assertEqual('Success', exe.run(2))
 
     def testStepResult(self):
         case = TestCase(5)
-        case.setStatus(0, True)
-        case.setStatus(1, False)
+        case.setStatus(0, 'Success')
+        case.setStatus(1, 'Failed')
+        case.setStatus(2, 'Error')
         exe = Executor(case)
         self.assertEqual('Action 1 Success', exe.stepResult(0))
         self.assertEqual('Action 2 Failed', exe.stepResult(1))
+        self.assertEqual('Action 3 Error', exe.stepResult(2))
 
     def testRunAll(self):
         case = TestCase(5)
@@ -129,8 +131,8 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setAction(4, 'TestCase')
         case.setValue(4, 'C:/test')
         exe = Executor(case)
-        self.assertEqual(True, exe.runAll())
-    def testRunAll(self):
+        self.assertEqual('Success', exe.runAll())
+    def testRunAllError(self):
         case = TestCase(5)
         case.setAction(0, 'Android Keycode')
         case.setValue(0, 'KEYCODE_HOME')
@@ -139,4 +141,4 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setAction(2, 'Sleep(s)')
         case.setValue(2, '3')
         exe = Executor(case)
-        self.assertEqual(False, exe.runAll())
+        self.assertEqual('Error', exe.runAll())

@@ -38,11 +38,15 @@ class Executor():
 
     def runAll(self):
         for i in range(self.case.getSize()):
-            if not self.execute(i):
+            status = self.execute(i)
+            if status == 'Failed':
                 # self.message.InsertText('Step' + str(i+1) + 'Status Failed')
-                return False
+                return 'Failed'
+            if status == 'Error':
+                # self.message.InsertText('Step' + str(i+1) + 'Status Failed')
+                return 'Error'
             # self.message.InsertText('Step' + str(i+1) + 'Status Success')
-        return True
+        return 'Success'
 
     def run(self, n):
         self.getOriginalScreen()
@@ -158,7 +162,7 @@ class Executor():
         try:
             t = int(self.case.getSteps(n).getValue())
         except:
-            self.message.InsertText('Invalid Time')
+            # self.message.InsertText('Invalid Time')
             return 'Error'
         try:
             time.sleep(t)
@@ -193,10 +197,12 @@ class Executor():
         return 'Success'
 
     def stepResult(self, n):
-        if self.case.getStatus(n) == True:
+        if self.case.getStatus(n) == 'Success':
             result = 'Action ' + str(n+1) + ' Success'
-        else:
+        elif self.case.getStatus(n) == 'Failed':
             result = 'Action ' + str(n+1) + ' Failed'
+        else:
+            result = 'Action ' + str(n+1) + ' Error'
 
         # self.message.InsertText(result)
         return result
