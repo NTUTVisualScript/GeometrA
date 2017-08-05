@@ -819,10 +819,10 @@ class View(Frame, threading.Thread):
         run_single_action = Button(self.listFrame, command=lambda: self.runActionButtonClick(n), text="▶", width=3)
         self.runStepList.append(run_single_action)
 
-        actioncombo = TestCaseAction(self.listFrame, textvariable=action_value, width=10, height=22,
+        actioncombo = TestCaseAction(self.listFrame, 0, textvariable=action_value, width=10, height=22,
                                    state='readonly')
-        actioncombo.bind("<<ComboboxSelected>>", lambda event, i=n: self.ActionSelect(event, i))
-        actioncombo.bind("<MouseWheel>", lambda event, i=n: self.ActionSelect(event, i))
+        actioncombo.bind("<<ComboboxSelected>>", lambda event, i=n: self.ActionSelect(i))
+        actioncombo.bind("<MouseWheel>", lambda event, i=n: self.ActionSelect(i))
         self.actionManuList.append(actioncombo)
 
         value = TestCaseValue(self.listFrame,width=35)
@@ -843,7 +843,7 @@ class View(Frame, threading.Thread):
         actioncombo.grid(row = n+1 , column = 5 , padx = ( 5 , 0 ) , pady = ( 5 , 2.5))
         value.grid(row = n+1 , column = 6 , padx = ( 5, 0) , pady = ( 5 , 2.5))
 
-    def ActionSelect(self,event, n):
+    def ActionSelect(self, n):
         self.focus = n
         #self.cmd.do(self.actionManuList[n])
         print(self.actionList[n])

@@ -22,10 +22,19 @@ class TestCaseTestSuite(unittest.TestCase):
 
     def testInsert(self):
         case = TestCase(5)
+        case.setAction(2, 'Android Keycode')
         case.setValue(2, 'KEYCODE_HOME')
         case.insert(2)
         self.assertEqual(6, case.getSize())
         self.assertEqual('KEYCODE_HOME', case.getSteps(3).getValue())
+
+    def testDelete(self):
+        case = TestCase(5)
+        case.setValue(2, 'KEYCODE_HOME')
+        case.setValue(3, '1')
+        case.delete(2)
+        self.assertEqual(4, case.getSize())
+        self.assertEqual('1', case.getSteps(2).getValue())
 
     def testSetStatus(self):
         case = TestCase(5)

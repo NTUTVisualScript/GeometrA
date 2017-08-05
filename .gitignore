@@ -36,3 +36,4 @@ test/screenshot_pic/before.png
 src/screenshot_pic/after.png
 src/screenshot_pic/before.png
 src/screenshot_pic/tmp.png
+src/dumpXML/uidump.xml

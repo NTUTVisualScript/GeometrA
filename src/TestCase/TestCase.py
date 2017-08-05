@@ -25,6 +25,9 @@ class TestCase:
     def insert(self, n):
         self.stepList.insert(n, Step())
 
+    def delete(self, n):
+        del self.stepList[n]
+
     def setStatus(self, n, status):
         return self.stepList[n].setStatus(status)
 

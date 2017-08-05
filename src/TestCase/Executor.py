@@ -7,6 +7,7 @@ from adb_roboot import ADBRobot
 from Load import FileLoader
 from MessageUI import Message
 from HTML.step import HtmlTestStep
+from finder.template_finder import TemplateFinder
 
 
 def dragImage(x1,y1,x2,y2):
@@ -99,8 +100,11 @@ class Executor():
             # self.message.InsertText('Error: Image Not Find\n')
             return 'Failed'
 
-    def imageFinder(self, target):
-        self.robot.before_screenshot()
+    def imageFinder(self, targetImage):
+        # source = CV2Img()
+        # source.load_file(self.originalScreen, 0)
+        # target = cv2Img()
+        # target.load_PILimage
 
         return True
 

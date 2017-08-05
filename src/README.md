@@ -1,6 +1,6 @@
 # Diary:
 
-## Personal Sprint 2017/07/18 ~ 2017/07/25
+## Personal Sprint 2017/07/18 ~ 2017/08/08
 ### Sprint Goal: refactor the Test Case
 ### 2017/07/19 17:00
     Try to use MVC to handle Test case issue
@@ -42,4 +42,10 @@
     1. Complete run() function
     2. Do refactor of status from boolean to 'Success', 'Failed', and 'Error'
     Next Step:
-    1. Complete all functions that needed for executor. 
+    1. Complete all functions that needed for executor.
+
+### 2017/08/05 10:56 ~ 16:30
+    Try to make TestCase controller
+    Next Step:
+    1. Complete controller of test case.
+    2. Complete all functions that needed for executor.
