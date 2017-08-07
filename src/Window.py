@@ -425,8 +425,10 @@ class View(Frame, threading.Thread):
         if getdevices ==None:
             self.message.clear()
             if self.checkADB.check() == "Connect":
+                # self.format()
                 threading.Thread(target=self.format).start()
         else:
+            # self.format()
             threading.Thread(target=self.format).start()
 
     def format(self):
@@ -790,7 +792,7 @@ class View(Frame, threading.Thread):
         #print("image : ",line)
         values_image = Canvas(self.listFrame, bg = "#FFFFFF",height=100, width=100)
         values_image.create_image(0, 0, anchor=NW, image=image)
-        values_image.bind("<Button-1>", lambda event, i=line: self.valueFocusIn(event, i))
+        values_image.bind("<Button-1>", lambda event, i=line: self.valueFocusIn(i))
         values_image.image = image
         self.valueList[line].grid_remove()
         self.valueList[line] = values_image
@@ -799,7 +801,7 @@ class View(Frame, threading.Thread):
 
     def TestcaseEntry(self, line):
         value = TestCaseValue(self.listFrame, width=35)
-        value.bind("<FocusIn>", lambda event, i=line: self.valueFocusIn(event, i))
+        value.bind("<FocusIn>", lambda event, i=line: self.valueFocusIn(i))
         self.valueList[line].grid_remove()
         self.showImageList[line].grid_remove()
         self.valueList[line] = value
@@ -826,7 +828,7 @@ class View(Frame, threading.Thread):
         self.actionManuList.append(actioncombo)
 
         value = TestCaseValue(self.listFrame,width=35)
-        value.bind("<FocusIn>", lambda event, i=n: self.valueFocusIn(event, i))
+        value.bind("<FocusIn>", lambda event, i=n: self.valueFocusIn(i))
 
         showimage = Button(self.listFrame, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
         self.showImageList.append(showimage)
@@ -853,7 +855,7 @@ class View(Frame, threading.Thread):
         self.TestcaseEntry(n)
         self.Action_FocusIn()
 
-    def valueFocusIn(self,event, n):
+    def valueFocusIn(self, n):
         self.focus = n
         if self.actionManuList[self.focus].get() != 'TestCase':
             self.Action_FocusIn()
