@@ -3,6 +3,7 @@ from tkinter import ttk
 from adb_roboot import ADBRobot
 from cv2img import CV2Img
 from finder.template_finder import TemplateFinder
+from MessageUI import Message
 
 def Click_image(source_image, x1,y1):
     source = CV2Img()
@@ -36,6 +37,10 @@ def template_finder(source_image, target_image):
         return "too more"
 
 class Click:
+    def __init__(self):
+        self.robot = ADBRobot()
+        self.message = Message.getMessage(self)
+
     def ClickImage(self, image):
         status = template_finder(self.step_before_image, image)
 
@@ -64,3 +69,27 @@ class Click:
             return "Success"
         else:
             return "Error"
+
+    def tree_info(self,id , treeinfo):
+        for elem in treeinfo.findall('node'):
+            if elem is None: return
+            id_child = self.treeview.insert(id, "end", elem , text="(" + str(elem.get('index')) + ") "
+                                                                   + str(elem.get('class')) + "  "
+                                                                   ,  values=( str(elem.get('text')),str(elem.get('bounds'))) , open=True)
+            self.tree_info(id_child, elem)
+
+    def bounds_split(self,obj_bounds):
+        bounds = obj_bounds.split('[')
+        right_bounds = bounds[1].split(']')
+        left_bounds = bounds[2].split(']')
+
+        right_top = right_bounds[0].split(',')
+        left_bottom = left_bounds[0].split(',')
+
+        left = int(right_top[0])
+        top = int(right_top[1])
+        right = int(left_bottom[0])
+        bottom = int(left_bottom[1])
+        print(left, top, right, bottom)
+
+        return left, top, right, bottom

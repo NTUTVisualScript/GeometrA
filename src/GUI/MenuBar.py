@@ -2,8 +2,14 @@ from tkinter import *
 
 
 class MenuBar(Menu):
-    def __init__(self, master=None):
-        Menu.__init__(self, master)
+    __single = None
+
+    def __init__(self, parent = None):
+        if MenuBar.__single:
+            raise MenuBar.__single
+            MenuBar.__single = self
+
+        self.menubar = Menu.__init__(self, parent)
         self.config(menu=self.menubar)
 
         filemenu = Menu(self.menubar, tearoff=0)
@@ -16,6 +22,11 @@ class MenuBar(Menu):
         actionmenu.add_command(label="Undo", command=self.undo)
         actionmenu.add_command(label="Redo", command=self.redo)
 
+    def getMenuBar(parent):
+        if not MenuBar.__single:
+            MenuBar.__single = MenuBar(parent)
+        return MenuBar.__single
+
     def SaveButtonClick(self):
         print("SAVE")
         # Save_File = SaveFile()
@@ -24,3 +35,9 @@ class MenuBar(Menu):
     def OpenButtonClick(self):
         print("Open")
         #Load_File = LoadFile()
+
+    def redo(self):
+        print("Redo")
+
+    def undo(self):
+        print("Undo")
