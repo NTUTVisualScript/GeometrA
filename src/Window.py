@@ -525,22 +525,26 @@ class View(Frame, threading.Thread):
         self.valueImageList.insert(n, None)
         self.nodePathList.insert(n, None)
 
+        self.actionManuList.insert(n, '')
+        self.valueList.insert(n, '')
+        self.TestcaseImage(n, '')
+
         while i > n:
-            getactionstr = self.actionManuList[i-1].get()
-            self.actionManuList[i].set(str(getactionstr))
-            self.actionManuList[i-1].set('')
-            self.actionList[i] = self.actionList[i-1]
-            self.actionList[i-1] = ""
+            # getactionstr = self.actionManuList[i-1].get()
+            # self.actionManuList[i].set(str(getactionstr))
+            # self.actionManuList[i-1].set('')
+            # self.actionList[i] = self.actionList[i-1]
+            # self.actionList[i-1] = ""
 
             if str(type(self.valueList[i-1])) != "<class 'TestCaseEntry.TestCaseValue'>":
                 self.TestcaseImage(i, self.valueList[i-1].image)
                 self.TestcaseEntry(i-1)
 
-            else:
-                getvaluestr = self.valueList[i-1].get()
-                self.valueList[i].delete(0, 'end')
-                self.valueList[i].insert('end', getvaluestr)
-                self.valueList[i - 1].delete(0, 'end')
+            # else:
+            #     getvaluestr = self.valueList[i-1].get()
+            #     self.valueList[i].delete(0, 'end')
+            #     self.valueList[i].insert('end', getvaluestr)
+            #     self.valueList[i - 1].delete(0, 'end')
 
             i=i-1
 

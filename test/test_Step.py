@@ -13,7 +13,6 @@ class StepTestSuite(unittest.TestCase):
         step = Step()
         step.setAction('Click')
         self.assertEqual('Click', step.getAction())
-
     def testSetActionExcept(self):
         step = Step()
         self.assertRaisesRegex(Exception, 'Not an action', step.setAction, 'clik')
@@ -39,3 +38,12 @@ class StepTestSuite(unittest.TestCase):
     def testGetStatusExcept(self):
         step = Step()
         self.assertRaisesRegex(Exception, 'Step Not Executed', step.getStatus)
+
+    def testSetSequence(self):
+        step = Step()
+        self.assertEqual(0, step.setSequence(0))
+
+    def testGetSequence(self):
+        step = Step()
+        step.setSequence(0)
+        self.assertEqual(0, step.getSequence())
