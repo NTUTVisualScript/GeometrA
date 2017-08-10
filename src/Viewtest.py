@@ -11,6 +11,7 @@ from cv2img import CV2Img
 from finder.template_finder import TemplateFinder
 from HTML.step import HtmlTestStep
 
+
 ROOT_DIR = os.path.dirname(__file__)
 RESOURCES_DIR = os.path.join(ROOT_DIR, "screenshot_pic")
 
@@ -22,8 +23,7 @@ def IMG_PATH(name):
 def Drag_image(source_image, x1,y1,x2,y2):
     source = CV2Img()
     source.load_file(source_image, 1)
-    source.draw_line(x1,y1,x2,y2)
-    source.draw_circle(x2,y2)
+    source.draw_Arrow(x1,y1,x2,y2)
     source.save(source_image)
 
 def Click_image(source_image, x1,y1):
@@ -137,6 +137,7 @@ class TestAdepter(TestCaseData):
 
         status = self.Run( action, value, image, node_path)
         self.htmlstep.step_before(self.step_before_image)
+        self.ScreenShot_update()
         self.get_action_after_Screen()
         self.htmlstep.step_after(self.step_after_image)
         self.run_status(line, status, self.testcaseName)
@@ -144,7 +145,12 @@ class TestAdepter(TestCaseData):
 
         return status
 
+    def ScreenShot_update(self):
+        self.update.set_run_test_screenshot(self.step_before_image)
+
     def run_all(self, start = None, end = None):
+        from GUI.ScreenShotUI import ScreenshotUI
+        self.update = ScreenshotUI.getScreenShotUI(self)
         self.count = 0
         status = ""
         if end is None:
@@ -171,6 +177,7 @@ class TestAdepter(TestCaseData):
 
                     if status == "Error":
                         break
+        self.update.remove_run_test_screenshot()
 
         return status, self.count
 

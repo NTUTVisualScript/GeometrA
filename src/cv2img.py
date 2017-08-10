@@ -1,6 +1,7 @@
 import sys
 sys.path.append('/usr/local/lib/python3.5/site-packages')
 import cv2
+import math
 import numpy as np
 import base64
 from rectangle import Rectangle
@@ -127,6 +128,28 @@ class CV2Img:
         coordinate_x = find_result.x + find_result.w/2
         coordinate_y = find_result.y + find_result.h/2
         return coordinate_x,coordinate_y
+
+    def draw_Arrow(self,fromX, fromY, toX, toY):
+        angle = math.atan2(fromY - toY, fromX - toX) * 180 / math.pi
+        angle1 = (angle + 30) * math.pi / 180
+        angle2 = (angle - 30) * math.pi / 180
+        topX = 100 * math.cos(angle1)
+        topY = 100 * math.sin(angle1)
+        botX = 100 * math.cos(angle2)
+        botY = 100 * math.sin(angle2)
+
+        cv2.line(self.source, (int(fromX), int(fromY)), (int(toX), int(toY)), (0, 0, 255), 10)
+        print(toX, toY)
+
+        arrowX = toX + topX
+        arrowY = toY + topY
+        cv2.line(self.source, (int(toX), int(toY)), (int(arrowX), int(arrowY)), (0, 0, 255), 10)
+        print(arrowX, arrowY)
+
+        arrowX = toX + botX
+        arrowY = toY + botY
+        cv2.line(self.source, (int(toX), int(toY)), (int(arrowX), int(arrowY)), (0, 0, 255), 10)
+        print(arrowX, arrowY)
 
     def save(self, path):
         cv2.imwrite(path, self.source)

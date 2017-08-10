@@ -1,6 +1,7 @@
 import os
 import threading
 import time
+import math
 import xml.etree.cElementTree as ET
 from tkinter import *
 from tkinter import messagebox
@@ -19,6 +20,7 @@ from SaveFile import SaveFile
 from SaveIMG import saveImg
 from TestCaseActionCombobox import TestCaseAction
 from TestCaseEntry import TestCaseValue
+from GUI.ScreenShotUI import ScreenshotUI
 from TestReport import Report
 from Viewtest import TestAdepter
 from adb_roboot import ADBRobot
@@ -45,14 +47,19 @@ def Get_PhoneScreen():
     return filePath
 
 class View(Frame, threading.Thread):
+
     def __init__(self, master=None):
         Frame.__init__(self, master)
-        self.master = master
-        self.MenuBar()
         master.minsize(width=1470, height=840)
+        self.master = master
+        self.setUI()
+
+    def setUI(self):
+        self.MenuBar()
         self.focus = None
         self.focusOBJImage = None
         self.Drag_image = None
+        self.update_image = None
         self.tree_obj_image_list = []
         self.tree_obj_list = []
         self.dirpath = ""
@@ -96,10 +103,7 @@ class View(Frame, threading.Thread):
         self.message.place(x=1150, y=30)
 
     def ScreenShotUI(self):
-        self.screenshot = Canvas(self.master, bg='white', height=800, width=450)
-        self.screenshot.configure(borderwidth=-1)
-        self.screenshot.place( x = 0, y = 30)
-        self.multiple = 1
+        self.screenshot = ScreenshotUI.getScreenShotUI(self.master)
 
     def getScreenShot(self):
         self.screenshot.delete("all")
@@ -422,7 +426,6 @@ class View(Frame, threading.Thread):
         self.focus = None
         self.select_node = None
         self.select_image = None
-        self.dirpath = ""
         if getdevices ==None:
             self.message.clear()
             if self.checkADB.check() == "Connect":
@@ -434,6 +437,8 @@ class View(Frame, threading.Thread):
         self.clear_XML_Tree()
         if self.Drag_image != None:
             self.Drag_image.place_forget()
+
+        self.screenshot.remove_run_test_screenshot()
         self.dump_file()
         # threading.Thread(target=self.getScreenShot).start()
         #self.getScreenShot()
@@ -859,6 +864,11 @@ class View(Frame, threading.Thread):
             self.Action_FocusIn()
 
     def Action_FocusIn(self):
+        if self.actioncombolist[self.focus].get() != 'Drag':
+            if self.Drag_image != None:
+                self.Drag_image.place_forget()
+                self.Drag_image = None
+
         if self.actioncombolist[self.focus].get() == 'Drag':
             if filePath is None: return
             self.Drag_image = Canvas(self.screenshot, height=800, width=450)
@@ -918,8 +928,29 @@ class View(Frame, threading.Thread):
         self.Drag_image.image = self.focusOBJImage
 
         self.mousePosition.set("Rectangle at [ " + str(self.clickstartX * self.multiple ) + ", " + str(self.clickstartY * self.multiple) + " To " + str((event.x) * self.multiple) + ", " + str((event.y) * self.multiple) + " ]")
-        self.Drag_image.create_line(self.clickstartX, self.clickstartY, event.x, event.y, fill="red", width=2)
-        self.Drag_image.create_oval(event.x-25, event.y-25, event.x+25, event.y+25,  fill="", outline="red", width=6)
+        self.drawArrow(self.clickstartX, self.clickstartY, event.x, event.y)
+
+    def drawArrow(self,fromX, fromY, toX, toY):
+        angle = math.atan2(fromY - toY, fromX - toX) * 180 / math.pi
+        angle1 = (angle + 30) * math.pi / 180
+        angle2 = (angle - 30) * math.pi / 180
+        topX = 30 * math.cos(angle1)
+        topY = 30 * math.sin(angle1)
+        botX = 30 * math.cos(angle2)
+        botY = 30 * math.sin(angle2)
+
+        self.Drag_image.create_line(fromX, fromY, toX, toY, fill="red", width=2)
+
+        arrowX = toX + topX
+        arrowY = toY + topY
+
+        self.Drag_image.create_line(toX, toY, arrowX, arrowY, fill="red", width=2)
+
+        arrowX = toX + botX
+        arrowY = toY + botY
+
+        self.Drag_image.create_line(toX, toY, arrowX, arrowY, fill="red", width=2)
+
 
 if __name__ == '__main__':
     root = Tk()
