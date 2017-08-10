@@ -11,8 +11,7 @@ from TestCase import TestCase
 class TestCaseUI():
     def __init__(self, frame):
         self.frame = frame
-        self.case = TestCase()
-        self.line = 50
+        self.case = TestCase(50)
         self.addButtonList = []
         self.removeButtonList = []
         self.executeButtonList = []
@@ -22,39 +21,39 @@ class TestCaseUI():
         self.showImageList = []
 
         self.generateCaseBlock()
-        for i in range(50):
-            generateStepBlock(i)
 
-    # To generate the line of Test Step on the UI
-    def generateStepBlock(self, n):
-        num = Label(self.frame, text = str(n+1) + '. ', width = 3)
-        self.addButtonList.append(Button(self.frame, command=lambda: self.addButtonClick(n), text='+', width=3))
-        self.removeButtonList.append(Button(self.frame, command=lambda: self.removeButtonClick(n), text='-', width=3))
-        self.executeButtonList.append(Button(self.frame, command=lambda: self.executeButtonClick(n, False), text='▶', width=3))
+    # To generate the block on the UI for Test Case
+    def generateCaseBlock(self):
+        n = self.case.getSize()
 
-        # actions = ['', 'Click', 'Drag', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
-        #             'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist']
-        self.actionMenuList.append(TestCaseAction(self.frame, 0, textvariable=StringVar(), width=10, height=22, state='readonly'))
+        # Generate one line at one time
+        for i in range(0, n):
+            num = Label(self.frame, text = str(i+1) + '. ', width = 3)
+            self.addButtonList.append(Button(self.frame, command=lambda: self.addButtonClick(i), text='+', width=3))
+            self.removeButtonList.append(Button(self.frame, command=lambda: self.removeButtonClick(i), text='-', width=3))
+            self.executeButtonList.append(Button(self.frame, command=lambda: self.executeButtonClick(i, False), text='▶', width=3))
 
-        self.actionMenuList[n].bind('<<ComboboxSelected>>', lambda event, j=n: self.actionSelect(n))
-        self.actionMenuList[n].bind('<MouseWheel>', lambda event, j=n: self.actionSelect(n))
+            actions = ['', 'Click', 'Drag', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
+                        'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist']
+            self.actionMenuList.append(TestCaseAction(self.frame, actions.index(self.case.getSteps(i).getAction()), textvariable=StringVar(), width=10, height=22, state='readonly'))
 
-        self.valueBarList.append(TestCaseValue(self.frame, width=35))
-        self.valueBarList[n].bind('<FocusIn>', lambda event, i=n: self.valueFocusIn(event, i))
-        self.nodePathLIst.append(None)
+            self.actionMenuList[i].bind('<<ComboboxSelected>>', lambda event, j=i: self.actionSelect(i))
+            self.actionMenuList[i].bind('<MouseWheel>', lambda event, j=i: self.actionSelect(i))
 
-        self.showImageList.append(Button(self.frame, command=lambda: self.showImageButtonClick(n), text="Show Image", width=12))
+            self.valueBarList.append(TestCaseValue(self.frame, width=35))
+            self.valueBarList[i].bind('<FocusIn>', lambda event, i=n: self.valueFocusIn(event, i))
+            self.nodePathLIst.append(None)
 
-        num.grid(row = n+1, column = 1)
-        self.addButtonList[i].grid(row = n+1, column = 2)
-        self.removeButtonList[i].grid(row = n+1, column = 3)
-        self.executeButtonList[i].grid(row = n+1, column = 4)
-        self.actionMenuList[i].grid(row = n+1, column = 5, padx = (5, 0), pady = (5, 2.5))
-        self.valueBarList[i].grid(row = n+1, column = 6, padx = (5, 0), pady = (5, 2.5))
+            self.showImageList.append(Button(self.frame, command=lambda: self.showImageButtonClick(i), text="Show Image", width=12))
+
+            num.grid(row = i+1, column = 1)
+            self.addButtonList[i].grid(row = i+1, column = 2)
+            self.removeButtonList[i].grid(row = i+1, column = 3)
+            self.executeButtonList[i].grid(row = i+1, column = 4)
+            self.actionMenuList[i].grid(row = i+1, column = 5, padx = (5, 0), pady = (5, 2.5))
+            self.valueBarList[i].grid(row = i+1, column = 6, padx = (5, 0), pady = (5, 2.5))
 
     def addButtonClick(self, n):
-        self.line = self.line+1
-
         self.case.insert(n)
         self.generateCaseBlock()
 
