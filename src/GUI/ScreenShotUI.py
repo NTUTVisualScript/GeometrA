@@ -14,13 +14,12 @@ class ScreenshotUI(Canvas):
 
     def __init__(self, parent=None, *args, **kwargs):
         Canvas.__init__(self, parent, *args, **kwargs,  height=800, width=450, borderwidth=-1, bg='white')
+        self.before_image = None
         if ScreenshotUI.__single:
             raise ScreenshotUI.__single
             ScreenshotUI.__single = self
 
         self.place(x = 0, y = 30)
-
-        self.before_image = None
 
     def getScreenShotUI(parent):
         if not ScreenshotUI.__single:
@@ -31,7 +30,7 @@ class ScreenshotUI(Canvas):
         print("rank")
 
     def getScreenShot(self):
-        self.screenshot.delete("all")
+        self.delete("all")
         self.LoadingFile()
         self.photo = Image.open(Get_PhoneScreen())
         self.photo_width, self.photo_height = self.photo.size
@@ -42,23 +41,28 @@ class ScreenshotUI(Canvas):
         print(str(self.multiple))
         self.screenshot_photo = ImageTk.PhotoImage(self.photo)
         self.message.InsertText("Loading finish\n")
-        self.screenshot.create_image(0, 0, anchor=NW)
-        self.screenshot.image = self.screenshot_photo
+        self.create_image(0, 0, anchor=NW, image = self.screenshot_photo)
+        self.image = self.screenshot_photo
+
+    def create_before_image(self):
+        self.before_image = Canvas(self, height=800, width=450)
+        self.before_image.configure(borderwidth=-3)
+        self.before_image.place(x=0, y=0)
 
     def set_run_test_screenshot(self, photopath):
         print(photopath)
         before_action_image =Image.open(photopath)
         before_action_image.thumbnail((450, 800))
-        image = ImageTk.PhotoImage(before_action_image)
+        beforeimage = ImageTk.PhotoImage(before_action_image)
 
-        self.before_image = Canvas(self, height=800, width=450)
-        self.before_image.configure(borderwidth=-3)
-        self.before_image.place(x=0, y=0)
+        if self.before_image == None:
+            self.create_before_image()
 
-        self.before_image.create_image(0, 0, anchor=NW, image=image)
-        self.before_image.image = image
+        self.before_image.create_image(0, 0, anchor=NW, image=beforeimage)
+        self.before_image.image = beforeimage
 
     def remove_run_test_screenshot(self):
-        if self.before_image != None:
+        if self.before_image is not None:
+            self.before_image.delete("all")
             self.before_image.place_forget()
             self.before_image = None

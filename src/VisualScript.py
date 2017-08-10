@@ -437,8 +437,7 @@ class View(Frame, threading.Thread):
         self.clear_XML_Tree()
         if self.Drag_image != None:
             self.Drag_image.place_forget()
-        if self.update_image != None:
-            self.update_image.place_forget()
+
         self.screenshot.remove_run_test_screenshot()
         self.dump_file()
         # threading.Thread(target=self.getScreenShot).start()

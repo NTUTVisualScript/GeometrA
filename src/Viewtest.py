@@ -146,11 +146,11 @@ class TestAdepter(TestCaseData):
         return status
 
     def ScreenShot_update(self):
-        from GUI.ScreenShotUI import ScreenshotUI
-        self.update = ScreenshotUI.getScreenShotUI(self)
         self.update.set_run_test_screenshot(self.step_before_image)
 
     def run_all(self, start = None, end = None):
+        from GUI.ScreenShotUI import ScreenshotUI
+        self.update = ScreenshotUI.getScreenShotUI(self)
         self.count = 0
         status = ""
         if end is None:
@@ -177,6 +177,7 @@ class TestAdepter(TestCaseData):
 
                     if status == "Error":
                         break
+        self.update.remove_run_test_screenshot()
 
         return status, self.count
 
