@@ -20,18 +20,18 @@ class HtmlTestStep:
 
     def step_before(self, imagepath):
         data_uri = base64.b64encode(open(imagepath, 'rb').read()).decode('utf-8').replace('\n', '')
-        self.beforeImg_base64 = """<img data-src="holder.js/140x140" class="img-responsive" src="data:image/jpg;base64,%s"  data-holder-rendered="true" style="width: 500px;">""" % data_uri
+        self.beforeImg_base64 = """<img data-src="holder.js/140x140" class="img-responsive" src="data:image/png;base64,%s"  data-holder-rendered="true" style="width: 500px;">""" % data_uri
 
     def step_after(self, imagepath):
         data_uri = base64.b64encode(open(imagepath, 'rb').read()).decode('utf-8').replace('\n', '')
-        self.afterImg_base64 = """<img data-src="holder.js/140x140" class="img-responsive" src="data:image/jpg;base64,%s"  data-holder-rendered="true" style="width: 500px;">""" % data_uri
+        self.afterImg_base64 = """<img data-src="holder.js/140x140" class="img-responsive" src="data:image/png;base64,%s"  data-holder-rendered="true" style="width: 500px;">""" % data_uri
 
     def step_IMG(self, image):
-        jpeg_image_buffer = io.BytesIO()
-        image.save(jpeg_image_buffer, format="JPEG")
-        base64_encoded_result = base64.b64encode(jpeg_image_buffer.getvalue())
+        png_image_buffer = io.BytesIO()
+        image.save(png_image_buffer, format="PNG")
+        base64_encoded_result = base64.b64encode(png_image_buffer.getvalue())
         imgStr = base64_encoded_result.decode('utf-8')
-        return """<img data-src="holder.js/140x140" class="img-responsive" src="data:image/jpg;base64,%s"  data-holder-rendered="true" style="height: 100px;">""" % imgStr
+        return """<img data-src="holder.js/140x140" class="img-responsive" src="data:image/png;base64,%s"  data-holder-rendered="true" style="height: 100px;">""" % imgStr
 
 
     def clearstep(self):

@@ -24,3 +24,17 @@ sikuli-script/src/main/java/com/sun/awt
 .idea
 .cache
 .ropeproject
+src/screenshot_pic/tmp.png
+src/dumpXML/uidump.xml
+src/screenshot_pic/before.png
+src/screenshot_pic/after.png
+src/screenshot_pic/after.png
+src/screenshot_pic/before.png
+src/screenshot_pic/tmp.png
+src/dumpXML/uidump.xml
+test/screenshot_pic/before.png
+src/screenshot_pic/after.png
+src/screenshot_pic/before.png
+src/screenshot_pic/tmp.png
+src/dumpXML/uidump.xml
+test/nosetests.xml
