@@ -1,9 +1,12 @@
+import sys
+sys.path.append('../')
+
 from tkinter import *
-from GUI.MenuBar import MenuBar
-from GUI.ScreenShotUI import ScreenshotUI
-from GUI.TreeInfoUI import TreeInfoUI
-from GUI.MessageUI import Message
-from GUI.TestScriptUI import TestScriptUI
+from MenuBar import MenuBar
+from ScreenShotUI import ScreenshotUI
+from TreeInfoUI import TreeInfoUI
+from MessageUI import Message
+from TestScriptUI import TestScriptUI
 
 
 class GUI(Frame):
