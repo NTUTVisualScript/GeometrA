@@ -825,7 +825,7 @@ class View(Frame, threading.Thread):
         run_single_action = Button(self.listFrame, command=lambda: self.runActionButtonClick(n), text="▶", width=3)
         self.runStepList.append(run_single_action)
 
-        actioncombo = TestCaseAction(self.listFrame, 0, textvariable=action_value, width=10, height=22,
+        actioncombo = TestCaseAction(self.listFrame, textvariable=action_value, width=10, height=22,
                                    state='readonly')
         actioncombo.bind("<<ComboboxSelected>>", lambda event, i=n: self.ActionSelect(i))
         actioncombo.bind("<MouseWheel>", lambda event, i=n: self.ActionSelect(i))
