@@ -5,39 +5,39 @@ Branch from https://github.com/Swind/Sikuli-Img
 
 1. [Clone本專案](https://github.com/NTUTVisualScript/Visual_Script.git)
 
-2. Install [Python3](https://www.python.org/downloads/)
+2. Install [Python3](https://www.python.org/downloads/)  
 
     Check: "launch to path" and "install pip"
 
-3. Install PIL
+3. Install PIL  
 
     pip install Pillow
 
-4. Install [Android Studio](https://developer.android.com/studio/index.html)
+4. Install [Android Studio](https://developer.android.com/studio/index.html)  
 
-5. Set environment variable
+5. Set environment variable  
 
-    Variable	Android_HOME
-    Value    Android SDK 的安裝路徑
-![](/pic/Environmental.PNG)
+    Variable	Android_HOME    
+    Value    Android SDK 的安裝路徑  
+    ![](/pic/Environmental.PNG)
 
-6. Set environment variable path
+6. Set environment variable path  
 
-    Variable    Path
-    Value    %Android_HOME%\platform-tools
-![](/pic/Path.PNG)
+    Variable    Path    
+    Value    %Android_HOME%\platform-tools  
+    ![](/pic/Path.PNG)
 
-7. Install opencv3
+7. Install opencv3  
 
     pip install opencv_python
 
-8. Install numpy
+8. Install numpy  
 
-    pip install numpy
+    pip install numpy  
 
-使用Python 執行 專案中的 src/VisualScript.py
+使用Python 執行 專案中的 src/VisualScript.py  
 
-	python D:\VS_project\Visual_Script\src\VisualScript.py
+    python D:\VS_project\Visual_Script\src\VisualScript.py
 
 
 # 使用教學
