@@ -17,8 +17,8 @@ Branch from https://github.com/Swind/Sikuli-Img
 
 5. Set environment variable
 
-	Variable	Android_HOME
-	Value    Android SDK 的安裝路徑
+    Variable	Android_HOME
+    Value    Android SDK 的安裝路徑
 ![](/pic/Environmental.PNG)
 
 6. Set environment variable path
