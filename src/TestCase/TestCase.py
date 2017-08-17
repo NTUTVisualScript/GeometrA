@@ -41,7 +41,8 @@ class TestCase:
             for i in range(self.getSize()):
                 if self.stepList[i].getSequence() > step.getSequence():
                     self.stepList.insert(i, step)
-                    break
+                    return
+            self.stepList.insert(self.getSize(), step)
 
     def delete(self, n):
         del self.stepList[n]
