@@ -1,13 +1,13 @@
 from tkinter import *
 from GUI.TestStepUI import TestStepUI
 
-class TestScriptUI(Frame):
+class TestCaseUI(Frame):
     __single = None
 
     def __init__(self, parent = None, *args, **kwargs):
-        if TestScriptUI.__single:
-            raise TestScriptUI.__single
-            TestScriptUI.__single = self
+        if TestCaseUI.__single:
+            raise TestCaseUI.__single
+            TestCaseUI.__single = self
 
         Frame.__init__(self, parent, *args, **kwargs, borderwidth =2 ,relief = 'sunken')
 
@@ -32,10 +32,10 @@ class TestScriptUI(Frame):
             n += 1
 
 
-    def getTestScriptUI(parent):
-        if not TestScriptUI.__single:
-            TestScriptUI.__single = TestScriptUI(parent)
-        return TestScriptUI.__single
+    def getTestCaseUI(parent):
+        if not TestCaseUI.__single:
+            TestCaseUI.__single = TestCaseUI(parent)
+        return TestCaseUI.__single
 
     def AuxscrollFunction(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=650, height=525)

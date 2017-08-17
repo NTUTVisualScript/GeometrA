@@ -6,7 +6,7 @@ from MenuBar import MenuBar
 from ScreenShotUI import ScreenshotUI
 from TreeInfoUI import TreeInfoUI
 from MessageUI import Message
-from TestScriptUI import TestScriptUI
+from TestCaseUI import TestCaseUI
 
 
 class GUI(Frame):
@@ -17,9 +17,9 @@ class GUI(Frame):
         self.menu = MenuBar.getMenuBar(self.master)
         self.master.config(menu=self.menu)
 
-        self.screenshot = ScreenshotUI.getScreenShotUI(self.master)
-        self.treeinfo = TreeInfoUI.getTreeInfoUI(self.master)
-        self.testscript = TestScriptUI.getTestScriptUI(self.master)
+        self.screenShot = ScreenshotUI.getScreenShotUI(self.master)
+        self.treeInfo = TreeInfoUI.getTreeInfoUI(self.master)
+        self.testCase = TestCaseUI.getTestCaseUI(self.master)
         self.message = Message.getMessage(self.master)
 
 

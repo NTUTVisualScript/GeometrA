@@ -33,8 +33,6 @@ class TestCaseUI():
             self.removeButtonList.append(Button(self.frame, command=lambda: self.removeButtonClick(i), text='-', width=3))
             self.executeButtonList.append(Button(self.frame, command=lambda: self.executeButtonClick(i, False), text='▶', width=3))
 
-            actions = ['', 'Click', 'Drag', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
-                        'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist']
             self.actionMenuList.append(TestCaseAction(self.frame, textvariable=StringVar(), width=10, height=22, state='readonly'))
 
             self.actionMenuList[i].bind('<<ComboboxSelected>>', lambda event, j=i: self.actionSelect(i))
