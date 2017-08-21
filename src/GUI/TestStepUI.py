@@ -1,13 +1,21 @@
 from tkinter import *
 from TestCaseActionCombobox import TestCaseAction
 from TestCaseEntry import TestCaseValue
+import sys
+sys.path.append('../TestCase/')
+from TestCase import TestCase
 
 class TestStepUI():
-    def new_step(self, parent, n):
+    case = None
+
+    def newStep(self, parent, n):
+        if not self.case:
+            self.case = TestCase()
+
         self.parent = parent
         action_value = StringVar()
 
-        lineStr = Label(self.parent, text=str(n + 1) + ". ", width=3)
+        lineNum = Label(self.parent, text=str(n + 1) + ". ", width=3)
 
         addline = Button(self.parent, text="+", width=3)
 
@@ -26,7 +34,7 @@ class TestStepUI():
 
         #showimage = Button(self.listFrame, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
 
-        lineStr.grid(row=n + 1, column=1)
+        lineNum.grid(row=n + 1, column=1)
         addline.grid(row=n + 1, column=2)
         removeline.grid(row=n + 1, column=3)
         run_single_action.grid(row=n + 1, column=4)
