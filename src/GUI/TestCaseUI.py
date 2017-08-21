@@ -31,12 +31,16 @@ class TestCaseUI(Frame):
         self.canvas.pack(side="left")
         self.place(x=460, y=300)
 
-        self.valueList = []
+        self.lineNumList = []
         self.actionComboList = []
+        self.valueList = []
+        self.addButtonList = []
+        self.removeButtonList = []
+        self.executeButtonList = []
 
         # self.scriptStep = TestStepUI()
         n = 0
-        for self.line in range(50):
+        for self.line in range(15):
             # self.scriptStep.newStep(self.listFrame, n)
             self.newStep(n)
             n += 1
@@ -66,7 +70,6 @@ class TestCaseUI(Frame):
                 value = self.valueList[i-1].get()
                 self.valueList[i].delete(0, 'end')
                 self.valueList[i].insert('end', value)
-                self.valueList[i-1].delete(0, 'end')
             i = i-1
 
     def TestCaseImage(self, line, image = None):
@@ -85,6 +88,36 @@ class TestCaseUI(Frame):
         self.valueList[line] = value
         self.valueList[line].grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
 
+    def removeLineButtonClick(self, n):
+        i = n
+        while i < self.line:
+            action = self.actionComboList[i+1].get()
+            self.actionComboList[i].set(str(action))
+
+            if str(type(self.valueList[i+1])) != "<class 'TestCaseEntry.TestCaseValue'>":
+                self.TestCaseImage(i, self.valueList[i+1].image)
+                self.TestCaseEntry(i+1)
+            else:
+                self.TestCaseEntry(i)
+                value = self.valueList[i+1].get()
+                self.valueList[i].delete(0, 'end')
+                self.valueList[i].insert('end', value)
+            i = i+1
+
+        self.lineNumList[self.line].grid_remove()
+        self.actionComboList[self.line].grid_remove()
+        self.valueList[self.line].grid_remove()
+        self.addButtonList[self.line].grid_remove()
+        self.removeButtonList[self.line].grid_remove()
+        self.executeButtonList[self.line].grid_remove()
+
+        self.lineNumList.pop()
+        self.actionComboList.pop()
+        self.valueList.pop()
+        self.addButtonList.pop()
+        self.removeButtonList.pop()
+        self.executeButtonList.pop()
+        self.line = self.line - 1
 
     def newStep(self, n):
         if not self.case:
@@ -93,12 +126,16 @@ class TestCaseUI(Frame):
         action_value = StringVar()
 
         lineNum = Label(self.listFrame, text=str(n + 1) + ". ", width=3)
+        self.lineNumList.append(lineNum)
 
-        addline = Button(self.listFrame, command=lambda :self.addButtonClick(n+1), text="+", width=3)
+        addButton = Button(self.listFrame, command=lambda :self.addButtonClick(n+1), text="+", width=3)
+        self.addButtonList.append(addButton)
 
-        removeline = Button(self.listFrame, text="-", width=3)
+        removeButton = Button(self.listFrame, command=lambda :self.removeLineButtonClick(n), text="-", width=3)
+        self.removeButtonList.append(removeButton)
 
-        run_single_action = Button(self.listFrame, text="▶", width=3)
+        executeButton = Button(self.listFrame, text="▶", width=3)
+        self.executeButtonList.append(executeButton)
 
         actionCombo = TestCaseAction(self.listFrame, textvariable=action_value, width=10, height=22, state='readonly')
         self.actionComboList.append(actionCombo)
@@ -110,8 +147,8 @@ class TestCaseUI(Frame):
         self.valueList.append(value)
 
         lineNum.grid(row=n + 1, column=1)
-        addline.grid(row=n + 1, column=2)
-        removeline.grid(row=n + 1, column=3)
-        run_single_action.grid(row=n + 1, column=4)
+        addButton.grid(row=n + 1, column=2)
+        removeButton.grid(row=n + 1, column=3)
+        executeButton.grid(row=n + 1, column=4)
         actionCombo.grid(row=n + 1, column=5, padx=(5, 0), pady=(5, 2.5))
         value.grid(row=n + 1, column=6, padx=(5, 0), pady=(5, 2.5))
