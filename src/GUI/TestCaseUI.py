@@ -7,6 +7,7 @@ from LoadFile import LoadFile
 import sys
 sys.path.append('../TestCase/')
 from TestCase import TestCase
+from TestStep import Step
 from Executor import Executor
 
 filePath = None
@@ -108,11 +109,9 @@ class TestCaseUI(Frame):
 
     def actionSelect(self, n):
         self.focus = n
-        print(str(self.stepList[n].action.get()))
-        try:
-            self.case.setAction(n, self.stepList[n].action.get())
-        except Exception as e:
-            print(e)
+        # print(str(self.stepList[n].action.get()))
+        self.case.insert(n, Step())
+        self.case.setAction(n, self.stepList[n].action.get())
         self.testCaseEntry(n)
         self.actionFocusIn()
 
