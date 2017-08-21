@@ -100,10 +100,12 @@ class Executor():
             # self.message.InsertText('Error: Image Not Find\n')
             return 'Failed'
 
-    def imageFinder(self, sourceImage = self.originalScreen, targetImage):
+    def imageFinder(self, sourceImage=None, targetImage=None):
+        if sourceImage == None:
+            sourceImage = self.originalScreen
         source = CV2Img()
         source.load_file(sourceImage, 0)
-        target = cv2Img()
+        target = CV2Img()
         target.load_PILimage(targetImage)
         finder = TemplateFinder(source)
         results = finder.find_all(target, 0.9)
@@ -113,8 +115,8 @@ class Executor():
             x, y = source.coordinate(results[0])
             drawCircle = CV2Img()
             drawCircle.load_file(sourceImage, 1)
-            drawcircle.draw_circle(int(x), int(y))
-            drawcircle.save(sourceImage)
+            drawCircle.draw_circle(int(x), int(y))
+            drawCircle.save(sourceImage)
             ADBRobot.tap(x, y)
             return 'Success'
         else:
