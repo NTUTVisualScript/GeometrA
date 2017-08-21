@@ -142,3 +142,14 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setValue(2, '3')
         exe = Executor(case)
         self.assertEqual('Error', exe.runAll())
+
+    def testImageFinder(self):
+        source = ('C:/Test/image/source.png')
+        successTarget = ('C:/Test/image/success.png')
+        failedTarget = ('C:/Test/image/failed.png')
+        tooManyTarget = ('C:/Test/image/toomany.png')
+
+        exe = Executor(TestCase(5))
+        self.assertEqual('Success', exe.imageFinder(source, successTarget))
+        self.assertEqual('Failed', exe.imageFinder(source, failedTarget))
+        aself.assertEqual('Too many', exe.imageFinder(source, tooManyTarget))

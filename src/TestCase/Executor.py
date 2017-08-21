@@ -100,13 +100,25 @@ class Executor():
             # self.message.InsertText('Error: Image Not Find\n')
             return 'Failed'
 
-    def imageFinder(self, targetImage):
-        # source = CV2Img()
-        # source.load_file(self.originalScreen, 0)
-        # target = cv2Img()
-        # target.load_PILimage
-
-        return True
+    def imageFinder(self, sourceImage = self.originalScreen, targetImage):
+        source = CV2Img()
+        source.load_file(sourceImage, 0)
+        target = cv2Img()
+        target.load_PILimage(targetImage)
+        finder = TemplateFinder(source)
+        results = finder.find_all(target, 0.9)
+        if len(results < 1):
+            return 'Failed'
+        elif len(results) == 1:
+            x, y = source.coordinate(results[0])
+            drawCircle = CV2Img()
+            drawCircle.load_file(sourceImage, 1)
+            drawcircle.draw_circle(int(x), int(y))
+            drawcircle.save(sourceImage)
+            ADBRobot.tap(x, y)
+            return 'Success'
+        else:
+            return 'Too many'
 
     def Swipe(self, n):
         value = str(self.case.getSteps(n).getValue())
