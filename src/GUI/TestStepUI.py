@@ -1,42 +1,47 @@
 from tkinter import *
 from TestCaseActionCombobox import TestCaseAction
 from TestCaseEntry import TestCaseValue
+
 import sys
 sys.path.append('../TestCase/')
 from TestCase import TestCase
 
 class TestStepUI():
-    case = None
-
-    def newStep(self, parent, n):
-        if not self.case:
-            self.case = TestCase()
-
+    def __init__(self, parent, n):
+        from TestCaseUI import TestCaseUI
         self.parent = parent
-        action_value = StringVar()
 
-        lineNum = Label(self.parent, text=str(n + 1) + ". ", width=3)
+        self.lineNum = Label(self.parent, text=str(n + 1) + ". ", width=3)
 
-        addline = Button(self.parent, text="+", width=3)
+        self.addButton = Button(self.parent, text="+", width=3, \
+                command=lambda :TestCaseUI.getTestCaseUI().addButtonClick(n+1) )
 
-        removeline = Button(self.parent, text="-", width=3)
+        self.removeButton = Button(self.parent, text="-", width=3, \
+                command=lambda :TestCaseUI.getTestCaseUI().removeButtonClick(n) )
 
-        run_single_action = Button(self.parent, text="▶",
-                                   width=3)
+        self.executeButton = Button(self.parent, text="▶", width=3)
 
-        actioncombo = TestCaseAction(self.parent, textvariable=action_value, width=10, height=22,
+        self.action = TestCaseAction(self.parent, textvariable= StringVar(), width=10, height=22,
                                      state='readonly')
-        #actioncombo.bind("<<ComboboxSelected>>",self.ActionSelect)
-        #actioncombo.bind("<MouseWheel>",self.ActionSelect)
+        self.action.bind("<<ComboboxSelected>>", lambda event:TestCaseUI.getTestCaseUI().actionSelect(n))
+        self.action.bind("<MouseWheel>", lambda event:TestCaseUI.getTestCaseUI().actionSelect(n))
 
-        value = TestCaseValue(self.parent, width=35)
+        self.value = TestCaseValue(self.parent, width=35)
         #value.bind("<FocusIn>", lambda event, i=n: self.valueFocusIn(event, i))
 
         #showimage = Button(self.listFrame, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
 
-        lineNum.grid(row=n + 1, column=1)
-        addline.grid(row=n + 1, column=2)
-        removeline.grid(row=n + 1, column=3)
-        run_single_action.grid(row=n + 1, column=4)
-        actioncombo.grid(row=n + 1, column=5, padx=(5, 0), pady=(5, 2.5))
-        value.grid(row=n + 1, column=6, padx=(5, 0), pady=(5, 2.5))
+        self.lineNum.grid(row=n + 1, column=1)
+        self.addButton.grid(row=n + 1, column=2)
+        self.removeButton.grid(row=n + 1, column=3)
+        self.executeButton.grid(row=n + 1, column=4)
+        self.action.grid(row=n + 1, column=5, padx=(5, 0), pady=(5, 2.5))
+        self.value.grid(row=n + 1, column=6, padx=(5, 0), pady=(5, 2.5))
+
+    def remove(self):
+        self.lineNum.grid_remove()
+        self.action.grid_remove()
+        self.value.grid_remove()
+        self.addButton.grid_remove()
+        self.removeButton.grid_remove()
+        self.executeButton.grid_remove()

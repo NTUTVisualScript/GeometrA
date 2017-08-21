@@ -29,15 +29,15 @@ class ExecutorTestSuite(unittest.TestCase):
         exe = Executor(case)
         self.assertEqual('Success', exe.execute(2))
 
-    def testExecuteDrag(self):
+    def testExecuteSwipe(self):
         case = TestCase(5)
-        case.setAction(2, 'Drag')
+        case.setAction(2, 'Swipe')
         case.setValue(2, 'x=2, y=3, x=4, y=3')
         exe = Executor(case)
         self.assertEqual('Success', exe.execute(2))
-    def testExecuteDragExcept(self):
+    def testExecuteSwipeExcept(self):
         case = TestCase(5)
-        case.setAction(2, 'Drag')
+        case.setAction(2, 'Swipe')
         case.setValue(2, 'x=, y=3, x=4, y=3')
         exe = Executor(case)
         self.assertEqual('Error', exe.execute(2))

@@ -10,7 +10,7 @@ from HTML.step import HtmlTestStep
 from finder.template_finder import TemplateFinder
 
 
-def dragImage(x1,y1,x2,y2):
+def SwipeImage(x1,y1,x2,y2):
     '''
     Here Should add a code to get screenshot
     '''
@@ -68,8 +68,8 @@ class Executor():
                 return self.case.setStatus(n, 'Success')
             elif act == 'Click':
                 return self.case.setStatus(n, self.click(n))
-            elif act == 'Drag':
-                return self.case.setStatus(n, self.drag(n))
+            elif act == 'Swipe':
+                return self.case.setStatus(n, self.Swipe(n))
             elif act == 'Set Text':
                 return self.case.setStatus(n, self.setText(n))
             elif act == 'TestCase':
@@ -108,7 +108,7 @@ class Executor():
 
         return True
 
-    def drag(self, n):
+    def Swipe(self, n):
         value = str(self.case.getSteps(n).getValue())
         try:
             coordinate = value.split(',')
@@ -126,7 +126,7 @@ class Executor():
             '''
             Here is comment for unittest to pass
             '''
-            # dragImage(startX, startY, endX, endY)
+            # SwipeImage(startX, startY, endX, endY)
             # self.robot.drag_and_drop(startX, startY, endX, endY)
             return 'Success'
         except:

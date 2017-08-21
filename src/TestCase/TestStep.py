@@ -6,7 +6,7 @@ class Step:
         self.status = ''
 
     def setAction(self, act):
-        actList = ['', 'Click', 'Drag', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
+        actList = ['', 'Click', 'Swipe', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
                     'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist']
         if act not in actList:
             raise Exception('Not an action')
