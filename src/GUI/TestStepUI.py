@@ -19,7 +19,8 @@ class TestStepUI():
         self.removeButton = Button(self.parent, text="-", width=3, \
                 command=lambda :TestCaseUI.getTestCaseUI().removeButtonClick(n) )
 
-        self.executeButton = Button(self.parent, text="▶", width=3)
+        self.executeButton = Button(self.parent, text="▶", width=3, \
+                command=lambda :TestCaseUI.getTestCaseUI().executeButtonClick(n))
 
         self.action = TestCaseAction(self.parent, textvariable= StringVar(), width=10, height=22,
                                      state='readonly')
@@ -27,7 +28,7 @@ class TestStepUI():
         self.action.bind("<MouseWheel>", lambda event:TestCaseUI.getTestCaseUI().actionSelect(n))
 
         self.value = TestCaseValue(self.parent, width=35)
-        #value.bind("<FocusIn>", lambda event, i=n: self.valueFocusIn(event, i))
+        self.value.bind("<FocusIn>", lambda event: TestCaseUI.getTestCaseUI().valueFocusIn(n))
 
         #showimage = Button(self.listFrame, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
 

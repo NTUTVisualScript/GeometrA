@@ -14,13 +14,13 @@ filePath = None
 
 class TestCaseUI(Frame):
     __single = None
-    case = None
 
     def __init__(self, parent = None, *args, **kwargs):
         if TestCaseUI.__single:
             raise TestCaseUI.__single
             TestCaseUI.__single = self
         self.case = TestCase()
+        self.exe = Executor(self.case)
 
         Frame.__init__(self, parent, *args, **kwargs, borderwidth =2 ,relief = 'sunken')
 
@@ -52,6 +52,9 @@ class TestCaseUI(Frame):
 
     def AuxscrollFunction(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=650, height=525)
+
+    def executeButtonClick(self, n):
+        self.exe.run(n)
 
     def addButtonClick(self, n):
         i = len(self.stepList)
@@ -115,6 +118,11 @@ class TestCaseUI(Frame):
         self.testCaseEntry(n)
         self.actionFocusIn()
 
+    def valueFocusIn(self, n):
+        self.focus = n
+        if self.stepList[n].action.get() != 'TestCase':
+            self.actionFocusIn()
+
     def actionFocusIn(self):
         action = self.stepList[self.focus].action.get()
 
@@ -145,8 +153,11 @@ class TestCaseUI(Frame):
             if (path is not None) and (path != ''):
                 self.stepList[self.focus].value.delete(0, 'end')
                 self.stepList[self.focus].value.insert('end', path)
+                self.case.setValue(self.focus, path)
         elif action == 'Click' or action == 'Assert Exist' or action == 'Assert Not Exist':
             self.testCaseImage(self.focus)
+        else:
+            self.case.setValue(self.focus, self.stepList[self.focus].value.get())
 
     def dragDown(self, event):
         self.clickStartX = event.x

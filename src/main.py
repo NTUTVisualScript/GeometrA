@@ -1,5 +1,8 @@
 import sys
 sys.path.append('../')
+sys.path.append('./GUI')
+sys.path.append('./TestCase')
+sys.path.append('./save')
 
 from tkinter import *
 from MenuBar import MenuBar
