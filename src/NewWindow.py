@@ -1,4 +1,4 @@
-from Window import View
+from VisualScript import View
 
 
 from tkinter import *
