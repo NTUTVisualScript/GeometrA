@@ -32,6 +32,7 @@ class TestCaseUI(Frame):
         self.place(x=460, y=300)
 
         self.valueList = []
+        self.actionComboList = []
 
         # self.scriptStep = TestStepUI()
         n = 0
@@ -55,9 +56,17 @@ class TestCaseUI(Frame):
 
         i = self.line
         while i > n:
+            action = self.actionComboList[i-1].get()
+            self.actionComboList[i].set(str(action))
+            self.actionComboList[i-1].set('')
             if str(type(self.valueList[i-1])) != "<class 'TestCaseEntry.TestCaseValue'>":
                 self.TestCaseImage(i, self.valueList[i-1].image)
                 self.TestCaseEntry(i-1)
+            else:
+                value = self.valueList[i-1].get()
+                self.valueList[i].delete(0, 'end')
+                self.valueList[i].insert('end', value)
+                self.valueList[i-1].delete(0, 'end')
             i = i-1
 
     def TestCaseImage(self, line, image = None):
@@ -85,14 +94,14 @@ class TestCaseUI(Frame):
 
         lineNum = Label(self.listFrame, text=str(n + 1) + ". ", width=3)
 
-        addline = Button(self.listFrame, command=lambda :self.addButtonClick(n), text="+", width=3)
+        addline = Button(self.listFrame, command=lambda :self.addButtonClick(n+1), text="+", width=3)
 
         removeline = Button(self.listFrame, text="-", width=3)
 
         run_single_action = Button(self.listFrame, text="▶", width=3)
 
-        actioncombo = TestCaseAction(self.listFrame, textvariable=action_value, width=10, height=22,
-                                     state='readonly')
+        actionCombo = TestCaseAction(self.listFrame, textvariable=action_value, width=10, height=22, state='readonly')
+        self.actionComboList.append(actionCombo)
         value = TestCaseValue(self.listFrame, width=35)
         #value.bind("<FocusIn>", lambda event, i=n: self.valueFocusIn(event, i))
 
@@ -104,5 +113,5 @@ class TestCaseUI(Frame):
         addline.grid(row=n + 1, column=2)
         removeline.grid(row=n + 1, column=3)
         run_single_action.grid(row=n + 1, column=4)
-        actioncombo.grid(row=n + 1, column=5, padx=(5, 0), pady=(5, 2.5))
+        actionCombo.grid(row=n + 1, column=5, padx=(5, 0), pady=(5, 2.5))
         value.grid(row=n + 1, column=6, padx=(5, 0), pady=(5, 2.5))
