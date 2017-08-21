@@ -1,54 +1,32 @@
 from TestStep import Step
 class TestCase:
     def __init__(self, n=0):
-        self.stepList = []
+        self.stepDict = {}
         for i in range(0, n):
-            self.stepList.append(Step())
+            self.stepDict[i] = Step()
 
     def getSize(self):
-        return len(self.stepList)
+        return len(self.stepDict)
 
     def getSteps(self, n=-1):
         if n == -1:
-            return self.stepList
-        return self.stepList[n]
+            return self.stepDict.values()
+        return self.stepDict[n]
 
     def setAction(self, n, action):
-        try:
-            self.stepList[n].setAction(action)
-        except Exception:
-            raise Exception('Not an action')
+        self.stepDict[n].setAction(action)
 
     def setValue(self, n, value):
-        self.stepList[n].setValue(value)
+        self.stepDict[n].setValue(value)
 
-    # def insert(self, n = -1):
-    #     if(n == -1):
-    #         step = Step()
-    #         step.setSequence(self.getSize())
-    #         self.stepList.append(step)
-    #     elif n < self.getSize():
-    #         for i in range(n+1, self.getSize()):
-    #             self.stepList[i].setSequence(self.stepList[i].getSequence() + 1)
-    #         self.stepList.insert(n+1, Step())
-    #     else:
-    #         raise Exception('Input Out Of Range')
-
-    def insert(self, step):
-        if self.getSize() == 0:
-            self.stepList.append(step)
-        else:
-            for i in range(self.getSize()):
-                if self.stepList[i].getSequence() > step.getSequence():
-                    self.stepList.insert(i, step)
-                    return
-            self.stepList.insert(self.getSize(), step)
+    def insert(self, n, step):
+        self.stepDict[n] = step
 
     def delete(self, n):
-        del self.stepList[n]
+        del self.stepDict[n]
 
     def setStatus(self, n, status):
-        return self.stepList[n].setStatus(status)
+        return self.stepDict[n].setStatus(status)
 
     def getStatus(self, n):
-        return self.stepList[n].getStatus()
+        return self.stepDict[n].getStatus()

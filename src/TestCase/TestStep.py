@@ -4,10 +4,9 @@ class Step:
         self.act = ''
         self.val = ''
         self.status = ''
-        self.sequence = -1
 
     def setAction(self, act):
-        actList = ['Click', 'Drag', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
+        actList = ['', 'Click', 'Drag', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
                     'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist']
         if act not in actList:
             raise Exception('Not an action')
@@ -32,10 +31,3 @@ class Step:
         if self.status != '':
             return self.status
         raise Exception('Step Not Executed')
-
-    def setSequence(self, n):
-        self.sequence = n
-        return self.sequence
-
-    def getSequence(self):
-        return self.sequence
