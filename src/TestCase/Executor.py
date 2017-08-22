@@ -81,13 +81,13 @@ class Executor():
         if status == 'Success':
             self.robot.tap(self.clickX, self.clickY)
             return 'Success'
+        elif status == 'Failed':
+            return 'Failed'
         '''
             Wait for Tree node designed
         '''
-        # elif status == 'Too many':
+        # else:
         #     self.clickNode(n)
-        else:
-            return 'Failed'
 
     def imageFinder(self, sourceImage=None, targetImage=None, resultImage=None):
         # return True
