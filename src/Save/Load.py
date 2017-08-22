@@ -3,12 +3,13 @@ import tkinter.filedialog
 import sys
 sys.path.append('../TestCase')
 from TestCase import TestCase
+from TestStep import Step
 
 class FileLoader():
-    def __init__(self):
-        self.folderPath = ''
-        self.folderName = ''
-        self.case = None
+    def __init__(self, path):
+        self.folderPath = path
+        self.folderName = str(path.split('/').pop())
+        self.jsonDecoder()
 
     def loadPath(self):
         dirPath = tkinter.filedialog.askdirectory()
@@ -23,8 +24,8 @@ class FileLoader():
     def getFolderName(self):
         return self.folderName
 
-    def jsonDecoder(self, dirPath):
-        with open(dirPath + '/TestCase.json', 'r') as f:
+    def jsonDecoder(self):
+        with open(self.folderPath + '/TestCase.json', 'r') as f:
             dataDic = json.load(f)
 
         self.case = TestCase(len(dataDic))
@@ -34,9 +35,12 @@ class FileLoader():
 
             act = data['action']
             val = data['value']
-
-            self.case.setAction(i, act)
-            self.case.setValue(i, val)
+            if val == None:
+                val = data['image']
+            step = Step()
+            step.setAction(act)
+            step.setValue(val)
+            self.case.insert(i, step)
 
     def getTestCase(self):
         return self.case

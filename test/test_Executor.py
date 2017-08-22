@@ -1,4 +1,6 @@
 import unittest
+from PIL import Image, ImageTk
+
 import sys
 sys.path.append('../src/TestCase')
 sys.path.append('../src')
@@ -24,17 +26,24 @@ class ExecutorTestSuite(unittest.TestCase):
 
     def testExecuteClick(self):
         case = TestCase(5)
+        case.setAction(1, 'Android Keycode')
+        case.setValue(1, 'KEYCODE_HOME')
         case.setAction(2, 'Click')
-        case.setValue(2, 'Image')
+        case.setValue(2, Image.open('C:/Test/image/exist.png'))
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        exe.execute(1)
+        self.assertEqual('Success', exe.run(2))
+        exe.execute(1)
 
     def testExecuteSwipe(self):
         case = TestCase(5)
         case.setAction(2, 'Swipe')
-        case.setValue(2, 'x=2, y=3, x=4, y=3')
+        case.setValue(2, 'start x=400, y=300, end x=200, y=300')
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        self.assertEqual('Success', exe.run(2))
+        case.setAction(3, 'Android Keycode')
+        case.setValue(3, 'KEYCODE_HOME')
+        exe.execute(3)
     def testExecuteSwipeExcept(self):
         case = TestCase(5)
         case.setAction(2, 'Swipe')
@@ -52,7 +61,7 @@ class ExecutorTestSuite(unittest.TestCase):
     def testExecuteTestCase(self):
         case = TestCase(5)
         case.setAction(2, 'TestCase')
-        case.setValue(2, 'C:/test')     # We need to put a sample TestCase in the path
+        case.setValue(2, 'C:/Test')     # We need to put a sample TestCase in the path
         exe = Executor(case)
         self.assertEqual('Success', exe.execute(2))
     def testExecuteTestCaseExcept(self):
@@ -94,16 +103,16 @@ class ExecutorTestSuite(unittest.TestCase):
     def testExecuteAssertExist(self):
         case = TestCase(5)
         case.setAction(2, 'Assert Exist')
-        case.setValue(2, 'Image')
+        case.setValue(2, Image.open('C:/Test/image/exist.png'))
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        self.assertEqual('Success', exe.run(2))
 
     def testExecuteAssertNotExist(self):
         case = TestCase(5)
         case.setAction(2, 'Assert Not Exist')
-        case.setValue(2, 'Disappeared image')
+        case.setValue(2, Image.open('C:/Test/image/notexist.png'))
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        self.assertEqual('Success', exe.run(2))
 
     def testRun(self):
         case = TestCase(5)
@@ -128,8 +137,6 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setValue(1, 'KEYCODE_HOME')
         case.setAction(2, 'Sleep(s)')
         case.setValue(2, '0')
-        case.setAction(4, 'TestCase')
-        case.setValue(4, 'C:/test')
         exe = Executor(case)
         self.assertEqual('Success', exe.runAll())
     def testRunAllError(self):
@@ -143,13 +150,14 @@ class ExecutorTestSuite(unittest.TestCase):
         exe = Executor(case)
         self.assertEqual('Error', exe.runAll())
 
-    # def testImageFinder(self):
-    #     source = ('C:/Test/image/source.png')
-    #     successTarget = ('C:/Test/image/success.png')
-    #     failedTarget = ('C:/Test/image/failed.png')
-    #     tooManyTarget = ('C:/Test/image/toomany.png')
-    #
-    #     exe = Executor(TestCase(5))
-    #     self.assertEqual('Success', exe.imageFinder(source, successTarget))
-    #     self.assertEqual('Failed', exe.imageFinder(source, failedTarget))
-    #     self.assertEqual('Too many', exe.imageFinder(source, tooManyTarget))
+    def testImageFinder(self):
+        source = ('C:/Test/image/source.png')
+        successTarget = Image.open('C:/Test/image/success.png')
+        failedTarget = Image.open('C:/Test/image/failed.png')
+        tooManyTarget = Image.open('C:/Test/image/toomany.png')
+        result = ('C:/Test/image/result.png')
+
+        exe = Executor(TestCase(5))
+        self.assertEqual('Success', exe.imageFinder(source, successTarget, result))
+        self.assertEqual('Failed', exe.imageFinder(source, failedTarget, result))
+        self.assertEqual('Too many', exe.imageFinder(source, tooManyTarget, result))

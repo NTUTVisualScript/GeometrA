@@ -10,15 +10,7 @@ from HTML.step import HtmlTestStep
 from finder.template_finder import TemplateFinder
 
 
-def SwipeImage(x1,y1,x2,y2):
-    '''
-    Here Should add a code to get screenshot
-    '''
-    source = CV2Img()
-    source.load_file(source_image, 1)
-    source.draw_line(x1,y1,x2,y2)
-    source.draw_circle(x2,y2)
-    source.save(source_image)
+
 
 class Executor():
     def __init__(self, case):
@@ -84,44 +76,42 @@ class Executor():
                 return self.case.setStatus(n, self.imageNotExist(n))
 
     def click(self, n):
-        '''
-            imageFinder is waiting for be write after.
-            It should get the screenshot and compare with target image it got from parameter
-        '''
-        status = self.imageFinder(self.case.getSteps(n).getValue())
+        status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
 
-        if status == True:
-            '''
-            Here is commented for unittest
-            '''
-            # self.robot.tap(coordinate_x, coordinate_y)
+        if status == 'Success':
+            self.robot.tap(self.clickX, self.clickY)
             return 'Success'
+        '''
+            Wait for Tree node designed
+        '''
+        # elif status == 'Too many':
+        #     self.clickNode(n)
         else:
-            # self.message.InsertText('Error: Image Not Find\n')
             return 'Failed'
 
-    def imageFinder(self, sourceImage=None, targetImage=None):
-        return True
-        # if sourceImage == None:
-        #     sourceImage = self.originalScreen
-        # source = CV2Img()
-        # source.load_file(sourceImage, 0)
-        # target = CV2Img()
-        # target.load_PILimage(targetImage)
-        # finder = TemplateFinder(source)
-        # results = finder.find_all(target, 0.9)
-        # if len(results < 1):
-        #     return 'Failed'
-        # elif len(results) == 1:
-        #     x, y = source.coordinate(results[0])
-        #     drawCircle = CV2Img()
-        #     drawCircle.load_file(sourceImage, 1)
-        #     drawCircle.draw_circle(int(x), int(y))
-        #     drawCircle.save(sourceImage)
-        #     ADBRobot.tap(x, y)
-        #     return 'Success'
-        # else:
-        #     return 'Too many'
+    def imageFinder(self, sourceImage=None, targetImage=None, resultImage=None):
+        # return True
+        if sourceImage == None:
+            sourceImage = self.originalScreen
+        if resultImage == None:
+            resultImage = sourceImage
+        source = CV2Img()
+        source.load_file(sourceImage, 0)
+        target = CV2Img()
+        target.load_PILimage(targetImage)
+        finder = TemplateFinder(source)
+        results = finder.find_all(target, 0.9)
+        if len(results) < 1:
+            return 'Failed'
+        elif len(results) == 1:
+            self.clickX, self.clickY = source.coordinate(results[0])
+            drawCircle = CV2Img()
+            drawCircle.load_file(sourceImage, 1)
+            drawCircle.draw_circle(int(self.clickX), int(self.clickY))
+            drawCircle.save(resultImage)
+            return 'Success'
+        else:
+            return 'Too many'
 
     def Swipe(self, n):
         value = str(self.case.getSteps(n).getValue())
@@ -134,20 +124,21 @@ class Executor():
             endY = int(coordinate[3].split('=')[1])
 
         except:
-            # print('Coordinate Value Split Error: ', str(value))
-            # self.message.InsertText('Invalid Coordinate')
             return 'Error'
         try:
-            '''
-            Here is comment for unittest to pass
-            '''
-            # SwipeImage(startX, startY, endX, endY)
-            # self.robot.drag_and_drop(startX, startY, endX, endY)
+            self.swipeImage(startX, startY, endX, endY)
+            self.robot.drag_and_drop(startX, startY, endX, endY)
             return 'Success'
-        except:
-            print('Drag and drop error')
-            # self.message.InsertText('Drag and drop error')
+        except Exception as e:
+            print(e)
             return 'Failed'
+
+    def swipeImage(self, x1, y1, x2, y2):
+        source = CV2Img()
+        source.load_file(self.originalScreen, 1)
+        source.draw_line(x1,y1,x2,y2)
+        source.draw_Arrow(x1, y1, x2, y2)
+        source.save(self.originalScreen)
 
     def setText(self, n):
         '''
@@ -160,34 +151,23 @@ class Executor():
             return 'Failed'
 
     def testCase(self, n):
-
         try:
-            testCaseFile = FileLoader()
-            testCaseFile.jsonDecoder(self.case.getSteps(n).getValue())
-
-            name = self.case.getSteps(n).getValue().split('/')
-            foldername = str(name.pop())
-            '''
-            Here is comment for unittest to pass
-            '''
-            exe = Executor(testCaseFile.getTestCase())
+            path = self.case.getSteps(n).getValue()
+            exe = Executor(FileLoader(path).getTestCase())
             exe.runAll()
             return 'Success'
         except:
-            # self.message.InsertText('Error! Please check the test case file: \n' + self.case.getSteps(n).getValue() + '\n')
             return 'Error'
 
     def sleep(self, n):
         try:
             t = int(self.case.getSteps(n).getValue())
         except:
-            # self.message.InsertText('Invalid Time')
             return 'Error'
         try:
             time.sleep(t)
             return 'Success'
         except:
-            # self.message.InsertText('Time Sleep Failed\n')
             return 'Failed'
 
     def sendKeyValue(self, n):
@@ -195,25 +175,20 @@ class Executor():
             self.robot.send_key(self.case.getSteps(n).getValue())
             return 'Success'
         except:
-            # self.message.InsertText('Invalid Android Keycode\n')
             return 'Error'
 
     def imageExist(self, n):
-        '''
-        Here is waiting for imageFinder too
-        '''
-        if self.imageFinder(self.case.getSteps(n).getValue()):
-            return 'Success'
-        self.message.InsertText('Failed: image and node Not Found')
-        return 'Failed'
+        status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
+        if status == 'Failed':
+            self.message.InsertText('Failed: image and node Not Found')
+            return 'Failed'
+        return 'Success'
 
     def imageNotExist(self, n):
-        '''
-        Here return true for unittest, the comment line is real code
-        '''
-        # if self.imageFinder(self.case.getSteps(n).getValue()):
-        #     return 'Failed'
-        return 'Success'
+        status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
+        if status == 'Failed':
+            return 'Success'
+        return 'Failed'
 
     def stepResult(self, n):
         if self.case.getStatus(n) == 'Success':
@@ -223,5 +198,4 @@ class Executor():
         else:
             result = 'Action ' + str(n+1) + ' Error'
 
-        # self.message.InsertText(result)
         return result
