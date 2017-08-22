@@ -228,7 +228,7 @@ class View(Frame, threading.Thread):
                     self.valuelist[self.focus].delete(0, 'end')
                     self.cropImage(self.focus, self.left * self.multiple, self.top * self.multiple, self.right * self.multiple, self.bottom * self.multiple)
 
-                elif self.actioncombolist[self.focus].get() == 'Drag':
+                elif self.actioncombolist[self.focus].get() == 'Swipe':
                     text = "start x=" + str(int(self.clickstartX * self.multiple)) + ", y=" + str(int(self.clickstartY * self.multiple)) + " , " +\
                            "end x=" + str(int(self.clickendX * self.multiple)) + ", y=" + str(int(self.clickendY * self.multiple))
                     self.valuelist[self.focus].delete(0, 'end')
@@ -412,7 +412,7 @@ class View(Frame, threading.Thread):
             if self.actioncombolist[self.focus].get() == 'Click' or self.actioncombolist[self.focus].get() == 'Assert Exist' or self.actioncombolist[self.focus].get() == 'Assert Not Exist':
                 self.cropImage(self.focus, self.left, self.top, self.right, self.bottom)
 
-            if self.actioncombolist[self.focus].get() == 'Drag':
+            if self.actioncombolist[self.focus].get() == 'Swipe':
                 text = "x=" + str( int((self.left * self.multiple + self.left * self.multiple) / 2) ) +\
                        ",y=" + str( int((self.right * self.multiple + self.left * self.bottom) / 2) )
                 self.valuelist[self.focus].delete(0, 'end')
@@ -864,12 +864,12 @@ class View(Frame, threading.Thread):
             self.Action_FocusIn()
 
     def Action_FocusIn(self):
-        if self.actioncombolist[self.focus].get() != 'Drag':
+        if self.actioncombolist[self.focus].get() != 'Swipe':
             if self.Drag_image != None:
                 self.Drag_image.place_forget()
                 self.Drag_image = None
 
-        if self.actioncombolist[self.focus].get() == 'Drag':
+        if self.actioncombolist[self.focus].get() == 'Swipe':
             if filePath is None: return
             self.Drag_image = Canvas(self.screenshot, height=800, width=450)
             self.Drag_image.configure(borderwidth=-3)
@@ -910,7 +910,7 @@ class View(Frame, threading.Thread):
         self.top, self.bottom = sorted([self.clickstartY, self.clickendY])
 
         if self.left != self.right or self.top != self.bottom:
-                if self.actioncombolist[self.focus].get() == 'Drag':
+                if self.actioncombolist[self.focus].get() == 'Swipe':
                     text = "start x=" + str(int(self.clickstartX * self.multiple)) + ", y=" + str(int(self.clickstartY * self.multiple)) + " , " +\
                            "end x=" + str(int(self.clickendX * self.multiple)) + ", y=" + str(int(self.clickendY * self.multiple))
                     self.valuelist[self.focus].delete(0, 'end')
