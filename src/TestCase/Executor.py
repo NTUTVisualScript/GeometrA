@@ -101,26 +101,27 @@ class Executor():
             return 'Failed'
 
     def imageFinder(self, sourceImage=None, targetImage=None):
-        if sourceImage == None:
-            sourceImage = self.originalScreen
-        source = CV2Img()
-        source.load_file(sourceImage, 0)
-        target = CV2Img()
-        target.load_PILimage(targetImage)
-        finder = TemplateFinder(source)
-        results = finder.find_all(target, 0.9)
-        if len(results < 1):
-            return 'Failed'
-        elif len(results) == 1:
-            x, y = source.coordinate(results[0])
-            drawCircle = CV2Img()
-            drawCircle.load_file(sourceImage, 1)
-            drawCircle.draw_circle(int(x), int(y))
-            drawCircle.save(sourceImage)
-            ADBRobot.tap(x, y)
-            return 'Success'
-        else:
-            return 'Too many'
+        return True
+        # if sourceImage == None:
+        #     sourceImage = self.originalScreen
+        # source = CV2Img()
+        # source.load_file(sourceImage, 0)
+        # target = CV2Img()
+        # target.load_PILimage(targetImage)
+        # finder = TemplateFinder(source)
+        # results = finder.find_all(target, 0.9)
+        # if len(results < 1):
+        #     return 'Failed'
+        # elif len(results) == 1:
+        #     x, y = source.coordinate(results[0])
+        #     drawCircle = CV2Img()
+        #     drawCircle.load_file(sourceImage, 1)
+        #     drawCircle.draw_circle(int(x), int(y))
+        #     drawCircle.save(sourceImage)
+        #     ADBRobot.tap(x, y)
+        #     return 'Success'
+        # else:
+        #     return 'Too many'
 
     def Swipe(self, n):
         value = str(self.case.getSteps(n).getValue())
