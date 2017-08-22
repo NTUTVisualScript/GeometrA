@@ -19,7 +19,6 @@ class Executor():
         self.case = case
         self.robot = ADBRobot()
         self.htmlstep = HtmlTestStep.getHtmlTestStep()
-        # self.message = Message.getMessage(self)
 
     def getOriginalScreen(self):
         filePath = self.robot.before_screenshot()
@@ -33,12 +32,9 @@ class Executor():
         for i in range(self.case.getSize()):
             status = self.execute(i)
             if status == 'Failed':
-                # self.message.InsertText('Step' + str(i+1) + 'Status Failed')
                 return 'Failed'
             if status == 'Error':
-                # self.message.InsertText('Step' + str(i+1) + 'Status Failed')
                 return 'Error'
-            # self.message.InsertText('Step' + str(i+1) + 'Status Success')
         return 'Success'
 
     def run(self, n):
@@ -180,7 +176,6 @@ class Executor():
     def imageExist(self, n):
         status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
         if status == 'Failed':
-            self.message.InsertText('Failed: image and node Not Found')
             return 'Failed'
         return 'Success'
 
