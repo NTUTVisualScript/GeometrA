@@ -29,7 +29,7 @@ class ExecutorTestSuite(unittest.TestCase):
         case.setAction(1, 'Android Keycode')
         case.setValue(1, 'KEYCODE_HOME')
         case.setAction(2, 'Click')
-        case.setValue(2, Image.open('C:/Test/image/exist.png'))
+        case.setValue(2, Image.open('./TestCase/Test/image/exist.png'))
         exe = Executor(case)
         exe.execute(1)
         self.assertEqual('Success', exe.run(2))
@@ -61,7 +61,7 @@ class ExecutorTestSuite(unittest.TestCase):
     def testExecuteTestCase(self):
         case = TestCase(5)
         case.setAction(2, 'TestCase')
-        case.setValue(2, 'C:/Test')     # We need to put a sample TestCase in the path
+        case.setValue(2, './TestCase/Test')     # We need to put a sample TestCase in the path
         exe = Executor(case)
         self.assertEqual('Success', exe.execute(2))
     def testExecuteTestCaseExcept(self):
@@ -103,14 +103,14 @@ class ExecutorTestSuite(unittest.TestCase):
     def testExecuteAssertExist(self):
         case = TestCase(5)
         case.setAction(2, 'Assert Exist')
-        case.setValue(2, Image.open('C:/Test/image/exist.png'))
+        case.setValue(2, Image.open('./TestCase/Test/image/exist.png'))
         exe = Executor(case)
         self.assertEqual('Success', exe.run(2))
 
     def testExecuteAssertNotExist(self):
         case = TestCase(5)
         case.setAction(2, 'Assert Not Exist')
-        case.setValue(2, Image.open('C:/Test/image/notexist.png'))
+        case.setValue(2, Image.open('./TestCase/Test/image/notexist.png'))
         exe = Executor(case)
         self.assertEqual('Success', exe.run(2))
 
@@ -151,11 +151,11 @@ class ExecutorTestSuite(unittest.TestCase):
         self.assertEqual('Error', exe.runAll())
 
     def testImageFinder(self):
-        source = ('C:/Test/image/source.png')
-        successTarget = Image.open('C:/Test/image/success.png')
-        failedTarget = Image.open('C:/Test/image/failed.png')
-        tooManyTarget = Image.open('C:/Test/image/toomany.png')
-        result = ('C:/Test/image/result.png')
+        source = ('./TestCase/Test/image/source.png')
+        successTarget = Image.open('./TestCase/Test/image/success.png')
+        failedTarget = Image.open('./TestCase/Test/image/failed.png')
+        tooManyTarget = Image.open('./TestCase/Test/image/toomany.png')
+        result = ('./TestCase/Test/image/result.png')
 
         exe = Executor(TestCase(5))
         self.assertEqual('Success', exe.imageFinder(source, successTarget, result))

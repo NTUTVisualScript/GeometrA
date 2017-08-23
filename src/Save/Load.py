@@ -28,7 +28,7 @@ class FileLoader():
         with open(self.folderPath + '/TestCase.json', 'r') as f:
             dataDic = json.load(f)
 
-        self.case = TestCase(len(dataDic))
+        self.case = TestCase()
 
         for i in range(self.case.getSize()):
             data = dataDic[str(i+1)]
