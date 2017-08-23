@@ -1,6 +1,21 @@
 # Diary:
 
-## Personal Sprint 2017/07/18 ~ 2017/08/08
+## Sprint 2017/08/23 ~ 2017/09/?
+
+### * ~ 2017/08/23  * ~ 18
+    1. Build jenkins CI server for this project. Jenkins will build automatically at 7 am every morning
+    2. Fixed Executor 'TestCase' function bug.
+    3. Finished most function for executor(except for 'Loop')
+
+    Next Step:
+    1. Redesign the usage of 'Test Step' and do the refactor of all code using it.
+    2. Change the using of 'run' function to 'execute' function if possible, so I can improve the execute time of unit test(Cut the report part code, and implement a report function.) 
+    3. Implement 'Loop' function (maybe just call a function with a while loop inside another for loop)
+
+
+----------------------------------------------------------
+
+## Sprint 2017/07/18 ~ 2017/08/08
 ### Sprint Goal: refactor the Test Case
 ### 2017/07/19 17:00
     Try to use MVC to handle Test case issue

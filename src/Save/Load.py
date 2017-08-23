@@ -1,5 +1,7 @@
 import json
 import tkinter.filedialog
+from PIL import Image, ImageTk
+
 import sys
 sys.path.append('../TestCase')
 from TestCase import TestCase
@@ -30,13 +32,13 @@ class FileLoader():
 
         self.case = TestCase()
 
-        for i in range(self.case.getSize()):
+        for i in range(len(dataDic)):
             data = dataDic[str(i+1)]
 
             act = data['action']
             val = data['value']
             if val == None:
-                val = data['image']
+                val =Image.open(self.folderPath + data['image'])
             step = Step()
             step.setAction(act)
             step.setValue(val)

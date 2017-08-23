@@ -53,10 +53,18 @@ class ExecutorTestSuite(unittest.TestCase):
 
     def testExecuteSetText(self):
         case = TestCase(5)
+        case.setAction(1, 'TestCase')
+        case.setValue(1, './TestCase/SetText/SetTextSetUp')
         case.setAction(2, 'Set Text')
         case.setValue(2, 'Hello World')
+        case.setAction(3, 'TestCase')
+        case.setValue(3, './TestCase/SetText/SetTextTearDown')
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        exe.execute(1)
+        self.assertEqual('Success', exe.run(2))
+        target = Image.open('./TestCase/SetText/source.png')
+        self.assertEqual('Success', exe.imageFinder(sourceImage=exe.currentScreen, targetImage=target, resultImage='./TestCase/SetText/result.png'))
+        exe.execute(3)
 
     def testExecuteTestCase(self):
         case = TestCase(5)
@@ -135,8 +143,10 @@ class ExecutorTestSuite(unittest.TestCase):
         case = TestCase(5)
         case.setAction(1, 'Android Keycode')
         case.setValue(1, 'KEYCODE_HOME')
-        case.setAction(2, 'Sleep(s)')
-        case.setValue(2, '0')
+        case.setAction(2, 'Swipe')
+        case.setValue(2, 'start x=800, y=1000, end x=300, y=1000')
+        case.setAction(3, 'Sleep(s)')
+        case.setValue(3, '3')
         exe = Executor(case)
         self.assertEqual('Success', exe.runAll())
     def testRunAllError(self):

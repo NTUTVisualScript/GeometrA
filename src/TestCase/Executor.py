@@ -30,7 +30,7 @@ class Executor():
 
     def runAll(self):
         for i in range(self.case.getSize()):
-            status = self.execute(i)
+            status = self.run(i)
             if status == 'Failed':
                 return 'Failed'
             if status == 'Error':
@@ -72,6 +72,7 @@ class Executor():
                 return self.case.setStatus(n, self.imageNotExist(n))
 
     def click(self, n):
+        print('I Clicked')
         status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
 
         if status == 'Success':
@@ -137,11 +138,8 @@ class Executor():
         source.save(self.originalScreen)
 
     def setText(self, n):
-        '''
-        Here is comment for unittest to pass
-        '''
         try:
-            # self.robot.input_text(self.case.getSteps(n).getValue())
+            self.robot.input_text(self.case.getSteps(n).getValue())
             return 'Success'
         except:
             return 'Failed'
@@ -149,10 +147,10 @@ class Executor():
     def testCase(self, n):
         try:
             path = self.case.getSteps(n).getValue()
-            exe = Executor(FileLoader(path).getTestCase())
-            exe.runAll()
-            return 'Success'
-        except:
+            print(path)
+            return Executor(FileLoader(path).getTestCase()).runAll()
+        except Exception as e:
+            print(e)
             return 'Error'
 
     def sleep(self, n):
@@ -161,6 +159,7 @@ class Executor():
         except:
             return 'Error'
         try:
+            print('Sleep for ', t, 'second')
             time.sleep(t)
             return 'Success'
         except:
@@ -192,5 +191,4 @@ class Executor():
             result = 'Action ' + str(n+1) + ' Failed'
         else:
             result = 'Action ' + str(n+1) + ' Error'
-
         return result
