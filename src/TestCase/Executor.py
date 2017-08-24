@@ -19,6 +19,7 @@ class Executor():
         self.case = case
         self.robot = ADBRobot()
         self.htmlstep = HtmlTestStep.getHtmlTestStep()
+        self.originalScreen = None
 
     def getOriginalScreen(self):
         filePath = self.robot.before_screenshot()
@@ -27,6 +28,17 @@ class Executor():
     def getCurrentScreen(self):
         filePath = self.robot.before_screenshot()
         self.currentScreen = filePath
+
+    def reportImage(self, n):
+        act = self.case.getSteps(n).getAction()
+        if (act == 'Click') or (act == 'Assert Exist') or (act == 'Assert Not Exist'):
+            drawCircle = CV2Img()
+            drawCircle.load_file(self.originalScreen, 1)
+            drawCircle.draw_circle(int(self.clickX), int(self.clickY))
+            drawCircle.save(self.originalScreen)
+        elif act == 'Siwpe':
+            self.swipeImage(self.startX, self.startY, self.endX, self.endY)
+
 
     def runAll(self):
         for i in range(self.case.getSize()):
@@ -43,6 +55,7 @@ class Executor():
 
         status = self.execute(n)
 
+        self.reportImage(n)
         self.getCurrentScreen()
         self.htmlstep.step_after(self.currentScreen)
 
@@ -72,7 +85,6 @@ class Executor():
                 return self.case.setStatus(n, self.imageNotExist(n))
 
     def click(self, n):
-        print('I Clicked')
         status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
 
         if status == 'Success':
@@ -86,12 +98,13 @@ class Executor():
         # else:
         #     self.clickNode(n)
 
-    def imageFinder(self, sourceImage=None, targetImage=None, resultImage=None):
+    def imageFinder(self, sourceImage=None, targetImage=None):
         # return True
         if sourceImage == None:
-            sourceImage = self.originalScreen
-        if resultImage == None:
-            resultImage = sourceImage
+            if self.originalScreen == None:
+                sourceImage = self.robot.before_screenshot()
+            else:
+                sourceImage = self.originalScreen
         source = CV2Img()
         source.load_file(sourceImage, 0)
         target = CV2Img()
@@ -102,10 +115,6 @@ class Executor():
             return 'Failed'
         elif len(results) == 1:
             self.clickX, self.clickY = source.coordinate(results[0])
-            drawCircle = CV2Img()
-            drawCircle.load_file(sourceImage, 1)
-            drawCircle.draw_circle(int(self.clickX), int(self.clickY))
-            drawCircle.save(resultImage)
             return 'Success'
         else:
             return 'Too many'
@@ -114,17 +123,16 @@ class Executor():
         value = str(self.case.getSteps(n).getValue())
         try:
             coordinate = value.split(',')
-            startX = int(coordinate[0].split('=')[1])
-            startY = int(coordinate[1].split('=')[1])
+            self.startX = int(coordinate[0].split('=')[1])
+            self.startY = int(coordinate[1].split('=')[1])
 
-            endX = int(coordinate[2].split('=')[1])
-            endY = int(coordinate[3].split('=')[1])
+            self.endX = int(coordinate[2].split('=')[1])
+            self.endY = int(coordinate[3].split('=')[1])
 
         except:
             return 'Error'
         try:
-            self.swipeImage(startX, startY, endX, endY)
-            self.robot.drag_and_drop(startX, startY, endX, endY)
+            self.robot.drag_and_drop(self.startX, self.startY, self.endX, self.endY)
             return 'Success'
         except Exception as e:
             print(e)
@@ -147,7 +155,6 @@ class Executor():
     def testCase(self, n):
         try:
             path = self.case.getSteps(n).getValue()
-            print(path)
             return Executor(FileLoader(path).getTestCase()).runAll()
         except Exception as e:
             print(e)
@@ -159,7 +166,6 @@ class Executor():
         except:
             return 'Error'
         try:
-            print('Sleep for ', t, 'second')
             time.sleep(t)
             return 'Success'
         except:
