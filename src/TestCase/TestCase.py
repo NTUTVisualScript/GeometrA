@@ -2,8 +2,6 @@ from TestStep import Step
 class TestCase:
     def __init__(self, n=0):
         self.stepDict = {}
-        for i in range(0, n):
-            self.stepDict[i] = Step()
 
     def getSize(self):
         return len(self.stepDict)
@@ -19,8 +17,25 @@ class TestCase:
     def setValue(self, n, value):
         self.stepDict[n].setValue(value)
 
-    def insert(self, n, step):
+    def setStep(self, n, act, val):
+        self.stepDict[n].setStep(act, val)
+
+    def insert(self, n=-1, step=None, act=None, val=None):
+        if step == None:
+            step = Step(act, val)
+        if n == -1:
+            n = self.getSize()
+        for i in range(self.getSize(), n, -1):
+            self.stepDict[i] = self.stepDict[i-1]
         self.stepDict[n] = step
+
+    def refrash(self):
+        i = 0
+        temp = {}
+        for j in self.stepDict:
+            temp[i] = self.stepDict[j]
+            i = i+1
+        self.stepDict = temp
 
     def delete(self, n):
         del self.stepDict[n]

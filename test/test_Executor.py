@@ -11,93 +11,75 @@ from TestCase import TestCase
 
 class ExecutorTestSuite(unittest.TestCase):
     def testConstructer(self):
-        case = TestCase(5)
+        case = TestCase()
         exe = Executor(case)
         self.assertEqual('<class \'TestCase.TestCase\'>', str(exe.case.__class__))
 
     def testConstructerExcept(self):
-        step = Step()
+        step = Step('Set Text', 'Hello World')
         self.assertRaisesRegex(Exception, 'Not a executable case', Executor, step)
 
-    def testExecuteNone(self):
-        case = TestCase(5)
-        exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
-
     def testExecuteClick(self):
-        case = TestCase(5)
-        case.setAction(1, 'Android Keycode')
-        case.setValue(1, 'KEYCODE_HOME')
-        case.setAction(2, 'Click')
-        case.setValue(2, Image.open('./TestCase/Test/image/exist.png'))
+        case = TestCase()
         exe = Executor(case)
-        exe.execute(1)
-        self.assertEqual('Success', exe.run(2))
-        exe.execute(1)
-
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        exe.execute(0)
+        self.assertEqual('Success', exe.run(1))
+        exe.execute(0)
+    
     def testExecuteSwipe(self):
-        case = TestCase(5)
-        case.setAction(2, 'Swipe')
-        case.setValue(2, 'start x=400, y=300, end x=200, y=300')
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Success', exe.run(2))
-        case.setAction(3, 'Android Keycode')
-        case.setValue(3, 'KEYCODE_HOME')
-        exe.execute(3)
-    def testExecuteSwipeExcept(self):
-        case = TestCase(5)
-        case.setAction(2, 'Swipe')
-        case.setValue(2, 'x=, y=3, x=4, y=3')
+        case.insert(act='Swipe', val='start x=400, y=300, end x=200, y=300')
+        self.assertEqual('Success', exe.run(0))
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        exe.execute(1)
+    def testExecuteSwipeError(self):
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Error', exe.execute(2))
+        case.insert(act='Swipe', val='x=, y=3, x=4, y=3')
+        self.assertEqual('Error', exe.execute(0))
 
     def testExecuteSetText(self):
-        case = TestCase(5)
-        case.setAction(1, 'TestCase')
-        case.setValue(1, './TestCase/SetText/SetTextSetUp')
-        case.setAction(2, 'Set Text')
-        case.setValue(2, 'Hello World')
-        case.setAction(3, 'TestCase')
-        case.setValue(3, './TestCase/SetText/SetTextTearDown')
+        case = TestCase()
         exe = Executor(case)
-        exe.execute(1)
-        self.assertEqual('Success', exe.run(2))
+        case.insert(act='TestCase', val='./TestCase/SetText/SetTextSetUp')
+        case.insert(act='Set Text', val='Hello World')
+        case.insert(act='TestCase', val='./TestCase/SetText/SetTextTearDown')
+        exe.execute(0)
+        self.assertEqual('Success', exe.run(1))
         target = Image.open('./TestCase/SetText/source.png')
         self.assertEqual('Success', exe.imageFinder(sourceImage=exe.currentScreen, targetImage=target, resultImage='./TestCase/SetText/result.png'))
-        exe.execute(3)
+        exe.execute(2)
 
     def testExecuteTestCase(self):
-        case = TestCase(5)
-        case.setAction(2, 'TestCase')
-        case.setValue(2, './TestCase/Test')     # We need to put a sample TestCase in the path
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        case.insert(act='TestCase', val='./TestCase/Test')
+        self.assertEqual('Success', exe.execute(0))
     def testExecuteTestCaseExcept(self):
-        case = TestCase(5)
-        case.setAction(2, 'TestCase')
-        case.setValue(2, 'D:/test')
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Error', exe.execute(2))
+        case.insert(act='TestCase', val='D:/')
+        self.assertEqual('Error', exe.execute(0))
 
     def testExecuteSleep(self):
-        case = TestCase(5)
-        case.setAction(2, 'Sleep(s)')
-        case.setValue(2, '0')
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        case.insert(act='Sleep(s)', val='0')
+        self.assertEqual('Success', exe.execute(0))
     def testExecuteSleepExcept(self):
-        case = TestCase(5)
-        case.setAction(2, 'Sleep(s)')
-        case.setValue(2, 'Hello World')
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Error', exe.execute(2))
+        case.insert(act='Sleep(s)', val='Hello World')
+        self.assertEqual('Error', exe.execute(0))
 
     def testExecuteAndroidKeycode(self):
-        case = TestCase(5)
-        case.setAction(2, 'Android Keycode')
-        case.setValue(2, 'KEYCODE_HOME')
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Success', exe.execute(2))
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        self.assertEqual('Success', exe.execute(0))
     '''
     It seems like there is no checking for key code in ADBRobot
     '''
@@ -109,55 +91,48 @@ class ExecutorTestSuite(unittest.TestCase):
     #     self.assertEqual('Error', exe.execute(2))
 
     def testExecuteAssertExist(self):
-        case = TestCase(5)
-        case.setAction(2, 'Assert Exist')
-        case.setValue(2, Image.open('./TestCase/Test/image/exist.png'))
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Success', exe.run(2))
+        case.insert(act='Assert Exist', val=Image.open('./TestCase/Test/image/exist.png'))
+        self.assertEqual('Success', exe.run(0))
 
     def testExecuteAssertNotExist(self):
-        case = TestCase(5)
-        case.setAction(2, 'Assert Not Exist')
-        case.setValue(2, Image.open('./TestCase/Test/image/notexist.png'))
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Success', exe.run(2))
+        case.insert(act='Assert Not Exist', val=Image.open('./TestCase/Test/image/notexist.png'))
+        self.assertEqual('Success', exe.run(0))
 
     def testRun(self):
-        case = TestCase(5)
-        case.setAction(2, 'Sleep(s)')
-        case.setValue(2, '0')
+        case = TestCase()
         exe = Executor(case)
-        self.assertEqual('Success', exe.run(2))
+        case.insert(act='Sleep(s)', val='0')
+        self.assertEqual('Success', exe.run(0))
 
     def testStepResult(self):
-        case = TestCase(5)
+        case = TestCase()
+        exe = Executor(case)
+        case.insert(act='Sleep(s)', val='0')
+        case.insert(act='Click', val='./TestCase/Test/image/exist.png')
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
         case.setStatus(0, 'Success')
         case.setStatus(1, 'Failed')
         case.setStatus(2, 'Error')
-        exe = Executor(case)
         self.assertEqual('Action 1 Success', exe.stepResult(0))
         self.assertEqual('Action 2 Failed', exe.stepResult(1))
         self.assertEqual('Action 3 Error', exe.stepResult(2))
 
     def testRunAll(self):
-        case = TestCase(5)
-        case.setAction(1, 'Android Keycode')
-        case.setValue(1, 'KEYCODE_HOME')
-        case.setAction(2, 'Swipe')
-        case.setValue(2, 'start x=800, y=1000, end x=300, y=1000')
-        case.setAction(3, 'Sleep(s)')
-        case.setValue(3, '3')
+        case = TestCase()
         exe = Executor(case)
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(act='Swipe', val='start x=800, y=1000, end x=300, y=1000')
+        case.insert(act='Sleep(s)', val='0')
         self.assertEqual('Success', exe.runAll())
     def testRunAllError(self):
-        case = TestCase(5)
-        case.setAction(0, 'Android Keycode')
-        case.setValue(0, 'KEYCODE_HOME')
-        case.setAction(1, 'Sleep(s)')
-        case.setValue(1, 'Hello World')
-        case.setAction(2, 'Sleep(s)')
-        case.setValue(2, '3')
+        case = TestCase()
         exe = Executor(case)
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(act='Sleep(s)', val='Hello World')
         self.assertEqual('Error', exe.runAll())
 
     def testImageFinder(self):
@@ -167,7 +142,7 @@ class ExecutorTestSuite(unittest.TestCase):
         tooManyTarget = Image.open('./TestCase/Test/image/toomany.png')
         result = ('./TestCase/Test/image/result.png')
 
-        exe = Executor(TestCase(5))
+        exe = Executor(TestCase())
         self.assertEqual('Success', exe.imageFinder(source, successTarget, result))
         self.assertEqual('Failed', exe.imageFinder(source, failedTarget, result))
         self.assertEqual('Too many', exe.imageFinder(source, tooManyTarget, result))

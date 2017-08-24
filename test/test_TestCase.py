@@ -6,47 +6,69 @@ from TestStep import Step
 
 class TestCaseTestSuite(unittest.TestCase):
     def testConstructer(self):
-        case = TestCase(5)
-        self.assertEqual(5, case.getSize())
-        for i in range(0, case.getSize()):
-            self.assertEqual('<class \'TestStep.Step\'>', str(case.getSteps(i).__class__))
-
-    def testSetAction(self):
-        case = TestCase(5)
-        case.setAction(2, 'Click')
-        self.assertEqual('Click', case.getSteps(2).getAction())
-
-    def testSetValue(self):
-        case = TestCase(5)
-        case.setValue(2, 'KEYCODE_HOME')
-        self.assertEqual('KEYCODE_HOME', case.getSteps(2).getValue())
+        case = TestCase()
+        self.assertEqual(0, case.getSize())
 
     def testInsert(self):
         case = TestCase()
-        step1 = Step()
-        step1.setAction('Click')
-        step2 = Step()
-        step2.setAction('Sleep(s)')
-        step3 = Step()
-        step3.setAction('')
-        case.insert(2, step3)
-        case.insert(1, step2)
-        case.insert(0, step1)
-        self.assertEqual('Click', case.getSteps(0).getAction())
-        self.assertEqual('Sleep(s)', case.getSteps(1).getAction())
-        self.assertEqual('', case.getSteps(2).getAction())
+        case.insert(act='Click', val='./TestCase/Test/image/exist.png')
+        case.insert(act='Sleep(s)', val='1')
+        case.insert(n=0, act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(step=Step('Set Text', 'Hello World'))
+        # self.assertEqual(4, case.getSize())
+        self.assertEqual('Android Keycode', case.getSteps(0).getAction())
+        self.assertEqual('Click', case.getSteps(1).getAction())
+        self.assertEqual('Sleep(s)', case.getSteps(2).getAction())
+        self.assertEqual('Set Text', case.getSteps(3).getAction())
+
+    def testRefrash(self):
+        case = TestCase()
+        case.insert(act='Click', val='./TestCase/Test/image/exist.png')
+        case.insert(act='Sleep(s)', val='1')
+        case.insert(n=0, act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(n=5, step=Step('Set Text', 'Hello World'))
+        case.refrash()
+        self.assertEqual(4, case.getSize())
+        self.assertEqual('Android Keycode', case.getSteps(0).getAction())
+        self.assertEqual('Click', case.getSteps(1).getAction())
+        self.assertEqual('Sleep(s)', case.getSteps(2).getAction())
+        self.assertEqual('Set Text', case.getSteps(3).getAction())
+
+    def testSetAction(self):
+        case = TestCase()
+        case.insert(act='Click', val='./TestCase/Test/iamge/exist.png')
+        case.setAction(0, 'Sleep(s)')
+        self.assertEqual('Sleep(s)', case.getSteps(0).getAction())
+
+    def testSetValue(self):
+        case = TestCase()
+        case.insert(act='Android Keycode', val='KEYCODE_BACK')
+        case.setValue(0, 'KEYCODE_HOME')
+        self.assertEqual('KEYCODE_HOME', case.getSteps(0).getValue())
+
+    def testSetStep(self):
+        case = TestCase()
+        case.insert(act='Sleep(s)', val='1')
+        case.setStep(0, 'Set Text', 'Hello World')
+        self.assertEqual('Set Text', case.getSteps(0).getAction())
+        self.assertEqual('Hello World', case.getSteps(0).getValue())
 
     def testDelete(self):
-        case = TestCase(5)
-        case.delete(2)
-        self.assertEqual(4, case.getSize())
-        self.assertRaises(Exception, case.getSteps, 2)
+        case = TestCase()
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(act='Click', val='./TestCase/Test/image/exist.png')
+        case.insert(act='Sleep(s)', val='1')
+        case.delete(1)
+        self.assertEqual(2, case.getSize())
+        self.assertRaises(Exception, case.getSteps, 1)
 
     def testSetStatus(self):
-        case = TestCase(5)
-        self.assertEqual('Success', case.setStatus(2, 'Success'))
+        case = TestCase()
+        case.insert(act='Click', val='./TestCase/Test/image/exist.png')
+        self.assertEqual('Success', case.setStatus(0, 'Success'))
 
     def testGetStatus(self):
-        case = TestCase(5)
-        case.setStatus(2, 'Success')
-        self.assertEqual('Success', case.getStatus(2))
+        case = TestCase()
+        case.insert(act='Click', val='./TestCase/Test/image/exist.png')
+        case.setStatus(0, 'Success')
+        self.assertEqual('Success', case.getStatus(0))

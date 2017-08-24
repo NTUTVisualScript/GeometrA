@@ -39,10 +39,8 @@ class FileLoader():
             val = data['value']
             if val == None:
                 val =Image.open(self.folderPath + data['image'])
-            step = Step()
-            step.setAction(act)
-            step.setValue(val)
-            self.case.insert(i, step)
+            step = Step(act, val)
+            self.case.insert(step=step)
 
     def getTestCase(self):
         return self.case
