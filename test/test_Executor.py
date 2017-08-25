@@ -27,6 +27,13 @@ class ExecutorTestSuite(unittest.TestCase):
         exe.execute(0)
         self.assertEqual('Success', exe.execute(1))
         exe.execute(0)
+    def testExecuteClickNotFound(self):
+        case = TestCase()
+        exe = Executor(case)
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(act='Click', val=Image.open('./TestCase/Test/image/notexist.png'))
+        exe.execute(0)
+        self.assertEqual('Failed')
 
     def testExecuteSwipe(self):
         case = TestCase()
@@ -126,7 +133,7 @@ class ExecutorTestSuite(unittest.TestCase):
         exe = Executor(case)
         case.insert(act='Android Keycode', val='KEYCODE_HOME')
         case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
-        # case.insert(act='Swipe', val='start x=800, y=1000, end x=300, y=1000')
+        case.insert(act='Swipe', val='start x=800, y=1000, end x=300, y=1000')
         case.insert(act='Android Keycode', val='KEYCODE_HOME')
         self.assertEqual('Success', exe.runAll())
     def testRunAllError(self):
@@ -146,3 +153,14 @@ class ExecutorTestSuite(unittest.TestCase):
         self.assertEqual('Success', exe.imageFinder(source, successTarget))
         self.assertEqual('Failed', exe.imageFinder(source, failedTarget))
         self.assertEqual('Too many', exe.imageFinder(source, tooManyTarget))
+
+    def testExecuteLoop(self):
+        case = TestCase()
+        exe = Executor(case)
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
+        case.insert(act='Loop Begin', val='3')
+        case.insert(act='Swipe', val='start x=800, y=1000, end x=500, y=1000')
+        case.insert(act='Swipe', val='start x=500, y=1000, end x=800, y=1000')
+        case.insert(act='Loop End', val=None)
+        exe.execute(0)
+        self.assertEqual('Success', exe.execute(1))

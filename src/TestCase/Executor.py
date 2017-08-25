@@ -83,6 +83,8 @@ class Executor():
                 return self.case.setStatus(n, self.imageExist(n))
             elif act == 'Assert Not Exist':
                 return self.case.setStatus(n, self.imageNotExist(n))
+            elif act == 'Loop Begin':
+                return self.case.setStatus(n, self.loop(n))
 
     def click(self, n):
         status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
@@ -198,3 +200,15 @@ class Executor():
         else:
             result = 'Action ' + str(n+1) + ' Error'
         return result
+
+    def loop(self, n):
+        times = int(self.case.getSteps(n).getValue())
+        print(times)
+        for i in range(times):
+            j = n + 1
+            while self.case.getSteps(j).getAction() != 'Loop End':
+                status = self.execute(j)
+                if (status == 'Failed') or (status == 'Error'):
+                    return status
+                j = j+1
+        return 'Success'
