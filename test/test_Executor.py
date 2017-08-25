@@ -76,11 +76,6 @@ class ExecutorTestSuite(unittest.TestCase):
         exe = Executor(case)
         case.insert(act='Sleep(s)', val='0')
         self.assertEqual('Success', exe.execute(0))
-    def testExecuteSleepExcept(self):
-        case = TestCase()
-        exe = Executor(case)
-        case.insert(act='Sleep(s)', val='Hello World')
-        self.assertEqual('Error', exe.execute(0))
 
     def testExecuteAndroidKeycode(self):
         case = TestCase()
@@ -123,7 +118,7 @@ class ExecutorTestSuite(unittest.TestCase):
     def testRunError(self):
         case = TestCase()
         exe = Executor(case)
-        case.insert(act='Sleep(s)', val='Hello World')
+        case.insert(act='Swipe', val='x=, y=1000, x=300, y=1000')
         self.assertEqual('Error', exe.run(0))
 
 
@@ -131,7 +126,7 @@ class ExecutorTestSuite(unittest.TestCase):
         case = TestCase()
         exe = Executor(case)
         case.insert(act='Sleep(s)', val='0')
-        case.insert(act='Click', val='./TestCase/Test/image/exist.png')
+        case.insert(act='Click', val=Image.open('./TestCase/Test/image/notexist.png'))
         case.insert(act='Android Keycode', val='KEYCODE_HOME')
         case.setStatus(0, 'Success')
         case.setStatus(1, 'Failed')
@@ -152,7 +147,7 @@ class ExecutorTestSuite(unittest.TestCase):
         case = TestCase()
         exe = Executor(case)
         case.insert(act='Android Keycode', val='KEYCODE_HOME')
-        case.insert(act='Sleep(s)', val='Hello World')
+        case.insert(act='Swipe', val='x=, y=1000, x=300, y=1000')
         self.assertEqual('Error', exe.runAll())
     def testRunAllFailed(self):
         case = TestCase()
@@ -195,7 +190,7 @@ class ExecutorTestSuite(unittest.TestCase):
         exe = Executor(case)
         case.insert(act='Android Keycode', val='KEYCODE_HOME')
         case.insert(act='Loop Begin', val='3')
-        case.insert(act='Sleep(s)', val='Hello World')
+        case.insert(act='Swipe', val='x=, y=1000, x=500, y=1000')
         case.insert(act='Loop End', val=None)
         exe.execute(0)
         self.assertEqual('Error', exe.execute(1))

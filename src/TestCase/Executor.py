@@ -157,12 +157,9 @@ class Executor():
             return 'Error'
 
     def sleep(self, n):
-        try:
-            t = int(self.case.getSteps(n).getValue())
-            time.sleep(t)
-            return 'Success'
-        except:
-            return 'Error'
+        t = int(self.case.getSteps(n).getValue())
+        time.sleep(t)
+        return 'Success'
 
     def sendKeyValue(self, n):
         self.robot.send_key(self.case.getSteps(n).getValue())
