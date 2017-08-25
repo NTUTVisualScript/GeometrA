@@ -8,7 +8,7 @@ class TestCase:
 
     def getSteps(self, n=-1):
         if n == -1:
-            return self.stepDict.values()
+            return list(self.stepDict.values())
         return self.stepDict[n]
 
     def setAction(self, n, action):

@@ -1,6 +1,7 @@
 import unittest
 import sys
 sys.path.append('../src/TestCase/')
+sys.path.append('../src')
 from TestStep import Step
 
 class StepTestSuite(unittest.TestCase):
@@ -8,6 +9,16 @@ class StepTestSuite(unittest.TestCase):
         step = Step('Sleep(s)', '1')
         self.assertEqual('Sleep(s)', step.getAction())
         self.assertEqual('1', step.getValue())
+    def testValueImageException(self):
+        self.assertRaisesRegex(Exception, 'Value Should be PIL image', Step, 'Click', './TestCase/Test/image/exist.png')
+        self.assertRaisesRegex(Exception, 'Value Should be PIL image', Step, 'Assert Exist', './TestCase/Test/image/exist.png')
+        self.assertRaisesRegex(Exception, 'Value Should be PIL image', Step, 'Assert Not Exist', './TestCase/Test/image/notexist.png')
+    def testValueDigitException(self):
+        self.assertRaisesRegex(Exception, 'Value Should be digit', Step, 'Sleep(s)', 'Hello World')
+        self.assertRaisesRegex(Exception, 'Value Should be digit', Step, 'Loop Begin', 'Hello World')
+    def testKeycodeException(self):
+        self.assertRaisesRegex(Exception, 'Value is not Android Keycode', Step, 'Android Keycode', 'Hello World')
+        self.assertRaisesRegex(Exception, 'Value is not Android Keycode', Step, 'Android Keycode', 'Hello World')
 
     def testSetAction(self):
         step = Step(act='Sleep(s)', val='1')

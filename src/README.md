@@ -2,6 +2,12 @@
 
 ## Sprint #18 2017/08/23 ~ 2017/09/12
 
+### 2017/08/25 13:30 ~ 17:00        By Patrick
+    1. Complete the coverage of all unit tested class. 
+
+    Next Step:
+    1. Implement the contact between UI and domain.
+
 ### 2017/08/25 09:05 ~ 11:30        By Patrick
     1. Finished the implement of 'Loop' function.
 

@@ -55,7 +55,8 @@ class Executor():
 
         status = self.execute(n)
 
-        self.reportImage(n)
+        if self.case.getSteps(n).getStatus() == 'Success':
+            self.reportImage(n)
         self.getCurrentScreen()
         self.htmlstep.step_after(self.currentScreen)
 
@@ -131,14 +132,11 @@ class Executor():
             self.endX = int(coordinate[2].split('=')[1])
             self.endY = int(coordinate[3].split('=')[1])
 
-        except:
-            return 'Error'
-        try:
             self.robot.drag_and_drop(self.startX, self.startY, self.endX, self.endY)
             return 'Success'
-        except Exception as e:
-            print(e)
-            return 'Failed'
+        except:
+            return 'Error'
+
 
     def swipeImage(self, x1, y1, x2, y2):
         source = CV2Img()
@@ -148,37 +146,27 @@ class Executor():
         source.save(self.originalScreen)
 
     def setText(self, n):
-        try:
-            self.robot.input_text(self.case.getSteps(n).getValue())
-            return 'Success'
-        except:
-            return 'Failed'
+        self.robot.input_text(self.case.getSteps(n).getValue())
+        return 'Success'
 
     def testCase(self, n):
         try:
             path = self.case.getSteps(n).getValue()
             return Executor(FileLoader(path).getTestCase()).runAll()
         except Exception as e:
-            print(e)
             return 'Error'
 
     def sleep(self, n):
         try:
             t = int(self.case.getSteps(n).getValue())
-        except:
-            return 'Error'
-        try:
             time.sleep(t)
             return 'Success'
         except:
-            return 'Failed'
+            return 'Error'
 
     def sendKeyValue(self, n):
-        try:
-            self.robot.send_key(self.case.getSteps(n).getValue())
-            return 'Success'
-        except:
-            return 'Error'
+        self.robot.send_key(self.case.getSteps(n).getValue())
+        return 'Success'
 
     def imageExist(self, n):
         status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
@@ -203,7 +191,6 @@ class Executor():
 
     def loop(self, n):
         times = int(self.case.getSteps(n).getValue())
-        print(times)
         for i in range(times):
             j = n + 1
             while self.case.getSteps(j).getAction() != 'Loop End':

@@ -1,4 +1,6 @@
 import time
+from AndroidKeycode import AndroidKeycode as key
+
 class Step:
     def __init__(self, act, val, node=None):
         self.act = ''
@@ -29,6 +31,20 @@ class Step:
         self.node = node
 
     def setValue(self, value):
+        if (self.act == 'Click') or (self.act == 'Assert Exist') or (self.act == 'Assert Not Exist'):
+            if str(value.__class__) != "<class 'PIL.PngImagePlugin.PngImageFile'>":
+                raise Exception('Value Should be PIL image')
+        if ((self.act == 'Sleep(s)') or (self.act == 'Loop Begin')) and (not value.isdigit()):
+            raise Exception('Value Should be digit')
+        if self.act == 'Android Keycode':
+            if value.isdigit():
+                try:
+                    key[int(value)]
+                except:
+                    raise Exception('Value is not Android Keycode')
+            elif not(value in list(key.values())):
+                raise Exception('Value is not Android Keycode')
+
         self.val = value
 
     def getAction(self):
