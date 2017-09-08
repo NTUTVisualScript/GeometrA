@@ -86,8 +86,11 @@ class ExecutorTestSuite(unittest.TestCase):
     def testExecuteAssertExist(self):
         case = TestCase()
         exe = Executor(case)
+        case.insert(act='Android Keycode', val='KEYCODE_HOME')
         case.insert(act='Assert Exist', val=Image.open('./TestCase/Test/image/exist.png'))
-        self.assertEqual('Success', exe.execute(0))
+        exe.execute(0)
+        self.assertEqual('Success', exe.execute(1))
+        exe.execute(0)
     def testExecuteAssertExistFailed(self):
         case = TestCase()
         exe = Executor(case)

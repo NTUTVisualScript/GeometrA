@@ -34,11 +34,9 @@ class ScreenshotUI(Canvas):
         self.LoadingFile()
         self.photo = Image.open(Get_PhoneScreen())
         self.photo_width, self.photo_height = self.photo.size
-        print(str(self.photo_width) + " , " + str(self.photo_height))
         self.photo.thumbnail((450, 800))
         self.width, self.height = self.photo.size
         self.multiple = self.photo_width / self.width
-        print(str(self.multiple))
         self.screenshot_photo = ImageTk.PhotoImage(self.photo)
         self.message.InsertText("Loading finish\n")
         self.create_image(0, 0, anchor=NW, image = self.screenshot_photo)

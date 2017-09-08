@@ -7,6 +7,7 @@ from tkinter import ttk
 
 import sys
 sys.path.append('./GUI')
+sys.path.append('./GUI/TestCase')
 sys.path.append('./TestCase')
 sys.path.append('./Save')
 from TestCaseUI import TestCaseUI
