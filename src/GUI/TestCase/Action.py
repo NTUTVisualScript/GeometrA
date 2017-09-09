@@ -1,5 +1,13 @@
+class Loop:
+    def __init__(self, stepList, n):
+        from TestCaseUI import TestCaseUI
+        TestCaseUI.getTestCaseUI().addStep(n+1)
+        TestCaseUI.getTestCaseUI().addStep(n+2)
+        stepList[n+2].action.set('Loop End')
+
+
 class Swipe:
-    def __init__():
+    def __init__(self):
         self.swipeImage = Canvas(self.screenshot, height=800, width=450)
         self.swipeImage.configure(borderwidth=-3)
         self.swipeImage.place(x=0, y=0)
@@ -12,7 +20,7 @@ class Swipe:
         self.swipeImage.bind('<Enter>', self.swipeEnter)
         self.swipeImage.bind('<B1-Motion>', self.swiped)
 
-    def place_forget():
+    def place_forget(self):
         self.swipeImage.place_forget()
 
     def swipeDown(self, event):

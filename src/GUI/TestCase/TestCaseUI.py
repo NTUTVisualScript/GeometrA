@@ -4,8 +4,9 @@ from TestCaseActionCombobox import TestCaseAction
 from TestCaseEntry import TestCaseValue
 from LoadFile import LoadFile
 from Action import *
-import Click
+import StepOperate
 import Value
+import threading
 
 import sys
 sys.path.append('../TestCase/')
@@ -76,29 +77,50 @@ class TestCaseUI(Frame):
             if filePath is None: return
             '''
                 Swipe could be acceptance after dumpUI and Screenshot are done.
-                And here should be modified after they are done.
             '''
             self.swipeImage = Swipe()
+        elif action == '':
+            self.stepList[self.focus].value.grid_remove()
         elif action == 'TestCase':
             path = LoadFile().LoadTestCasePath()
             if (path is not None) and (path != ''):
                 self.stepList[self.focus].value.delete(0, 'end')
                 self.stepList[self.focus].value.insert('end', path)
-                self.case.setValue(self.focus, path)
         elif action == 'Click' or action == 'Assert Exist' or action == 'Assert Not Exist':
+            '''
+                Here could be acceptance after dumpUI and ScreenShot or Tree_info are done.
+            '''
             Value.testCaseImage(self.stepList, self.focus)
-        else:
-            self.case.setValue(self.focus, self.stepList[self.focus].value.get())
+        elif action == 'Loop End':
+            self.stepList[self.focus].value.grid_remove()
+        # elif action == 'Loop Begin':
+        #     Loop(self.stepList, self.focus)
 
     def executeButtonClick(self, n):
-        self.exe.run(n)
+        try:
+            self.case.insert(n=n, act=self.stepList[n].action.get(), val=self.stepList[n].value.get())
+            if self.case.getSteps(n).getAction() == 'Loop Begin':
+                i = 1
+                j = n+1
+                while i != 0:
+                    act = self.stepList[j].action.get()
+                    if act == 'Loop End':
+                        i = i-1
+                    elif act == 'Loop Begin':
+                        i = i+1
+                    self.case.insert(n=j, act=act, val=self.stepList[j].value.get())
+                    j = j+1
+            threading.Thread(target=self.exe.run, args=(n,)).start()
+        except Exception as e:
+            print(str(e))
+            return 'Invalid Value!'
 
-    def addButtonClick(self, n):
+    def addStep(self, n):
         self.stepList.append(TestStepUI(self.listFrame, len(self.stepList)))
-        Click.insert(self.stepList, n)
+        StepOperate.insert(self.stepList, n)
 
-    def removeButtonClick(self, n):
+    def removeStep(self, n):
         if len(self.stepList) > 1:
-            Click.remove(self.stepList, n)
+            StepOperate.remove(self.stepList, n)
         if n == len(self.stepList):
             self.stepList.append(TestStepUI(self.listFrame, n))

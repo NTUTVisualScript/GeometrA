@@ -14,10 +14,10 @@ class TestStepUI():
         self.lineNum = Label(self.parent, text=str(n + 1) + ". ", width=3)
 
         self.addButton = Button(self.parent, text="+", width=3, \
-                command=lambda :TestCaseUI.getTestCaseUI().addButtonClick(n) )
+                                command=lambda :TestCaseUI.getTestCaseUI().addStep(n))
 
         self.removeButton = Button(self.parent, text="-", width=3, \
-                command=lambda :TestCaseUI.getTestCaseUI().removeButtonClick(n) )
+                                   command=lambda :TestCaseUI.getTestCaseUI().removeStep(n))
 
         self.executeButton = Button(self.parent, text="▶", width=3, \
                 command=lambda :TestCaseUI.getTestCaseUI().executeButtonClick(n))
@@ -30,14 +30,13 @@ class TestStepUI():
         self.value = TestCaseValue(self.parent, width=35)
         self.value.bind("<FocusIn>", lambda event: TestCaseUI.getTestCaseUI().valueFocusIn(n))
 
-        showimage = Button(self.parent, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
+        self.showImage = Button(self.parent, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
 
         self.lineNum.grid(row=n + 1, column=1)
         self.addButton.grid(row=n + 1, column=2)
         self.removeButton.grid(row=n + 1, column=3)
         self.executeButton.grid(row=n + 1, column=4)
         self.action.grid(row=n + 1, column=5, padx=(5, 0), pady=(5, 2.5))
-        # self.value.grid(row=n + 1, column=6, padx=(5, 0), pady=(5, 2.5))
 
     def remove(self):
         self.lineNum.grid_remove()

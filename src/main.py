@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../')
 sys.path.append('./GUI')
+sys.path.append('./GUI/TestCase')
 sys.path.append('./TestCase')
 sys.path.append('./save')
 

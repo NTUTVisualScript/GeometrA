@@ -33,34 +33,43 @@ class Executor():
         act = self.case.getSteps(n).getAction()
         if (act == 'Click') or (act == 'Assert Exist') or (act == 'Assert Not Exist'):
             drawCircle = CV2Img()
-            drawCircle.load_file(self.originalScreen, 1)
+            drawCircle.load_file(self.robot.before_screenshot(), 1)
             drawCircle.draw_circle(int(self.clickX), int(self.clickY))
-            drawCircle.save(self.originalScreen)
+            drawCircle.save(self.robot.before_screenshot())
         elif act == 'Siwpe':
             self.swipeImage(self.startX, self.startY, self.endX, self.endY)
 
 
     def runAll(self):
-        for i in range(self.case.getSize()):
+        i = 0
+        while i < self.case.getSize():
+            print('Step ' + str(i))
             status = self.run(i)
+            if self.case.getSteps(i).getAction() == 'Loop Begin':
+                self.loopEnd(i)
             if status == 'Failed':
                 return 'Failed'
             if status == 'Error':
                 return 'Error'
+            i = i+1
         return 'Success'
 
     def run(self, n):
-        self.getOriginalScreen()
-        self.htmlstep.step_before(self.originalScreen)
+        act = self.case.getSteps(n).getAction()
+        print(act)
+        if (act == '') or (act == 'Loop End'):
+            return
+        # self.getOriginalScreen()
+        # self.htmlstep.step_before(self.originalScreen)
 
         status = self.execute(n)
-
-        if self.case.getSteps(n).getStatus() == 'Success':
-            self.reportImage(n)
-        self.getCurrentScreen()
-        self.htmlstep.step_after(self.currentScreen)
-
-        self.stepResult(n)
+        #
+        # if self.case.getSteps(n).getStatus() == 'Success':
+        #     self.reportImage(n)
+        # self.getCurrentScreen()
+        # self.htmlstep.step_after(self.currentScreen)
+        #
+        # self.stepResult(n)
 
         return status
 
@@ -104,10 +113,7 @@ class Executor():
     def imageFinder(self, sourceImage=None, targetImage=None):
         # return True
         if sourceImage == None:
-            if self.originalScreen == None:
-                sourceImage = self.robot.before_screenshot()
-            else:
-                sourceImage = self.originalScreen
+            sourceImage = self.robot.before_screenshot()
         source = CV2Img()
         source.load_file(sourceImage, 0)
         target = CV2Img()
@@ -140,10 +146,10 @@ class Executor():
 
     def swipeImage(self, x1, y1, x2, y2):
         source = CV2Img()
-        source.load_file(self.originalScreen, 1)
+        source.load_file(self.robot.before_screenshot(), 1)
         source.draw_line(x1,y1,x2,y2)
         source.draw_Arrow(x1, y1, x2, y2)
-        source.save(self.originalScreen)
+        source.save(self.robot.before_screenshot())
 
     def setText(self, n):
         self.robot.input_text(self.case.getSteps(n).getValue())
@@ -158,6 +164,7 @@ class Executor():
 
     def sleep(self, n):
         t = int(self.case.getSteps(n).getValue())
+        print('Sleep ' + str(t) + 's')
         time.sleep(t)
         return 'Success'
 
@@ -189,10 +196,32 @@ class Executor():
     def loop(self, n):
         times = int(self.case.getSteps(n).getValue())
         for i in range(times):
+            print('Loop ' + str(i))
             j = n + 1
-            while self.case.getSteps(j).getAction() != 'Loop End':
-                status = self.execute(j)
-                if (status == 'Failed') or (status == 'Error'):
-                    return status
-                j = j+1
+            try:
+                while True:
+                    act = self.case.getSteps(j).getAction()
+                    if act == 'Loop End':
+                        break
+                    status = self.run(j)
+
+                    if act == 'Loop Begin':
+                        j = self.loopEnd(j)
+                    if (status == 'Failed') or (status == 'Error'):
+                        return status
+                    j = j+1
+            except:
+                print('Loop Without End')
+                return 'Error'
         return 'Success'
+
+    def loopEnd(self, n):
+        i = n+1
+        while True:
+            act = self.case.getSteps(i).getAction()
+            if act == 'Loop End':
+                break
+            if act == 'Loop Begin':
+                i = self.loopEnd(i)
+            i = i+1
+        return i
