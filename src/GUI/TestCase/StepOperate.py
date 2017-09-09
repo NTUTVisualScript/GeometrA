@@ -11,7 +11,7 @@ def insert(stepList, n):
             from TestCaseUI import TestCaseUI
             Value.testCaseImage(stepList, i, stepList[i-1].value.image)
             Value.testCaseEntry(stepList, i-1)
-        elif action == '':
+        elif (action == '') or (action == 'Loop End'):
             stepList[i].value.grid_remove()
         else:
             Value.testCaseEntry(stepList, i)
@@ -30,7 +30,7 @@ def remove(stepList, n):
             from TestCaseUI import TestCaseUI
             Value.testCaseImage(stepList, i, stepList[i+1].value.image)
             Value.testCaseEntry(stepList, i+1)
-        elif action == '':
+        elif (action == '') or (action == 'Loop End'):
             stepList[i].value.grid_remove()
         else:
             Value.testCaseEntry(stepList, i)
