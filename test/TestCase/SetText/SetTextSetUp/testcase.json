@@ -41,9 +41,15 @@
     }
   },
   "3": {
+    "action": "Sleep(s)",
+    "value": "2",
+    "image": null,
+    "image_node_path": null
+  },
+  "4": {
     "action": "Click",
     "value": null,
-    "image": "/image/Click_2.png",
+    "image": "/image/Click_3.png",
     "image_node_path": {
       "1": [
         "(0) android.widget.FrameLayout  ",
@@ -83,7 +89,7 @@
       ]
     }
   },
-  "4": {
+  "5": {
     "action": "Sleep(s)",
     "value": "1",
     "image": null,
