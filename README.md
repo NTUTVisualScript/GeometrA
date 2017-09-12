@@ -7,12 +7,12 @@ Branch from https://github.com/Swind/Sikuli-Img
 
 2.Install [Python3](https://www.python.org/downloads/)  
 
-    Check: "The version SHOULD BE 3 !!"
+    Check: "The version SHOULD BE **3** !!"
 
 3.Install [Android Studio](https://developer.android.com/studio/index.html)  
 
-4.請以系統管理員身分執行專案根目錄下的 auto.bat
-  或是執行以下的環境設定
+4.請以*系統管理員身分執行專案根目錄下的 auto.bat*
+  或是*執行以下的環境設定*
 
 # 環境設定
 
