@@ -20,7 +20,7 @@ from SaveFile import SaveFile
 from SaveIMG import saveImg
 from TestCaseActionCombobox import TestCaseAction
 from TestCaseEntry import TestCaseValue
-from GUI.ScreenShotUI import ScreenshotUI
+from GUI.OldScreenShotUI import ScreenshotUI
 from TestReport import Report
 from Viewtest import TestAdepter
 from adb_roboot import ADBRobot
@@ -70,7 +70,6 @@ class View(Frame, threading.Thread):
         self.cmd = CommandManager
         self.formatButton()
         self.savecropImg = saveImg()
-        self.ScreenShotUI()
         self.XMLTreeUI()
         self.MessageUI()
         #self.SaveIMGButton()
