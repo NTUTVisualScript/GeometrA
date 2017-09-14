@@ -3,7 +3,7 @@ sys.path.append('../')
 sys.path.append('../Save')
 import time
 from cv2img import CV2Img
-from adb_roboot import ADBRobot
+from adbRobot import ADBRobot
 from Load import FileLoader
 from MessageUI import Message
 from HTML.step import HtmlTestStep
