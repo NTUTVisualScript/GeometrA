@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageTk
 import threading
 import sys
 sys.path.append('../')
@@ -18,10 +18,7 @@ class GetScreenShot:
         screenShot = GetScreenShot()
         # Set size  should be bootstrap
         screenShot.setSize(450, 800)
-        return screenShot.screenShot
+        return ImageTk.PhotoImage(screenShot.screenShot)
 
     def setSize(self, x, y):
-        self.screenShot.thumbnail(x, y)
-
-def screenShotTrigger():
-    threading.Thread(target=GetScreenShot().getScreenShot)
+        self.screenShot.thumbnail((x, y))

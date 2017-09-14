@@ -68,7 +68,6 @@ class View(Frame, threading.Thread):
         self.select_image = None
         self.checkADB = checkADB_Connection()
         self.cmd = CommandManager
-        self.formatButton()
         self.savecropImg = saveImg()
         self.XMLTreeUI()
         self.MessageUI()
