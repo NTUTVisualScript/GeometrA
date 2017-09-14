@@ -1,9 +1,6 @@
 from tkinter import *
 import threading
-from adbRobot import ADBRobot
-from PIL import Image, ImageTk
-import Controller.ScreenShotController as SSCtrlr
-from Controller.ScreenShotController import GetScreenShot
+import Controller.ScreenShotController as SSCtrl
 
 class ScreenshotUI(Canvas):
     __single = None
@@ -26,9 +23,10 @@ class ScreenshotUI(Canvas):
 
     def getScreenshot(self):
         self.delete("all")
-        self.screenshot_photo = GetScreenShot.getScreenShot()
+        self.screenshot_photo = SSCtrl.screenShotTrigger()
         self.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
 
     def ButtonGetScreenshot(self):
-        self.dumpUI = Button(self.master, command=lambda :threading.Thread(target=self.getScreenshot).start(), text="Get Screenshot", width=15)
+        self.dumpUI = Button(self.master, command=lambda :threading.Thread(target=self.getScreenshot).start(),
+                             text="Capture Screenshot", width=18)
         self.dumpUI.place(x=0, y=3)

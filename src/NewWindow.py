@@ -10,6 +10,7 @@ sys.path.append('./GUI')
 sys.path.append('./GUI/TestCase')
 sys.path.append('./TestCase')
 sys.path.append('./Save')
+sys.path.append('./Controller')
 from TestCaseUI import TestCaseUI
 from GUI.ScreenshotUI import ScreenshotUI
 from Controller.Mouse import Mouse
