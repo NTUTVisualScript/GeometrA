@@ -42,7 +42,7 @@
   },
   "3": {
     "action": "Sleep(s)",
-    "value": "1",
+    "value": "2",
     "image": null,
     "image_node_path": null
   },
@@ -88,5 +88,11 @@
         "\u641c\u5c0b"
       ]
     }
+  },
+  "5": {
+    "action": "Sleep(s)",
+    "value": "1",
+    "image": null,
+    "image_node_path": null
   }
 }

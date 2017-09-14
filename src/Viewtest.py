@@ -6,7 +6,7 @@ from tkinter import ttk
 from LoadFile import LoadFile
 from MessageUI import Message
 from TestCaseData import TestCaseData
-from adb_roboot import ADBRobot
+from adbRobot import ADBRobot
 from cv2img import CV2Img
 from finder.template_finder import TemplateFinder
 from HTML.step import HtmlTestStep

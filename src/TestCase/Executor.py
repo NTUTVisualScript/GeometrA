@@ -3,7 +3,7 @@ sys.path.append('../')
 sys.path.append('../Save')
 import time
 from cv2img import CV2Img
-from adb_roboot import ADBRobot
+from adbRobot import ADBRobot
 from Load import FileLoader
 from MessageUI import Message
 from HTML.step import HtmlTestStep
@@ -57,8 +57,6 @@ class Executor():
     def run(self, n):
         act = self.case.getSteps(n).getAction()
         print(act)
-        if (act == '') or (act == 'Loop End'):
-            return
         # self.getOriginalScreen()
         # self.htmlstep.step_before(self.originalScreen)
 
@@ -75,7 +73,7 @@ class Executor():
 
     def execute(self, n):
             act = self.case.getSteps(n).getAction()
-            if act == '':
+            if (act == '') or act == 'Loop End':
                 return self.case.setStatus(n, 'Success')
             elif act == 'Click':
                 return self.case.setStatus(n, self.click(n))
