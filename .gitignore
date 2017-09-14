@@ -38,3 +38,5 @@ src/screenshot_pic/before.png
 src/screenshot_pic/tmp.png
 src/dumpXML/uidump.xml
 test/nosetests.xml
+*.xml
+src/screenshot_pic/tmp.png

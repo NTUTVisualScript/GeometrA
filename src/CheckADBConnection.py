@@ -1,7 +1,7 @@
 import subprocess
 from MessageUI import Message
 import re
-from adb_roboot import ADBRobot
+from adbRobot import ADBRobot
 
 class checkADB_Connection:
     def __init__(self):

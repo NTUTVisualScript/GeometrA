@@ -23,7 +23,7 @@ from TestCaseEntry import TestCaseValue
 from GUI.OldScreenShotUI import ScreenshotUI
 from TestReport import Report
 from Viewtest import TestAdepter
-from adb_roboot import ADBRobot
+from adbRobot import ADBRobot
 from HTML.step import HtmlTestStep
 
 ROOT_DIR = os.path.dirname(__file__)
