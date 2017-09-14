@@ -3,6 +3,7 @@ import threading
 import sys
 sys.path.append('../')
 from adbRobot import ADBRobot
+from DeviceCheck import Check
 
 '''
 Get Screenshot from device and return to UI
@@ -22,3 +23,8 @@ class GetScreenShot:
 
     def setSize(self, x, y):
         self.screenShot.thumbnail((x, y))
+
+def screenShotTrigger():
+    if not Check().checkDevices():
+        return False
+    return GetScreenShot.getScreenShot()
