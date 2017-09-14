@@ -32,6 +32,7 @@ def remove(stepList, n):
             Value.testCaseEntry(stepList, i+1)
         elif (action == '') or (action == 'Loop End'):
             stepList[i].value.grid_remove()
+            stepList[i].showImage.grid_remove()
         else:
             Value.testCaseEntry(stepList, i)
             value = stepList[i+1].value.get()
