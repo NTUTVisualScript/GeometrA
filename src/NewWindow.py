@@ -12,9 +12,11 @@ sys.path.append('./TestCase')
 sys.path.append('./Save')
 from TestCaseUI import TestCaseUI
 from GUI.ScreenshotUI import ScreenshotUI
+from Controller.Mouse import Mouse
 
 class Window(View):
     def __init__(self, master=None):
         super().__init__(master)
         TestCaseUI.getTestCaseUI()
         ScreenshotUI.getScreenshotUI()
+        Mouse(master)
