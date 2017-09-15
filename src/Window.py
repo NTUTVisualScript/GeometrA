@@ -55,7 +55,6 @@ class View(Frame, threading.Thread):
         self.setUI()
 
     def setUI(self):
-        self.MenuBar()
         self.focus = None
         self.focusOBJImage = None
         self.Drag_image = None

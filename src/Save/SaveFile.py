@@ -2,7 +2,7 @@ import json
 import os
 import tkinter.filedialog
 
-class Save():
+class SaveFile():
     def saveTestCase(self, case):
         dirPath = tkinter.filedialog.askdirectory()
         if dirPath is None: return
@@ -21,7 +21,7 @@ class Save():
             data['action'] = self.action[i]
             data['value'] = self.value[i]
             if '.png' in self.value[i]:
-                if not os.path.isdir(dirPath + '/image')
+                if not os.path.isdir(dirPath + '/image'):
                     os.makedirs(dirPath + '/image')
                 imagePath = '/image/' + str(self.action[i]) + '_' + str(i) + '.png'
 

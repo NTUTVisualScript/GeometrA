@@ -14,7 +14,7 @@ class ScreenshotUI(Canvas):
         ScreenshotUI.__single = self
 
 
-        self.place(x = 0, y = 30)
+        self.place(x = 0, y = 60)
 
     def getScreenshotUI(parent=None):
         if not ScreenshotUI.__single:
@@ -29,4 +29,4 @@ class ScreenshotUI(Canvas):
     def ButtonGetScreenshot(self):
         self.dumpUI = Button(self.master, command=lambda :threading.Thread(target=self.getScreenshot).start(),
                              text="Capture Screenshot", width=18)
-        self.dumpUI.place(x=0, y=3)
+        self.dumpUI.place(x=0, y=30)
