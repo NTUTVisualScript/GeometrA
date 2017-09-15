@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.ttk import Separator
 from PIL import Image, ImageTk
 from Controller.FileLoader import SaveFile, LoadFile
 
@@ -10,23 +11,29 @@ class Toolbar(Frame):
             raise Toolbar.__single
         Toolbar.__single = self
 
-        _toolbar = Frame(parent, borderwidth=2, relief='groove')
-        _toolbar.pack(fill=X)
-        self._saveIcon = Image.open("./img/icon_Save.PNG")
-        self._saveIcon.thumbnail((20, 20))
-        self.SaveIcon = ImageTk.PhotoImage(self._saveIcon)
-        self.SaveButton = Button(_toolbar, image=self.SaveIcon, command=SaveFile(), relief='flat')
-        self.SaveButton.pack(side=LEFT)
+        self._toolbar = Frame(parent, borderwidth=2, relief='groove')
+        self._toolbar.pack(fill=X)
 
-        self._loadIcon = Image.open("./img/icon_Load.PNG")
-        self._loadIcon.thumbnail((20, 20))
-        self.LoadIcon = ImageTk.PhotoImage(self._loadIcon)
-        self.LoadButton = Button(_toolbar, image=self.LoadIcon, command=LoadFile().loadPath, relief='flat')
-        self.LoadButton.pack(side=LEFT)
-
+        self.SaveButton()
+        self.LoadButton()
+        sep = Separator(self._toolbar, orient=VERTICAL)
+        sep.pack(side=LEFT, fill=Y)
 
     def getToolbar(parent = None):
         if not Toolbar.__single:
             Toolbar.__single = Toolbar(parent)
         return Toolbar.__single
 
+    def SaveButton(self):
+        save_icon_image = Image.open("./img/icon_Save.PNG")
+        save_icon_image.thumbnail((20, 20))
+        self.SaveIcon = ImageTk.PhotoImage(save_icon_image)
+        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=SaveFile(), relief='flat')
+        _saveButton.pack(side=LEFT)
+
+    def LoadButton(self):
+        load_icon_image = Image.open("./img/icon_Load.PNG")
+        load_icon_image.thumbnail((20, 20))
+        self.LoadIcon = ImageTk.PhotoImage(load_icon_image)
+        _loadButton = Button(self._toolbar, image=self.LoadIcon, command=LoadFile().loadPath, relief='flat')
+        _loadButton.pack(side=LEFT)

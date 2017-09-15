@@ -5,21 +5,21 @@ from tkinter import *
 class MenuBar(Menu):
     __single = None
 
-    def __init__(self, parent = None):
+    def __init__(self, parent):
         if MenuBar.__single:
             raise MenuBar.__single
         MenuBar.__single = self
 
-        self.menubar = Menu.__init__(self, parent)
-        self.config(menu=self.menubar)
+        menubar = Menu(parent)
+        parent.config(menu=menubar)
 
-        filemenu = Menu(self.menubar, tearoff=0)
-        self.add_cascade(label="File", menu=filemenu)
+        filemenu = Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="File", menu=filemenu)
         filemenu.add_command(label="Save Test Case as...", command=self.SaveButtonClick)
         filemenu.add_command(label="Open Test Case", command=self.OpenButtonClick)
 
-        actionmenu = Menu(self.menubar, tearoff=0)
-        self.add_cascade(label="Action", menu=actionmenu)
+        actionmenu = Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Action", menu=actionmenu)
         actionmenu.add_command(label="Undo", command=self.undo)
         actionmenu.add_command(label="Redo", command=self.redo)
 
