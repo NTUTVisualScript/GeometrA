@@ -12,9 +12,10 @@ sys.path.append('./TestCase')
 sys.path.append('./Save')
 sys.path.append('./Controller')
 from TestCaseUI import TestCaseUI
-from GUI.ScreenshotUI import ScreenshotUI
-from GUI.MenuBar import MenuBar
-from GUI.Toolbar import Toolbar
+from ScreenshotUI import ScreenshotUI
+from MenuBar import MenuBar
+from Toolbar import Toolbar
+from ClearButton import ClearButton
 from Controller.Mouse import Mouse
 
 class Window(View):
@@ -24,4 +25,5 @@ class Window(View):
         TestCaseUI.getTestCaseUI()
         ScreenshotUI.getScreenshotUI()
         Toolbar.getToolbar()
+        ClearButton().showResetButton()
         Mouse(master)

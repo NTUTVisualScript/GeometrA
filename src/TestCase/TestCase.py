@@ -29,7 +29,7 @@ class TestCase:
             self.stepDict[i] = self.stepDict[i-1]
         self.stepDict[n] = step
 
-    def refrash(self):
+    def refresh(self):
         i = 0
         temp = {}
         for j in self.stepDict:
