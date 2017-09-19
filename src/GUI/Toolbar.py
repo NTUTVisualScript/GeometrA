@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import Separator
 from PIL import Image, ImageTk
 from Controller.FileLoader import SaveFile, LoadFile
+from Controller.RedoAndUndo import RedoAndUndo
 
 
 class Toolbar(Frame):
@@ -17,6 +18,13 @@ class Toolbar(Frame):
 
         self.ShowSaveButton()
         self.ShowLoadButton()
+        ##SeparateBar
+        sep = Separator(self._toolbar, orient=VERTICAL)
+        sep.pack(side=LEFT, fill=Y)
+
+        self.ShowUndoButton()
+        self.ShowRedoButton()
+        ##SeparateBar
         sep = Separator(self._toolbar, orient=VERTICAL)
         sep.pack(side=LEFT, fill=Y)
 
@@ -38,3 +46,17 @@ class Toolbar(Frame):
         self.LoadIcon = ImageTk.PhotoImage(load_icon_image)
         _loadButton = Button(self._toolbar, image=self.LoadIcon, command=LoadFile().loadButtonClick, relief='flat')
         _loadButton.pack(side=LEFT)
+
+    def ShowUndoButton(self):
+        undo_icon_image = Image.open("./img/icon_Undo.PNG")
+        undo_icon_image.thumbnail((20, 20))
+        self.UndoIcon = ImageTk.PhotoImage(undo_icon_image)
+        _undoButton = Button(self._toolbar, image=self.UndoIcon, command=RedoAndUndo().Undo, relief='flat')
+        _undoButton.pack(side=LEFT)
+
+    def ShowRedoButton(self):
+        redo_icon_image = Image.open("./img/icon_Redo.PNG")
+        redo_icon_image.thumbnail((20, 20))
+        self.RedoIcon = ImageTk.PhotoImage(redo_icon_image)
+        _redoButton = Button(self._toolbar, image=self.RedoIcon, command=RedoAndUndo().Redo, relief='flat')
+        _redoButton.pack(side=LEFT)
