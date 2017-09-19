@@ -136,12 +136,11 @@ class TestCaseUI(Frame):
         self.case.refresh()
 
     def reloadTestCaseUI(self, case=None):
-        if not case is None:
-            self.case = case
+        if case is None: return
         self.clearTestCaseUI()
-        for i in range(self.case.getSize()):
-            act = self.case.getSteps(i).getAction()
-            val = self.case.getSteps(i).getValue()
+        for i in range(case.getSize()):
+            act = case.getSteps(i).getAction()
+            val = case.getSteps(i).getValue()
             self.stepList[i].action.set(act)
             self.actionSelect(i)
             if (act == 'Click' or act == 'Assert Exist' or act == 'Assert Not Exist'):

@@ -29,7 +29,7 @@ class Toolbar(Frame):
         save_icon_image = Image.open("./img/icon_Save.PNG")
         save_icon_image.thumbnail((20, 20))
         self.SaveIcon = ImageTk.PhotoImage(save_icon_image)
-        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=SaveFile(), relief='flat')
+        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=SaveFile().saveButtonClick, relief='flat')
         _saveButton.pack(side=LEFT)
 
     def ShowLoadButton(self):
