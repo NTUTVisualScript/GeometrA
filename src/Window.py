@@ -70,10 +70,8 @@ class View(Frame, threading.Thread):
         self.savecropImg = saveImg()
         self.XMLTreeUI()
         self.MessageUI()
-        #self.SaveIMGButton()
         self.RunButton()
         self.ResetButton()
-        self.getmouseEvent()
 
     def MenuBar(self):
         self.menubar = Menu(self.master)

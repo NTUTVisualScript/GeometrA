@@ -22,6 +22,9 @@ class Window(View):
         super().__init__(master)
         MenuBar.getMenuBar(master)
         TestCaseUI.getTestCaseUI()
+        # Mouse()
         ScreenshotUI.getScreenshotUI()
         Toolbar.getToolbar()
-        Mouse(master)
+
+
+
