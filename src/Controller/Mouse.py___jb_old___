@@ -1,6 +1,6 @@
 from tkinter import *
 from PIL import Image as IM
-from Controller.ScreenShotController import GetScreenShot
+from ScreenShotController import GetScreenShot
 
 class Mouse():
     def __init__(self, block, parent):

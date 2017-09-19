@@ -136,16 +136,16 @@ class TestCaseUI(Frame):
         self.case.refresh()
 
     def reloadTestCaseUI(self, case=None):
-        if not case is None:
-            self.case = case
+        if case is None: return
         self.clearTestCaseUI()
-        for i in range(self.case.getSize()):
-            action = self.case.getSteps(i).getAction()
-            value = self.case.getSteps(i).getValue()
-            self.stepList[i].action.set(action)
+        for i in range(case.getSize()):
+            act = case.getSteps(i).getAction()
+            val = case.getSteps(i).getValue()
+            self.stepList[i].action.set(act)
             self.actionSelect(i)
-            if (action == 'Click' or action == 'Assert Exist' or action == 'Assert Not Exist'):
-
-                self.stepList[i].value.insert(END, str(value))
+            if (act == 'Click' or act == 'Assert Exist' or act == 'Assert Not Exist'):
+                val.thumbnail((100, 100))
+                self._image = ImageTk.PhotoImage(val)
+                self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)
             else:
-                self.stepList[i].value.insert(END, str(value))
+                self.stepList[i].value.insert(END, str(val))

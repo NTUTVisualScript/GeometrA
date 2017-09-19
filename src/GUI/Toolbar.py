@@ -37,7 +37,7 @@ class Toolbar(Frame):
         save_icon_image = Image.open("./img/icon_Save.PNG")
         save_icon_image.thumbnail((20, 20))
         self.SaveIcon = ImageTk.PhotoImage(save_icon_image)
-        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=SaveFile(), relief='flat')
+        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=SaveFile().saveButtonClick, relief='flat')
         _saveButton.pack(side=LEFT)
 
     def ShowLoadButton(self):
@@ -46,6 +46,7 @@ class Toolbar(Frame):
         self.LoadIcon = ImageTk.PhotoImage(load_icon_image)
         _loadButton = Button(self._toolbar, image=self.LoadIcon, command=LoadFile().loadButtonClick, relief='flat')
         _loadButton.pack(side=LEFT)
+<<<<<<< HEAD
 
     def ShowUndoButton(self):
         undo_icon_image = Image.open("./img/icon_Undo.PNG")
@@ -60,3 +61,5 @@ class Toolbar(Frame):
         self.RedoIcon = ImageTk.PhotoImage(redo_icon_image)
         _redoButton = Button(self._toolbar, image=self.RedoIcon, command=RedoAndUndo().Redo, relief='flat')
         _redoButton.pack(side=LEFT)
+=======
+>>>>>>> d0879231fb48097470b290d2feadd9bbb5eadea0
