@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image, ImageTk
 from TestStepUI import TestStepUI
 from TestCaseActionCombobox import TestCaseAction
 from TestCaseEntry import TestCaseValue
@@ -9,6 +10,7 @@ import Value
 import threading
 
 import sys
+
 sys.path.append('../TestCase/')
 from TestCase import TestCase
 from TestStep import Step
@@ -16,17 +18,18 @@ from Executor import Executor
 
 filePath = None
 
+
 class TestCaseUI(Frame):
     __single = None
 
-    def __init__(self, parent = None, *args, **kwargs):
+    def __init__(self, parent=None, *args, **kwargs):
         if TestCaseUI.__single:
             raise TestCaseUI.__single
-            TestCaseUI.__single = self
+        TestCaseUI.__single = self
         self.case = TestCase()
         self.exe = Executor(self.case)
 
-        Frame.__init__(self, parent, *args, **kwargs, borderwidth =2 ,relief = 'sunken')
+        Frame.__init__(self, parent, *args, **kwargs, borderwidth=2, relief='sunken')
 
         self.canvas = Canvas(self)
         self.listFrame = Frame(self.canvas)
@@ -47,7 +50,7 @@ class TestCaseUI(Frame):
         self.stepList.append(TestStepUI(self.listFrame, 0))
 
     def getTestCaseUI(parent=None):
-        if not TestCaseUI.__single:
+        if TestCaseUI.__single == None:
             TestCaseUI.__single = TestCaseUI(parent)
         return TestCaseUI.__single
 
@@ -56,7 +59,7 @@ class TestCaseUI(Frame):
 
     def actionSelect(self, n):
         self.focus = n
-        if n == (len(self.stepList)-1):
+        if n == (len(self.stepList) - 1):
             self.stepList.append(TestStepUI(self.listFrame, len(self.stepList)))
         Value.testCaseEntry(self.stepList, n)
         self.actionFocusIn()
@@ -93,23 +96,23 @@ class TestCaseUI(Frame):
             Value.testCaseImage(self.stepList, self.focus)
         elif action == 'Loop End':
             self.stepList[self.focus].value.grid_remove()
-        # elif action == 'Loop Begin':
-        #     Loop(self.stepList, self.focus)
+            # elif action == 'Loop Begin':
+            #     Loop(self.stepList, self.focus)
 
     def executeButtonClick(self, n):
         try:
             self.case.insert(n=n, act=self.stepList[n].action.get(), val=self.stepList[n].value.get())
             if self.case.getSteps(n).getAction() == 'Loop Begin':
                 i = 1
-                j = n+1
+                j = n + 1
                 while i != 0:
                     act = self.stepList[j].action.get()
                     if act == 'Loop End':
-                        i = i-1
+                        i = i - 1
                     elif act == 'Loop Begin':
-                        i = i+1
+                        i = i + 1
                     self.case.insert(n=j, act=act, val=self.stepList[j].value.get())
-                    j = j+1
+                    j = j + 1
             threading.Thread(target=self.exe.run, args=(n,)).start()
         except Exception as e:
             print(str(e))
@@ -126,10 +129,23 @@ class TestCaseUI(Frame):
             self.stepList.append(TestStepUI(self.listFrame, n))
 
     def clearTestCaseUI(self):
-        self.stepList = []
-        self.stepList.append(TestStepUI(self.listFrame, 0))
+        i = len(self.stepList)
+        while i >= 0:
+            self.removeStep(i)
+            i = i - 1
+        self.case.refresh()
 
-    def reloadTestCaseUI(self):
+    def reloadTestCaseUI(self, case=None):
+        if case is None: return
         self.clearTestCaseUI()
-        # for i in TestCase.
-
+        for i in range(case.getSize()):
+            act = case.getSteps(i).getAction()
+            val = case.getSteps(i).getValue()
+            self.stepList[i].action.set(act)
+            self.actionSelect(i)
+            if (act == 'Click' or act == 'Assert Exist' or act == 'Assert Not Exist'):
+                val.thumbnail((100, 100))
+                self._image = ImageTk.PhotoImage(val)
+                self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)
+            else:
+                self.stepList[i].value.insert(END, str(val))

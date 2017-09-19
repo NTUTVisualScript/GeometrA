@@ -30,7 +30,7 @@ class TestCaseTestSuite(unittest.TestCase):
         case.insert(act='Sleep(s)', val='1')
         case.insert(n=0, act='Android Keycode', val='KEYCODE_HOME')
         case.insert(n=5, step=Step('Set Text', 'Hello World'))
-        case.refrash()
+        case.refresh()
         self.assertEqual(4, case.getSize())
         self.assertEqual('Android Keycode', case.getSteps(0).getAction())
         self.assertEqual('Click', case.getSteps(1).getAction())

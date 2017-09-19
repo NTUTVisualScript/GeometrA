@@ -71,7 +71,6 @@ class View(Frame, threading.Thread):
         self.XMLTreeUI()
         self.MessageUI()
         self.RunButton()
-        self.ResetButton()
 
     def MenuBar(self):
         self.menubar = Menu(self.master)

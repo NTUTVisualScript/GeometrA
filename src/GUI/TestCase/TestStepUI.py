@@ -45,3 +45,4 @@ class TestStepUI():
         self.addButton.grid_remove()
         self.removeButton.grid_remove()
         self.executeButton.grid_remove()
+        self.showImage.grid_remove()
