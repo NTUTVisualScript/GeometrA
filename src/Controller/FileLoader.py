@@ -1,6 +1,6 @@
 import json
 from tkinter import filedialog
-from PIL import Image
+from PIL import Image, ImageTk
 
 
 import sys

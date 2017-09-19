@@ -27,6 +27,6 @@ class ScreenshotUI(Canvas):
         self.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
 
     def ButtonGetScreenshot(self):
-        self.dumpUI = Button(self.master, command=lambda :threading.Thread(target=self.getScreenshot).start(),
+        self.dumpUI = Button(self.master, command=lambda: threading.Thread(target=self.getScreenshot).start(),
                              text="Capture Screenshot", width=18)
         self.dumpUI.place(x=0, y=30)

@@ -21,7 +21,6 @@ from Controller.Mouse import Mouse
 class Window(View):
     def __init__(self, master=None):
         super().__init__(master)
-        MenuBar.getMenuBar(master)
         TestCaseUI.getTestCaseUI()
         ScreenshotUI.getScreenshotUI()
         Toolbar.getToolbar()

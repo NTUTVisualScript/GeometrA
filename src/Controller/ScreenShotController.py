@@ -16,10 +16,10 @@ class GetScreenShot:
         self.screenShot = Image.open(ADBRobot().screenshot())
 
     def getScreenShot():
-        screenShot = GetScreenShot()
+        _screenshot = GetScreenShot()
         # Set size  should be bootstrap
-        screenShot.setSize(450, 800)
-        return ImageTk.PhotoImage(screenShot.screenShot)
+        _screenshot.setSize(450, 800)
+        return ImageTk.PhotoImage(_screenshot.screenShot)
 
     def setSize(self, x, y):
         self.screenShot.thumbnail((x, y))
