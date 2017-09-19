@@ -4,6 +4,8 @@ from PIL import Image
 
 import sys
 sys.path.append('../TestCase')
+sys.path.append('../GUI')
+from TestCaseUI import TestCaseUI
 from TestCase import TestCase
 from TestStep import Step
 
@@ -22,29 +24,24 @@ class SaveFile():
 
 class LoadFile():
     def __init__(self):
-        self._filePath = None
-        self._folderPath = None
-        # self.folderName = str(path.split('/').pop())
-        # self.jsonDecoder()
+        self._filePath = ""
+        self._folderPath = ""
 
     def loadPath(self):
         self.getFilePath()
         self.getFolderName()
-        if self._filePath is None or self._filePath == '': return
+        if self._filePath is None or self._filePath is "": return
 
         self.jsonDecoder()
 
-
-        return dirPath.name
-
     def getFilePath(self):
         _f = filedialog.askopenfile(title="Select File", filetypes=[("TestCase JSON Files", "*.json")])
-        self._filePath = _f.name
+        if not _f is None:
+            self._filePath = _f.name
 
     def getFolderName(self):
         _fp = self._filePath
-        print(_fp.split('/'))
-        self._folderPath = str(_fp.split('/').pop())
+        self._folderPath = _fp.rstrip('testcase.json')
 
     def jsonDecoder(self):
         with open(self._filePath, 'r') as f:
@@ -56,11 +53,16 @@ class LoadFile():
             data = dataDic[str(i+1)]
 
             act = data['action']
+            print(act)
             val = data['value']
             if val == None:
-                val =Image.open(self._filePath + data['image'])
+                val = Image.open(self._folderPath + data['image'])
             step = Step(act, val)
+
             self.case.insert(step=step)
+
+        TestCaseUI.getTestCaseUI().reloadTestCaseUI()
+        # _ui.addStep(1)
 
     def getTestCase(self):
         return self.case

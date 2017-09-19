@@ -782,7 +782,7 @@ class View(Frame, threading.Thread):
             self.new_line(n)
             n=n+1
 
-        print(self.line)
+        print("line = " + str(self.line))
 
     def AuxscrollFunction(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=650, height=525)
