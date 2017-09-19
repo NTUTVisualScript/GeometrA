@@ -22,7 +22,7 @@ class TestCaseUI(Frame):
     def __init__(self, parent = None, *args, **kwargs):
         if TestCaseUI.__single:
             raise TestCaseUI.__single
-            TestCaseUI.__single = self
+        TestCaseUI.__single = self
         self.case = TestCase()
         self.exe = Executor(self.case)
 
@@ -47,7 +47,7 @@ class TestCaseUI(Frame):
         self.stepList.append(TestStepUI(self.listFrame, 0))
 
     def getTestCaseUI(parent=None):
-        if not TestCaseUI.__single:
+        if TestCaseUI.__single == None:
             TestCaseUI.__single = TestCaseUI(parent)
         return TestCaseUI.__single
 
@@ -126,10 +126,16 @@ class TestCaseUI(Frame):
             self.stepList.append(TestStepUI(self.listFrame, n))
 
     def clearTestCaseUI(self):
-        self.stepList = []
-        self.stepList.append(TestStepUI(self.listFrame, 0))
+        i = len(self.stepList)
+        while i >= 0:
+            self.removeStep(i)
+            i = i-1
+        # self.stepList = []
+        # self.stepList.append(TestStepUI(self.listFrame, 0))
+
 
     def reloadTestCaseUI(self):
         self.clearTestCaseUI()
+
         # for i in TestCase.
 

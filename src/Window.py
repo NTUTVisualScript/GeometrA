@@ -72,7 +72,6 @@ class View(Frame, threading.Thread):
         self.MessageUI()
         #self.SaveIMGButton()
         self.RunButton()
-        self.ResetButton()
         self.getmouseEvent()
 
     def MenuBar(self):
