@@ -49,25 +49,6 @@ class ExecutorTestSuite(unittest.TestCase):
         case.insert(act='Android Keycode', val='KEYCODE_HOME')
         self.assertEqual('Success', exe.execute(0))
 
-
-
-    def testRun(self):
-        case = TestCase()
-        exe = Executor(case)
-        case.insert(act='Sleep(s)', val='0')
-        self.assertEqual('Success', exe.run(0))
-    def testRunFailed(self):
-        case = TestCase()
-        exe = Executor(case)
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/notexist.png'))
-        self.assertEqual('Failed', exe.run(0))
-    def testRunError(self):
-        case = TestCase()
-        exe = Executor(case)
-        case.insert(act='Swipe', val='x=, y=1000, x=300, y=1000')
-        self.assertEqual('Error', exe.run(0))
-
-
     def testStepResult(self):
         case = TestCase()
         exe = Executor(case)
