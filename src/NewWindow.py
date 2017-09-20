@@ -24,4 +24,5 @@ class Window(View):
         TestCaseUI.getTestCaseUI()
         # Mouse()
         ScreenshotUI.getScreenshotUI()
+        ClearButton(master).showClearButton()
         Toolbar.getToolbar()

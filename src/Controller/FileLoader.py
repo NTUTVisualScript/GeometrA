@@ -74,7 +74,9 @@ class LoadFile:
 
     def getFilePath(self):
         _f = filedialog.askopenfile(title="Select File", filetypes=[("TestCase JSON Files", "*.json")])
-        if not _f is None:
+        if _f is None:
+            self._filePath = ""
+        else:
             self._filePath = _f.name
             self._fileName = _f.name.split('/').pop()
 
