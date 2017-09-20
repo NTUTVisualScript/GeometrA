@@ -55,3 +55,4 @@ class Mouse():
         self.endY = event.y
 
         self.cropped = photo.crop((self.startX, self.startY, self.endX, self.endY))
+        self.cropped.save('./screenshot_pic/crop.png')

@@ -46,7 +46,7 @@ class SaveFile:
             val = _stepList[i].value.get()
             _data["action"] = act
             _data["value"] = val
-            if val is :
+            # if val is :
 
             # elif val is str:
             #     pass
@@ -54,9 +54,6 @@ class SaveFile:
 
         with open(self._filePath, 'w', encoding='utf-8') as fp:
             json.dump(_dataDict, fp, indent=2)
-
-
-
 
 class LoadFile:
     def __init__(self):
