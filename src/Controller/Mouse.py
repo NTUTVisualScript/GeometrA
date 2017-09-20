@@ -15,7 +15,6 @@ class Mouse():
 
         self.block.bind("<Motion>", self.motion)
         self.block.bind("<Button-1>", self.clickDown)
-        self.block.bind("<ButtonRelease-1>", self.mouseReleased)
         self.block.bind("<B1-Motion>", self.mouseDragged)
         self.block.bind("<Leave>", self.mouseLeave)
 
@@ -30,6 +29,8 @@ class Mouse():
     def clickDown(self, event):
         self.startX = event.x
         self.startY = event.y
+
+    def setOriginalFrame(self):
         self.originalFrame = self.block.screenshot_photo
 
     def mouseDragged(self, event):
@@ -49,10 +50,8 @@ class Mouse():
         self.block.create_rectangle(self.startX, self.startY, event.x, event.y, outline ="red", width = 2)
 
     def mouseReleased(self, event):
-        path = GetScreenShot().path
-        photo = IM.open(path)
+        photo = GetScreenShot.screenShot
         self.endX = event.x
         self.endY = event.y
 
         self.cropped = photo.crop((self.startX, self.startY, self.endX, self.endY))
-        self.cropped.save('./screenshot_pic/crop.png')

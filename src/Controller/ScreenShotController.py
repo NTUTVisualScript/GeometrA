@@ -13,17 +13,17 @@ Get Screenshot from device and return to UI
 
 class GetScreenShot:
     def __init__(self):
-        GetScreenShot.path = ADBRobot().screenshot()
-        self.screenShot = Image.open(GetScreenShot.path)
+        path = ADBRobot().screenshot()
+        GetScreenShot.screenShot = Image.open(path)
 
     def capture():
         screenShot = GetScreenShot()
         # Set size  should be bootstrap
         screenShot.setSize(450, 800)
-        return ImageTk.PhotoImage(screenShot.screenShot)
+        return ImageTk.PhotoImage(GetScreenShot.screenShot)
 
     def setSize(self, x, y):
-        self.screenShot.thumbnail((x, y))
+        GetScreenShot.screenShot.thumbnail((x, y))
 
 def screenShotTrigger():
     if not Check().checkDevices():

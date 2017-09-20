@@ -22,7 +22,6 @@ class Window(View):
     def __init__(self, master=None):
         super().__init__(master)
         TestCaseUI.getTestCaseUI()
-        # Mouse()
         ScreenshotUI.getScreenshotUI()
         ClearButton(master).showClearButton()
         Toolbar.getToolbar()
