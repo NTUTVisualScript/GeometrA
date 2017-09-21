@@ -13,10 +13,9 @@ sys.path.append('./Save')
 sys.path.append('./Controller')
 from TestCaseUI import TestCaseUI
 from ScreenshotUI import ScreenshotUI
-from MenuBar import MenuBar
 from Toolbar import Toolbar
 from ClearButton import *
-from Controller.Mouse import Mouse
+
 
 class Window(View):
     def __init__(self, master=None):

@@ -33,7 +33,7 @@ class Step:
     def setValue(self, value):
         if (self.act == 'Click') or (self.act == 'Assert Exist') or (self.act == 'Assert Not Exist'):
             if (str(value.__class__) != "<class 'PIL.PngImagePlugin.PngImageFile'>") \
-                    and (str(value.__class__) != "<class 'PIL.Image.Image>"):
+                    and (str(value.__class__) != "<class 'PIL.Image.Image'>"):
                 raise Exception('Value Should be PIL image')
         if ((self.act == 'Sleep(s)') or (self.act == 'Loop Begin')) and (not value.isdigit()):
             raise Exception('Value Should be digit')

@@ -12,6 +12,7 @@ Get Screenshot from device and return to UI
 
 
 class GetScreenShot:
+    screenShot = None
     def __init__(self):
         path = ADBRobot().screenshot()
         GetScreenShot.screenShot = Image.open(path)

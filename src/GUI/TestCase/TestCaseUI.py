@@ -22,6 +22,8 @@ class TestCaseUI(Frame):
             raise TestCaseUI.__single
         TestCaseUI.__single = self
 
+        self.focus = None
+
         self.ctrl = TestController()
 
         Frame.__init__(self, parent, *args, **kwargs, borderwidth=2, relief='sunken')
@@ -69,6 +71,8 @@ class TestCaseUI(Frame):
         self.ctrl.setStep(n)
 
     def actionFocusIn(self, image=None):
+        if self.focus == None: return
+
         action = self.stepList[self.focus].action.get()
 
         if (action != 'Swipe') & (self.swipeImage != None):

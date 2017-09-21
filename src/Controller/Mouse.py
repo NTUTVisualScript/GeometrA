@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 from Controller.ScreenShotController import GetScreenShot
 from TestCaseUI import TestCaseUI
-import Value
+
 
 class Mouse():
     croppedPhoto = None
@@ -23,6 +23,8 @@ class Mouse():
         self.block.bind("<Leave>", self.mouseLeave)
 
     def mouseLeave(self, event):
+        if GetScreenShot.screenShot == None: return
+
         self.block.delete("all")
         self.block.create_image(0, 0, anchor=NW, image=self.originalFrame)
         self.block.screenshot_photo = self.originalFrame
@@ -38,6 +40,8 @@ class Mouse():
         self.originalFrame = self.block.screenshot_photo
 
     def mouseDragged(self, event):
+        if GetScreenShot.screenShot == None: return
+
         self.mouseLeave(event)
 
         if event.x < 0:
@@ -54,12 +58,25 @@ class Mouse():
         self.block.create_rectangle(self.startX, self.startY, event.x, event.y, outline ="red", width = 2)
 
     def mouseReleased(self, event):
+        if GetScreenShot.screenShot == None: return
         photo = GetScreenShot.screenShot
-        self.endX = event.x
-        self.endY = event.y
 
-        Mouse.croppedPhoto = photo.crop((self.startX, self.startY, self.endX, self.endY))
+
         UI = TestCaseUI.getTestCaseUI()
-        UI.actionFocusIn(ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
-        print(Mouse.croppedPhoto.__class__)
+        if (self.startX < event.x) and (self.startY < event.y):
+            Mouse.croppedPhoto = photo.crop((self.startX, self.startY, event.x, event.y))
+            #left-top
+        elif (self.startX < event.x) and (self.startY > event.y):
+            Mouse.croppedPhoto = photo.crop((self.startX, event.y, event.x, self.startY))
+            #left-bottom
+        elif(self.startX > event.x) and (self.startY < event.y):
+            Mouse.croppedPhoto = photo.crop((event.x, self.startY, self.startX, event.y))
+            #right-top
+        else:
+            Mouse.croppedPhoto = photo.crop((event.x, event.y, self.startX, self.startY))
+            #right-bottom
+
+
+
+        UI.actionFocusIn( ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
         UI.ctrl.setStep(UI.focus, Mouse.croppedPhoto)

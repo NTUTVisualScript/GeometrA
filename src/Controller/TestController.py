@@ -14,6 +14,7 @@ class TestController:
         threading.Thread(target=self.exe.runAll).start()
 
     def setStep(self, n, image = None):
+        if n == None: return
         from TestCaseUI import TestCaseUI as UI
         stepList = UI.getTestCaseUI().stepList
         self.case.refresh()
