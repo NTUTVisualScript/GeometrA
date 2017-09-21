@@ -8,7 +8,7 @@ sys.path.append('../../TestCase/')
 class TestStepUI():
     def __init__(self, parent, n):
         from TestCaseUI import TestCaseUI
-        from ShowImageButton import ShowImageButton
+        from Controller.TestController import TestController
         self.parent = parent
 
         self.lineNum = Label(self.parent, text=str(n + 1) + ". ", width=3)
@@ -29,7 +29,7 @@ class TestStepUI():
 
         self.value = TestCaseValue(self.parent, width=35)
 
-        self.showImage = ShowImageButton(self.parent).showImage #Button(parent, command=lambda: self.ShowimageButtonClick(n), text="show image", width=12)
+        self.showImage = Button(self.parent, command= lambda : TestController.ShowImageButtonClick(self), text="Show image", width=12)
 
 
         self.lineNum.grid(row=n + 1, column=1)

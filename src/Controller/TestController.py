@@ -38,3 +38,10 @@ class TestController:
         self.case.clear()
         UI.getTestCaseUI().reloadTestCaseUI()
 
+    def ShowImageButtonClick(self):
+        from TestCaseUI import TestCaseUI
+        UI = TestCaseUI.getTestCaseUI()
+        UI.focus = self.focus
+        self.image = UI.ctrl.case.getSteps(UI.focus).getValue()
+        print(self.image)
+        self.image.show()
