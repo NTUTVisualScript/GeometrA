@@ -55,3 +55,10 @@ class StepTestSuite(unittest.TestCase):
         step.setStep('Android Keycode', 'KEYCODE_HOME')
         self.assertEqual('Android Keycode', step.getAction())
         self.assertEqual('KEYCODE_HOME', step.getValue())
+
+    def testCopy(self):
+        step1 = Step('Sleep(s)', '1')
+        step2 = step1.copy()
+        step1.setValue('2')
+        self.assertEqual('Sleep(s)', step2.getAction())
+        self.assertEqual('1', step2.getValue())

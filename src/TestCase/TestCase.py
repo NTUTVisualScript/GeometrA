@@ -29,6 +29,14 @@ class TestCase:
             self.stepDict[i] = self.stepDict[i-1]
         self.stepDict[n] = step
 
+    def append(self, n):
+        try:
+            for i in range(self.getSize(), n, -1):
+                self.stepDict[i] = self.stepDict[i-1]
+            del self.stepDict[n]
+        except:
+            pass
+
     # To let stepDict be continuous
     def refresh(self):
         i = 0
@@ -51,3 +59,9 @@ class TestCase:
     def clear(self):
         del self.stepDict
         self.stepDict = {}
+
+    def copy(self):
+        case = TestCase()
+        for i in self.stepDict:
+            case.insert(step=self.stepDict[i].copy())
+        return case

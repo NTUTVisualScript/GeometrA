@@ -1,11 +1,13 @@
 from TestCase import TestCase
 from Executor import Executor
 import threading
+from Record import *
 
 class TestController:
     def __init__(self):
         self.case = TestCase()
         self.exe = Executor(self.case)
+        self.undo = Undo(self.case)
 
     def execute(self, n):
         threading.Thread(target=self.exe.execute, args=(n,)).start()
@@ -16,8 +18,24 @@ class TestController:
         UI.getTestCaseUI().reloadTestCaseUI()
         threading.Thread(target=self.exe.runAll).start()
 
+    def undoClick(self):
+        from TestCaseUI import TestCaseUI as UI
+        self.case = self.undo.pop()
+        UI.getTestCaseUI().reloadTestCaseUI()
+
+    def insertStep(self, n):
+        self.undo.push(self.case)
+        self.case.append(n)
+
+    def removeStep(self, n):
+        self.undo.push(self.case)
+        self.case.delete(n)
+
     def setStep(self, n, image = None):
         if n == None: return
+
+        self.undo.push(self.case)
+
         from TestCaseUI import TestCaseUI as UI
         stepList = UI.getTestCaseUI().stepList
         try:

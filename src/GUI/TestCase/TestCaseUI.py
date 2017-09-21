@@ -105,15 +105,15 @@ class TestCaseUI(Frame):
 
     def addStep(self, n):
         self.stepList.append(TestStepUI(self.listFrame, len(self.stepList)))
-        self.ctrl.case.insert(n=n, act='', val='')
+        self.ctrl.insertStep(n)
         StepOperate.insert(self.stepList, n)
         # self.reloadTestCaseUI()
 
     def removeStep(self, n):
         if len(self.stepList) > 1:
-            # StepOperate.remove(self.stepList, n)
-            self.ctrl.case.delete(n)
-            self.reloadTestCaseUI()
+            StepOperate.remove(self.stepList, n)
+            self.ctrl.removeStep(n)
+            # self.reloadTestCaseUI()
         if n == len(self.stepList):
             self.stepList.append(TestStepUI(self.listFrame, n))
 

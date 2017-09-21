@@ -85,3 +85,26 @@ class TestCaseTestSuite(unittest.TestCase):
         case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
         case.setStatus(0, 'Success')
         self.assertEqual('Success', case.getStatus(0))
+
+    def testClear(self):
+        case = TestCase()
+        case.insert(act='Sleep(s)', val='1')
+        case.clear()
+        self.assertEqual(0, case.getSize())
+
+    def testCopy(self):
+        case1 = TestCase()
+        case1.insert(act='Sleep(s)', val='1')
+        case2 = case1.copy()
+        case1.clear()
+        self.assertEqual(1, case2.getSize())
+        self.assertEqual('Sleep(s)', case2.getSteps(0).getAction())
+        self.assertEqual('1', case2.getSteps(0).getValue())
+
+    def testAppend(self):
+        case = TestCase()
+        case.insert(act='Sleep(s)', val='1')
+        case.append(0)
+        self.assertEqual(1, case.getSize())
+        self.assertEqual('Sleep(s)', case.getSteps(1).getAction())
+        self.assertEqual('1', case.getSteps(1).getValue())

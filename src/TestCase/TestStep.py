@@ -64,3 +64,6 @@ class Step:
         if self.status != 'Not Executed':
             return self.status
         raise Exception('Step Not Executed')
+
+    def copy(self):
+        return Step(self.act, self.val)
