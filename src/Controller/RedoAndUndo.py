@@ -1,9 +1,4 @@
-
-import sys
-sys.path.append('../TestCase')
-sys.path.append('../GUI')
-sys.path.append('../GUI/TestCase')
-
+from TestCaseUI import TestCaseUI
 
 class RedoAndUndo():
     def __init__(self):
@@ -84,3 +79,77 @@ class RedoAndUndo():
 
             self.valueImagelist[line] = testcase_line[4]
             self.node_path_list[line] = testcase_line[5]
+
+    def AddLineButtonClick(self,n, redoundo ):
+        if redoundo ==False:
+            self.add_changes( n, "add", self.actionlist[n], self.valuelist[n], self.valueImagelist[n],
+                            self.node_path_list[n])
+
+        self.line  = self.line + 1
+        self.new_line(self.line)
+        i= self.line
+
+        self.valueImagelist.insert(n, None)
+        self.node_path_list.insert(n, None)
+
+        while i > n:
+            getactionstr = self.actioncombolist[i-1].get()
+            self.actioncombolist[i].set(str(getactionstr))
+            self.actioncombolist[i-1].set('')
+            self.actionlist[i] = self.actionlist[i-1]
+            self.actionlist[i-1] = ""
+
+            if str(type(self.valuelist[i-1])) != "<class 'TestCaseEntry.TestCaseValue'>":
+                self.TestcaseImage(i, self.valuelist[i-1].image)
+                self.TestcaseEntry(i-1)
+
+            else:
+                getvaluestr = self.valuelist[i-1].get()
+                self.valuelist[i].delete(0, 'end')
+                self.valuelist[i].insert('end', getvaluestr)
+                self.valuelist[i - 1].delete(0, 'end')
+
+            i=i-1
+
+
+    def RemoveLineButtonClick(self, n, do):
+        if do == False:
+            self.add_changes(n, "remove", self.actionlist[n], self.valuelist[n], self.valueImagelist[n],
+                            self.node_path_list[n])
+
+        del self.valueImagelist[n]
+        del self.node_path_list[n]
+        i = n
+        while i < self.line:
+            getactionstr = self.actioncombolist[i + 1].get()
+            self.actioncombolist[i].set(str(getactionstr))
+            self.actionlist[i] = self.actionlist[i + 1]
+            self.actionlist[i + 1] = ""
+
+            if str(type(self.valuelist[i+1])) != "<class 'TestCaseEntry.TestCaseValue'>":
+                self.TestcaseImage(i, self.valuelist[i+1].image)
+                self.TestcaseEntry(i+1)
+
+            else:
+                self.TestcaseEntry(i)
+                getvaluestr = self.valuelist[i+1].get()
+                self.valuelist[i].delete(0, 'end')
+                self.valuelist[i].insert('end', getvaluestr)
+                self.valuelist[i+1].delete(0, 'end')
+
+            i = i + 1
+
+        self.lineStrlist[self.line].grid_remove()
+        self.actioncombolist[self.line].grid_remove()
+        self.valuelist[self.line].grid_remove()
+        self.addlinelist[self.line].grid_remove()
+        self.removelinelist[self.line].grid_remove()
+        self.run_single_actionlist[self.line].grid_remove()
+
+        self.lineStrlist.pop()
+        self.actioncombolist.pop()
+        self.valuelist.pop()
+        self.addlinelist.pop()
+        self.removelinelist.pop()
+        self.run_single_actionlist.pop()
+        self.line = self.line - 1
