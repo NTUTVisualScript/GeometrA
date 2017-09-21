@@ -15,6 +15,7 @@ sys.path.append('../TestCase/')
 from TestCase import TestCase
 from TestStep import Step
 from Executor import Executor
+from TestController import TestController
 
 filePath = None
 
@@ -26,8 +27,8 @@ class TestCaseUI(Frame):
         if TestCaseUI.__single:
             raise TestCaseUI.__single
         TestCaseUI.__single = self
-        self.case = TestCase()
-        self.exe = Executor(self.case)
+
+        self.ctrl = TestController()
 
         Frame.__init__(self, parent, *args, **kwargs, borderwidth=2, relief='sunken')
 
@@ -96,27 +97,9 @@ class TestCaseUI(Frame):
             Value.testCaseImage(self.stepList, self.focus)
         elif action == 'Loop End':
             self.stepList[self.focus].value.grid_remove()
-            # elif action == 'Loop Begin':
-            #     Loop(self.stepList, self.focus)
 
     def executeButtonClick(self, n):
-        try:
-            self.case.insert(n=n, act=self.stepList[n].action.get(), val=self.stepList[n].value.get())
-            if self.case.getSteps(n).getAction() == 'Loop Begin':
-                i = 1
-                j = n + 1
-                while i != 0:
-                    act = self.stepList[j].action.get()
-                    if act == 'Loop End':
-                        i = i - 1
-                    elif act == 'Loop Begin':
-                        i = i + 1
-                    self.case.insert(n=j, act=act, val=self.stepList[j].value.get())
-                    j = j + 1
-            threading.Thread(target=self.exe.run, args=(n,)).start()
-        except Exception as e:
-            print(str(e))
-            return 'Invalid Value!'
+        self.ctrl.execute(n)
 
     def addStep(self, n):
         self.stepList.append(TestStepUI(self.listFrame, len(self.stepList)))
@@ -133,7 +116,6 @@ class TestCaseUI(Frame):
         while i >= 0:
             self.removeStep(i)
             i = i - 1
-        self.case.refresh()
 
     def reloadTestCaseUI(self, case=None):
         if case is None: return

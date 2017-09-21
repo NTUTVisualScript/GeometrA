@@ -68,12 +68,10 @@ class LoadFile:
         self.jsonDecoder()
 
     def getFilePath(self):
+        self._filePath = ""
         _f = filedialog.askopenfile(title="Select File", filetypes=[("TestCase JSON Files", "*.json")])
-        if _f is None:
-            self._filePath = ""
-        else:
-            self._filePath = _f.name
-            self._fileName = _f.name.split('/').pop()
+        self._filePath = _f.name
+        self._fileName = _f.name.split('/').pop()
 
     def getFolderName(self):
         _fp = self._filePath

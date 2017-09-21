@@ -15,7 +15,7 @@ from TestCaseUI import TestCaseUI
 from ScreenshotUI import ScreenshotUI
 from MenuBar import MenuBar
 from Toolbar import Toolbar
-from ClearButton import ClearButton
+from ClearButton import *
 from Controller.Mouse import Mouse
 
 class Window(View):
@@ -25,3 +25,4 @@ class Window(View):
         ScreenshotUI.getScreenshotUI()
         ClearButton(master).showClearButton()
         Toolbar.getToolbar()
+        RunButton(master).showRunButton()

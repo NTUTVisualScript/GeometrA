@@ -44,7 +44,7 @@ class Executor():
         i = 0
         while i < self.case.getSize():
             print('Step ' + str(i))
-            status = self.run(i)
+            status = self.execute(i)
             if self.case.getSteps(i).getAction() == 'Loop Begin':
                 self.loopEnd(i)
             if status == 'Failed':
@@ -54,22 +54,6 @@ class Executor():
             i = i+1
         return 'Success'
 
-    def run(self, n):
-        act = self.case.getSteps(n).getAction()
-        print(act)
-        # self.getOriginalScreen()
-        # self.htmlstep.step_before(self.originalScreen)
-
-        status = self.execute(n)
-        #
-        # if self.case.getSteps(n).getStatus() == 'Success':
-        #     self.reportImage(n)
-        # self.getCurrentScreen()
-        # self.htmlstep.step_after(self.currentScreen)
-        #
-        # self.stepResult(n)
-
-        return status
 
     def execute(self, n):
             act = self.case.getSteps(n).getAction()
@@ -201,7 +185,7 @@ class Executor():
                     act = self.case.getSteps(j).getAction()
                     if act == 'Loop End':
                         break
-                    status = self.run(j)
+                    status = self.execute(j)
 
                     if act == 'Loop Begin':
                         j = self.loopEnd(j)
