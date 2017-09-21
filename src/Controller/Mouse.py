@@ -1,8 +1,11 @@
 from tkinter import *
-from PIL import Image as IM
+from PIL import Image, ImageTk
 from Controller.ScreenShotController import GetScreenShot
+from TestCaseUI import TestCaseUI
+import Value
 
 class Mouse():
+    croppedPhoto = None
     def __init__(self, block, parent):
         self.mousePosition = StringVar()  #displays mouse position
         self.mousePosition.set( "Mouse outside the window")
@@ -15,6 +18,7 @@ class Mouse():
 
         self.block.bind("<Motion>", self.motion)
         self.block.bind("<Button-1>", self.clickDown)
+        self.block.bind("<ButtonRelease-1>", self.mouseReleased)
         self.block.bind("<B1-Motion>", self.mouseDragged)
         self.block.bind("<Leave>", self.mouseLeave)
 
@@ -54,4 +58,12 @@ class Mouse():
         self.endX = event.x
         self.endY = event.y
 
-        self.cropped = photo.crop((self.startX, self.startY, self.endX, self.endY))
+        Mouse.croppedPhoto = photo.crop((self.startX, self.startY, self.endX, self.endY))
+        Mouse.croppedPhoto.save('./screenshot_pic/crop.png')
+        # thumbnail = ImageTk.PhotoImage(self.croppedPhoto.resize((100, 100)))
+        Value.testCaseImage(TestCaseUI.getTestCaseUI().stepList, TestCaseUI.getTestCaseUI().focus
+                            , ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100), Image.ANTIALIAS)))
+
+    def getCroppedPhoto(self):
+        Mouse.croppedPhoto.save('./screenshot_pic/crop.png')
+        return Mouse.croppedPhoto
