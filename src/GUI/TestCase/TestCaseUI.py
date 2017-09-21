@@ -70,7 +70,7 @@ class TestCaseUI(Frame):
         if self.stepList[n].action.get() != 'TestCase':
             self.actionFocusIn()
 
-    def actionFocusIn(self):
+    def actionFocusIn(self, image=None):
         action = self.stepList[self.focus].action.get()
 
         if (action != 'Swipe') & (self.swipeImage != None):
@@ -94,7 +94,7 @@ class TestCaseUI(Frame):
             '''
                 Here could be acceptance after dumpUI and ScreenShot or Tree_info are done.
             '''
-            Value.testCaseImage(self.stepList, self.focus)
+            Value.testCaseImage(self.stepList, self.focus, image)
         elif action == 'Loop End':
             self.stepList[self.focus].value.grid_remove()
 

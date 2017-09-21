@@ -61,9 +61,7 @@ class Mouse():
         Mouse.croppedPhoto = photo.crop((self.startX, self.startY, self.endX, self.endY))
         Mouse.croppedPhoto.save('./screenshot_pic/crop.png')
         # thumbnail = ImageTk.PhotoImage(self.croppedPhoto.resize((100, 100)))
-        Value.testCaseImage(TestCaseUI.getTestCaseUI().stepList, TestCaseUI.getTestCaseUI().focus
-                            , ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100), Image.ANTIALIAS)))
-
+        TestCaseUI.getTestCaseUI().actionFocusIn( ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
+        
     def getCroppedPhoto(self):
-        Mouse.croppedPhoto.save('./screenshot_pic/crop.png')
         return Mouse.croppedPhoto
