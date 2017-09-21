@@ -14,23 +14,22 @@ class TestStepUI():
         self.lineNum = Label(self.parent, text=str(n + 1) + ". ", width=3)
 
         self.addButton = Button(self.parent, text="+", width=3, \
-                                command=lambda :TestCaseUI.getTestCaseUI().addStep(n))
+                                command=lambda: TestCaseUI.getTestCaseUI().addStep(n))
 
         self.removeButton = Button(self.parent, text="-", width=3, \
-                                   command=lambda :TestCaseUI.getTestCaseUI().removeStep(n))
+                                   command=lambda: TestCaseUI.getTestCaseUI().removeStep(n))
 
         self.executeButton = Button(self.parent, text="▶", width=3,
                 command=lambda:TestCaseUI.getTestCaseUI().executeButtonClick(n))
 
-        self.action = TestCaseAction(self.parent, textvariable= StringVar(), width=10, height=22,
+        self.action = TestCaseAction(self.parent, textvariable=StringVar(), width=10, height=22,
                                      state='readonly')
-        self.action.bind("<<ComboboxSelected>>", lambda event:TestCaseUI.getTestCaseUI().actionSelect(n))
-        self.action.bind("<MouseWheel>", lambda event:TestCaseUI.getTestCaseUI().actionSelect(n))
+        self.action.bind("<<ComboboxSelected>>", lambda event: TestCaseUI.getTestCaseUI().actionSelect(n))
+        self.action.bind("<MouseWheel>", lambda event: TestCaseUI.getTestCaseUI().actionSelect(n))
 
         self.value = TestCaseValue(self.parent, width=35)
 
-        self.showImage = Button(self.parent, command= lambda : TestController.ShowImageButtonClick(self), text="Show image", width=12)
-
+        self.showImage = Button(self.parent, command=lambda: TestController.ShowImageButtonClick(n), text="Show image", width=12)
 
         self.lineNum.grid(row=n + 1, column=1)
         self.addButton.grid(row=n + 1, column=2)

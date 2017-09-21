@@ -72,7 +72,8 @@ class TestCaseTestSuite(unittest.TestCase):
         case.insert(act='Sleep(s)', val='1')
         case.delete(1)
         self.assertEqual(2, case.getSize())
-        self.assertRaises(Exception, case.getSteps, 1)
+        self.assertEqual('Sleep(s)', case.getSteps(1).getAction())
+        self.assertEqual('1', case.getSteps(1).getValue())
 
     def testSetStatus(self):
         case = TestCase()

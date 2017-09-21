@@ -40,11 +40,12 @@ class SaveFile:
             _data = {}
             act = _case.getSteps(i).getAction()
             _data['action'] = act
-            # print(_case.getSteps(i).getValue().__class__)
             if str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
-                Mouse.croppedPhoto.save(self._filePath + "_image/" + "image_" + str(i))
+                _imgpath = self._folderPath + "_image/image_" + str(i+1) + ".png"
+                os.path.isfile(_imgpath)
+                _case.getSteps(i).getValue().save(_imgpath)
                 _data['value'] = None
-                _data['image'] = str(self._filePath + "_image/" + "image_" + str(i))
+                _data['image'] = self._filePath + "_image/image_" + str(i+1) + ".png"
             else:
                 val = _case.getSteps(i).getValue()
                 _data['value'] = val

@@ -29,6 +29,7 @@ class TestCase:
             self.stepDict[i] = self.stepDict[i-1]
         self.stepDict[n] = step
 
+    # To let stepDict be continuous
     def refresh(self):
         i = 0
         temp = {}
@@ -39,6 +40,7 @@ class TestCase:
 
     def delete(self, n):
         del self.stepDict[n]
+        self.refresh()
 
     def setStatus(self, n, status):
         return self.stepDict[n].setStatus(status)
@@ -47,4 +49,5 @@ class TestCase:
         return self.stepDict[n].getStatus()
 
     def clear(self):
+        del self.stepDict
         self.stepDict = {}

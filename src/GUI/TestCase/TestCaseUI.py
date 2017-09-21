@@ -105,32 +105,38 @@ class TestCaseUI(Frame):
 
     def addStep(self, n):
         self.stepList.append(TestStepUI(self.listFrame, len(self.stepList)))
+        self.ctrl.case.insert(n=n, act='', val='')
         StepOperate.insert(self.stepList, n)
+        # self.reloadTestCaseUI()
 
     def removeStep(self, n):
         if len(self.stepList) > 1:
-            StepOperate.remove(self.stepList, n)
+            # StepOperate.remove(self.stepList, n)
+            self.ctrl.case.delete(n)
+            self.reloadTestCaseUI()
         if n == len(self.stepList):
             self.stepList.append(TestStepUI(self.listFrame, n))
 
-    def clearTestCaseUI(self):
-        i = len(self.stepList)
-        while i >= 0:
-            self.removeStep(i)
-            i = i - 1
+    def clearUI(self):
+        while len(self.stepList) > 0:
+            self.stepList[0].remove()
+            self.stepList.pop(0)
+        self.stepList.append(TestStepUI(self.listFrame, 0))
 
     def reloadTestCaseUI(self):
         _case = self.ctrl.case
         if _case is None: return
-        self.clearTestCaseUI()
+        self.clearUI()
         for i in range(_case.getSize()):
+            self.stepList.append(TestStepUI(self.listFrame, i+1))
             act = _case.getSteps(i).getAction()
             val = _case.getSteps(i).getValue()
             self.stepList[i].action.set(act)
             self.actionSelect(i)
             if str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
-                val.thumbnail((100, 100))
+                val.resize((100, 100))
                 self._image = ImageTk.PhotoImage(val)
                 self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)
+                self.stepList[i].value.image = self._image
             else:
                 self.stepList[i].value.insert(END, str(val))

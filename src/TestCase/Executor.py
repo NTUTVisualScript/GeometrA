@@ -36,7 +36,7 @@ class Executor():
             drawCircle.load_file(self.robot.before_screenshot(), 1)
             drawCircle.draw_circle(int(self.clickX), int(self.clickY))
             drawCircle.save(self.robot.before_screenshot())
-        elif act == 'Siwpe':
+        elif act == 'Swipe':
             self.swipeImage(self.startX, self.startY, self.endX, self.endY)
 
 
