@@ -14,7 +14,7 @@ sys.path.append('./Controller')
 from TestCaseUI import TestCaseUI
 from ScreenshotUI import ScreenshotUI
 from Toolbar import Toolbar
-from ClearButton import *
+from TestCaseButtons import *
 
 
 class Window(View):

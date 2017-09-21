@@ -1,6 +1,5 @@
 from tkinter import *
 from TestCaseUI import TestCaseUI
-from TestController import TestController
 
 class ClearButton:
     def __init__(self, parent = None):
@@ -20,4 +19,4 @@ class RunButton:
         self._runButton.place(x = 460, y=270)
 
     def runButtonClick(self):
-        TestController().runAll()
+        TestCaseUI.getTestCaseUI().ctrl.runAll()
