@@ -3,11 +3,6 @@ import os
 from tkinter import filedialog
 from PIL import Image
 
-
-import sys
-sys.path.append('../TestCase')
-sys.path.append('../GUI')
-sys.path.append('../GUI/TestCase')
 from TestCaseUI import TestCaseUI
 from TestCase import TestCase
 from TestStep import Step
