@@ -1,20 +1,14 @@
 from tkinter import *
-from PIL import Image, ImageTk
+from PIL import ImageTk
 from TestStepUI import TestStepUI
-from TestCaseActionCombobox import TestCaseAction
-from TestCaseEntry import TestCaseValue
 from LoadFile import LoadFile
 from Action import *
 import StepOperate
 import Value
-import threading
 
 import sys
 
 sys.path.append('../TestCase/')
-from TestCase import TestCase
-from TestStep import Step
-from Executor import Executor
 from TestController import TestController
 
 filePath = None
@@ -69,6 +63,10 @@ class TestCaseUI(Frame):
         self.focus = n
         if self.stepList[n].action.get() != 'TestCase':
             self.actionFocusIn()
+
+    def valueModified(self, n):
+        self.focus = n
+        self.ctrl.setStep(n)
 
     def actionFocusIn(self, image=None):
         action = self.stepList[self.focus].action.get()
@@ -125,7 +123,7 @@ class TestCaseUI(Frame):
             val = case.getSteps(i).getValue()
             self.stepList[i].action.set(act)
             self.actionSelect(i)
-            if (act == 'Click' or act == 'Assert Exist' or act == 'Assert Not Exist'):
+            if str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
                 val.thumbnail((100, 100))
                 self._image = ImageTk.PhotoImage(val)
                 self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)

@@ -16,6 +16,7 @@ def testCaseEntry(stepList, line):
     from TestCaseUI import TestCaseUI
     value = TestCaseValue(TestCaseUI.getTestCaseUI().listFrame, width = 35)
     value.bind('<FocusIn>', lambda event, i = line: TestCaseUI.getTestCaseUI().valueFocusIn(i))
+    value.bind('<KeyRelease>', lambda event, i = line: TestCaseUI.getTestCaseUI().valueModified(i))
     stepList[line].value.grid_remove()
     stepList[line].value = value
     stepList[line].value.grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))

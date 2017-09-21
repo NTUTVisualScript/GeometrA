@@ -38,13 +38,16 @@ class SaveFile:
         for i in range(len(_stepList)-1):
             _data = {}
             act = _stepList[i].action.get()
-            val = _stepList[i].value.get()
-            _data["action"] = act
-            _data["value"] = val
-            # if val is :
+            _data['action'] = act
+            if str(_stepList[i].value.__class__) == "<class 'tkinter.Canvas'>":
+                val = _stepList[i].value.postscript(file='/image_'+str(i))
+                _data['value'] = None
+                _data['image'] = val
+            else:
+                val = _stepList[i].value.get()
+                _data['value'] = val
+                _data['image'] = None
 
-            # elif val is str:
-            #     pass
             _dataDict[str(i + 1)] = _data
 
         with open(self._filePath, 'w', encoding='utf-8') as fp:
@@ -70,6 +73,7 @@ class LoadFile:
     def getFilePath(self):
         self._filePath = ""
         _f = filedialog.askopenfile(title="Select File", filetypes=[("TestCase JSON Files", "*.json")])
+        if _f is None: return
         self._filePath = _f.name
         self._fileName = _f.name.split('/').pop()
 
