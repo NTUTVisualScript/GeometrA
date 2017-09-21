@@ -26,26 +26,30 @@ class SaveFile:
     def getFilePath(self):
         _f = filedialog.asksaveasfilename(title="Save as...", filetypes=[("TestCase JSON Files", "*.json")])
         if not _f is None:
+            if '.json' not in _f:
+                _f = _f + '.json'
             self._filePath = _f
-            self._fileName = _f.split('/').pop()
+            self._fileName = _f.split('/').pop().rstrip('.json')
 
     def getFolderName(self):
         _fp = self._filePath
-        self._folderPath = _fp.rstrip('test')
+        self._folderPath = _fp.rstrip(self._fileName + '.json')
 
     def jsonEncoder(self):
         _dataDict = {}
         _case = TestCaseUI.getTestCaseUI().ctrl.case
-        for i in range(_case.getSize()-1):
+        for i in range(_case.getSize()):
             _data = {}
             act = _case.getSteps(i).getAction()
             _data['action'] = act
             if str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
-                _imgpath = self._folderPath + "_image/image_" + str(i+1) + ".png"
-                os.path.isfile(_imgpath)
-                _case.getSteps(i).getValue().save(_imgpath)
+                # Image path format: /*TestCaseName*_image/image_*StepNumber*.png
+                _imgpath = self._fileName + "_image/image_" + str(i+1) + ".png"
+                if not os.path.isdir(self._folderPath + self._fileName + "_image"):
+                    os.makedirs(self._folderPath + self._fileName + "_image")
+                _case.getSteps(i).getValue().save(self._folderPath + _imgpath)
                 _data['value'] = None
-                _data['image'] = self._filePath + "_image/image_" + str(i+1) + ".png"
+                _data['image'] = _imgpath
             else:
                 val = _case.getSteps(i).getValue()
                 _data['value'] = val
