@@ -4,7 +4,6 @@ from TestCaseEntry import TestCaseValue
 
 import sys
 sys.path.append('../../TestCase/')
-from TestCase import TestCase
 
 class TestStepUI():
     def __init__(self, parent, n):
