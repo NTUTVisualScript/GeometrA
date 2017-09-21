@@ -45,3 +45,6 @@ class TestCase:
 
     def getStatus(self, n):
         return self.stepDict[n].getStatus()
+
+    def clear(self):
+        self.stepDict = {}

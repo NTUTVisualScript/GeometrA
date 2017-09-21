@@ -2,6 +2,7 @@ import json
 import os
 from tkinter import filedialog
 from PIL import Image
+import Mouse
 
 from TestCaseUI import TestCaseUI
 from TestCase import TestCase
@@ -34,17 +35,18 @@ class SaveFile:
 
     def jsonEncoder(self):
         _dataDict = {}
-        _stepList = TestCaseUI.getTestCaseUI().stepList
-        for i in range(len(_stepList)-1):
+        _case = TestCaseUI.getTestCaseUI().ctrl.case
+        for i in range(_case.getSize()-1):
             _data = {}
-            act = _stepList[i].action.get()
+            act = _case.getSteps(i).getAction()
             _data['action'] = act
-            if str(_stepList[i].value.__class__) == "<class 'tkinter.Canvas'>":
-                val = _stepList[i].value.postscript(file='/image_'+str(i))
+            # print(_case.getSteps(i).getValue().__class__)
+            if str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
+                Mouse.croppedPhoto.save(self._filePath + "_image/" + "image_" + str(i))
                 _data['value'] = None
-                _data['image'] = val
+                _data['image'] = str(self._filePath + "_image/" + "image_" + str(i))
             else:
-                val = _stepList[i].value.get()
+                val = _case.getSteps(i).getValue()
                 _data['value'] = val
                 _data['image'] = None
 
@@ -62,7 +64,7 @@ class LoadFile:
 
     def loadButtonClick(self):
         self.loadFile()
-        TestCaseUI.getTestCaseUI().reloadTestCaseUI(self.case)
+        TestCaseUI.getTestCaseUI().reloadTestCaseUI()
 
     def loadFile(self):
         self.getFilePath()
@@ -84,7 +86,8 @@ class LoadFile:
     def jsonDecoder(self):
         with open(self._filePath, 'r') as f:
             dataDic = json.load(f)
-        self.case = TestCase()
+        self.case = self.getTestCase()
+        self.case.clear()
 
         for i in range(len(dataDic)):
             data = dataDic[str(i+1)]
@@ -98,4 +101,4 @@ class LoadFile:
             self.case.insert(step=step)
 
     def getTestCase(self):
-        return self.case
+        return TestCaseUI.getTestCaseUI().ctrl.case

@@ -115,12 +115,13 @@ class TestCaseUI(Frame):
             self.removeStep(i)
             i = i - 1
 
-    def reloadTestCaseUI(self, case=None):
-        if case is None: return
+    def reloadTestCaseUI(self):
+        _case = self.ctrl.case
+        if _case is None: return
         self.clearTestCaseUI()
-        for i in range(case.getSize()):
-            act = case.getSteps(i).getAction()
-            val = case.getSteps(i).getValue()
+        for i in range(_case.getSize()):
+            act = _case.getSteps(i).getAction()
+            val = _case.getSteps(i).getValue()
             self.stepList[i].action.set(act)
             self.actionSelect(i)
             if str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":

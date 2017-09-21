@@ -10,7 +10,7 @@ class ClearButton:
         self._clearbutton.place(x = 580, y = 270) #should use pack/grid instead of place
 
     def clearButtonClick(self):
-        TestCaseUI.getTestCaseUI().clearTestCaseUI()
+        TestCaseUI.getTestCaseUI().ctrl.clearTestCase()
 
 class RunButton:
     def __init__(self, parent=None):

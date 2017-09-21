@@ -31,7 +31,6 @@ class ScreenshotUI(Canvas):
         self.delete("all")
         self.screenshot_photo = SSCtrl.screenShotTrigger()
         self.mouse.setOriginalFrame()
-        print(self.screenshot_photo.__class__)
         self.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
 
     def ButtonGetScreenshot(self):
