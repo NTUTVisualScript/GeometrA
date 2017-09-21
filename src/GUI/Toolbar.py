@@ -23,7 +23,7 @@ class Toolbar(Frame):
         sep.pack(side=LEFT, fill=Y)
 
         self.ShowUndoButton()
-        # self.ShowRedoButton()
+        self.ShowRedoButton()
         ##SeparateBar
         sep = Separator(self._toolbar, orient=VERTICAL)
         sep.pack(side=LEFT, fill=Y)
@@ -54,9 +54,9 @@ class Toolbar(Frame):
         _undoButton = Button(self._toolbar, image=self.UndoIcon, command=UI.getTestCaseUI().ctrl.undoClick, relief='flat')
         _undoButton.pack(side=LEFT)
 
-    # def ShowRedoButton(self):
-    #     redo_icon_image = Image.open("./img/icon_Redo.PNG")
-    #     redo_icon_image.thumbnail((20, 20))
-    #     self.RedoIcon = ImageTk.PhotoImage(redo_icon_image)
-    #     _redoButton = Button(self._toolbar, image=self.RedoIcon, command=UI.getTestCaseUI().ctrl.redoClick, relief='flat')
-    #     _redoButton.pack(side=LEFT)
+    def ShowRedoButton(self):
+        redo_icon_image = Image.open("./img/icon_Redo.PNG")
+        redo_icon_image.thumbnail((20, 20))
+        self.RedoIcon = ImageTk.PhotoImage(redo_icon_image)
+        _redoButton = Button(self._toolbar, image=self.RedoIcon, command=UI.getTestCaseUI().ctrl.redoClick, relief='flat')
+        _redoButton.pack(side=LEFT)

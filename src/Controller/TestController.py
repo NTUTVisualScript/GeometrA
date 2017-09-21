@@ -8,6 +8,7 @@ class TestController:
         self.case = TestCase()
         self.exe = Executor(self.case)
         self.undo = Undo(self.case)
+        self.redo = Redo()
 
     def execute(self, n):
         threading.Thread(target=self.exe.execute, args=(n,)).start()
@@ -20,20 +21,32 @@ class TestController:
 
     def undoClick(self):
         from TestCaseUI import TestCaseUI as UI
+        self.redo.push(self.case)
         self.case = self.undo.pop()
         UI.getTestCaseUI().reloadTestCaseUI()
 
-    def insertStep(self, n):
+    def redoClick(self):
+        if self.redo.getSize() == 0: return 
+
+        from TestCaseUI import TestCaseUI as UI
         self.undo.push(self.case)
-        self.case.append(n)
+        self.case = self.redo.pop()
+        UI.getTestCaseUI().reloadTestCaseUI()
+
+    def insertStep(self, n):
+        self.redo.reset()
+        self.undo.push(self.case)
+        self.case.insert(n=n, act='', val='')
 
     def removeStep(self, n):
+        self.redo.reset()
         self.undo.push(self.case)
         self.case.delete(n)
 
     def setStep(self, n, image = None):
         if n == None: return
 
+        self.redo.reset()
         self.undo.push(self.case)
 
         from TestCaseUI import TestCaseUI as UI

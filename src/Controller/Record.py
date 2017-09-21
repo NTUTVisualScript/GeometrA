@@ -8,6 +8,24 @@ class Undo:
         self.userAction.append(case.copy())
 
     def pop(self):
-        self.userAction.pop()
+        case = self.userAction.pop()
         if len(self.userAction) == 0:
             self.userAction.append(self.case)
+        return case
+
+class Redo:
+    def __init__(self):
+        self.action = []
+
+    def push(self, case):
+        self.action.append(case.copy())
+
+    def pop(self):
+        return self.action.pop()
+
+    def reset(self):
+        del self.action
+        self.action = []
+
+    def getSize(self):
+        return len(self.action)

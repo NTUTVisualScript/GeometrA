@@ -27,15 +27,14 @@ class TestCaseTestSuite(unittest.TestCase):
     def testRefrash(self):
         case = TestCase()
         case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='', val='')
         case.insert(act='Sleep(s)', val='1')
-        case.insert(n=0, act='Android Keycode', val='KEYCODE_HOME')
-        case.insert(n=5, step=Step('Set Text', 'Hello World'))
+
         case.refresh()
-        self.assertEqual(4, case.getSize())
-        self.assertEqual('Android Keycode', case.getSteps(0).getAction())
-        self.assertEqual('Click', case.getSteps(1).getAction())
-        self.assertEqual('Sleep(s)', case.getSteps(2).getAction())
-        self.assertEqual('Set Text', case.getSteps(3).getAction())
+        self.assertEqual('Click', case.getSteps(0).getAction())
+        self.assertEqual('Sleep(s)', case.getSteps(1).getAction())
+        self.assertEqual('1', case.getSteps(1).getValue())
+
 
     def testSetAction(self):
         case = TestCase()

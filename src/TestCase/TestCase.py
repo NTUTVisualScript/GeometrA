@@ -39,6 +39,12 @@ class TestCase:
 
     # To let stepDict be continuous
     def refresh(self):
+        removeList = []
+        for i in self.stepDict:
+            if self.stepDict[i].getAction() == '':
+                removeList.append(i)
+        for i in removeList:
+            del self.stepDict[i]
         i = 0
         temp = {}
         for j in self.stepDict:
