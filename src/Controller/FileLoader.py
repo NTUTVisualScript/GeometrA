@@ -5,10 +5,10 @@ from PIL import Image
 import Mouse
 
 from TestCaseUI import TestCaseUI
-from TestCase import TestCase
 from TestStep import Step
 
 class SaveFile:
+    __single = None
     def __init__(self):
         self._filePath = ""
         self._folderPath = ""
@@ -20,12 +20,12 @@ class SaveFile:
     def saveFile(self):
         self.getFilePath()
         self.getFolderName()
-        if self._filePath is None or self._filePath is "": return
+        if self._filePath is '': return
         self.jsonEncoder()
 
     def getFilePath(self):
         _f = filedialog.asksaveasfilename(title="Save as...", filetypes=[("TestCase JSON Files", "*.json")])
-        if not _f is None:
+        if not _f is '':
             if '.json' not in _f:
                 _f = _f + '.json'
             self._filePath = _f
