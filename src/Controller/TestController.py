@@ -53,17 +53,20 @@ class TestController:
         stepList = UI.getTestCaseUI().stepList
         try:
             if image is None:
-                self.case.getSteps(n).setValue(stepList[i].value.get())
+                self.case.getSteps(n).setValue(stepList[n].value.get())
             else:
                 self.case.getSteps(n).setValue(image)
-        except:
+        except Exception as e:
             try:
+                if e != str(n):
+                    raise e
                 if image is None:
                     self.case.insert(n=n, act=stepList[n].action.get(), val=stepList[n].value.get())
                 else:
                     self.case.insert(n=n, act=stepList[n].action.get(), val=image)
             except Exception as e:
                 print(str(e))
+                self.undo.pop()
                 return 'Invalid Value'
 
     def clearTestCase(self):
