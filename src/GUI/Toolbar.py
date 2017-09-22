@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import Separator
 from PIL import Image, ImageTk
-from Controller.FileLoader import SaveFile, LoadFile
+from Controller.FileLoader import FileLoader
 from TestCaseUI import TestCaseUI as UI
 
 
@@ -16,6 +16,7 @@ class Toolbar(Frame):
         self._toolbar = Frame(parent, borderwidth=2, relief='groove')
         self._toolbar.pack(fill=X)
 
+        self.fileloader = FileLoader()
         self.ShowSaveButton()
         self.ShowLoadButton()
         ##SeparateBar
@@ -37,14 +38,15 @@ class Toolbar(Frame):
         save_icon_image = Image.open("./img/icon_Save.PNG")
         save_icon_image.thumbnail((20, 20))
         self.SaveIcon = ImageTk.PhotoImage(save_icon_image)
-        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=SaveFile().saveButtonClick, relief='flat')
+        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=self.fileloader.getFileLoader().saveButtonClick, relief='flat')
+        # _saveButton.bind('<Control-s>', lambda: SaveFile().saveButtonClick)
         _saveButton.pack(side=LEFT)
 
     def ShowLoadButton(self):
         load_icon_image = Image.open("./img/icon_Load.PNG")
         load_icon_image.thumbnail((20, 20))
         self.LoadIcon = ImageTk.PhotoImage(load_icon_image)
-        _loadButton = Button(self._toolbar, image=self.LoadIcon, command=LoadFile().loadButtonClick, relief='flat')
+        _loadButton = Button(self._toolbar, image=self.LoadIcon, command=self.fileloader.getFileLoader().loadButtonClick, relief='flat')
         _loadButton.pack(side=LEFT)
 
     def ShowUndoButton(self):
