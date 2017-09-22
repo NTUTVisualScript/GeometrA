@@ -15,7 +15,8 @@ from TestCaseUI import TestCaseUI
 from ScreenshotUI import ScreenshotUI
 from Toolbar import Toolbar
 from TestCaseButtons import *
-
+from FileLoader import FileLoader
+from HotKey import HotKey
 
 class Window(View):
     def __init__(self, master=None):
@@ -23,5 +24,6 @@ class Window(View):
         TestCaseUI.getTestCaseUI()
         ScreenshotUI.getScreenshotUI()
         ClearButton(master).showClearButton()
-        Toolbar.getToolbar()
+        Toolbar.getToolbar(master)
         RunButton(master).showRunButton()
+        HotKey.getHotKey(master)

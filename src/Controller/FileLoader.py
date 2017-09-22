@@ -8,7 +8,7 @@ from TestCaseUI import TestCaseUI
 from TestStep import Step
 
 class SaveFile:
-    def saveButtonClick(self):
+    def saveButtonClick(self, event=None):
         self.saveFile()
 
     def saveFile(self):
@@ -51,7 +51,7 @@ class SaveFile:
             json.dump(_dataDict, fp, indent=2)
 
 class LoadFile:
-    def loadButtonClick(self):
+    def loadButtonClick(self, event=None):
         self.loadFile()
         TestCaseUI.getTestCaseUI().reloadTestCaseUI()
 

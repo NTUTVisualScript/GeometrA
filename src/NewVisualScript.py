@@ -5,6 +5,7 @@ import sys
 sys.path.append('./TestCase')
 
 from NewWindow import Window
+from FileLoader import FileLoader
 
 if __name__ == '__main__':
     root = Tk()

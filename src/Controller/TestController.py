@@ -19,14 +19,14 @@ class TestController:
         UI.getTestCaseUI().reloadTestCaseUI()
         threading.Thread(target=self.exe.runAll).start()
 
-    def undoClick(self):
+    def undoClick(self, event=None):
         from TestCaseUI import TestCaseUI as UI
         self.redo.push(self.case)
         self.case = self.undo.pop()
         UI.getTestCaseUI().reloadTestCaseUI()
 
-    def redoClick(self):
-        if self.redo.getSize() == 0: return 
+    def redoClick(self, event=None):
+        if self.redo.getSize() == 0: return
 
         from TestCaseUI import TestCaseUI as UI
         self.undo.push(self.case)
