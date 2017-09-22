@@ -38,7 +38,7 @@ class Toolbar(Frame):
         save_icon_image = Image.open("./img/icon_Save.PNG")
         save_icon_image.thumbnail((20, 20))
         self.SaveIcon = ImageTk.PhotoImage(save_icon_image)
-        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=self.fileloader.getFileLoader().saveButtonClick, relief='flat')
+        _saveButton = Button(self._toolbar, image=self.SaveIcon, command=FileLoader.getFileLoader().saveButtonClick, relief='flat')
         # _saveButton.bind('<Control-s>', lambda: SaveFile().saveButtonClick)
         _saveButton.pack(side=LEFT)
 
@@ -46,7 +46,7 @@ class Toolbar(Frame):
         load_icon_image = Image.open("./img/icon_Load.PNG")
         load_icon_image.thumbnail((20, 20))
         self.LoadIcon = ImageTk.PhotoImage(load_icon_image)
-        _loadButton = Button(self._toolbar, image=self.LoadIcon, command=self.fileloader.getFileLoader().loadButtonClick, relief='flat')
+        _loadButton = Button(self._toolbar, image=self.LoadIcon, command=FileLoader.getFileLoader().loadButtonClick, relief='flat')
         _loadButton.pack(side=LEFT)
 
     def ShowUndoButton(self):

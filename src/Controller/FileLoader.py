@@ -100,7 +100,7 @@ class FileLoader(SaveFile, LoadFile):
         self._fileName = ""
         self.case = None
 
-    def getFileLoader(self):
+    def getFileLoader():
         if FileLoader.__single is None:
             FileLoader.__single = FileLoader()
         return FileLoader.__single
