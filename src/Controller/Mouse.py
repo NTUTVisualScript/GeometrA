@@ -59,24 +59,33 @@ class Mouse():
 
     def mouseReleased(self, event):
         if GetScreenShot.screenShot == None: return
-        photo = GetScreenShot.screenShot
+        photo = Image.open('./screenshot_pic/tmp.png')
 
+        width, height = photo.size
+
+        print('width: ' + str(width))
+        print('height:' + str(height))
+
+        self.startX = self.startX * width / 450
+        self.startY = self.startY * height / 800
+        self.endX = event.x * width / 450
+        self.endY = event.y * height / 800
 
         UI = TestCaseUI.getTestCaseUI()
-        if (self.startX < event.x) and (self.startY < event.y):
-            Mouse.croppedPhoto = photo.crop((self.startX, self.startY, event.x, event.y))
+        if (self.startX < self.endX) and (self.startY < self.endY):
+            Mouse.croppedPhoto = photo.crop((self.startX, self.startY, self.endX, self.endY))
             #left-top
-        elif (self.startX < event.x) and (self.startY > event.y):
-            Mouse.croppedPhoto = photo.crop((self.startX, event.y, event.x, self.startY))
+        elif (self.startX < self.endX) and (self.startY > self.endY):
+            Mouse.croppedPhoto = photo.crop((self.startX, self.endY, self.endX, self.startY))
             #left-bottom
-        elif(self.startX > event.x) and (self.startY < event.y):
-            Mouse.croppedPhoto = photo.crop((event.x, self.startY, self.startX, event.y))
+        elif(self.startX > self.endX) and (self.startY < self.endY):
+            Mouse.croppedPhoto = photo.crop((self.endX, self.startY, self.startX, self.endY))
             #right-top
         else:
-            Mouse.croppedPhoto = photo.crop((event.x, event.y, self.startX, self.startY))
+            Mouse.croppedPhoto = photo.crop((self.endX, self.endY, self.startX, self.startY))
             #right-bottom
 
 
-
+        print(Mouse.croppedPhoto.__class__)
         UI.actionFocusIn( ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
         UI.ctrl.setStep(UI.focus, Mouse.croppedPhoto)
