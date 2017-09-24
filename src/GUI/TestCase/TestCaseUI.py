@@ -99,6 +99,7 @@ class TestCaseUI(Frame):
             Value.testCaseImage(self.stepList, self.focus, image)
         elif action == 'Loop End':
             self.stepList[self.focus].value.grid_remove()
+            self.ctrl.setStep(self.focus)
 
     def executeButtonClick(self, n):
         self.ctrl.execute(n)
@@ -138,5 +139,7 @@ class TestCaseUI(Frame):
                 self._image = ImageTk.PhotoImage(val)
                 self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)
                 self.stepList[i].value.image = self._image
+            elif val == '':
+                pass
             else:
                 self.stepList[i].value.insert(END, str(val))

@@ -51,18 +51,24 @@ class TestController:
 
         from TestCaseUI import TestCaseUI as UI
         stepList = UI.getTestCaseUI().stepList
+
+        # Handle the exceptions for step n is not exist
         try:
             if image is None:
-                self.case.getSteps(n).setValue(stepList[i].value.get())
+                self.case.setAction(n, stepList[n].action.get())
+                self.case.setValue(n, stepList[n].value.get())
             else:
-                self.case.getSteps(n).setValue(image)
+                self.case.setAction(n, stepList[n].action.get())
+                self.case.setValue(n, image)
         except:
+            # Handle the invalid input exceptions
             try:
                 if image is None:
                     self.case.insert(n=n, act=stepList[n].action.get(), val=stepList[n].value.get())
                 else:
                     self.case.insert(n=n, act=stepList[n].action.get(), val=image)
             except Exception as e:
+                if stepList[n].value.get() == '':return
                 print(str(e))
                 return 'Invalid Value'
 
