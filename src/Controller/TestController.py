@@ -17,6 +17,9 @@ class TestController:
         from TestCaseUI import TestCaseUI as UI
         self.case.refresh()
         UI.getTestCaseUI().reloadTestCaseUI()
+        for i in range(self.case.getSize()):
+            print(self.case.getSteps(i).getAction())
+            print(self.case.getSteps(i).getValue())
         threading.Thread(target=self.exe.runAll).start()
 
     def undoClick(self, event=None):

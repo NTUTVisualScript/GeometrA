@@ -22,7 +22,7 @@ class TestCaseUI(Frame):
             raise TestCaseUI.__single
         TestCaseUI.__single = self
 
-        self.focus = None
+        self.focus = 0
 
         self.ctrl = TestController()
 
@@ -42,7 +42,6 @@ class TestCaseUI(Frame):
         self.canvas.pack(side="left")
         self.place(x=460, y=300)
 
-        self.swipeImage = None
         self.stepList = []
         self.stepList.append(TestStepUI(self.listFrame, 0))
 
@@ -58,6 +57,7 @@ class TestCaseUI(Frame):
         self.focus = n
         if n == (len(self.stepList) - 1):
             self.stepList.append(TestStepUI(self.listFrame, len(self.stepList)))
+
         Value.testCaseEntry(self.stepList, n)
         self.actionFocusIn()
 
@@ -71,21 +71,9 @@ class TestCaseUI(Frame):
         self.ctrl.setStep(n)
 
     def actionFocusIn(self, image=None):
-        if self.focus == None: return
-
         action = self.stepList[self.focus].action.get()
 
-        if (action != 'Swipe') & (self.swipeImage != None):
-            self.swipeImage.place_forget()
-            self.swipeImage = None
-
-        if action == 'Swipe':
-            if filePath is None: return
-            '''
-                Swipe could be acceptance after dumpUI and Screenshot are done.
-            '''
-            self.swipeImage = Swipe()
-        elif action == '':
+        if action == '':
             self.stepList[self.focus].value.grid_remove()
         elif action == 'TestCase':
             path = LoadFile().LoadTestCasePath()
@@ -93,9 +81,6 @@ class TestCaseUI(Frame):
                 self.stepList[self.focus].value.delete(0, 'end')
                 self.stepList[self.focus].value.insert('end', path)
         elif action == 'Click' or action == 'Assert Exist' or action == 'Assert Not Exist':
-            '''
-                Here could be acceptance after dumpUI and ScreenShot or Tree_info are done.
-            '''
             Value.testCaseImage(self.stepList, self.focus, image)
         elif action == 'Loop End':
             self.stepList[self.focus].value.grid_remove()

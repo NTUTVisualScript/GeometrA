@@ -114,16 +114,21 @@ class Executor():
         value = str(self.case.getSteps(n).getValue())
         try:
             coordinate = value.split(',')
-            self.startX = int(coordinate[0].split('=')[1])
-            self.startY = int(coordinate[1].split('=')[1])
+            self.startX = coordinate[0].split('=')[1]
+            self.startY = coordinate[1].split('=')[1]
 
-            self.endX = int(coordinate[2].split('=')[1])
-            self.endY = int(coordinate[3].split('=')[1])
+            self.endX = coordinate[2].split('=')[1]
+            self.endY = coordinate[3].split('=')[1]
+            print(self.startX)
+            print(self.startY)
+            print(self.endX)
+            print(self.endY)
 
             self.robot.drag_and_drop(self.startX, self.startY, self.endX, self.endY)
             return 'Success'
-        except:
-            return 'Error'
+        except Exception as e:
+                print(e)
+                return 'Error'
 
 
     def swipeImage(self, x1, y1, x2, y2):

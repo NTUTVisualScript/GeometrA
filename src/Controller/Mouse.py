@@ -36,12 +36,15 @@ class Mouse():
     def clickDown(self, event):
         self.startX = event.x
         self.startY = event.y
+        self.UI = TestCaseUI.getTestCaseUI()
 
     def setOriginalFrame(self):
         self.originalFrame = self.block.screenshot_photo
 
     def mouseDragged(self, event):
         if GetScreenShot.screenShot == None: return
+
+
 
         self.mouseLeave(event)
 
@@ -56,39 +59,50 @@ class Mouse():
 
         self.motion(event)
 
-
-        self.block.create_rectangle(self.startX, self.startY, event.x, event.y, outline ="red", width = 2)
-        self.drawArrow(self.startX, self.startY, event.x, event.y)
+        if self.UI.stepList[self.UI.focus].action.get() == 'Swipe':
+            self.drawArrow(self.startX, self.startY, event.x, event.y)
+        else:
+            self.block.create_rectangle(self.startX, self.startY, event.x, event.y, outline ="red", width = 2)
 
     def mouseReleased(self, event):
         if GetScreenShot.screenShot == None: return
-        self.cropPhoto(event)
-
-    def cropPhoto(self, event):
-        photo = Image.open('./screenshot_pic/tmp.png')
-        width, height = photo.size
+        self.photo = Image.open('./screenshot_pic/tmp.png')
+        width, height = self.photo.size
 
         self.startX = self.startX * width / 450
         self.startY = self.startY * height / 800
         self.endX = event.x * width / 450
         self.endY = event.y * height / 800
 
-        UI = TestCaseUI.getTestCaseUI()
+        if self.UI.stepList[self.UI.focus].action.get() == 'Swipe':
+            self.swipeValue()
+        else:
+            self.cropPhoto(event)
+
+    def swipeValue(self):
+        self.UI.stepList[self.UI.focus].value.delete(0, 'end')
+        self.UI.stepList[self.UI.focus].value.insert('end', 'start x=' + str(self.startX) + ', y=' + str(self.startY) \
+                                    + ', end x=' + str(self.endX) + ', y=' + str(self.endY) )
+        self.UI.ctrl.setStep(self.UI.focus)
+
+    def cropPhoto(self, event):
+
+
         if (self.startX < self.endX) and (self.startY < self.endY):
-            Mouse.croppedPhoto = photo.crop((self.startX, self.startY, self.endX, self.endY))
+            Mouse.croppedPhoto = self.photo.crop((self.startX, self.startY, self.endX, self.endY))
             #left-top
         elif (self.startX < self.endX) and (self.startY > self.endY):
-            Mouse.croppedPhoto = photo.crop((self.startX, self.endY, self.endX, self.startY))
+            Mouse.croppedPhoto = self.photo.crop((self.startX, self.endY, self.endX, self.startY))
             #left-bottom
         elif(self.startX > self.endX) and (self.startY < self.endY):
-            Mouse.croppedPhoto = photo.crop((self.endX, self.startY, self.startX, self.endY))
+            Mouse.croppedPhoto = self.photo.crop((self.endX, self.startY, self.startX, self.endY))
             #right-top
         else:
-            Mouse.croppedPhoto = photo.crop((self.endX, self.endY, self.startX, self.startY))
+            Mouse.croppedPhoto = self.photo.crop((self.endX, self.endY, self.startX, self.startY))
             #right-bottom
-            
-        UI.actionFocusIn(ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
-        UI.ctrl.setStep(UI.focus, Mouse.croppedPhoto)
+
+        self.UI.actionFocusIn(ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
+        self.UI.ctrl.setStep(self.UI.focus, Mouse.croppedPhoto)
 
     def drawArrow(self, startX, startY, endX, endY):
         angle = math.atan2(startY - endY, startX - endX) * 180 / math.pi
