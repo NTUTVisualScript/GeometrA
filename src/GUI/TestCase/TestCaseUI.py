@@ -134,7 +134,7 @@ class TestCaseUI(Frame):
             val = _case.getSteps(i).getValue()
             self.stepList[i].action.set(act)
             self.actionSelect(i)
-            if str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
+            if (str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>") | (str(val.__class__) == "<class 'PIL.Image.Image'>"):
                 val.resize((100, 100))
                 self._image = ImageTk.PhotoImage(val)
                 self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)

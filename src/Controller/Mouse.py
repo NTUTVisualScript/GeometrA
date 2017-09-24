@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 from Controller.ScreenShotController import GetScreenShot
 from TestCaseUI import TestCaseUI
+import math
 
 
 class Mouse():
@@ -55,16 +56,17 @@ class Mouse():
 
         self.motion(event)
 
+
         self.block.create_rectangle(self.startX, self.startY, event.x, event.y, outline ="red", width = 2)
+        self.drawArrow(self.startX, self.startY, event.x, event.y)
 
     def mouseReleased(self, event):
         if GetScreenShot.screenShot == None: return
+        self.cropPhoto(event)
+
+    def cropPhoto(self, event):
         photo = Image.open('./screenshot_pic/tmp.png')
-
         width, height = photo.size
-
-        print('width: ' + str(width))
-        print('height:' + str(height))
 
         self.startX = self.startX * width / 450
         self.startY = self.startY * height / 800
@@ -85,5 +87,26 @@ class Mouse():
             Mouse.croppedPhoto = photo.crop((self.endX, self.endY, self.startX, self.startY))
             #right-bottom
             
-        UI.actionFocusIn( ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
+        UI.actionFocusIn(ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
         UI.ctrl.setStep(UI.focus, Mouse.croppedPhoto)
+
+    def drawArrow(self, startX, startY, endX, endY):
+        angle = math.atan2(startY - endY, startX - endX) * 180 / math.pi
+        angle1 = (angle + 30) * math.pi / 180
+        angle2 = (angle - 30) * math.pi / 180
+        topX = 30 * math.cos(angle1)
+        topY = 30 * math.sin(angle1)
+        botX = 30 * math.cos(angle2)
+        botY = 30 * math.sin(angle2)
+
+        self.block.create_line(startX, startY, endX, endY, fill="red", width=2)
+
+        arrowX = endX + topX
+        arrowY = endY + topY
+
+        self.block.create_line(endX, endY, arrowX, arrowY, fill="red", width=2)
+
+        arrowX = endX + botX
+        arrowY = endY + botY
+
+        self.block.create_line(endX, endY, arrowX, arrowY, fill="red", width=2)
