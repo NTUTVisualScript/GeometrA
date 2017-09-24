@@ -77,8 +77,6 @@ class TestController:
         self.case.clear()
         UI.getTestCaseUI().clearUI()
 
-    def ShowImageButtonClick(n):
-        from TestCaseUI import TestCaseUI
-        UI = TestCaseUI.getTestCaseUI()
-        image = UI.ctrl.case.getSteps(n).getValue()
+    def ShowImageButtonClick(self, n):
+        image = self.case.getSteps(n).getValue()
         image.show()

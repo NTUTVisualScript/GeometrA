@@ -84,8 +84,6 @@ class Mouse():
         else:
             Mouse.croppedPhoto = photo.crop((self.endX, self.endY, self.startX, self.startY))
             #right-bottom
-
-
-        print(Mouse.croppedPhoto.__class__)
+            
         UI.actionFocusIn( ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
         UI.ctrl.setStep(UI.focus, Mouse.croppedPhoto)

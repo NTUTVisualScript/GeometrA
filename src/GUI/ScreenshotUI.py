@@ -10,8 +10,6 @@ class ScreenshotUI(Canvas):
         from Controller.Mouse import Mouse
         Canvas.__init__(self, parent, *args, **kwargs,  height=800, width=450, borderwidth=-1, bg='white')
         self.ButtonGetScreenshot()
-        self.before_image = None
-
 
         self.mouse = Mouse(self, parent)
 

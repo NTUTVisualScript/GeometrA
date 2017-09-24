@@ -29,7 +29,7 @@ class TestStepUI():
 
         self.value = TestCaseValue(self.parent, width=35)
 
-        self.showImage = Button(self.parent, command=lambda: TestController.ShowImageButtonClick(self.num), text="Show image", width=12)
+        self.showImage = Button(self.parent, command=lambda: TestCaseUI.getTestCaseUI().ctrl.ShowImageButtonClick(self.num), text="Show image", width=12)
 
         self.lineNum.grid(row=self.num + 1, column=1)
         self.addButton.grid(row=self.num + 1, column=2)
