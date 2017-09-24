@@ -23,8 +23,6 @@ class Window(View):
         super().__init__(master)
         TestCaseUI.getTestCaseUI()
         ScreenshotUI.getScreenshotUI()
-        # ClearButton(master).showClearButton()
         TestCaseButton.getTestCaseButton(master)
         Toolbar.getToolbar(master)
-        # RunButton(master).showRunButton()
         HotKey.getHotKey(master)

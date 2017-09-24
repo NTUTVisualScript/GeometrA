@@ -29,10 +29,8 @@ class TestCaseButton(RunButton):
     def __init__(self, parent=None):
         if TestCaseButton.__single:
             raise TestCaseButton.__single
+        TestCaseButton.__single = self
         super().__init__(parent)
-        print(TestCaseButton.__init__)
-        # self.showClearButton()
-        # self.showRunButton()
 
     def getTestCaseButton(parent=None):
         if not TestCaseButton.__single:
