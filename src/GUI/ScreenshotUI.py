@@ -1,13 +1,13 @@
 from tkinter import *
 import threading
 import Controller.ScreenShotController as SSCtrl
+from Controller.Mouse import Mouse
 
 class ScreenshotUI(Canvas):
     __single = None
 
 
     def __init__(self, parent=None, *args, **kwargs):
-        from Controller.Mouse import Mouse
         Canvas.__init__(self, parent, *args, **kwargs,  height=800, width=450, borderwidth=-1, bg='white')
         self.ButtonGetScreenshot()
 
@@ -35,12 +35,3 @@ class ScreenshotUI(Canvas):
         self.dumpUI = Button(self.master, command=lambda: threading.Thread(target=self.getScreenshot).start(),
                              text="Capture Screenshot", width=18)
         self.dumpUI.place(x=0, y=30)
-
-    def buttonPressed(self, event):
-        self.mousePosition.set("[ " + str(event.x) + " , " + str(event.y) + " ]")
-
-    def buttonReleased(self, event):
-        self.mousePosition.set("[ " + str(event.x) + " , " + str(event.y) + " ]")
-
-    def mouseDragged(self, event):
-        self.mousePosition.set("[ " + str(event.x) + " , " + str(event.y) + " ]")
