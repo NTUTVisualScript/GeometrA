@@ -114,11 +114,11 @@ class Executor():
         value = str(self.case.getSteps(n).getValue())
         try:
             coordinate = value.split(',')
-            self.startX = coordinate[0].split('=')[1]
-            self.startY = coordinate[1].split('=')[1]
+            self.startX = float(coordinate[0].split('=')[1])
+            self.startY = float(coordinate[1].split('=')[1])
 
-            self.endX = coordinate[2].split('=')[1]
-            self.endY = coordinate[3].split('=')[1]
+            self.endX = float(coordinate[2].split('=')[1])
+            self.endY = float(coordinate[3].split('=')[1])
             print(self.startX)
             print(self.startY)
             print(self.endX)
