@@ -1,4 +1,6 @@
 import subprocess
+import sys
+sys.path.append('./GUI')
 from MessageUI import Message
 import re
 from adbRobot import ADBRobot

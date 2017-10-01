@@ -88,14 +88,14 @@ class TestCaseTestSuite(unittest.TestCase):
     def testClear(self):
         case = TestCase()
         case.insert(act='Sleep(s)', val='1')
-        case.clear()
+        case.reset()
         self.assertEqual(0, case.getSize())
 
     def testCopy(self):
         case1 = TestCase()
         case1.insert(act='Sleep(s)', val='1')
         case2 = case1.copy()
-        case1.clear()
+        case1.reset()
         self.assertEqual(1, case2.getSize())
         self.assertEqual('Sleep(s)', case2.getSteps(0).getAction())
         self.assertEqual('1', case2.getSteps(0).getValue())

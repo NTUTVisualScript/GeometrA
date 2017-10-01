@@ -17,6 +17,7 @@ from Toolbar import Toolbar
 from TestCaseButton import TestCaseButton
 from FileLoader import FileLoader
 from HotKey import HotKey
+from MessageUI import Message
 
 class Window(View):
     def __init__(self, master=None):
@@ -26,3 +27,4 @@ class Window(View):
         TestCaseButton.getTestCaseButton(master)
         Toolbar.getToolbar(master)
         HotKey.getHotKey(master)
+        Message.getMessage(master)

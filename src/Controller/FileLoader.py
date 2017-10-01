@@ -72,7 +72,7 @@ class LoadFile:
         with open(self._filePath, 'r') as f:
             dataDic = json.load(f)
         self.case = self.getTestCase()
-        self.case.clear()
+        self.case.reset()
 
         for i in range(len(dataDic)):
             data = dataDic[str(i + 1)]
