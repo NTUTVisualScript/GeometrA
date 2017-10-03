@@ -5,7 +5,7 @@ class Message(Text):
     __single = None
 
     def __init__(self, parent=None):
-        Text.__init__(self, parent , bg='white', height=44, width=33, font=("Helvetica", 12))
+        Text.__init__(self, parent, bg='white', height=35, width=33, font=("Helvetica", 12))
         if Message.__single:
             raise Message.__single
         self.place(x = 1150, y= 30)
@@ -18,16 +18,18 @@ class Message(Text):
         return Message.__single
 
     def InsertText(self, insertStr):
+        self.config(state = NORMAL)
         self.insert('end', insertStr)
         self.insert('end', '\n')
+        self.config(state = DISABLED)
 
-    # def HyperLink(self,insertStr):
-    #     self.tag_config("filepath", foreground="blue", underline = True)
-    #     self.tag_bind("filepath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
-    #     self.insert(END, insertStr, "filepath")
-    #
-    # def HyperLinkClick(self, event, insertStr):
-    #     webbrowser.open_new(r"" + insertStr)
+    def HyperLink(self,insertStr):
+        self.tag_config("filepath", foreground="blue", underline = True)
+        self.tag_bind("filepath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
+        self.insert(END, insertStr, "filepath")
+
+    def HyperLinkClick(self, event, insertStr):
+        webbrowser.open_new(r"" + insertStr)
 
     def reset(self):
         self.delete(1.0,END)
