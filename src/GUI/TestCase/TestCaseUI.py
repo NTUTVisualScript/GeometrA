@@ -124,6 +124,7 @@ class TestCaseUI(Frame):
                 self._image = ImageTk.PhotoImage(val)
                 self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)
                 self.stepList[i].value.image = self._image
+                self.stepList[i].value.image = self._image
             elif val == '':
                 pass
             else:

@@ -3,6 +3,7 @@ import os
 from tkinter import filedialog
 from PIL import Image
 from TestStep import Step
+from GUI.DialogueForm import  DialogueForm
 
 class SaveFile:
     def saveButtonClick(self, event=None):
@@ -15,18 +16,20 @@ class SaveFile:
             self.getFolderName()
             if self._filePath == '': return
             self.jsonEncoder()
-        except Exception as i:
-            print(i)
+        except Exception as step:
+            DialogueForm.Messagebox("Insert Error!","The Value of Step "+str(step)+" is wrong!")
 
     def checkEntryValid(self):
         from TestCaseUI import TestCaseUI
         for i in range(len(TestCaseUI.getTestCaseUI().stepList)):
-            try:
+            value = TestCaseUI.getTestCaseUI().stepList[i].value
+            if str(value.__class__) == "<class 'TestCaseEntry.TestCaseValue'>":
                 if TestCaseUI.getTestCaseUI().stepList[i].value['fg'] == 'red':
-                    raise Exception(int(i))
-            except:
-                raise Exception(int(i+1))
-                # print("It's an image not value")
+                    raise Exception(int(i+1))
+            else:
+                if TestCaseUI.getTestCaseUI().stepList[i].value.image == None:
+                    raise Exception(int(i+1))
+
 
     def getSaveFilePath(self):
         _f = filedialog.asksaveasfilename(title="Save as...", filetypes=[("TestCase JSON Files", "*.json")])
