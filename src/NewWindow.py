@@ -14,16 +14,17 @@ sys.path.append('./Controller')
 from TestCaseUI import TestCaseUI
 from ScreenshotUI import ScreenshotUI
 from Toolbar import Toolbar
-from TestCaseButtons import *
+from TestCaseButton import TestCaseButton
 from FileLoader import FileLoader
 from HotKey import HotKey
+from MessageUI import Message
 
 class Window(View):
     def __init__(self, master=None):
         super().__init__(master)
         TestCaseUI.getTestCaseUI()
         ScreenshotUI.getScreenshotUI()
-        ClearButton(master).showClearButton()
+        TestCaseButton.getTestCaseButton(master)
         Toolbar.getToolbar(master)
-        RunButton(master).showRunButton()
         HotKey.getHotKey(master)
+        Message.getMessage(master)
