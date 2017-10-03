@@ -69,7 +69,6 @@ class View(Frame, threading.Thread):
         self.cmd = CommandManager
         self.savecropImg = saveImg()
         self.XMLTreeUI()
-        self.MessageUI()
 
     def MenuBar(self):
         self.menubar = Menu(self.master)
