@@ -5,6 +5,7 @@ import sys
 sys.path.append('../src/TestCase')
 sys.path.append('../src')
 sys.path.append('../src/Save')
+sys.path.append('../src/GUI')
 from Executor import Executor
 from TestStep import Step
 from TestCase import TestCase

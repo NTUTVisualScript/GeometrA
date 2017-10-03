@@ -4,6 +4,7 @@ import sys
 sys.path.append('../')
 from adbRobot import ADBRobot
 from DeviceCheck import Check
+from MessageUI import Message
 
 '''
 Get Screenshot from device and return to UI
@@ -28,5 +29,6 @@ class GetScreenShot:
 
 def screenShotTrigger():
     if not Check().checkDevices():
+        Message.getMessage().InsertText('Device is not connected.')
         return False
     return GetScreenShot.capture()

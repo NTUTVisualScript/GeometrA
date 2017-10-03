@@ -22,7 +22,7 @@ class TestCaseUI(Frame):
             raise TestCaseUI.__single
         TestCaseUI.__single = self
 
-        self.focus = None
+        self.focus = 0
 
         self.ctrl = TestController()
 
@@ -42,7 +42,6 @@ class TestCaseUI(Frame):
         self.canvas.pack(side="left")
         self.place(x=460, y=300)
 
-        self.swipeImage = None
         self.stepList = []
         self.stepList.append(TestStepUI(self.listFrame, 0))
 
@@ -58,6 +57,7 @@ class TestCaseUI(Frame):
         self.focus = n
         if n == (len(self.stepList) - 1):
             self.stepList.append(TestStepUI(self.listFrame, len(self.stepList)))
+
         Value.testCaseEntry(self.stepList, n)
         self.actionFocusIn()
 
@@ -71,21 +71,9 @@ class TestCaseUI(Frame):
         self.ctrl.setStep(n)
 
     def actionFocusIn(self, image=None):
-        if self.focus == None: return
-
         action = self.stepList[self.focus].action.get()
 
-        if (action != 'Swipe') & (self.swipeImage != None):
-            self.swipeImage.place_forget()
-            self.swipeImage = None
-
-        if action == 'Swipe':
-            if filePath is None: return
-            '''
-                Swipe could be acceptance after dumpUI and Screenshot are done.
-            '''
-            self.swipeImage = Swipe()
-        elif action == '':
+        if action == '':
             self.stepList[self.focus].value.grid_remove()
         elif action == 'TestCase':
             path = LoadFile().LoadTestCasePath()
@@ -93,12 +81,10 @@ class TestCaseUI(Frame):
                 self.stepList[self.focus].value.delete(0, 'end')
                 self.stepList[self.focus].value.insert('end', path)
         elif action == 'Click' or action == 'Assert Exist' or action == 'Assert Not Exist':
-            '''
-                Here could be acceptance after dumpUI and ScreenShot or Tree_info are done.
-            '''
             Value.testCaseImage(self.stepList, self.focus, image)
         elif action == 'Loop End':
             self.stepList[self.focus].value.grid_remove()
+            self.ctrl.setStep(self.focus)
 
     def executeButtonClick(self, n):
         self.ctrl.execute(n)
@@ -133,10 +119,12 @@ class TestCaseUI(Frame):
             val = _case.getSteps(i).getValue()
             self.stepList[i].action.set(act)
             self.actionSelect(i)
-            if str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
+            if (str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>") | (str(val.__class__) == "<class 'PIL.Image.Image'>"):
                 val.resize((100, 100))
                 self._image = ImageTk.PhotoImage(val)
                 self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)
                 self.stepList[i].value.image = self._image
+            elif val == '':
+                pass
             else:
                 self.stepList[i].value.insert(END, str(val))

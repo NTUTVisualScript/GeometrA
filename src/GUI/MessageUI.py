@@ -4,20 +4,21 @@ import webbrowser
 class Message(Text):
     __single = None
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         Text.__init__(self, parent , bg='white', height=44, width=33, font=("Helvetica", 12))
         if Message.__single:
             raise Message.__single
-            Message.__single = self
         self.place(x = 1150, y= 30)
+        self.reset()
 
-    def getMessage(parent):
+    def getMessage(parent=None):
         if not Message.__single:
             Message.__single = Message(parent)
         return Message.__single
 
     def InsertText(self, insertStr):
         self.insert('end', insertStr)
+        self.insert('end', '\n')
 
     def HyperLink(self,insertStr):
         self.tag_config("filepath", foreground="blue", underline = True)
@@ -27,6 +28,8 @@ class Message(Text):
     def HyperLinkClick(self, event, insertStr):
         webbrowser.open_new(r"" + insertStr)
 
-    def clear(self):
+    def reset(self):
         self.delete(1.0,END)
-
+        title = 'Message Log:'
+        self.configure(font=("Times New Roman", 16))
+        self.InsertText(title)
