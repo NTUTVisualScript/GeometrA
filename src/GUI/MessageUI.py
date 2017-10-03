@@ -10,6 +10,7 @@ class Message(Text):
             raise Message.__single
         self.place(x = 1150, y= 30)
         self.reset()
+        self.config(state = DISABLED)
 
     def getMessage(parent=None):
         if not Message.__single:
@@ -20,13 +21,13 @@ class Message(Text):
         self.insert('end', insertStr)
         self.insert('end', '\n')
 
-    def HyperLink(self,insertStr):
-        self.tag_config("filepath", foreground="blue", underline = True)
-        self.tag_bind("filepath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
-        self.insert(END, insertStr, "filepath")
-
-    def HyperLinkClick(self, event, insertStr):
-        webbrowser.open_new(r"" + insertStr)
+    # def HyperLink(self,insertStr):
+    #     self.tag_config("filepath", foreground="blue", underline = True)
+    #     self.tag_bind("filepath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
+    #     self.insert(END, insertStr, "filepath")
+    #
+    # def HyperLinkClick(self, event, insertStr):
+    #     webbrowser.open_new(r"" + insertStr)
 
     def reset(self):
         self.delete(1.0,END)
