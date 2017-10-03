@@ -2,9 +2,6 @@ import json
 import os
 from tkinter import filedialog
 from PIL import Image
-import Mouse
-
-from TestCaseUI import TestCaseUI
 from TestStep import Step
 
 class SaveFile:
@@ -26,6 +23,7 @@ class SaveFile:
             self._fileName = _f.split('/').pop().rstrip('.json')
 
     def jsonEncoder(self):
+        from TestCaseUI import TestCaseUI
         _dataDict = {}
         _case = TestCaseUI.getTestCaseUI().ctrl.case
         for i in range(_case.getSize()):
@@ -52,6 +50,7 @@ class SaveFile:
 
 class LoadFile:
     def loadButtonClick(self, event=None):
+        from TestCaseUI import TestCaseUI
         self.loadFile()
         TestCaseUI.getTestCaseUI().reloadTestCaseUI()
 
@@ -66,7 +65,7 @@ class LoadFile:
         _f = filedialog.askopenfile(title="Select File", filetypes=[("TestCase JSON Files", "*.json")])
         if _f is None: return
         self._filePath = _f.name
-        self._fileName = _f.name.split('/').pop()
+        self._fileName = _f.name.split('/').pop().rstrip('.json')
 
     def jsonDecoder(self):
         with open(self._filePath, 'r') as f:
@@ -86,6 +85,7 @@ class LoadFile:
             self.case.insert(step=step)
 
     def getTestCase(self):
+        from TestCaseUI import TestCaseUI
         return TestCaseUI.getTestCaseUI().ctrl.case
 
 class FileLoader(SaveFile, LoadFile):
