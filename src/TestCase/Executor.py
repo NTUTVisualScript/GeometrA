@@ -8,7 +8,7 @@ from Load import FileLoader
 from MessageUI import Message
 from HTML.step import HtmlTestStep
 from finder.template_finder import TemplateFinder
-
+from Controller.TestReport import TestReport
 
 
 
@@ -41,19 +41,20 @@ class Executor():
 
 
     def runAll(self):
-        i = 0
-        while i < self.case.getSize():
-            print('Step ' + str(i))
-            status = self.execute(i)
-            if self.case.getSteps(i).getAction() == 'Loop Begin':
-                self.loopEnd(i)
-            if status == 'Failed':
-                return 'Failed'
-            if status == 'Error':
-                return 'Error'
-            i = i+1
-        return 'Success'
-
+        try:
+            report = TestReport().createTestReport()
+            i = 0
+            while i < self.case.getSize():
+                print('Step ' + str(i))
+                status = self.execute(i)
+                if status == 'Failed':
+                    return 'Failed'
+                if status == 'Error':
+                    return 'Error'
+                i = i+1
+            return 'Success'
+        except:
+            print("TestCase not saved")
 
     def execute(self, n):
             act = self.case.getSteps(n).getAction()

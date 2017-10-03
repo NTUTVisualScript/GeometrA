@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import Separator
 from PIL import Image, ImageTk
-from Controller.FileLoader import FileLoader
+from FileLoader import FileLoader
 from TestCaseUI import TestCaseUI as UI
 
 
@@ -39,7 +39,6 @@ class Toolbar(Frame):
         save_icon_image.thumbnail((20, 20))
         self.SaveIcon = ImageTk.PhotoImage(save_icon_image)
         _saveButton = Button(self._toolbar, image=self.SaveIcon, command=FileLoader.getFileLoader().saveButtonClick, relief='flat')
-        # _saveButton.bind('<Control-s>', lambda: SaveFile().saveButtonClick)
         _saveButton.pack(side=LEFT)
 
     def ShowLoadButton(self):

@@ -2,9 +2,6 @@ import json
 import os
 from tkinter import filedialog
 from PIL import Image
-import Mouse
-
-from TestCaseUI import TestCaseUI
 from TestStep import Step
 
 class SaveFile:
@@ -12,10 +9,24 @@ class SaveFile:
         self.saveFile()
 
     def saveFile(self):
-        self.getSaveFilePath()
-        self.getFolderName()
-        if self._filePath == '': return
-        self.jsonEncoder()
+        try:
+            self.checkEntryValid()
+            self.getSaveFilePath()
+            self.getFolderName()
+            if self._filePath == '': return
+            self.jsonEncoder()
+        except Exception as i:
+            print(i)
+
+    def checkEntryValid(self):
+        from TestCaseUI import TestCaseUI
+        for i in range(len(TestCaseUI.getTestCaseUI().stepList)):
+            try:
+                if TestCaseUI.getTestCaseUI().stepList[i].value['fg'] == 'red':
+                    raise Exception(int(i))
+            except:
+                raise Exception(int(i+1))
+                # print("It's an image not value")
 
     def getSaveFilePath(self):
         _f = filedialog.asksaveasfilename(title="Save as...", filetypes=[("TestCase JSON Files", "*.json")])
@@ -26,6 +37,7 @@ class SaveFile:
             self._fileName = _f.split('/').pop().rstrip('.json')
 
     def jsonEncoder(self):
+        from TestCaseUI import TestCaseUI
         _dataDict = {}
         _case = TestCaseUI.getTestCaseUI().ctrl.case
         for i in range(_case.getSize()):
@@ -52,6 +64,7 @@ class SaveFile:
 
 class LoadFile:
     def loadButtonClick(self, event=None):
+        from TestCaseUI import TestCaseUI
         self.loadFile()
         TestCaseUI.getTestCaseUI().reloadTestCaseUI()
 
@@ -66,7 +79,7 @@ class LoadFile:
         _f = filedialog.askopenfile(title="Select File", filetypes=[("TestCase JSON Files", "*.json")])
         if _f is None: return
         self._filePath = _f.name
-        self._fileName = _f.name.split('/').pop()
+        self._fileName = _f.name.split('/').pop().rstrip('.json')
 
     def jsonDecoder(self):
         with open(self._filePath, 'r') as f:
@@ -86,6 +99,7 @@ class LoadFile:
             self.case.insert(step=step)
 
     def getTestCase(self):
+        from TestCaseUI import TestCaseUI
         return TestCaseUI.getTestCaseUI().ctrl.case
 
 class FileLoader(SaveFile, LoadFile):
