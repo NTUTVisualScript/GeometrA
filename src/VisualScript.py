@@ -427,7 +427,7 @@ class View(Frame, threading.Thread):
         self.select_node = None
         self.select_image = None
         if getdevices ==None:
-            self.message.reset()
+            self.message.clear()
             if self.checkADB.check() == "Connect":
                 threading.Thread(target=self.format).start()
         else:
@@ -602,7 +602,7 @@ class View(Frame, threading.Thread):
 
     def Run_SingleTestCase(self):
         data = TestAdepter()
-        self.message.reset()
+        self.message.clear()
         if self.checkADB.check() == "Connect":
             n = self.focus
             action = []
@@ -625,7 +625,7 @@ class View(Frame, threading.Thread):
     def Run_ALLTestCase(self):
         data = TestAdepter()
 
-        self.message.reset()
+        self.message.clear()
         if self.checkADB.check() == "Connect":
             report = Report.getReport()
             head = HtmlHead()

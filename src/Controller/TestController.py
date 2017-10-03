@@ -88,7 +88,7 @@ class TestController:
 
     def clearTestCase(self):
         from TestCaseUI import TestCaseUI as UI
-        self.case.reset()
+        self.case.clear()
         UI.getTestCaseUI().clearUI()
 
     def ShowImageButtonClick(self, n):

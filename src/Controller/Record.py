@@ -6,6 +6,8 @@ class Undo:
 
     def push(self, case):
         self.userAction.append(case.copy())
+        if len(self.userAction) > 5:
+            self.userAction.pop(0)
 
     def pop(self):
         case = self.userAction.pop()
