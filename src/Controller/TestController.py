@@ -2,6 +2,7 @@ from TestCase import TestCase
 from Executor import Executor
 import threading
 from Record import *
+import Value
 
 class TestController:
     def __init__(self):
@@ -48,32 +49,42 @@ class TestController:
 
     def setStep(self, n, image = None):
         if n == None: return
-
+        # Save current TestCase to undo model
         self.redo.reset()
         self.undo.push(self.case)
 
         from TestCaseUI import TestCaseUI as UI
         stepList = UI.getTestCaseUI().stepList
 
+
         # Handle the exceptions for step n is not exist
         try:
-            if image is None:
-                self.case.setAction(n, stepList[n].action.get())
-                self.case.setValue(n, stepList[n].value.get())
-            else:
-                self.case.setAction(n, stepList[n].action.get())
-                self.case.setValue(n, image)
+            self.case.getSteps(n)
+            stepExist = True
         except:
-            # Handle the invalid input exceptions
-            try:
+            stepExist = False
+
+        # Set step information to model
+        try:
+            if stepExist:
                 if image is None:
+                    Value.testCaseEntryValid(stepList, n)
+                    self.case.setAction(n, stepList[n].action.get())
+                    self.case.setValue(n, stepList[n].value.get())
+                else:
+                    self.case.setAction(n, stepList[n].action.get())
+                    self.case.setValue(n, image)
+            else:
+                if image is None:
+                    Value.testCaseEntryValid(stepList, n)
                     self.case.insert(n=n, act=stepList[n].action.get(), val=stepList[n].value.get())
                 else:
                     self.case.insert(n=n, act=stepList[n].action.get(), val=image)
-            except Exception as e:
-                if stepList[n].value.get() == '':return
-                print(str(e))
-                return 'Invalid Value'
+        # Handle the exception for invalid value
+        except Exception as e:
+            Value.testCaseEntryError(stepList, n)
+            return 'Invalid Value'
+
 
     def clearTestCase(self):
         from TestCaseUI import TestCaseUI as UI

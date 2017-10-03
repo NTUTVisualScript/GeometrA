@@ -12,6 +12,12 @@ def testCaseImage(stepList, line, image = None):
     stepList[line].value.grid(row=line + 1, column=6, padx=(5, 0), pady=(5, 2.5))
     stepList[line].showImage.grid(row=line+1, column=7, padx=(5, 0), pady=(5, 2.5))
 
+def testCaseEntryError(stepList, line):
+    stepList[line].value['fg'] = ('red')
+
+def testCaseEntryValid(stepList, line):
+    stepList[line].value['fg'] = ('black')
+
 def testCaseEntry(stepList, line):
     from TestCaseUI import TestCaseUI
     value = TestCaseValue(TestCaseUI.getTestCaseUI().listFrame, width = 35)
