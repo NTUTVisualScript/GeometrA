@@ -74,6 +74,7 @@ class LoadFile:
         from TestCaseUI import TestCaseUI
         self.loadFile()
         TestCaseUI.getTestCaseUI().reloadTestCaseUI()
+        Message.getMessage().fileLoaded(self._filePath)
 
     def loadFile(self):
         self.getLoadFilePath()

@@ -9,7 +9,7 @@ from MessageUI import Message
 from HTML.step import HtmlTestStep
 from finder.template_finder import TemplateFinder
 from Controller.TestReport import TestReport
-from GUI.DialogueForm import  DialogueForm
+#from GUI.DialogueForm import  DialogueForm
 
 
 
@@ -42,20 +42,20 @@ class Executor():
 
 
     def runAll(self):
-        try:
-            report = TestReport().createTestReport()
-            i = 0
-            while i < self.case.getSize():
-                print('Step ' + str(i))
-                status = self.execute(i)
-                if status == 'Failed':
-                    return 'Failed'
-                if status == 'Error':
-                    return 'Error'
-                i = i+1
-            return 'Success'
-        except:
-            DialogueForm.Messagebox("TestCase not Saved!","You should save the test case before running")
+#        try:
+#        report = TestReport().createTestReport()
+        i = 0
+        while i < self.case.getSize():
+            print('Step ' + str(i))
+            status = self.execute(i)
+            if status == 'Failed':
+                return 'Failed'
+            if status == 'Error':
+                return 'Error'
+            i = i+1
+        return 'Success'
+#        except:
+#            DialogueForm.Messagebox("TestCase not Saved!","You should save the test case before running")
 
     def execute(self, n):
             act = self.case.getSteps(n).getAction()

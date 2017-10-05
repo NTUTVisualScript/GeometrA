@@ -56,8 +56,18 @@ class Message(Text):
         self.InsertText('Get ScreenShot Success. ')
 
     def fileSaved(self, path):
-        s = 'Saved test case success. \n' + 'Path: '
-        self.fileHyperLink(s, path)
+        if path != '':
+            s = 'Saving test case success. \n' + 'Path: '
+            self.fileHyperLink(s, path)
+        else:
+            self.InsertText('Test case is not saved. ')
+
+    def fileLoaded(self, path):
+        if path != '':
+            s = 'Loading test case success. \n' +'Path: '
+            self.fileHyperLink(s, path)
+        else:
+            self.InsertText('no testCase loaded. ')
 
     def fileHyperLink(self, s, path):
         self.config(state = NORMAL)

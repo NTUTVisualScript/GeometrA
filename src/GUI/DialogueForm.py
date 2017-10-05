@@ -1,4 +1,4 @@
-from tkinter  import *
+from tkinter import *
 
 class DialogueForm(Frame):
     def Messagebox(title,message):

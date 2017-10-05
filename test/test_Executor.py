@@ -6,9 +6,12 @@ sys.path.append('../src/TestCase')
 sys.path.append('../src')
 sys.path.append('../src/Save')
 sys.path.append('../src/GUI')
+sys.path.append('../src/Controller')
 from Executor import Executor
 from TestStep import Step
 from TestCase import TestCase
+
+from DialogueForm import DialogueForm
 
 class ExecutorTestSuite(unittest.TestCase):
     def testConstructer(self):
