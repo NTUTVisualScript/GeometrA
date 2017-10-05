@@ -25,7 +25,7 @@ class TestCaseUI(Frame):
         self.focus = 0
 
         self.ctrl = TestController()
-
+    
         Frame.__init__(self, parent, *args, **kwargs, borderwidth=2, relief='sunken')
 
         self.canvas = Canvas(self)

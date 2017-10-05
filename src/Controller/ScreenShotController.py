@@ -29,6 +29,7 @@ class GetScreenShot:
 
 def screenShotTrigger():
     if not Check().checkDevices():
-        Message.getMessage().InsertText('Device is not connected.')
+        Message.getMessage().noDevice()
         return False
+    Message.getMessage().getScreenShot()
     return GetScreenShot.capture()

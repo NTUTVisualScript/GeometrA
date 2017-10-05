@@ -3,6 +3,7 @@ from Executor import Executor
 import threading
 from Record import *
 import Value
+from MessageUI import Message
 
 class TestController:
     def __init__(self):
@@ -90,6 +91,7 @@ class TestController:
         from TestCaseUI import TestCaseUI as UI
         self.case.clear()
         UI.getTestCaseUI().clearUI()
+        Message.getMessage().reset()
 
     def ShowImageButtonClick(self, n):
         image = self.case.getSteps(n).getValue()

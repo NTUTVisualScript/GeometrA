@@ -3,10 +3,12 @@ import os
 from tkinter import filedialog
 from PIL import Image
 from TestStep import Step
+from MessageUI import Message
 
 class SaveFile:
     def saveButtonClick(self, event=None):
         self.saveFile()
+        Message.getMessage().fileSaved(self._filePath)
 
     def saveFile(self):
         try:

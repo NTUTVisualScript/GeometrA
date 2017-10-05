@@ -1,5 +1,6 @@
 from tkinter import *
 import webbrowser
+import os
 
 class Message(Text):
     __single = None
@@ -10,29 +11,59 @@ class Message(Text):
             raise Message.__single
         self.place(x = 1150, y= 30)
         self.reset()
-        self.config(state = DISABLED)
 
     def getMessage(parent=None):
         if not Message.__single:
             Message.__single = Message(parent)
         return Message.__single
 
-    def InsertText(self, insertStr):
+    def InsertText(self, insertStr, tag=None):
         self.config(state = NORMAL)
-        self.insert('end', insertStr)
+        if not tag:
+            self.insert('end', insertStr)
+        else:
+            self.insert('end', insertStr, tag)
         self.insert('end', '\n')
         self.config(state = DISABLED)
 
     def HyperLink(self,insertStr):
-        self.tag_config("filepath", foreground="blue", underline = True)
-        self.tag_bind("filepath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
-        self.insert(END, insertStr, "filepath")
+        self.tag_config("reportpath", foreground="blue", underline = True)
+        self.tag_bind("reportpath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
+        self.config(state = NORMAL)
+        self.insert(END, insertStr, "reportpath")
+        self.config(state = DISABLED)
 
     def HyperLinkClick(self, event, insertStr):
         webbrowser.open_new(r"" + insertStr)
 
     def reset(self):
+        self.config(state = NORMAL)
         self.delete(1.0,END)
         title = 'Message Log:'
         self.configure(font=("Times New Roman", 16))
         self.InsertText(title)
+        self.config(state = DISABLED)
+
+    def noDevice(self):
+        self.InsertText('Device is not connected. ')
+
+    def getScreenShot(self):
+        self.InsertText('Get ScreenShot Success. ')
+
+    def fileSaved(self, path):
+        s = 'Saved test case success. \n' + 'Path: '
+        self.fileHyperLink(s, path)
+
+    def fileHyperLink(self, s, path):
+        self.config(state = NORMAL)
+        self.InsertText(s)
+        self.InsertText(path, 'filepath')
+        self.tag_config("filepath", foreground='blue', underline=True)
+        self.tag_bind('filepath', '<Button-1>', lambda e:self.fileHyperLinkClick(e, path))
+
+        self.config(state=DISABLED)
+
+    def fileHyperLinkClick(self, event, path):
+        folder = os.path.split(path)[0]
+        # print(folder)
+        os.startfile(folder)
