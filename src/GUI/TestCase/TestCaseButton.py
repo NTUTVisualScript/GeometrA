@@ -22,7 +22,7 @@ class RunButton(ClearButton):
         self._runButton.place(x = 460, y=270)
 
     def runButtonClick(self):
-        TestCaseUI.getTestCaseUI().ctrl.runAll()
+        TestCaseUI.getTestCaseUI().ctrl.runButtonClick()
 
 class TestCaseButton(RunButton):
     __single = None
