@@ -9,6 +9,7 @@ from MessageUI import Message
 from HTML.step import HtmlTestStep
 from finder.template_finder import TemplateFinder
 from Controller.TestReport import TestReport
+from GUI.DialogueForm import  DialogueForm
 
 
 
@@ -54,7 +55,7 @@ class Executor():
                 i = i+1
             return 'Success'
         except:
-            print("TestCase not saved")
+            DialogueForm.Messagebox("TestCase not Saved!","You should save the test case before running")
 
     def execute(self, n):
             act = self.case.getSteps(n).getAction()
