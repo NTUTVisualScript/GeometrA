@@ -6,11 +6,15 @@ class Message(Text):
     __single = None
 
     def __init__(self, parent=None):
-        Text.__init__(self, parent, bg='white', height=35, width=33, font=("Helvetica", 12))
+        Text.__init__(self, parent, bg='white', height=35, width=33, font=("Helvetica", 12), cursor= "arrow")
         if Message.__single:
             raise Message.__single
         self.place(x = 1150, y= 30)
         self.reset()
+
+        self.scrollb = Scrollbar(parent, orient="vertical", command=self.yview)
+        self.scrollb.pack(side='right', fill='y')
+        self['yscrollcommand'] = self.scrollb.set
 
     def getMessage(parent=None):
         if not Message.__single:
@@ -24,6 +28,7 @@ class Message(Text):
         else:
             self.insert('end', insertStr, tag)
         self.insert('end', '\n')
+        self.see('end')
         self.config(state = DISABLED)
 
     def HyperLink(self,insertStr):
@@ -58,7 +63,7 @@ class Message(Text):
         self.config(state = NORMAL)
         self.InsertText(s)
         self.InsertText(path, 'filepath')
-        self.tag_config("filepath", foreground='blue', underline=True)
+        self.tag_config("filepath", foreground='blue', underline=True, font=("Helvetica", 10))
         self.tag_bind('filepath', '<Button-1>', lambda e:self.fileHyperLinkClick(e, path))
 
         self.config(state=DISABLED)
