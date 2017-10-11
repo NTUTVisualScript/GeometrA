@@ -2,19 +2,23 @@ from tkinter import *
 import webbrowser
 import os
 
-class Message(Text):
-    __single = None
-
+class MessageUI(Text):
     def __init__(self, parent=None):
-        Text.__init__(self, parent, bg='white', height=35, width=33, font=("Helvetica", 12), cursor= "arrow")
-        if Message.__single:
-            raise Message.__single
-        self.place(x = 1150, y= 30)
-        self.reset()
+        Text.__init__(self, parent, bg='white', height=35, width=33, font=('Helvetica', 12), cursor='arrow')
+        self.place(x = 1150, y = 30)
 
         self.scrollb = Scrollbar(parent, orient="vertical", command=self.yview)
         self.scrollb.pack(side='right', fill='y')
         self['yscrollcommand'] = self.scrollb.set
+
+class Message(MessageUI):
+    __single = None
+
+    def __init__(self, parent=None):
+        MessageUI.__init__(self, parent)
+        if Message.__single:
+            raise Message.__single
+        self.reset()
 
     def getMessage(parent=None):
         if not Message.__single:
