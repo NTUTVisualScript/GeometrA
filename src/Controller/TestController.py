@@ -4,6 +4,7 @@ import threading
 from Record import *
 import Value
 from MessageUI import Message
+from DeviceCheck import Check
 
 class TestController:
     def __init__(self):
@@ -16,6 +17,9 @@ class TestController:
         threading.Thread(target=self.exe.execute, args=(n,)).start()
 
     def runButtonClick(self):
+        if not Check().checkDevices():
+            Message.getMessage().noDevice()
+            return
         from TestCaseUI import TestCaseUI as UI
         self.case.refresh()
         UI.getTestCaseUI().reloadTestCaseUI()
@@ -23,16 +27,21 @@ class TestController:
 
     def runAll(self):
         i = 0
+        ms = Message.getMessage()
         while i < self.case.getSize():
             print('Step ' + str(i))
             status = self.exe.execute(i)
             if self.case.getSteps(i).getAction() == 'Loop Begin':
                 i = self.exe.loopEnd(i)
             if status == 'Failed':
+                ms.stepFail(i + 1)
                 return 'Failed'
             if status == 'Error':
+                ms.stepError(i + 1)
                 return 'Error'
+            ms.stepSuccess()
             i = i+1
+        ms.caseSuccess()
         return 'Success'
 
     def undoClick(self, event=None):

@@ -89,3 +89,17 @@ class Message(MessageUI):
         folder = os.path.split(path)[0]
         # print(folder)
         os.startfile(folder)
+
+    def stepSuccess(self):
+        self.config(state = NORMAL)
+        self.insert('end', '.')
+        self.config(state = DISABLED)
+
+    def stepFail(self, n):
+        self.InsertText('Step ' + str(n) + ' FAIL')
+
+    def stepError(self, n):
+        self.InsertText('Step ' + str(n) + ' ERROR')
+
+    def caseSuccess(self):
+        self.InsertText('SUCCESS')
