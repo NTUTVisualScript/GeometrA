@@ -78,10 +78,15 @@ class LoadFile:
         Message.getMessage().fileLoaded(self._filePath)
 
     def loadFile(self):
-        self.getLoadFilePath()
-        self.getFolderName()
-        if self._filePath is None or self._filePath is "": return
-        self.jsonDecoder()
+        try:
+            self.getLoadFilePath()
+            self.getFolderName()
+            if self._filePath is None or self._filePath is "": return
+            self.jsonDecoder()
+        except:
+            DialogueForm.Messagebox("Load Test Case Error!","The file '"+ self._filePath.split('/')[-1] + "' is invalid format.")
+            self._filePath = ''
+
 
     def getLoadFilePath(self):
         self._filePath = ""

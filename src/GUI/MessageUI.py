@@ -74,7 +74,7 @@ class Message(MessageUI):
             s = 'Loading test case success. \n' +'Path: '
             self.fileHyperLink(s, path)
         else:
-            self.InsertText('no testCase loaded. ')
+            self.InsertText('No testCase loaded. ')
 
     def fileHyperLink(self, s, path):
         self.config(state = NORMAL)
