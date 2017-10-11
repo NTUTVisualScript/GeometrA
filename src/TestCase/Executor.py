@@ -46,6 +46,8 @@ class Executor():
         while i < self.case.getSize():
             print('Step ' + str(i))
             status = self.execute(i)
+            if self.case.getSteps(i).getAction() == 'Loop Begin':
+                i = self.loopEnd(i)
             if status == 'Failed':
                 return 'Failed'
             if status == 'Error':

@@ -15,14 +15,25 @@ class TestController:
     def execute(self, n):
         threading.Thread(target=self.exe.execute, args=(n,)).start()
 
-    def runAll(self):
+    def runButtonClick(self):
         from TestCaseUI import TestCaseUI as UI
         self.case.refresh()
         UI.getTestCaseUI().reloadTestCaseUI()
-        # for i in range(self.case.getSize()):
-        #     print(self.case.getSteps(i).getAction())
-        #     print(self.case.getSteps(i).getValue())
-        threading.Thread(target=self.exe.runAll).start()
+        threading.Thread(target=self.runAll).start()
+
+    def runAll(self):
+        i = 0
+        while i < self.case.getSize():
+            print('Step ' + str(i))
+            status = self.exe.execute(i)
+            if self.case.getSteps(i).getAction() == 'Loop Begin':
+                i = self.exe.loopEnd(i)
+            if status == 'Failed':
+                return 'Failed'
+            if status == 'Error':
+                return 'Error'
+            i = i+1
+        return 'Success'
 
     def undoClick(self, event=None):
         from TestCaseUI import TestCaseUI as UI
