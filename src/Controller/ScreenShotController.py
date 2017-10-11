@@ -31,5 +31,7 @@ def screenShotTrigger():
     if not Check().checkDevices():
         Message.getMessage().noDevice()
         return False
+    Message.getMessage().capturing()
+    capture = GetScreenShot.capture()
     Message.getMessage().getScreenShot()
-    return GetScreenShot.capture()
+    return capture

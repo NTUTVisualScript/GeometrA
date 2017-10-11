@@ -56,6 +56,9 @@ class Message(MessageUI):
     def noDevice(self):
         self.InsertText('Device is not connected. ')
 
+    def capturing(self):
+        self.InsertText('Capturing the screen shot...')
+
     def getScreenShot(self):
         self.InsertText('Get ScreenShot Success. ')
 
