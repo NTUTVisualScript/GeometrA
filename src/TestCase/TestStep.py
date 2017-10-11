@@ -34,16 +34,20 @@ class Step:
         if (self.act == 'Click') or (self.act == 'Assert Exist') or (self.act == 'Assert Not Exist'):
             if (str(value.__class__) != "<class 'PIL.PngImagePlugin.PngImageFile'>") \
                     and (str(value.__class__) != "<class 'PIL.Image.Image'>"):
+                self.act = ''
                 raise Exception('Value Should be PIL image')
         if ((self.act == 'Sleep(s)') or (self.act == 'Loop Begin')) and (not value.isdigit()):
+            self.act = ''
             raise Exception('Value Should be digit')
         if self.act == 'Android Keycode':
             if value.isdigit():
                 try:
                     key[int(value)]
                 except:
+                    self.act = ''
                     raise Exception('Value is not Android Keycode')
             elif not(value in list(key.values())):
+                self.act = ''
                 raise Exception('Value is not Android Keycode')
 
         self.val = value
