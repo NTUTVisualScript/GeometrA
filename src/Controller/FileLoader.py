@@ -21,6 +21,7 @@ class SaveFile:
             if self._filePath == '': return
             self.jsonEncoder()
         except Exception as step:
+            self._filePath = ''
             DialogueForm.Messagebox("Insert Error!","The Value of Step "+str(step)+" is wrong!")
 
     def checkEntryValid(self):
