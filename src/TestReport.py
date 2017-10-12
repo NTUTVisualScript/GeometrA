@@ -1,6 +1,6 @@
 import os
 
-from HTML.report_time import HTMLtime
+from OldHTML.report_time import HTMLtime
 
 PATH = lambda p: os.path.abspath(p)
 

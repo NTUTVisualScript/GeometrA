@@ -1,5 +1,5 @@
 import os
-from HTML.report_time import HTMLtime
+from OldHTML.report_time import HTMLtime
 
 class TestReport:
     def __init__(self, parent = None):

@@ -9,7 +9,7 @@ from TestCaseData import TestCaseData
 from adbRobot import ADBRobot
 from cv2img import CV2Img
 from finder.template_finder import TemplateFinder
-from HTML.step import HtmlTestStep
+from OldHTML.step import HtmlTestStep
 
 
 ROOT_DIR = os.path.dirname(__file__)

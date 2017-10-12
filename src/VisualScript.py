@@ -11,9 +11,9 @@ from PIL import Image, ImageTk
 
 import CommandManager
 from CheckADBConnection import checkADB_Connection
-from HTML.devices_infomation import HTML_divices_Info
-from HTML.report_time import HTMLtime
-from HTML.title import HtmlHead
+from OldHTML.devices_infomation import HTML_divices_Info
+from OldHTML.report_time import HTMLtime
+from OldHTML.title import HtmlHead
 from LoadFile import LoadFile
 from MessageUI import Message
 from SaveFile import SaveFile
@@ -24,7 +24,7 @@ from GUI.OldScreenShotUI import ScreenshotUI
 from TestReport import Report
 from Viewtest import TestAdepter
 from adbRobot import ADBRobot
-from HTML.step import HtmlTestStep
+from OldHTML.step import HtmlTestStep
 
 ROOT_DIR = os.path.dirname(__file__)
 PIC_LOADING = os.path.join(ROOT_DIR, "img")

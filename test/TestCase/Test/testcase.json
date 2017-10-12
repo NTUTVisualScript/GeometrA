@@ -2,66 +2,31 @@
   "1": {
     "action": "Android Keycode",
     "value": "KEYCODE_HOME",
-    "image": null,
-    "image_node_path": null
+    "image": null
   },
   "2": {
     "action": "Swipe",
     "value": "start x=861, y=1171 , end x=292, y=1178",
-    "image": null,
-    "image_node_path": null
+    "image": null
   },
   "3": {
     "action": "Sleep(s)",
-    "value": "0",
-    "image": null,
-    "image_node_path": null
+    "value": "1",
+    "image": null
   },
   "4": {
     "action": "Android Keycode",
     "value": "KEYCODE_HOME",
-    "image": null,
-    "image_node_path": null
+    "image": null
   },
   "5": {
     "action": "Click",
     "value": null,
-    "image": "/image/Click_4.png",
-    "image_node_path": {
-      "1": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "2": [
-        "(0) android.widget.LinearLayout  ",
-        ""
-      ],
-      "3": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "4": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "5": [
-        "(2) android.view.ViewGroup  ",
-        ""
-      ],
-      "6": [
-        "(1) android.view.ViewGroup  ",
-        ""
-      ],
-      "7": [
-        "(0) android.view.ViewGroup  ",
-        ""
-      ]
-    }
+    "image": "testcase_image/image_5.png"
   },
   "6": {
     "action": "Android Keycode",
     "value": "KEYCODE_HOME",
-    "image": null,
-    "image_node_path": null
+    "image": null
   }
 }

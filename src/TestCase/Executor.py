@@ -6,7 +6,6 @@ from cv2img import CV2Img
 from adbRobot import ADBRobot
 from Load import FileLoader
 from MessageUI import Message
-from HTML.step import HtmlTestStep
 from finder.template_finder import TemplateFinder
 from Controller.TestReport import TestReport
 #from GUI.DialogueForm import  DialogueForm
@@ -19,7 +18,6 @@ class Executor():
             raise Exception('Not a executable case')
         self.case = case
         self.robot = ADBRobot()
-        self.htmlstep = HtmlTestStep.getHtmlTestStep()
         self.originalScreen = None
 
     def getOriginalScreen(self):
