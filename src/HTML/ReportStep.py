@@ -33,10 +33,10 @@ class Step:
 
     def swipeImage(self, val):
         coor = val.split(',')
-        x1 = int(coor[0].split('=')[1])
-        y1 = int(coor[1].split('=')[1])
-        x2 = int(coor[2].split('=')[1])
-        y2 = int(coor[3].split('=')[1])
+        x1 = int(float(coor[0].split('=')[1]))
+        y1 = int(float(coor[1].split('=')[1]))
+        x2 = int(float(coor[2].split('=')[1]))
+        y2 = int(float(coor[3].split('=')[1]))
 
         source = CV2Img()
         source.load_file(self.beforeScreenshot, 1)

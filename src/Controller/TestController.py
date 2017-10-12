@@ -76,12 +76,14 @@ class TestController:
         UI.getTestCaseUI().reloadTestCaseUI()
 
     def insertStep(self, n):
+        self.caseSaved(False)
         self.redo.reset()
         self.undo.push(self.case)
         empty = ''
         self.case.insert(n=n, act=empty, val=empty)
 
     def removeStep(self, n):
+        self.caseSaved(False)
         self.redo.reset()
         self.undo.push(self.case)
         self.case.delete(n)
