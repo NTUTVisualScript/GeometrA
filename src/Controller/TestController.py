@@ -5,6 +5,7 @@ from Record import *
 import Value
 from MessageUI import Message
 from DeviceCheck import Check
+from GUI.DialogueForm import  DialogueForm
 
 class TestController:
     def __init__(self):
@@ -12,11 +13,17 @@ class TestController:
         self.exe = Executor(self.case)
         self.undo = Undo(self.case)
         self.redo = Redo()
+        self.save = False
 
     def execute(self, n):
         threading.Thread(target=self.exe.execute, args=(n,)).start()
 
     def runButtonClick(self):
+        if not self.save:
+            error = 'Not Saved Error'
+            notSavedMessage = 'Test case is not saved! '
+            DialogueForm.Messagebox(error, notSavedMessage)
+            return
         if not Check().checkDevices():
             Message.getMessage().noDevice()
             return
@@ -29,20 +36,26 @@ class TestController:
         i = 0
         ms = Message.getMessage()
         while i < self.case.getSize():
-            print('Step ' + str(i))
             status = self.exe.execute(i)
-            if self.case.getSteps(i).getAction() == 'Loop Begin':
+            loop = 'Loop Begin'
+            if self.case.getSteps(i).getAction() == loop:
                 i = self.exe.loopEnd(i)
-            if status == 'Failed':
+            f = 'Failed'
+            if status == f:
                 ms.stepFail(i + 1)
-                return 'Failed'
-            if status == 'Error':
+                return f
+            e = 'Error'
+            if status == e:
                 ms.stepError(i + 1)
-                return 'Error'
+                return e
             ms.stepSuccess()
             i = i+1
         ms.caseSuccess()
-        return 'Success'
+        s = 'Success'
+        return s
+
+    def caseSaved(self, status):
+        self.save = status
 
     def undoClick(self, event=None):
         from TestCaseUI import TestCaseUI as UI
@@ -61,7 +74,8 @@ class TestController:
     def insertStep(self, n):
         self.redo.reset()
         self.undo.push(self.case)
-        self.case.insert(n=n, act='', val='')
+        empty = ''
+        self.case.insert(n=n, act=empty, val=empty)
 
     def removeStep(self, n):
         self.redo.reset()
@@ -70,22 +84,29 @@ class TestController:
 
     def setStep(self, n, image = None):
         if n == None: return
+        self.caseSaved(False)
         # Save current TestCase to undo model
         self.redo.reset()
         self.undo.push(self.case)
 
-        from TestCaseUI import TestCaseUI as UI
-        stepList = UI.getTestCaseUI().stepList
+        stepExist = self.exist(n)
+        self.putValue(n, stepExist, image)
+
 
 
         # Handle the exceptions for step n is not exist
+    def exist(self, n):
         try:
             self.case.getSteps(n)
-            stepExist = True
+            return True
         except:
-            stepExist = False
+            return False
 
-        # Set step information to model
+
+    # Set step information to model
+    def putValue(self, n, stepExist, image):
+        from TestCaseUI import TestCaseUI as UI
+        stepList = UI.getTestCaseUI().stepList
         try:
             if stepExist:
                 if image is None:
@@ -103,8 +124,8 @@ class TestController:
                     self.case.insert(n=n, act=stepList[n].action.get(), val=image)
         # Handle the exception for invalid value
         except Exception as e:
+            print(e)
             Value.testCaseEntryError(stepList, n)
-            return 'Invalid Value'
 
 
     def clearTestCase(self):

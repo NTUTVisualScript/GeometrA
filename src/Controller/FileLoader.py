@@ -20,6 +20,8 @@ class SaveFile:
             self.getFolderName()
             if self._filePath == '': return
             self.jsonEncoder()
+            from TestCaseUI import TestCaseUI
+            TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
         except Exception as step:
             self._filePath = ''
             DialogueForm.Messagebox("Insert Error!","The Value of Step "+str(step)+" is wrong!")
@@ -83,6 +85,8 @@ class LoadFile:
             self.getFolderName()
             if self._filePath is None or self._filePath is "": return
             self.jsonDecoder()
+            from TestCaseUI import TestCaseUI
+            TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
         except:
             DialogueForm.Messagebox("Load Test Case Error!","The file '"+ self._filePath.split('/')[-1] + "' is invalid format.")
             self._filePath = ''
