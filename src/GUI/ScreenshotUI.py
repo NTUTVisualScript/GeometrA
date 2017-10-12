@@ -9,7 +9,6 @@ class ScreenshotUI(Canvas):
 
     def __init__(self, parent=None, *args, **kwargs):
         Canvas.__init__(self, parent, *args, **kwargs,  height=800, width=450, borderwidth=-1, bg='white')
-        self.ButtonGetScreenshot()
 
         self.mouse = Mouse(self, parent)
 
@@ -30,8 +29,3 @@ class ScreenshotUI(Canvas):
         self.screenshot_photo = SSCtrl.screenShotTrigger()
         self.mouse.setOriginalFrame()
         self.create_image(0, 0, anchor=NW, image=self.screenshot_photo)
-
-    def ButtonGetScreenshot(self):
-        self.dumpUI = Button(self.master, command=lambda: threading.Thread(target=self.getScreenshot).start(),
-                             text="Capture Screenshot", width=18)
-        self.dumpUI.place(x=0, y=30)

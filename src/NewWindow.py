@@ -18,11 +18,13 @@ from TestCaseButton import TestCaseButton
 from FileLoader import FileLoader
 from HotKey import HotKey
 from MessageUI import Message
+from DumpButton import DumpButton
 
 class Window(View):
     def __init__(self, master=None):
         super().__init__(master)
         TestCaseUI.getTestCaseUI()
+        DumpButton(master)
         ScreenshotUI.getScreenshotUI()
         TestCaseButton.getTestCaseButton(master)
         Toolbar.getToolbar(master)
