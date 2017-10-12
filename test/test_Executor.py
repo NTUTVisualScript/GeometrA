@@ -4,9 +4,10 @@ from PIL import Image, ImageTk
 import sys
 sys.path.append('../src/TestCase')
 sys.path.append('../src')
-sys.path.append('../src/Save')
 sys.path.append('../src/GUI')
+sys.path.append('../src/GUI/TestCase')
 sys.path.append('../src/Controller')
+from DialogueForm import DialogueForm
 from Executor import Executor
 from TestStep import Step
 from TestCase import TestCase
@@ -36,10 +37,6 @@ class ExecutorTestSuite(unittest.TestCase):
         exe = Executor(case)
         case.insert(act='Swipe', val='x=, y=3, x=4, y=3')
         self.assertEqual('Error', exe.execute(0))
-
-
-
-
 
     def testExecuteSleep(self):
         case = TestCase()

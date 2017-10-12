@@ -4,13 +4,10 @@ sys.path.append('../Save')
 import time
 from cv2img import CV2Img
 from adbRobot import ADBRobot
-from Load import FileLoader
+from Controller.FileLoader import FileLoader
 from MessageUI import Message
 from finder.template_finder import TemplateFinder
 from Controller.TestReport import TestReport
-#from GUI.DialogueForm import  DialogueForm
-
-
 
 class Executor():
     def __init__(self, case):
@@ -124,8 +121,12 @@ class Executor():
     def testCase(self, n):
         try:
             path = self.case.getSteps(n).getValue()
-            return Executor(FileLoader(path).getTestCase()).runAll()
+            print(path)
+            case = FileLoader.getFileLoader()
+            case.loadFile(path)
+            return Executor(case.getTestCase()).runAll()
         except Exception as e:
+            print(e)
             return 'Error'
 
     def sleep(self, n):

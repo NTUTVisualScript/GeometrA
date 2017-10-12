@@ -5,6 +5,9 @@ import sys
 sys.path.append('../src/TestCase')
 sys.path.append('../src')
 sys.path.append('../src/Save')
+sys.path.append('../src/GUI')
+sys.path.append('../src/GUI/TestCase')
+sys.path.append('../src/Controller')
 from Executor import Executor
 from TestStep import Step
 from TestCase import TestCase
@@ -29,9 +32,9 @@ class ExecutorActionTestSuite(unittest.TestCase):
     def testExecuteSetText(self):
         case = TestCase()
         exe = Executor(case)
-        case.insert(act='TestCase', val='./TestCase/SetText/SetTextSetUp')
+        case.insert(act='TestCase', val='./TestCase/SetText/SetTextSetUp/testcase.json')
         case.insert(act='Set Text', val='Hello World')
-        case.insert(act='TestCase', val='./TestCase/SetText/SetTextTearDown')
+        case.insert(act='TestCase', val='./TestCase/SetText/SetTextTearDown/testcase.json')
         exe.execute(0)
         self.assertEqual('Success', exe.execute(1))
         target = Image.open('./TestCase/SetText/source.png')
@@ -41,13 +44,8 @@ class ExecutorActionTestSuite(unittest.TestCase):
     def testExecuteTestCase(self):
         case = TestCase()
         exe = Executor(case)
-        case.insert(act='TestCase', val='./TestCase/Test')
+        case.insert(act='TestCase', val='./TestCase/Test/testcase.json')
         self.assertEqual('Success', exe.execute(0))
-    def testExecuteTestCaseExcept(self):
-        case = TestCase()
-        exe = Executor(case)
-        case.insert(act='TestCase', val='D:/')
-        self.assertEqual('Error', exe.execute(0))
 
     def testExecuteAssertExist(self):
         case = TestCase()

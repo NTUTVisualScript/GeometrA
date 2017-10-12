@@ -2,6 +2,7 @@ import json
 import os
 from tkinter import filedialog
 from PIL import Image
+from TestCase import TestCase
 from TestStep import Step
 
 from MessageUI import Message
@@ -76,20 +77,26 @@ class LoadFile:
     def loadButtonClick(self, event=None):
         from TestCaseUI import TestCaseUI
         self.loadFile()
+        self.modelConnect()
         if self._filePath != '':
             TestCaseUI.getTestCaseUI().reloadTestCaseUI()
             TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
         Message.getMessage().fileLoaded(self._filePath)
 
-    def loadFile(self):
-        from TestCaseUI import TestCaseUI
+    def loadFile(self, path=None):
+        from GUI.TestCase.TestCaseUI import TestCaseUI
         try:
-            self.getLoadFilePath()
+            if path:
+                self._filePath = path
+                self.getFileName()
+            else:
+                self.getLoadFilePath()
             self.getFolderName()
             if self._filePath is None or self._filePath is "": return
             self.jsonDecoder()
         except Exception as e:
-            DialogueForm.Messagebox("Load Test Case Error!","The file '"+ self._filePath.split('/')[-1] + "' is invalid format.")
+            print(e)
+            # DialogueForm.Messagebox("Load Test Case Error!","The file '"+ self._filePath.split('/')[-1] + "' is invalid format.")
             self._filePath = ''
             TestCaseUI.getTestCaseUI().ctrl.clearTestCase()
 
@@ -99,13 +106,12 @@ class LoadFile:
         _f = filedialog.askopenfile(title="Select File", filetypes=[("TestCase JSON Files", "*.json")])
         if _f is None: return
         self._filePath = _f.name
-        self._fileName = _f.name.split('/').pop().rstrip('.json')
+        self.getFileName()
 
     def jsonDecoder(self):
         with open(self._filePath, 'r') as f:
             dataDic = json.load(f)
-        self.case = self.getTestCase()
-        self.case.clear()
+        self.case = TestCase()
 
         for i in range(len(dataDic)):
             data = dataDic[str(i + 1)]
@@ -118,9 +124,12 @@ class LoadFile:
             step = Step(act, val)
             self.case.insert(step=step)
 
-    def getTestCase(self):
+    def modelConnect(self):
         from TestCaseUI import TestCaseUI
-        return TestCaseUI.getTestCaseUI().ctrl.case
+        TestCaseUI.getTestCaseUI().ctrl = self.case
+
+    def getTestCase(self):
+        return self.case
 
 class FileLoader(SaveFile, LoadFile):
     __single = None
@@ -140,12 +149,9 @@ class FileLoader(SaveFile, LoadFile):
         return FileLoader.__single
 
     def getFileName(self):
-        return self._fileName
+        self._fileName = self._filePath.split('/').pop().rstrip('.json')
 
     def getFolderName(self):
         _fp = self._filePath
         self._folderPath = _fp.rstrip(self._fileName + '.json')
         return self._folderPath
-
-    def getFolderPath(self):
-        return self._filePath
