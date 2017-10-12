@@ -55,7 +55,8 @@ class SaveFile:
             _data = {}
             act = _case.getSteps(i).getAction()
             _data['action'] = act
-            if str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
+            if (str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>") | \
+                (str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.Image.Image'>"):
                 # Image path format: /*TestCaseName*_image/image_*StepNumber*.png
                 _imgpath = self._fileName + "_image/image_" + str(i + 1) + ".png"
                 if not os.path.isdir(self._folderPath + self._fileName + "_image"):
