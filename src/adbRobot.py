@@ -2,6 +2,7 @@ import subprocess
 from keycode import ANDROID_KEYCODE
 from robot import Robot
 import os
+import re
 
 PATH = lambda p: os.path.abspath(p)
 
@@ -17,7 +18,9 @@ class ADBRobot(Robot):
         subprocess.check_output([subp, "shell", "am", "force-stop", appName], shell=True)
 
     def get_devices(self):
-        return subprocess.check_output('adb devices')
+        dList = subprocess.getoutput('adb devices')
+        dNames = dList.splitlines()[1]
+        return dNames.split('\t')[0]
 
     def send_keys(self, keys):
         for key in keys:
@@ -96,7 +99,10 @@ class ADBRobot(Robot):
         return path + "/uidump.xml"
 
     def get_display(self):
-        print(subprocess.call([subp, "shell", "dumpsys", "display"], shell=True))
+        real_size_pattern = r"real (\d+) x (\d+),"
+        result = subprocess.check_output('adb shell dumpsys display | grep mBaseDisplayInfo').__str__()
+        match = re.search(real_size_pattern, result)
+        return (match.group(1), match.group(2))
 
     # @property
     # def windows_size(self):

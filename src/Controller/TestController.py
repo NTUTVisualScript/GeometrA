@@ -6,6 +6,7 @@ import Value
 from MessageUI import Message
 from DeviceCheck import Check
 from GUI.DialogueForm import  DialogueForm
+from HTML.Report import Report
 
 class TestController:
     def __init__(self):
@@ -30,25 +31,28 @@ class TestController:
         from TestCaseUI import TestCaseUI as UI
         self.case.refresh()
         UI.getTestCaseUI().reloadTestCaseUI()
-        threading.Thread(target=self.runAll).start()
+        threading.Thread(target=self.runCase).start()
+
+    def runCase(self):
+        self.report = Report()
+        result = self.runAll()
+        self.report.end(result, self.case.getSize())
 
     def runAll(self):
         i = 0
         ms = Message.getMessage()
         while i < self.case.getSize():
+            step = self.case.getSteps(i)
+            self.report.stepStart(step)
             status = self.exe.execute(i)
+            self.report.stepEnd(step, i)
             loop = 'Loop Begin'
             if self.case.getSteps(i).getAction() == loop:
                 i = self.exe.loopEnd(i)
+            ms.stepState(i, status)
             f = 'Failed'
-            if status == f:
-                ms.stepFail(i + 1)
-                return f
             e = 'Error'
-            if status == e:
-                ms.stepError(i + 1)
-                return e
-            ms.stepSuccess()
+            if (status == f) or status == e: return status
             i = i+1
         ms.caseSuccess()
         s = 'Success'

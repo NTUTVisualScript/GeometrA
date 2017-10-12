@@ -28,12 +28,8 @@ class checkADB_Connection:
 
             finddevices.pop(0)
             if len(finddevices) == 0:
-                message.InsertText("No Devices connect...\n")
                 return "No Connect"
             else:
-                message.InsertText("Get devices :\n")
-                #for i in range(len(finddevices)):
-                message.InsertText(finddevices[0] + "\n\n\n")
                 self.SerialNo = finddevices[0]
                 real_size_pattern = r"real (\d+) x (\d+),"
                 result = subprocess.check_output('adb shell dumpsys display | grep mBaseDisplayInfo').__str__()
@@ -43,7 +39,7 @@ class checkADB_Connection:
                 return "Connect"
 
         except subprocess.CalledProcessError as e:
-            message.InsertText(e.returncode)
+            pass
 
     def get_SerialNo(self):
         return self.SerialNo

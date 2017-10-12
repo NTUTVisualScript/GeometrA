@@ -35,7 +35,7 @@ class Message(MessageUI):
         self.see('end')
         self.config(state = DISABLED)
 
-    def HyperLink(self,insertStr):
+    def report(self,insertStr):
         self.tag_config("reportpath", foreground="blue", underline = True)
         self.tag_bind("reportpath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
         self.config(state = NORMAL)
@@ -95,8 +95,11 @@ class Message(MessageUI):
         self.insert('end', '.')
         self.config(state = DISABLED)
 
-    def stepFail(self, n):
-        self.InsertText('Step ' + str(n) + ' FAIL')
+    def stepState(self, n, state):
+        if state == 'Success':
+            self.stepSuccess()
+        else:
+            self.InsertText('Step ' + str(n) + ' ' + state)
 
     def stepError(self, n):
         self.InsertText('Step ' + str(n) + ' ERROR')

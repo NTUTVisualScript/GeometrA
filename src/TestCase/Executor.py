@@ -28,17 +28,6 @@ class Executor():
         filePath = self.robot.before_screenshot()
         self.currentScreen = filePath
 
-    def reportImage(self, n):
-        act = self.case.getSteps(n).getAction()
-        if (act == 'Click') or (act == 'Assert Exist') or (act == 'Assert Not Exist'):
-            drawCircle = CV2Img()
-            drawCircle.load_file(self.robot.before_screenshot(), 1)
-            drawCircle.draw_circle(int(self.clickX), int(self.clickY))
-            drawCircle.save(self.robot.before_screenshot())
-        elif act == 'Swipe':
-            self.swipeImage(self.startX, self.startY, self.endX, self.endY)
-
-
     def runAll(self):
         i = 0
         while i < self.case.getSize():
@@ -127,14 +116,6 @@ class Executor():
         except Exception as e:
                 print(e)
                 return 'Error'
-
-
-    def swipeImage(self, x1, y1, x2, y2):
-        source = CV2Img()
-        source.load_file(self.robot.before_screenshot(), 1)
-        source.draw_line(x1,y1,x2,y2)
-        source.draw_Arrow(x1, y1, x2, y2)
-        source.save(self.robot.before_screenshot())
 
     def setText(self, n):
         self.robot.input_text(self.case.getSteps(n).getValue())

@@ -76,20 +76,22 @@ class LoadFile:
     def loadButtonClick(self, event=None):
         from TestCaseUI import TestCaseUI
         self.loadFile()
-        TestCaseUI.getTestCaseUI().reloadTestCaseUI()
+        if self._filePath != '':
+            TestCaseUI.getTestCaseUI().reloadTestCaseUI()
+            TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
         Message.getMessage().fileLoaded(self._filePath)
 
     def loadFile(self):
+        from TestCaseUI import TestCaseUI
         try:
             self.getLoadFilePath()
             self.getFolderName()
             if self._filePath is None or self._filePath is "": return
             self.jsonDecoder()
-            from TestCaseUI import TestCaseUI
-            TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
-        except:
+        except Exception as e:
             DialogueForm.Messagebox("Load Test Case Error!","The file '"+ self._filePath.split('/')[-1] + "' is invalid format.")
             self._filePath = ''
+            TestCaseUI.getTestCaseUI().ctrl.clearTestCase()
 
 
     def getLoadFilePath(self):
@@ -137,6 +139,13 @@ class FileLoader(SaveFile, LoadFile):
             FileLoader.__single = FileLoader()
         return FileLoader.__single
 
+    def getFileName(self):
+        return self._fileName
+
     def getFolderName(self):
         _fp = self._filePath
         self._folderPath = _fp.rstrip(self._fileName + '.json')
+        return self._folderPath
+
+    def getFolderPath(self):
+        return self._filePath

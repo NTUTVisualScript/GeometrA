@@ -1,7 +1,6 @@
 
-class ReportUI:
-    def setTitle(self, title):
-        self.htmlHead = r"""
+def getTitle(title):
+    htmlHead = r"""
 <!DOCTYPE html>
 <html>
 
@@ -109,4 +108,4 @@ class ReportUI:
     </div>
   </nav>
 """
-        return self.htmlHead
+    return htmlHead

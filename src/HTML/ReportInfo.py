@@ -3,31 +3,31 @@ import datetime
 
 class Info:
     def __init__(self):
-        self.No = ""
+        self.setNo()
         self.stepCount = 0
-        self.pWidth = ""
-        self.pHeight = ""
+        self.setDisplay()
         self.result = ""
-        self.testDate = ""
+        self.getDate()
+        self.setStartTime()
         self.exeTime = ""
         self.color = ""
 
     def setNo(self):
         self.No = ADBRobot().get_devices()
 
-    def setStepCount(self):
-        self.stepCount = self.stepCount + 1
+    def setStepCount(self, n):
+        self.stepCount = n
 
     def setDisplay(self):
         self.pWidth, self.pHeight = ADBRobot().get_display()
 
-    def setResult(self):
-        if Result == "Error":
-            self.Result = '<p class="text-danger"><span class="info-name ">Result:</span>'+ Result + '</p>'
-            self.color = "danger"
-        else:
-            self.Result = '<p class="text-success"><span class="info-name ">Result:</span>'+ Result + '</p>'
+    def setResult(self, result):
+        if result == "Success":
+            self.result = '<p class="text-success"><span class="info-name ">Result:</span>'+ result + '</p>'
             self.color = "primary"
+        else:
+            self.result = '<p class="text-danger"><span class="info-name ">Result:</span>'+ result + '</p>'
+            self.color = "danger"
 
     def getDate(self):
         self.testDate = str(datetime.datetime.now()).split(' ')[0]
@@ -40,15 +40,16 @@ class Info:
         self.end = str(datetime.datetime.now()).split(' ')[1].split('.')[0].split(':')
 
     def setExeTime(self):
-        start = self.start[0] * 3600 + self.start[1] *60 + self.start[2]
-        end = self.end[0] * 3600 + self.end[1] * 60 + self.end[2]
-        exeTime = self.end - self.star
-        self.exeTime = str(exeTime//3600) + ':' + str(exeTime%3600//60) + str(exeTime%60)
+        start = int(self.start[0]) * 3600 + int(self.start[1]) *60 + int(self.start[2])
+        end = int(self.end[0]) * 3600 + int(self.end[1]) * 60 + int(self.end[2])
+        exeTime = end-start
+        self.exeTime = ' ' + str(exeTime//3600) + ':' + str(exeTime%3600//60) + ':' + str(exeTime%60)
 
     def report_info(self):
-        infomation = r"""
+        self.setExeTime()
+        information = r"""
   <div class="container">
-    <div class="panel panel-""" + self.color + """">
+    <div class="panel panel-""" + str(self.color) + """">
       <div class="panel-heading">
         <h4>Base Infomation</h4>
       </div>
@@ -56,9 +57,9 @@ class Info:
         <div class="col-md-6">
           <ul class="device-info">
             <li>
-              <span class="info-name">SerialNo:</span>""" + self.No + """</li>
+              <span class="info-name">SerialNo:</span>""" + str(self.No) + """</li>
             <li>
-              <span class="info-name">TestDate:</span>""" + self.testDate + """</li>
+              <span class="info-name">TestDate:</span>""" + str(self.testDate) + """</li>
             <li>
               <span class="info-name">StepCount:</span>""" + str(self.stepCount) + """</li>
           </ul>
@@ -68,9 +69,9 @@ class Info:
             <li>
               <span class="info-name">Display:</span>"""+ str(self.pWidth) +" x " + str(self.pHeight) +"""</li>
             <li>
-              <span class="info-name">ExecuteTime:</span>"""+ self.exeTime +"""</li>
+              <span class="info-name">ExecuteTime:</span>"""+ str(self.exeTime) +"""</li>
             <li>
-              """+ self.result +"""</li>
+              """+ str(self.result) +"""</li>
           </ul>
         </div>
       </div>
