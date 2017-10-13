@@ -370,17 +370,17 @@ class View(Frame, threading.Thread):
         #print(obj_image_info)
         self.tree_obj_image_list.append(obj_image_info)
 
-    def Set_Tree_image_place(self):
-        for i in range(self.rankMax + 1):
-            for j in range(len(self.tree_obj_image_list)):
-                if int(self.tree_obj_image_list[j][0]) == i:
-                    left = self.tree_obj_image_list[j][2]
-                    top = self.tree_obj_image_list[j][3]
-                    self.tree_obj_image_list[j][1].configure(borderwidth=-3)
-                    self.tree_obj_image_list[j][1].place(x = left, y = top)
-                    print("rank " , i, " x = ", left, " y = ",  top)
-
-        print(self.rankMax)
+    # def Set_Tree_image_place(self):
+    #     for i in range(self.rankMax + 1):
+    #         for j in range(len(self.tree_obj_image_list)):
+    #             if int(self.tree_obj_image_list[j][0]) == i:
+    #                 left = self.tree_obj_image_list[j][2]
+    #                 top = self.tree_obj_image_list[j][3]
+    #                 self.tree_obj_image_list[j][1].configure(borderwidth=-3)
+    #                 self.tree_obj_image_list[j][1].place(x = left, y = top)
+    #                 print("rank " , i, " x = ", left, " y = ",  top)
+    #
+    #     print(self.rankMax)
 
     def clear_XML_Tree(self):
         for row in self.treeview.get_children():
@@ -427,7 +427,7 @@ class View(Frame, threading.Thread):
         self.select_node = None
         self.select_image = None
         if getdevices ==None:
-            self.message.clear()
+            # self.message.clear()
             if self.checkADB.check() == "Connect":
                 threading.Thread(target=self.format).start()
         else:

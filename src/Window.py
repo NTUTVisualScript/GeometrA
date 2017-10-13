@@ -55,20 +55,7 @@ class View(Frame, threading.Thread):
         self.setUI()
 
     def setUI(self):
-        self.focus = None
-        self.focusOBJImage = None
-        self.Drag_image = None
-        self.update_image = None
-        self.tree_obj_image_list = []
-        self.tree_obj_list = []
-        self.dirpath = ""
-        self.dirName = ""
-        self.select_node = None
-        self.select_image = None
-        self.checkADB = checkADB_Connection()
-        self.cmd = CommandManager
-        self.savecropImg = saveImg()
-        self.XMLTreeUI()
+        pass
 
     def MenuBar(self):
         self.menubar = Menu(self.master)
