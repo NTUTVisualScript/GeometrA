@@ -1,3 +1,9 @@
+'''
+    TreeUI
+
+    Determine all user interface style.
+'''
+
 from tkinter import *
 class TreeUI(ttk.Treeview):
     def __init__(self, parent=None):
@@ -16,4 +22,4 @@ class TreeUI(ttk.Treeview):
         self.yScrollbar.config(command=self.yview)
         self.xScrollbar.config(command=self.xview)
 
-        # self.bind("<ButtonRelease-1", self.tree.TreeSelectNode())
+        self.bind("<ButtonRelease-1>", self.selectNode)

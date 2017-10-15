@@ -1,3 +1,7 @@
+'''
+Get Screenshot from device and return to UI
+'''
+
 from PIL import Image, ImageTk
 import threading
 import sys
@@ -6,13 +10,11 @@ from adbRobot import ADBRobot
 from DeviceCheck import Check
 from MessageUI import Message
 
-'''
-Get Screenshot from device and return to UI
-'''
-
-
-
 class GetScreenShot:
+    x = 450
+    y = 800
+    multiple = 1080/x
+
     screenShot = None
     def __init__(self):
         path = ADBRobot().screenshot()
@@ -21,7 +23,7 @@ class GetScreenShot:
     def capture():
         screenShot = GetScreenShot()
         # Set size  should be bootstrap
-        screenShot.setSize(450, 800)
+        screenShot.setSize(GetScreenShot.x, GetScreenShot.y)
         return ImageTk.PhotoImage(GetScreenShot.screenShot)
 
     def setSize(self, x, y):
