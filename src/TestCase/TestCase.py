@@ -17,12 +17,15 @@ class TestCase:
     def setValue(self, n, value):
         self.stepDict[n].setValue(value)
 
-    def setStep(self, n, act, val):
-        self.stepDict[n].setStep(act, val)
+    def setNode(self, n, node):
+        self.stepDict[n].setNode(node)
 
-    def insert(self, n=-1, step=None, act=None, val=None):
+    def setStep(self, n, act, val, node=None):
+        self.stepDict[n].setStep(act, val, node)
+
+    def insert(self, n=-1, step=None, act=None, val=None, node=None):
         if step == None:
-            step = Step(act, val)
+            step = Step(act, val, node)
         if n == -1:
             n = self.getSize()
         for i in range(self.getSize(), n, -1):

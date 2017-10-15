@@ -58,6 +58,9 @@ class Step:
     def getValue(self):
         return self.val
 
+    def getNode(self):
+        return self.node
+
     def setStatus(self, status):
         if (status == 'Success') | (status == 'Failed') | (status == 'Error'):
             self.status = status
@@ -70,4 +73,4 @@ class Step:
         raise Exception('Step Not Executed')
 
     def copy(self):
-        return Step(self.act, self.val)
+        return Step(self.act, self.val, self.node)
