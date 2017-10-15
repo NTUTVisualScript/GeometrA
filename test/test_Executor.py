@@ -90,9 +90,9 @@ class ExecutorTestSuite(unittest.TestCase):
         tooManyTarget = Image.open('./TestCase/Test/image/toomany.png')
 
         exe = Executor(TestCase())
-        self.assertEqual('Success', exe.imageFinder(source, successTarget))
-        self.assertEqual('Failed', exe.imageFinder(source, failedTarget))
-        self.assertEqual('Too many', exe.imageFinder(source, tooManyTarget))
+        self.assertEqual('Success', exe.imageFinder(sourceImage=source, targetImage=successTarget))
+        self.assertEqual('Failed', exe.imageFinder(sourceImage=source, targetImage=failedTarget))
+        self.assertEqual('Too many', exe.imageFinder(sourceImage=source, targetImage=tooManyTarget))
 
     def testExecuteLoop(self):
         case = TestCase()

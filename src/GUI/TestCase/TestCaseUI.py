@@ -25,7 +25,7 @@ class TestCaseUI(Frame):
         self.focus = 0
 
         self.ctrl = TestController()
-    
+
         Frame.__init__(self, parent, *args, **kwargs, borderwidth=2, relief='sunken')
 
         self.canvas = Canvas(self)
@@ -120,8 +120,7 @@ class TestCaseUI(Frame):
             self.stepList[i].action.set(act)
             self.actionSelect(i)
             if (str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>") | (str(val.__class__) == "<class 'PIL.Image.Image'>"):
-                val.resize((100, 100))
-                self._image = ImageTk.PhotoImage(val)
+                self._image = ImageTk.PhotoImage(val.resize((100, 100)))
                 self.stepList[i].value.create_image(0, 0, anchor=NW, image=self._image)
                 self.stepList[i].value.image = self._image
                 self.stepList[i].value.image = self._image

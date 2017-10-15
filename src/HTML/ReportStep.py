@@ -25,7 +25,7 @@ class Step:
             self.swipeImage(step.getValue())
 
     def findImage(self, step):
-        self.imageFinder(self.beforeScreenshot, step.getValue())
+        if self.imageFinder(self.beforeScreenshot, step.getValue()) != 'Success': return
         drawCircle = CV2Img()
         drawCircle.load_file(self.beforeScreenshot, 1)
         drawCircle.draw_circle(int(self.clickX), int(self.clickY))

@@ -9,7 +9,7 @@ def getTitle(title):
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- <link rel="icon" href="/static/favicon.png?v=2" type="image/x-icon" /> -->
-  <title>""" + title + """ Report</title>
+  <title>""" + str(title) + """ Report</title>
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css">
@@ -103,7 +103,7 @@ def getTitle(title):
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
-        <a class="navbar-brand">""" + title + """ Report</a>
+        <a class="navbar-brand">""" + str(title) + """ Report</a>
       </div>
     </div>
   </nav>

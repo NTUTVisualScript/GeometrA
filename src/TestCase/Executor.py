@@ -63,7 +63,7 @@ class Executor():
                 return self.case.setStatus(n, self.loop(n))
 
     def click(self, n):
-        status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
+        status = self.imageFinder(n=n)
 
         if status == 'Success':
             self.robot.tap(self.clickX, self.clickY)
@@ -76,10 +76,13 @@ class Executor():
         # else:
         #     self.clickNode(n)
 
-    def imageFinder(self, sourceImage=None, targetImage=None):
+    def imageFinder(self, n=0, sourceImage=None, targetImage=None):
         # return True
         if sourceImage == None:
             sourceImage = self.robot.before_screenshot()
+        if n != 0:
+            targetImage = self.case.getValue(n)
+
         source = CV2Img()
         source.load_file(sourceImage, 0)
         target = CV2Img()
@@ -92,7 +95,11 @@ class Executor():
             self.clickX, self.clickY = source.coordinate(results[0])
             return 'Success'
         else:
-            return 'Too many'
+            return self.nodeFinder(n)
+
+    def nodeFinder(self, n):
+        node = self.case.getNode(n)
+        
 
     def Swipe(self, n):
         value = str(self.case.getSteps(n).getValue())
@@ -140,13 +147,13 @@ class Executor():
         return 'Success'
 
     def imageExist(self, n):
-        status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
+        status = self.imageFinder(n=n)
         if status == 'Failed':
             return 'Failed'
         return 'Success'
 
     def imageNotExist(self, n):
-        status = self.imageFinder(targetImage=self.case.getSteps(n).getValue())
+        status = self.imageFinder(n=n)
         if status == 'Failed':
             return 'Success'
         return 'Failed'

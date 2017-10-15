@@ -86,8 +86,6 @@ class Mouse():
         self.UI.ctrl.setStep(self.UI.focus)
 
     def cropPhoto(self, event):
-
-
         if (self.startX < self.endX) and (self.startY < self.endY):
             Mouse.croppedPhoto = self.photo.crop((self.startX, self.startY, self.endX, self.endY))
             #left-top

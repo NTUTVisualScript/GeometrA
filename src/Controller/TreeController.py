@@ -15,6 +15,7 @@ from GUI.TreeUI import TreeUI
 from ScreenShotController import GetScreenShot
 from tkinter import *
 from ScreenshotUI import ScreenshotUI
+from TestCaseUI import TestCaseUI as TCUI
 
 class Tree(TreeUI):
     __single = None
@@ -57,16 +58,21 @@ class Tree(TreeUI):
             self.treeInfo(elem, child_id)
 
     def selectNode(self, event):
+        self.selected = self.selection()[0]
         self.selectImage()
-
+        TCUI.getTestCaseUI().ctrl.setStep(TCUI.getTestCaseUI().focus, self.image)
+        TCUI.getTestCaseUI().reloadTestCaseUI()
 
     def selectImage(self):
-        node = self.selection()[0]
-        itemValue = self.item(node, 'value')[1]
+        itemValue = self.item(self.selected, 'value')[1]
 
-        self.select = self.nodes.index(node)
+        self.select = self.nodes.index(self.selected)
         coor = self.splitBounds(itemValue)
-        self.nodeImage(coor)
+        self.nodeImage(self.coorThumb(coor))
+
+        # Used for the data to store in back end
+        path = ('./screenshot_pic/tmp.png')
+        self.image = IMG.open(path).crop(coor)
 
     def nodeImage(self, coor):
         if self.screenImage:
@@ -76,6 +82,7 @@ class Tree(TreeUI):
         img.thumbnail((GetScreenShot.x, GetScreenShot.y))
         img = img.crop(coor)
         img = ImageTk.PhotoImage(img)
+
 
         self.screenImage = Canvas(ScreenshotUI.getScreenshotUI(), height=coor[3] - coor[1], width=coor[2] - coor[0])
         self.screenImage.configure(borderwidth = -3)
@@ -98,7 +105,10 @@ class Tree(TreeUI):
         self.right = float(vals[2])
         self.bottom = float(vals[3])
 
-        return ( self.left / GetScreenShot.multiple, \
-                 self.top / GetScreenShot.multiple, \
-                 self.right / GetScreenShot.multiple, \
-                 self.bottom / GetScreenShot.multiple )
+        return (self.left, self.top, self.right, self.bottom)
+
+    def coorThumb(self, coor):
+        result = ()
+        for i in coor:
+            result = result + (i/GetScreenShot.multiple, )
+        return result
