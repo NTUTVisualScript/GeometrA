@@ -47,7 +47,8 @@ class Tree(TreeUI):
             self.delete(row)
 
     def clearImage(self, event=None):
-        self.screenImage.destroy()
+        if self.screenImage:
+            self.screenImage.destroy()
 
     def treeInfo(self, info, id=''):
         for elem in info.findall('node'):
