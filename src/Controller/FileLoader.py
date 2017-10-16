@@ -127,7 +127,7 @@ class LoadFile:
 
     def modelConnect(self):
         from TestCaseUI import TestCaseUI
-        TestCaseUI.getTestCaseUI().ctrl = self.case
+        TestCaseUI.getTestCaseUI().ctrl.case = self.case
 
     def getTestCase(self):
         return self.case
