@@ -10,7 +10,6 @@
 from PIL import Image as IMG, ImageTk
 import xml.etree.cElementTree as ET
 from adbRobot import ADBRobot
-from uiautomator import device as d
 from GUI.TreeUI import TreeUI
 from ScreenShotController import GetScreenShot
 from tkinter import *
@@ -46,6 +45,9 @@ class Tree(TreeUI):
     def clearTree(self):
         for row in self.get_children():
             self.delete(row)
+
+    def clearImage(self, event=None):
+        self.screenImage.destroy()
 
     def treeInfo(self, info, id=''):
         for elem in info.findall('node'):

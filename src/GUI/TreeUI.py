@@ -23,3 +23,4 @@ class TreeUI(ttk.Treeview):
         self.xScrollbar.config(command=self.xview)
 
         self.bind("<ButtonRelease-1>", self.selectNode)
+        self.bind("<Leave>", self.clearImage)
