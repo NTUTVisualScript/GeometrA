@@ -4,7 +4,6 @@ from tkinter import filedialog
 from PIL import Image
 from TestCase import TestCase
 from TestStep import Step
-
 from MessageUI import Message
 from GUI.DialogueForm import  DialogueForm
 
@@ -127,7 +126,9 @@ class LoadFile:
 
     def modelConnect(self):
         from TestCaseUI import TestCaseUI
+        from Executor import Executor
         TestCaseUI.getTestCaseUI().ctrl.case = self.case
+        TestCaseUI.getTestCaseUI().ctrl.exe = Executor(self.case)
 
     def getTestCase(self):
         return self.case

@@ -40,6 +40,7 @@ class Message(MessageUI):
         self.tag_bind("reportpath", "<Button-1>", lambda e: self.HyperLinkClick(e, insertStr))
         self.config(state = NORMAL)
         self.insert(END, insertStr, "reportpath")
+        self.insert(END, '\n')
         self.config(state = DISABLED)
 
     def HyperLinkClick(self, event, insertStr):

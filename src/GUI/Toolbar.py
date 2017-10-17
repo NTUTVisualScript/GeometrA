@@ -16,7 +16,7 @@ class Toolbar(Frame):
         self._toolbar = Frame(parent, borderwidth=2, relief='groove')
         self._toolbar.pack(fill=X)
 
-        self.fileloader = FileLoader()
+        self.fileloader = FileLoader.getFileLoader()
         self.ShowSaveButton()
         self.ShowLoadButton()
         ##SeparateBar
