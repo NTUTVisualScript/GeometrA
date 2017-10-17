@@ -15,7 +15,6 @@ class TestController:
         self.undo = Undo(self.case)
         self.redo = Redo()
         self.save = False
-        self.report = Report()
 
     def execute(self, n):
         threading.Thread(target=self.exe.execute, args=(n,)).start()
@@ -32,6 +31,7 @@ class TestController:
         from TestCaseUI import TestCaseUI as UI
         self.case.refresh()
         UI.getTestCaseUI().reloadTestCaseUI()
+        self.report = Report()
         threading.Thread(target=self.runCase).start()
 
     def runCase(self):
