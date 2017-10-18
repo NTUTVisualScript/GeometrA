@@ -13,9 +13,11 @@ class Report:
         self.htmlfile = ""
         self.day = ""
         self.time = ""
-        self.info = Info()
         title = FileLoader.getFileLoader().getFileName()
         self.insert(HTML.ReportUI.getTitle(title))
+
+    def start(self):
+        self.info = Info()
         self.rstep = Step()
 
     def end(self, result, n):

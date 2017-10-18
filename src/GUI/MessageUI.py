@@ -100,7 +100,7 @@ class Message(MessageUI):
         if state == 'Success':
             self.stepSuccess()
         else:
-            self.InsertText('Step ' + str(n) + ' ' + state)
+            self.InsertText('Step ' + str(n+1) + ' ' + state)
 
     def stepError(self, n):
         self.InsertText('Step ' + str(n) + ' ERROR')

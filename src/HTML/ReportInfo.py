@@ -30,7 +30,7 @@ class Info:
             self.color = "danger"
 
     def getDate(self):
-        self.testDate = str(datetime.datetime.now()).split(' ')[0]
+        self.testDate = str(datetime.datetime.now()).split('.')[0]
         return self.testDate
 
     def setStartTime(self):
