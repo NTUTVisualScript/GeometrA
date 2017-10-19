@@ -55,7 +55,29 @@ class View(Frame, threading.Thread):
         self.setUI()
 
     def setUI(self):
-        pass
+        self.MenuBar()
+        self.focus = None
+        self.focusOBJImage = None
+        self.Drag_image = None
+        self.update_image = None
+        self.tree_obj_image_list = []
+        self.tree_obj_list = []
+        self.dirpath = ""
+        self.dirName = ""
+        self.select_node = None
+        self.select_image = None
+        self.checkADB = checkADB_Connection()
+        self.cmd = CommandManager
+        self.formatButton()
+        self.savecropImg = saveImg()
+        self.ScreenShotUI()
+        self.XMLTreeUI()
+        self.MessageUI()
+        #self.SaveIMGButton()
+        self.RunButton()
+        self.ResetButton()
+        self.getmouseEvent()
+        self.TestCaseFrame()
 
     def MenuBar(self):
         self.menubar = Menu(self.master)
@@ -348,17 +370,17 @@ class View(Frame, threading.Thread):
         #print(obj_image_info)
         self.tree_obj_image_list.append(obj_image_info)
 
-    def Set_Tree_image_place(self):
-        for i in range(self.rankMax + 1):
-            for j in range(len(self.tree_obj_image_list)):
-                if int(self.tree_obj_image_list[j][0]) == i:
-                    left = self.tree_obj_image_list[j][2]
-                    top = self.tree_obj_image_list[j][3]
-                    self.tree_obj_image_list[j][1].configure(borderwidth=-3)
-                    self.tree_obj_image_list[j][1].place(x = left, y = top)
-                    print("rank " , i, " x = ", left, " y = ",  top)
-
-        print(self.rankMax)
+    # def Set_Tree_image_place(self):
+    #     for i in range(self.rankMax + 1):
+    #         for j in range(len(self.tree_obj_image_list)):
+    #             if int(self.tree_obj_image_list[j][0]) == i:
+    #                 left = self.tree_obj_image_list[j][2]
+    #                 top = self.tree_obj_image_list[j][3]
+    #                 self.tree_obj_image_list[j][1].configure(borderwidth=-3)
+    #                 self.tree_obj_image_list[j][1].place(x = left, y = top)
+    #                 print("rank " , i, " x = ", left, " y = ",  top)
+    #
+    #     print(self.rankMax)
 
     def clear_XML_Tree(self):
         for row in self.treeview.get_children():
@@ -405,7 +427,7 @@ class View(Frame, threading.Thread):
         self.select_node = None
         self.select_image = None
         if getdevices ==None:
-            self.message.clear()
+            # self.message.clear()
             if self.checkADB.check() == "Connect":
                 threading.Thread(target=self.format).start()
         else:
@@ -764,7 +786,7 @@ class View(Frame, threading.Thread):
             self.new_line(n)
             n=n+1
 
-        print("line = " + str(self.line))
+        print(self.line)
 
     def AuxscrollFunction(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=650, height=525)

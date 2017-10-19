@@ -62,14 +62,16 @@ class Tree(TreeUI):
 
     def selectNode(self, event):
         self.selected = self.selection()[0]
+        path = []
+        self.nodePath(self.selected, path)
         self.selectImage()
-        TCUI.getTestCaseUI().ctrl.setStep(TCUI.getTestCaseUI().focus, self.image)
+        TCUI.getTestCaseUI().ctrl.setStep(TCUI.getTestCaseUI().focus, self.image, path)
         TCUI.getTestCaseUI().reloadTestCaseUI()
 
     def selectImage(self):
         itemValue = self.item(self.selected, 'value')[1]
 
-        self.select = self.nodes.index(self.selected)
+        # self.select = self.nodes.index(self.selected)
         coor = self.splitBounds(itemValue)
         self.nodeImage(self.coorThumb(coor))
 
@@ -115,3 +117,15 @@ class Tree(TreeUI):
         for i in coor:
             result = result + (i/GetScreenShot.multiple, )
         return result
+
+    def nodePath(self, item, path):
+        itemValue = []
+        itemValue.append(self.item(item, "text"))
+        value = self.item(item, "value")
+        itemValue.append(value[0])
+        path.append(itemValue)
+
+        if self.parent(item):
+            self.nodePath(self.parent(item), path)
+        else:
+            return path

@@ -89,7 +89,7 @@ class TestController:
         self.undo.push(self.case)
         self.case.delete(n)
 
-    def setStep(self, n, image = None):
+    def setStep(self, n, image = None, node = None):
         if n == None: return
         self.caseSaved(False)
         # Save current TestCase to undo model
@@ -97,7 +97,7 @@ class TestController:
         self.undo.push(self.case)
 
         stepExist = self.exist(n)
-        self.putValue(n, stepExist, image)
+        self.putValue(n, stepExist, image, node)
 
 
 
@@ -111,7 +111,7 @@ class TestController:
 
 
     # Set step information to model
-    def putValue(self, n, stepExist, image):
+    def putValue(self, n, stepExist, image, node=None):
         from TestCaseUI import TestCaseUI as UI
         stepList = UI.getTestCaseUI().stepList
         try:
@@ -123,12 +123,14 @@ class TestController:
                 else:
                     self.case.setAction(n, stepList[n].action.get())
                     self.case.setValue(n, image)
+                    self.case.setNode(n, node)
             else:
                 if image is None:
                     Value.testCaseEntryValid(stepList, n)
                     self.case.insert(n=n, act=stepList[n].action.get(), val=stepList[n].value.get())
                 else:
                     self.case.insert(n=n, act=stepList[n].action.get(), val=image)
+                    self.case.setNode(n, node)
         # Handle the exception for invalid value
         except Exception as e:
             print(e)

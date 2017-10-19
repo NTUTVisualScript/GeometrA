@@ -1,4 +1,4 @@
-from Window import View
+
 
 
 from tkinter import *
@@ -21,9 +21,10 @@ from MessageUI import Message
 from DumpButton import DumpButton
 from TreeController import Tree
 
-class Window(View):
+class Window(Frame):
     def __init__(self, master=None):
-        super().__init__(master)
+        Frame.__init__(self, master)
+        master.minsize(width=1470, height=840)
         TestCaseUI.getTestCaseUI()
         DumpButton(master)
         ScreenshotUI.getScreenshotUI()

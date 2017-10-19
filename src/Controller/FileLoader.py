@@ -48,25 +48,28 @@ class SaveFile:
 
     def jsonEncoder(self):
         from TestCaseUI import TestCaseUI
+        from TreeController import Tree
         _dataDict = {}
         _case = TestCaseUI.getTestCaseUI().ctrl.case
         for i in range(_case.getSize()):
             _data = {}
             act = _case.getSteps(i).getAction()
+            val = _case.getSteps(i).getValue()
             _data['action'] = act
-            if (str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>") | \
-                (str(_case.getSteps(i).getValue().__class__) == "<class 'PIL.Image.Image'>"):
+            if (str(val.__class__) == "<class 'PIL.PngImagePlugin.PngImageFile'>") | \
+                (str(val.__class__) == "<class 'PIL.Image.Image'>"):
                 # Image path format: /*TestCaseName*_image/image_*StepNumber*.png
                 _imgpath = self._fileName + "_image/image_" + str(i + 1) + ".png"
                 if not os.path.isdir(self._folderPath + self._fileName + "_image"):
                     os.makedirs(self._folderPath + self._fileName + "_image")
-                _case.getSteps(i).getValue().save(self._folderPath + _imgpath)
+                val.save(self._folderPath + _imgpath)
                 _data['value'] = None
                 _data['image'] = _imgpath
+                _data['nodePath'] = _case.getSteps(i).getNode()
             else:
-                val = _case.getSteps(i).getValue()
                 _data['value'] = val
                 _data['image'] = None
+                _data['nodePath'] = None
 
             _dataDict[str(i + 1)] = _data
 
@@ -120,10 +123,11 @@ class LoadFile:
             val = data['value']
             if val is None:
                 val = Image.open(self._folderPath + data['image'])
+                node = data['nodePath']
 
-            step = Step(act, val)
+            step = Step(act, val, node)
             self.case.insert(step=step)
-
+            
     def modelConnect(self):
         from TestCaseUI import TestCaseUI
         from Executor import Executor
