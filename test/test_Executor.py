@@ -89,10 +89,14 @@ class ExecutorTestSuite(unittest.TestCase):
         failedTarget = Image.open('./TestCase/Test/image/failed.png')
         tooManyTarget = Image.open('./TestCase/Test/image/toomany.png')
 
+        step1 = Step(act='Click', val=successTarget)
+        step2 = Step(act='Click', val=failedTarget)
+        step3 = Step(act='Click', val=tooManyTarget)
+
         exe = Executor(TestCase())
-        self.assertEqual('Success', exe.imageFinder(sourceImage=source, targetImage=successTarget))
-        self.assertEqual('Failed', exe.imageFinder(sourceImage=source, targetImage=failedTarget))
-        self.assertEqual('Too many', exe.imageFinder(sourceImage=source, targetImage=tooManyTarget))
+        self.assertEqual('Success', exe.imageFinder(sourceImage=source, step=step1))
+        self.assertEqual('Failed', exe.imageFinder(sourceImage=source, step=step2))
+        self.assertEqual('Too many', exe.imageFinder(sourceImage=source, step=step3))
 
     def testExecuteLoop(self):
         case = TestCase()

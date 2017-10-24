@@ -1,0 +1,14 @@
+{
+  "1": {
+    "action": "Android Keycode",
+    "value": "KEYCODE_HOME",
+    "image": null,
+    "nodePath": null
+  },
+  "2": {
+    "action": "Click",
+    "value": null,
+    "image": "setup_image/image_2.png",
+    "nodePath": null
+  }
+}

@@ -38,7 +38,8 @@ class ExecutorActionTestSuite(unittest.TestCase):
         exe.execute(0)
         self.assertEqual('Success', exe.execute(1))
         target = Image.open('./TestCase/SetText/source.png')
-        self.assertEqual('Success', exe.imageFinder(targetImage=target))
+        target = Step(act='Click', val='Target')
+        self.assertEqual('Success', exe.imageFinder(step=target))
         exe.execute(2)
 
     def testExecuteTestCase(self):
