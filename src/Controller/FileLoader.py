@@ -121,13 +121,15 @@ class LoadFile:
 
             act = data['action']
             val = data['value']
+
+            node = None
             if val is None:
                 val = Image.open(self._folderPath + data['image'])
                 node = data['nodePath']
 
             step = Step(act, val, node)
             self.case.insert(step=step)
-            
+
     def modelConnect(self):
         from TestCaseUI import TestCaseUI
         from Executor import Executor

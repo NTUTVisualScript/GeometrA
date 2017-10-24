@@ -3,12 +3,12 @@
     "action": "Android Keycode",
     "value": "KEYCODE_BACK",
     "image": null,
-    "image_node_path": null
+    "nodePath": null
   },
   "2": {
     "action": "Android Keycode",
     "value": "KEYCODE_BACK",
     "image": null,
-    "image_node_path": null
+    "nodePath": null
   }
 }

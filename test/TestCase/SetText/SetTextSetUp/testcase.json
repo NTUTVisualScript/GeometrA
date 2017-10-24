@@ -3,96 +3,30 @@
     "action": "Android Keycode",
     "value": "KEYCODE_HOME",
     "image": null,
-    "image_node_path": null
+    "nodePath": null
   },
   "2": {
     "action": "Click",
     "value": null,
-    "image": "/image/Click_1.png",
-    "image_node_path": {
-      "1": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "2": [
-        "(0) android.widget.LinearLayout  ",
-        ""
-      ],
-      "3": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "4": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "5": [
-        "(2) android.view.ViewGroup  ",
-        ""
-      ],
-      "6": [
-        "(1) android.view.ViewGroup  ",
-        ""
-      ],
-      "7": [
-        "(0) android.view.ViewGroup  ",
-        ""
-      ]
-    }
+    "image": "testcase_image/image_2.png",
+    "nodePath": null
   },
   "3": {
     "action": "Sleep(s)",
     "value": "2",
     "image": null,
-    "image_node_path": null
+    "nodePath": null
   },
   "4": {
     "action": "Click",
     "value": null,
-    "image": "/image/Click_3.png",
-    "image_node_path": {
-      "1": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "2": [
-        "(0) android.widget.LinearLayout  ",
-        ""
-      ],
-      "3": [
-        "(0) android.widget.FrameLayout  ",
-        ""
-      ],
-      "4": [
-        "(0) android.view.View  ",
-        ""
-      ],
-      "5": [
-        "(1) android.widget.FrameLayout  ",
-        ""
-      ],
-      "6": [
-        "(0) android.widget.RelativeLayout  ",
-        ""
-      ],
-      "7": [
-        "(0) android.widget.RelativeLayout  ",
-        ""
-      ],
-      "8": [
-        "(0) android.widget.LinearLayout  ",
-        ""
-      ],
-      "9": [
-        "(0) android.widget.EditText  ",
-        "\u641c\u5c0b"
-      ]
-    }
+    "image": "testcase_image/image_4.png",
+    "nodePath": null
   },
   "5": {
     "action": "Sleep(s)",
     "value": "1",
     "image": null,
-    "image_node_path": null
+    "nodePath": null
   }
 }
