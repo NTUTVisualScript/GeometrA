@@ -46,7 +46,6 @@ class Report:
         self.path = PATH(filepath + "/report/" + date)
         if not os.path.isdir(PATH(self.path)):
             os.makedirs(self.path)
-            self.htmlfile = ""
 
     def exportHTML(self):
         with open(str(self.path) + '/' + self.time + '.html', 'w') as htmlReport:
