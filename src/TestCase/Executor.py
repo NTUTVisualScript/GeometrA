@@ -64,7 +64,7 @@ class Executor():
 
     def click(self, n):
         status = self.imageFinder(step=self.case.getSteps(n))
-
+        print(status)
         if status == 'Success':
             self.robot.tap(self.clickX, self.clickY)
             return 'Success'
@@ -78,26 +78,36 @@ class Executor():
 
     def imageFinder(self, step, sourceImage=None):
         # return True
-        if sourceImage == None:
+        if sourceImage is None:
             sourceImage = self.robot.before_screenshot()
         targetImage = step.getValue()
-        source = CV2Img()
-        source.load_file(sourceImage, 0)
+        if str(sourceImage.__class__) == "<class 'cv2img.CV2Img'>":
+            source = sourceImage
+        else:
+            source = CV2Img()
+            source.load_file(sourceImage, 0)
         target = CV2Img()
         target.load_PILimage(targetImage)
         finder = TemplateFinder(source)
         results = finder.find_all(target, 0.9)
-        if len(results) < 1:
-            return 'Failed'
-        elif len(results) == 1:
+        # if len(results) < 1:
+        #     return 'Failed'
+        if len(results) == 1:
             self.clickX, self.clickY = source.coordinate(results[0])
             return 'Success'
         else:
-            # return 'Too many'
-            return self.nodeFinder(step.getNode())
+            return self.nodeFinder(step)
 
-    def nodeFinder(self, node):
-        pass
+    def nodeFinder(self, step):
+        from Controller.TreeController import Tree
+        node = step.getNode()
+        result = Tree.getTree().findNode(node)
+
+        if result == 'Failed': return result
+
+        self.clickX, self.clickY = result
+        return 'Success'
+        # return self.imageFinder(step, nodeSource)
 
     def Swipe(self, n):
         value = str(self.case.getSteps(n).getValue())

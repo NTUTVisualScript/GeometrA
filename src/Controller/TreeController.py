@@ -15,6 +15,7 @@ from ScreenShotController import GetScreenShot
 from tkinter import *
 from ScreenshotUI import ScreenshotUI
 from TestCaseUI import TestCaseUI as TCUI
+from cv2img import CV2Img
 
 class Tree(TreeUI):
     __single = None
@@ -73,21 +74,24 @@ class Tree(TreeUI):
 
         # self.select = self.nodes.index(self.selected)
         coor = self.splitBounds(itemValue)
-        self.nodeImage(self.coorThumb(coor))
+        self.showNodeImage(self.coorThumb(coor))
 
         # Used for the data to store in back end
         path = ('./screenshot_pic/tmp.png')
         self.image = IMG.open(path).crop(coor)
 
     def nodeImage(self, coor):
-        if self.screenImage:
-            self.screenImage.destroy()
         path = ('./screenshot_pic/tmp.png')
         img = IMG.open(path)
         img.thumbnail((GetScreenShot.x, GetScreenShot.y))
         img = img.crop(coor)
-        img = ImageTk.PhotoImage(img)
+        return img
 
+    def showNodeImage(self, coor):
+        if self.screenImage:
+            self.screenImage.destroy()
+        img = self.nodeImage(coor)
+        img = ImageTk.PhotoImage(img)
 
         self.screenImage = Canvas(ScreenshotUI.getScreenshotUI(), height=coor[3] - coor[1], width=coor[2] - coor[0])
         self.screenImage.configure(borderwidth = -3)
@@ -129,3 +133,38 @@ class Tree(TreeUI):
             self.nodePath(self.parent(item), path)
         else:
             return path
+
+    def findNode(self, path):
+        self.reload()
+        path.reverse()
+        self.depth = len(path)
+        result = self.searchPath(path)
+
+        if result == 'Failed': return result
+
+        item = self.item(result, 'value')[1]
+
+        coor = self.splitBounds(item)
+        x = (coor[0] + coor[2])/2
+        y = (coor[1] + coor[3])/2
+        return (x, y)
+        # img = self.nodeImage(coor)
+        # print(img.__class__)
+        #
+        # return CV2Img().load_PILimage(img)
+
+    def searchPath(self, path, rank = 0, item = ''):
+        if rank < (self.depth - 1) :
+            children = self.get_children(item)
+            for child in children:
+                if path[rank][0] == self.item(child)['text']:
+                    result = self.searchPath(path, rank+1, child)
+                    if result: return result
+        else:
+            children = self.get_children(item)
+            for child in children:
+                if  ( path[rank][0] == self.item(child)['text'] ) & \
+                    ( str(path[rank][1]) == self.item(child)['values'][0] ):
+                    return child
+            return None
+        return 'Failed'
