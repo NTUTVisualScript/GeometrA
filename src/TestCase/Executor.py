@@ -99,7 +99,7 @@ class Executor():
             return self.nodeFinder(step)
 
     def nodeFinder(self, step):
-        from Controller.TreeController import Tree
+        from TreeController import Tree
         node = step.getNode()
         result = Tree.getTree().findNode(node)
 

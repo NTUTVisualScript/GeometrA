@@ -44,8 +44,6 @@ class Mouse():
     def mouseDragged(self, event):
         if GetScreenShot.screenShot == None: return
 
-
-
         self.mouseLeave(event)
 
         if event.x < 0:
@@ -86,21 +84,26 @@ class Mouse():
         self.UI.ctrl.setStep(self.UI.focus)
 
     def cropPhoto(self, event):
+        from TreeController import Tree
+
         if (self.startX < self.endX) and (self.startY < self.endY):
-            Mouse.croppedPhoto = self.photo.crop((self.startX, self.startY, self.endX, self.endY))
+            self.coor = (self.startX, self.startY, self.endX, self.endY)
             #left-top
         elif (self.startX < self.endX) and (self.startY > self.endY):
-            Mouse.croppedPhoto = self.photo.crop((self.startX, self.endY, self.endX, self.startY))
+            self.coor = (self.startX, self.endY, self.endX, self.startY)
             #left-bottom
         elif(self.startX > self.endX) and (self.startY < self.endY):
-            Mouse.croppedPhoto = self.photo.crop((self.endX, self.startY, self.startX, self.endY))
+            self.coor = (self.endX, self.startY, self.startX, self.endY)
             #right-top
         else:
-            Mouse.croppedPhoto = self.photo.crop((self.endX, self.endY, self.startX, self.startY))
+            self.coor = (self.endX, self.endY, self.startX, self.startY)
             #right-bottom
 
+        Mouse.croppedPhoto = self.photo.crop(self.coor)
+        node = Tree.getTree().getNode(self.coor)
+
         self.UI.actionFocusIn(ImageTk.PhotoImage(Mouse.croppedPhoto.resize((100, 100))))
-        self.UI.ctrl.setStep(self.UI.focus, Mouse.croppedPhoto)
+        self.UI.ctrl.setStep(self.UI.focus, Mouse.croppedPhoto, node)
 
     def drawArrow(self, startX, startY, endX, endY):
         angle = math.atan2(startY - endY, startX - endX) * 180 / math.pi

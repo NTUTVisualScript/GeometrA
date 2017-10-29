@@ -18,20 +18,22 @@ from TestCaseUI import TestCaseUI as TCUI
 from cv2img import CV2Img
 
 class Tree(TreeUI):
-    __single = None
+    single = None
     def __init__(self, parent=None):
-        if Tree.__single:
-            raise Tree.__single
-
         super().__init__(parent)    # To construct the UI part of tree.
+        if Tree.single:
+            raise Tree.single
+
         self.xmlPath = ""
-        self.nodes = []
         self.screenImage = None
+        Tree.single = self
+        self.nodes = []
 
     def getTree(parent=None):
-        if not Tree.__single:
-            Tree.__single = Tree(parent)
-        return Tree.__single
+        if Tree.single == None:
+            Tree(parent)
+            print('HI')
+        return Tree.single
 
     def reload(self):
         self.clearTree()
@@ -51,6 +53,30 @@ class Tree(TreeUI):
         if self.screenImage:
             self.screenImage.destroy()
 
+    def getNode(self, coor):
+        self.nearNodes = []
+        self.getNearNodes(coor)
+        text = [""]
+        print(len(self.nearNodes))
+        text.insert(0, self.nearNodes[-1])
+        self.selection_set(text)
+        return self.getPath()
+
+    def getNearNodes(self, coor, item=''):
+        for child in self.get_children(item):
+
+
+            bounds = self.splitBounds( str(self.item(child, 'values')[1]) )
+
+            print(bounds)
+            print(coor)
+
+            if (bounds[0] < coor[0]) & (bounds[1] < coor[1]) & (bounds[2] > coor[2]) & (bounds[3] > coor[3]):
+                self.nearNodes.append(child)
+
+            self.getNearNodes(coor, child)
+
+
     def treeInfo(self, info, id=''):
         for elem in info.findall('node'):
             if elem is None: return
@@ -58,21 +84,23 @@ class Tree(TreeUI):
                                     text='(' + str(elem.get('index')) + ') ' + str(elem.get('class')) + '  ', \
                                     values=( str(elem.get('text')), str(elem.get('bounds')) ), open=True)
             self.nodes.append(child_id)
-
             self.treeInfo(elem, child_id)
 
-    def selectNode(self, event):
+    def selectNode(self, event=None):
+        self.selectImage()
+        path = self.getPath()
+        TCUI.getTestCaseUI().ctrl.setStep(TCUI.getTestCaseUI().focus, self.image, path)
+        TCUI.getTestCaseUI().reloadTestCaseUI()
+
+    def getPath(self):
         self.selected = self.selection()[0]
         path = []
         self.nodePath(self.selected, path)
-        self.selectImage()
-        TCUI.getTestCaseUI().ctrl.setStep(TCUI.getTestCaseUI().focus, self.image, path)
-        TCUI.getTestCaseUI().reloadTestCaseUI()
+        return path
 
     def selectImage(self):
         itemValue = self.item(self.selected, 'value')[1]
 
-        # self.select = self.nodes.index(self.selected)
         coor = self.splitBounds(itemValue)
         self.showNodeImage(self.coorThumb(coor))
 
