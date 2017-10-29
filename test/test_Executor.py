@@ -157,3 +157,57 @@ class ExecutorTestSuite(unittest.TestCase):
         self.assertEqual(5, exe.loopEnd(0))
         self.assertEqual(4, exe.loopEnd(1))
         self.assertEqual(3, exe.loopEnd(2))
+
+    def testNodeFinder(self):
+        case = TestCase()
+        exe = Executor(case)
+        case.insert(act='TestCase', val='./TestCase/NodeTest/Setup/setup.json')
+        action = 'Click'
+        value = "./TestCase/NodeTest/Test/test_image/image_1.png"
+        node = '''
+                [
+                  [
+                    "(0) android.widget.TextView  ",
+                    "\u8def\u7dda\u641c\u5c0b"
+                  ],
+                  [
+                    "(0) android.widget.TableRow  ",
+                    ""
+                  ],
+                  [
+                    "(1) android.widget.TableLayout  ",
+                    ""
+                  ],
+                  [
+                    "(0) android.widget.LinearLayout  ",
+                    ""
+                  ],
+                  [
+                    "(1) android.widget.FrameLayout  ",
+                    ""
+                  ],
+                  [
+                    "(0) android.view.View  ",
+                    ""
+                  ],
+                  [
+                    "(0) android.widget.FrameLayout  ",
+                    ""
+                  ],
+                  [
+                    "(0) android.widget.LinearLayout  ",
+                    ""
+                  ],
+                  [
+                    "(0) android.widget.FrameLayout  ",
+                    ""
+                  ]
+                ]
+            '''
+        step = Step(act=action, val=value, node=node)
+        case.insert(step=step)
+        case.insert(act='TestCase', val='./TestCase/NodeTest/Teardown/teardown.json')
+
+        self.exe.execute(0)
+        self.assertEqual('Success', self.exe.nodeFinder(step.getNode()))
+        self.exe.execute(2)

@@ -93,8 +93,11 @@ class Executor():
             self.clickX, self.clickY = source.coordinate(results[0])
             return 'Success'
         else:
-            return 'Too many'
-            # return self.nodeFinder()
+            # return 'Too many'
+            return self.nodeFinder(step.getNode())
+
+    def nodeFinder(self, node):
+        pass
 
     def Swipe(self, n):
         value = str(self.case.getSteps(n).getValue())
