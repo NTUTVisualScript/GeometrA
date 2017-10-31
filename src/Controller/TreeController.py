@@ -87,8 +87,8 @@ class Tree(TreeUI):
             self.treeInfo(elem, child_id)
 
     def selectNode(self, event=None):
-        self.selectImage()
         path = self.getPath()
+        self.selectImage()
         TCUI.getTestCaseUI().ctrl.setStep(TCUI.getTestCaseUI().focus, self.image, path)
         TCUI.getTestCaseUI().reloadTestCaseUI()
 
