@@ -80,8 +80,8 @@ class LoadFile:
     def loadButtonClick(self, event=None):
         from TestCaseUI import TestCaseUI
         self.loadFile()
-        self.modelConnect()
         if self._filePath != '':
+            self.modelConnect()
             TestCaseUI.getTestCaseUI().reloadTestCaseUI()
             TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
         Message.getMessage().fileLoaded(self._filePath)
