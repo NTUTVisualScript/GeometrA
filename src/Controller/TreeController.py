@@ -56,7 +56,6 @@ class Tree(TreeUI):
         self.nearNodes = []
         self.getNearNodes(coor)
         text = [""]
-        print(len(self.nearNodes))
         text.insert(0, self.nearNodes[-1])
         self.selection_set(text)
         self.see(self.selection()[0])
@@ -64,12 +63,7 @@ class Tree(TreeUI):
 
     def getNearNodes(self, coor, item=''):
         for child in self.get_children(item):
-
-
             bounds = self.splitBounds( str(self.item(child, 'values')[1]) )
-
-            print(bounds)
-            print(coor)
 
             if (bounds[0] < coor[0]) & (bounds[1] < coor[1]) & (bounds[2] > coor[2]) & (bounds[3] > coor[3]):
                 self.nearNodes.append(child)
@@ -177,7 +171,6 @@ class Tree(TreeUI):
         y = (coor[1] + coor[3])/2
         return (x, y)
         # img = self.nodeImage(coor)
-        # print(img.__class__)
         #
         # return CV2Img().load_PILimage(img)
 

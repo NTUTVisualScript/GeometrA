@@ -10,13 +10,21 @@ from GUI.DialogueForm import  DialogueForm
 
 class SaveFile:
     def saveButtonClick(self, event=None):
+        from TestCaseUI import TestCaseUI
+        if TestCaseUI.getTestCaseUI().ctrl.save:
+            return
         self.saveFile()
         Message.getMessage().fileSaved(self._filePath)
+
+    def saveAsButtonClick(self, event=None):
+        self._filePath = ''
+        self.saveButtonClick()
 
     def saveFile(self):
         try:
             self.checkEntryValid()
-            self.getSaveFilePath()
+            if self._filePath == '':
+                self.getSaveFilePath()
             self.getFolderName()
             if self._filePath == '': return
             self.jsonEncoder()
