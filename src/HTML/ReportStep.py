@@ -99,10 +99,13 @@ class Step:
         else:
             self.actionvalue = self.stepIMG(step.getValue())
 
-
+        act = step.getAction()
         self.HTMLStep = self.HTMLStep + r"""
 	<div class="panel panel-""" + bg_color + """">
       <div class="panel-heading"><h4>""" + " Step "+ str(n + 1) + " " + step.getAction() + " : </br></br>" +self.actionvalue + """</h4></div>
+"""
+        if act != 'Sleep(s)':
+            self.HTMLStep = self.HTMLStep + r"""
       <div class="panel-body">
         <div class="col-md-6">
           <ul class="device-info">
@@ -110,12 +113,19 @@ class Step:
             <li>"""+ self.beforeImg + """</li>
           </ul>
         </div>
+"""
+            if (act != 'Assert Exist') & (act != 'Assert Not Exist'):
+                self.HTMLStep = self.HTMLStep + r"""
         <div class="col-md-6">
           <ul class="device-info">
             <li><h4>After</h4></li>
             <li>"""+ self.afterImg + """</li>
           </ul>
         </div>
+"""
+            self.HTMLStep = self.HTMLStep + r"""
       </div>
+"""
+        self.HTMLStep = self.HTMLStep + r"""
     </div>
 """

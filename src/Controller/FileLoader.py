@@ -166,6 +166,7 @@ class FileLoader(SaveFile, LoadFile):
 
     def getFileName(self):
         self._fileName = self._filePath.split('/').pop().rstrip('.json')
+        return self._fileName
 
     def getFolderName(self):
         _fp = self._filePath
