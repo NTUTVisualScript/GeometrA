@@ -32,7 +32,6 @@ class Tree(TreeUI):
     def getTree(parent=None):
         if Tree.single == None:
             Tree(parent)
-            print('HI')
         return Tree.single
 
     def reload(self):
@@ -60,6 +59,7 @@ class Tree(TreeUI):
         print(len(self.nearNodes))
         text.insert(0, self.nearNodes[-1])
         self.selection_set(text)
+        self.see(self.selection()[0])
         return self.getPath()
 
     def getNearNodes(self, coor, item=''):
