@@ -5,6 +5,8 @@
 '''
 
 from tkinter import *
+from tkinter import ttk
+
 class TreeUI(ttk.Treeview):
     def __init__(self, parent=None):
         self.yScrollbar = Scrollbar(parent, orient=VERTICAL)

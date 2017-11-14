@@ -101,6 +101,8 @@ class Executor():
     def nodeFinder(self, step):
         from TreeController import Tree
         node = step.getNode()
+        if node is None:
+            return 'Failed'
         result = Tree.getTree().findNode(node)
 
         if result == 'Failed': return result
@@ -186,7 +188,6 @@ class Executor():
                     if act == 'Loop End':
                         break
                     status = self.execute(j)
-
                     if act == 'Loop Begin':
                         j = self.loopEnd(j)
                     if (status == 'Failed') or (status == 'Error'):
