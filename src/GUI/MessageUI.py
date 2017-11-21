@@ -1,6 +1,8 @@
 from tkinter import *
 import webbrowser
 import os
+import subprocess
+import sys
 
 class MessageUI(Text):
     def __init__(self, parent=None):
@@ -44,7 +46,13 @@ class Message(MessageUI):
         self.config(state = DISABLED)
 
     def HyperLinkClick(self, event, insertStr):
-        webbrowser.open_new(r"" + insertStr)
+        windows = 'win32'
+        if sys.platform == windows:
+            webbrowser.open_new(r"" + insertStr)
+        else:
+            opFile = 'open ' + r"" + insertStr
+            subprocess.call(opFile, shell=True)
+
 
     def reset(self):
         self.config(state = NORMAL)
@@ -89,7 +97,12 @@ class Message(MessageUI):
     def fileHyperLinkClick(self, event, path):
         folder = os.path.split(path)[0]
         # print(folder)
-        os.startfile(folder)
+        windows = 'win32'
+        if sys.platform == windows:
+            os.startfile(folder)
+        else:
+            opFile = 'open ' + folder
+            subprocess.call(opFile, shell=True)
 
     def stepSuccess(self):
         self.config(state = NORMAL)
