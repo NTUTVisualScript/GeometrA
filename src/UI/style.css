@@ -1,16 +1,27 @@
-body {
-    margin: 0;
-    padding: 0;
+* {
+    /*border: solid 1px black;*/
     font-family: sans-serif;
+    letter-spacing: 1px;
+    vertical-align: top;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    overflow-x: hidden;
 }
 
 .Menu-Bar {
-    margin: 0 auto;
-    display: inline-block;
+    margin: auto;
+    display: block;
     width: 100%;
     background-color: #D5F2E3;
-    position: absolute;
+    z-index: 999;
+    position: fixed;
     top: 0px;
+    left: 0px
 }
 
 .Menu-Button {
@@ -23,63 +34,90 @@ body {
     color: #216869;
     font-family: "Times New Roman", Georgia, Serif;
     font-size: 24px;
-    letter-spacing: 1px;
     padding: 5px;
     padding-left: 20px;
     padding-right: 20px;
 }
 
 .Project-Manager {
+    display: inline-block;
     background-color: #D5F2E3;
+    height: 450px;
     width: 20%;
-    height: 60%;
-    position: absolute;
-    top: 120px;
+    position: relative;
+    top: 150px;
+    left: 0px
 }
 
 .TestCase {
-    background-color: #D55555;
+    display: inline-block;
+    background-color: #D5F2E3;
+    height: 555px;
     width: 58%;
-    height: 60%;
-    position: absolute;
-    left: 21%;
-    top: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 150px;
 }
 
 .Tab {
-    background-color: #D53333;
-    width: 97%;
-    height: 7%;
-    padding: 5px;
+    background-color: ;
+    width: 95%;
+    height: 30px;
+    padding: 8px;
     margin: 5px;
-    position: static;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    top: 0px;
 }
 
 .ToolBox {
     display: inline-block;
     background-color: #D11111;
+    height: 400px;
     width: 23%;
-    height: 80%;
     padding: 5px;
     margin: 5px;
-    position: static;
+    position: absolute;
+    top: 80px;
+    left: 0px;
 }
 
 .Editor {
     display: inline-block;
     background-color: #D13333;
     width: 70%;
-    height: 80%;
+    height: 400px;
     padding: 5px;
     margin: 5px;
-    position: static;
+    position: absolute;
+    top: 80px;
+    left: 25%;
+    overflow-y: scroll;
 }
 
 .ScreenShot {
+    display: inline-block;
     background-color: #D5F2E3;
     width: 20%;
-    height: 60%;
-    position: absolute;
-    right: 0%;
-    top: 120px;
+    height: 450px;
+    position: relative;
+    top: 150px;
+    right: 0px;
+}
+
+.Action {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 90%;
+}
+
+.Action-Button {
+    display: block;
+    text-align: center;
+    margin: 3px;
+    padding: 5px;
+    border: solid 2px #4B8F8C;
+    border-radius: 5px;
 }
