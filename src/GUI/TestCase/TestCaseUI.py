@@ -1,7 +1,7 @@
 from tkinter import *
 from PIL import ImageTk
 from TestStepUI import TestStepUI
-from LoadFile import LoadFile
+from Controller.FileLoader import FileLoader
 from Action import *
 import StepOperate
 import Value
@@ -76,7 +76,7 @@ class TestCaseUI(Frame):
         if action == '':
             self.stepList[self.focus].value.grid_remove()
         elif action == 'TestCase':
-            path = LoadFile().LoadTestCasePath()
+            path = FileLoader().getLoadFilePath()
             if (path is not None) and (path != ''):
                 self.stepList[self.focus].value.delete(0, 'end')
                 self.stepList[self.focus].value.insert('end', path)

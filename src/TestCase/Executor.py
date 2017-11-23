@@ -7,7 +7,6 @@ from adbRobot import ADBRobot
 from Controller.FileLoader import FileLoader
 from MessageUI import Message
 from finder.template_finder import TemplateFinder
-from Controller.TestReport import TestReport
 
 class Executor():
     def __init__(self, case):

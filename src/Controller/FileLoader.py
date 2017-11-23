@@ -118,6 +118,7 @@ class LoadFile:
         if _f is None: return
         self._filePath = _f.name
         self.getFileName()
+        return self._filePath
 
     def jsonDecoder(self):
         with open(self._filePath, 'r') as f:
