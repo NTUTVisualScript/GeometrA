@@ -1,0 +1,119 @@
+//Sass should be translated to CSS when modifying
+
+//COLORS
+$main_color: #4B8F8C
+$secondary_color: #F76C5E
+$func_color: #F7B267
+$background_color: #F2F2D9
+$border_color: #7C2534
+
+//BASE
+$base_font_size: 10px
+$base_line_size: 2px
+
+*
+    // border: solid 0.5px black
+    position: relative
+    margin: 0px
+    padding: 0px
+    font-family: 'sans-serif',"微軟正黑體"
+    letter-spacing: 0.3px
+    background-color: $background_color
+
+body,html
+
+
+@mixin size($w,$h)
+    width: $w
+    height: $h
+
+h6
+    text-align: center
+    font-size: $base_font_size*1.8
+    padding: 3px
+    letter-spacing: 1.5px
+    background-color: $secondary_color
+    border-radius: 15px 15px 0px 0px
+
+#Menu-Bar
+    width: 100%
+    margin-bottom: 5px
+    img,ul,li,div
+        vertical-align: middle
+        display: inline-block
+    img
+        height: 120px
+        transform: translateX(-50%) rotateY(-50%)
+    .Slogan
+        display: inline-block
+        margin-bottom: 10px
+    li
+        font-family: "Barlow Semi Condensed", Georgia, Serif
+        font-size: $base_font_size*2.5
+        background-color: $func_color
+        border-top: solid $main_color 3px
+        border-bottom: solid $main_color 5px
+        border-radius: 5px
+        vertical-align: middle
+        margin-left: 8px
+        padding-left: 20px
+        padding-right: 20px
+        cursor: pointer
+        transition-duration: 0.5s
+        &:hover
+            transform: translateY(-3px) translateX(-3px)
+            box-shadow: 10px 10px 30px rgba(50,50,50,0.4)
+
+.row2
+    +size(100%,80%)
+    text-align: center
+
+    #Project-Manager,#TestCase,#ScreenShot
+        display: inline-block
+        vertical-align: middle
+    #Project-Manager,#ScreenShot,.ToolBox,.Editor
+        border: solid 3px $border_color
+        border-radius: 18px 18px 5px 5px
+    #Project-Manager
+        +size(18%,100%)
+
+    #TestCase
+        +size(55%,100%)
+        .tab,.ToolBox,.Editor
+            display: inline-block
+        .Tab
+            +size(100%,5%)
+            text-align: left
+            & div
+                display: inline-block
+                border: solid 2px $func_color
+                border-radius: 1px
+                padding: 3px 8px
+                margin-top: 2px
+        .ToolBox
+            +size(40%,90%)
+        .Editor
+            +size(58%,90%)
+    #ScreenShot
+        +size(25%,100%)
+
+.row3
+    #Node,#Message
+        transition-duration: 0.7s
+        cursor: pointer
+        position: fixed
+        bottom: 0px
+        border: solid 3px $border_color
+        border-radius: 18px 18px 5px 5px
+    #Node
+        +size(45%,4%)
+        left: 10%
+        &:hover
+            +size(55%,40%)
+            z-index: 999
+    #Message
+        +size(35%,4%)
+        right: 5%
+        &:hover
+            +size(45%,40%)
+            z-index: 999
