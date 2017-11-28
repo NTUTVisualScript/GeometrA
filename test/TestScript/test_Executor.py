@@ -2,15 +2,14 @@ import unittest
 from PIL import Image, ImageTk
 
 import sys
-sys.path.append('../src/TestCase')
 sys.path.append('../src')
 sys.path.append('../src/GUI')
 sys.path.append('../src/GUI/TestCase')
 sys.path.append('../src/Controller')
 from DialogueForm import DialogueForm
-from Executor import Executor
-from TestStep import Step
-from TestCase import TestCase
+from TestScript.Executor import Executor
+from TestScript.TestStep import Step
+from TestScript.TestCase import TestCase
 
 from DialogueForm import DialogueForm
 
@@ -18,7 +17,7 @@ class ExecutorTestSuite(unittest.TestCase):
     def testConstructer(self):
         case = TestCase()
         exe = Executor(case)
-        self.assertEqual('<class \'TestCase.TestCase\'>', str(exe.case.__class__))
+        self.assertEqual('<class \'TestScript.TestCase.TestCase\'>', str(exe.case.__class__))
     def testConstructerExcept(self):
         step = Step('Set Text', 'Hello World')
         self.assertRaisesRegex(Exception, 'Not a executable case', Executor, step)

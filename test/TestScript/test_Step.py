@@ -1,8 +1,7 @@
 import unittest
 import sys
-sys.path.append('../src/TestCase/')
 sys.path.append('../src')
-from TestStep import Step
+from TestScript.TestStep import Step
 
 class StepTestSuite(unittest.TestCase):
     def testConstructer(self):

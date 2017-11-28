@@ -2,10 +2,9 @@ import unittest
 from PIL import Image, ImageTk
 
 import sys
-sys.path.append('../src/TestCase')
 sys.path.append('../src')
-from TestCase import TestCase
-from TestStep import Step
+from TestScript.TestCase import TestCase
+from TestScript.TestStep import Step
 
 class TestCaseTestSuite(unittest.TestCase):
     def testConstructer(self):

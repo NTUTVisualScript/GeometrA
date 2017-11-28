@@ -2,8 +2,8 @@ import json
 import os
 from tkinter import filedialog
 from PIL import Image
-from TestCase import TestCase
-from TestStep import Step
+from TestScript.TestCase import TestCase
+from TestScript.TestStep import Step
 from MessageUI import Message
 from GUI.DialogueForm import  DialogueForm
 

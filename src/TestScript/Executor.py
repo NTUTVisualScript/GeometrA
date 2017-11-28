@@ -10,7 +10,7 @@ from finder.template_finder import TemplateFinder
 
 class Executor():
     def __init__(self, case):
-        if str(case.__class__) != '<class \'TestCase.TestCase\'>':
+        if str(case.__class__) != '<class \'TestScript.TestCase.TestCase\'>':
             raise Exception('Not a executable case')
         self.case = case
         self.robot = ADBRobot()

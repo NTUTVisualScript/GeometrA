@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 
 import sys
-sys.path.append('./TestCase')
+sys.path.append('./TestScript')
 
 from NewWindow import Window
 from FileLoader import FileLoader

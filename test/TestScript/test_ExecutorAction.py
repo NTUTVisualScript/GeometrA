@@ -2,15 +2,14 @@ import unittest
 from PIL import Image, ImageTk
 
 import sys
-sys.path.append('../src/TestCase')
 sys.path.append('../src')
 sys.path.append('../src/Save')
 sys.path.append('../src/GUI')
 sys.path.append('../src/GUI/TestCase')
 sys.path.append('../src/Controller')
-from Executor import Executor
-from TestStep import Step
-from TestCase import TestCase
+from TestScript.Executor import Executor
+from TestScript.TestStep import Step
+from TestScript.TestCase import TestCase
 
 class ExecutorActionTestSuite(unittest.TestCase):
     def testExecuteClick(self):

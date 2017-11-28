@@ -1,4 +1,4 @@
-from TestStep import Step
+from TestScript.TestStep import Step
 class TestCase:
     def __init__(self, n=0):
         self.stepDict = {}
