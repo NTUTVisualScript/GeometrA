@@ -5,7 +5,7 @@ $main_color: #4B8F8C
 $secondary_color: #F76C5E
 $func_color: #F7B267
 $background_color: #F2F2D9
-$border_color: #7C2534
+$border_color: #9D9061
 
 //BASE
 $base_font_size: 10px
@@ -84,28 +84,28 @@ h6
         .Tab
             +size(100%,5%)
             text-align: left
-            & div
+            #TabList
                 display: inline-block
                 border: solid 2px $func_color
                 border-radius: 1px
                 padding: 3px 8px
                 margin-top: 2px
         .ToolBox
-            +size(40%,90%)
+            +size(35%,90%)
         .Editor
-            +size(58%,90%)
+            +size(60%,90%)
     #ScreenShot
-        +size(25%,100%)
+        +size(22%,100%)
 
 .row3
-    #Node,#Message
-        transition-duration: 0.7s
+    #Nodetree,#Message
+        transition-duration: 1s
         cursor: pointer
         position: fixed
         bottom: 0px
         border: solid 3px $border_color
         border-radius: 18px 18px 5px 5px
-    #Node
+    #Nodetree
         +size(45%,4%)
         left: 10%
         &:hover

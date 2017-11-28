@@ -1,0 +1,50 @@
+html(lang="en")
+    head
+        title VisualScript
+        meta(charset="utf-8")
+        link(rel="stylesheet" type="text/css" ,href="style_home_page.css")
+        //bootstrap
+        //link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous")
+        //font
+        link(href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet")
+        //
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        link(rel="shortcut icon" href="../public/favicon.ico")
+        link(rel="manifest" href="../public/manifest.json")
+    #Menu-Bar 
+        img(src="logo.svg")
+        div
+            .Slogan Visual Script - 一個視覺化Android應用測試工具
+            br
+            ul
+                li Load
+                li Save
+                li Redo
+                li Undo
+                li Run All
+                li Run This
+                li Clear
+    .row2
+        #Project-Manager
+            h6 Project-Manager
+            #FileStructure
+        #TestCase
+            h6 TestCase
+            .Tab
+                #TabList
+            div
+                .ToolBox
+                    h6 ToolBox
+                    #ActionList
+                .Editor
+                    h6 Editor
+                    #TestSteps
+        #ScreenShot
+            h6 ScreenShot
+    .row3
+        #NodeTree
+            h6 NodeTree
+            #Nodes
+        #Message
+            h6 Message
+            #MessageList
