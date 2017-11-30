@@ -1,7 +1,11 @@
+import os, shutil
+
 from File.TestCase import TestCase
 
 class TestSuite:
-    def __init__(self, caseList):
+    def __init__(self, caseList, path):
+        self.path = path
+        self.check(caseList)
         self.cases = []
         self.insert(caseList)
 
@@ -26,8 +30,21 @@ class TestSuite:
     def delete(self, case):
         n = self.cases.index(case)
         self.cases.pop(n)
+        shutil.rmtree(self.path + '/' + case)
         return self.cases
 
     def rename(self, origin, new):
+        if new in self.cases:
+            raise Exception('Case already exists')
         n = self.cases.index(origin)
         self.cases[n] = new
+        os.rename(self.path + '/' + origin, self.path + '/' + new)
+
+    def check(self, cases):
+        notExist = []
+        for case in cases:
+            path = self.path + '/' + case
+            if not os.path.isdir(path):
+                notExist.append(case)
+        for case in notExist:
+            cases.remove(case)
