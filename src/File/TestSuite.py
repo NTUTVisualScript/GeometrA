@@ -48,3 +48,11 @@ class TestSuite:
                 notExist.append(case)
         for case in notExist:
             cases.remove(case)
+
+    def getTreeJSON(self):
+        result = []
+        for i in self.cases:
+            d = {}
+            d["text"] = i
+            result.append(d)
+        return result

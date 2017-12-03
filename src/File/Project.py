@@ -31,3 +31,18 @@ class Project:
         self.suites.pop(suite)
         shutil.rmtree(self.path + '/' + suite)
         return self.suites
+
+    def getJSON(self):
+        result = {}
+        for suite in self.suites:
+            result[suite] = self.suites[suite].cases
+        return result
+
+    def getTreeJSON(self):
+        result = []
+        for suite in self.suites:
+            d = {}
+            d["text"] = suite
+            d["children"] = self.suites[suite].getTreeJSON()
+            result.append(d)
+        return result

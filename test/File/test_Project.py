@@ -62,3 +62,23 @@ class ProjectTestSuite(unittest.TestCase):
         origin = 'Suite1'
         new = 'Suite2'
         self.assertRaisesRegex(Exception, 'Suite already exists', project.rename, origin, new)
+
+    def testGetJSON(self):
+        d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
+        project = Project(self.path, d)
+        self.assertEqual(d, project.getJSON())
+
+    def testGetTreeJSON(self):
+        d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
+        result = [
+           {"text" : "Suite1", "children" : [
+               {"text":"case1"},
+               {"text":"case2"}
+           ]},
+           {"text" : "Suite2", "children" : [
+               {"text":"case2"}
+           ]}
+        ]
+        project = Project(self.path, d)
+
+        self.assertEqual(result, project.getTreeJSON())

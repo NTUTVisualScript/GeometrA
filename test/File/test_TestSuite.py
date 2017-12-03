@@ -116,3 +116,13 @@ class TestSuiteTestSuite(unittest.TestCase):
         new = 'case2'
         self.assertRaisesRegex(Exception, 'Case already exists', suite.rename, origin, new)
         self.assertListEqual(cases, suite.cases)
+
+
+    def testGetTreeJSON(self):
+        cases = ['case1', 'case2']
+        result = [
+            {"text": 'case1'},
+            {"text": 'case2'}
+        ]
+        suite = TestSuite(cases, self.path)
+        self.assertEqual(result, suite.getTreeJSON())

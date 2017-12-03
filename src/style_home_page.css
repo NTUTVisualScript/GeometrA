@@ -1,0 +1,153 @@
+@charset "UTF-8";
+* {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'sans-serif', "微軟正黑體";
+    letter-spacing: 0.3px;
+    background-color: #F2F2D9;
+}
+
+h6 {
+    text-align: center;
+    font-size: 18px;
+    padding: 3px;
+    letter-spacing: 1.5px;
+    background-color: #F76C5E;
+    border-radius: 15px 15px 0px 0px;
+}
+
+#Menu-Bar {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#Menu-Bar img, #Menu-Bar ul, #Menu-Bar li, #Menu-Bar div {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+#Menu-Bar img {
+    height: 120px;
+    -webkit-transform: translateX(-50%) rotateY(-50%);
+    transform: translateX(-50%) rotateY(-50%);
+}
+
+#Menu-Bar li {
+    font-family: "Barlow Semi Condensed", Georgia, Serif;
+    font-size: 25px;
+    background-color: #F7B267;
+    border-top: solid #4B8F8C 3px;
+    border-bottom: solid #4B8F8C 5px;
+    border-radius: 5px;
+    vertical-align: middle;
+    margin-left: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+}
+
+#Menu-Bar li:hover {
+    -webkit-transform: translateY(-3px) translateX(-3px);
+    -ms-transform: translateY(-3px) translateX(-3px);
+    transform: translateY(-3px) translateX(-3px);
+    -webkit-box-shadow: 10px 10px 30px rgba(50, 50, 50, 0.4);
+    box-shadow: 10px 10px 30px rgba(50, 50, 50, 0.4);
+}
+
+.row2 {
+    width: 100%;
+    height: 80%;
+    text-align: center;
+}
+
+.row2 #Project-Manager, .row2 #TestCase, .row2 #ScreenShot {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.row2 #Project-Manager, .row2 #ScreenShot, .row2 .ToolBox, .row2 .Editor {
+    border: solid 3px #9D9061;
+    border-radius: 18px 18px 5px 5px;
+}
+
+.row2 #Project-Manager {
+    width: 18%;
+    height: 100%;
+}
+
+.row2 #TestCase {
+    width: 55%;
+    height: 100%;
+}
+
+.row2 #TestCase .tab, .row2 #TestCase .ToolBox, .row2 #TestCase .Editor {
+    display: inline-block;
+}
+
+.row2 #TestCase .Tab {
+    width: 100%;
+    height: 5%;
+    text-align: left;
+}
+
+.row2 #TestCase .Tab #TabList {
+    display: inline-block;
+    border: solid 2px #F7B267;
+    border-radius: 1px;
+    padding: 3px 8px;
+    margin-top: 2px;
+}
+
+.row2 #TestCase .ToolBox {
+    width: 35%;
+    height: 90%;
+}
+
+.row2 #TestCase .Editor {
+    width: 60%;
+    height: 90%;
+}
+
+.row2 #ScreenShot {
+    width: 22%;
+    height: 100%;
+}
+
+.row3 #Nodetree, .row3 #Message {
+    -webkit-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    transition-duration: 1s;
+    cursor: pointer;
+    position: fixed;
+    bottom: 0px;
+    border: solid 3px #9D9061;
+    border-radius: 18px 18px 5px 5px;
+}
+
+.row3 #Nodetree {
+    width: 45%;
+    height: 4%;
+    left: 10%;
+}
+
+.row3 #Nodetree:hover {
+    width: 55%;
+    height: 40%;
+    z-index: 999;
+}
+
+.row3 #Message {
+    width: 35%;
+    height: 4%;
+    right: 5%;
+}
+
+.row3 #Message:hover {
+    width: 45%;
+    height: 40%;
+    z-index: 999;
+}
