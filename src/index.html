@@ -1,4 +1,3 @@
-
 <html lang="en">
   <head>
     <title>VisualScript</title>
@@ -10,72 +9,64 @@
     <!-- <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet"/> -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link rel="shortcut icon" href="../develop/favicon.ico"/>
+    <link rel="shortcut icon" href="./favicon.ico"/>
 
-    <script type="text/javascript" src="./brython/brython.js"></script>
-    <script type="text/javascript" src="./brython/brython_stdlib.js"></script>
+    <script  src="./brython.js"></script>
+    <script  src="./brython_stdlib.js"></script>
     <script src="./Javascript/jquery/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="./Javascript/jquery/jstree/dist/themes/default/style.min.css" />
     <script src="./Javascript/jquery/jstree/dist/jstree.min.js"></script>
   </head>
-<body onload="brython(1)">
-  <div id="Menu-Bar"> <img src="logo.svg"/>
-    <div>
-      <ul>
-        <li>Load</li>
-        <li>Save</li>
-        <li>Redo</li>
-        <li>Undo</li>
-        <li>Run All</li>
-        <li>Run This</li>
-        <li>Clear</li>
-      </ul>
-    </div>
-  </div>
-  <div class="row2">
-    <div id="Project-Manager">
-      <h6>Work Space</h6>
-      <div id="FileStructure", role="tree", aria-multiselectable="true", tabindex="0", aria-activedescendant="demo_root_2", aria-busy="false"></div>
-    </div>
-    <script src = "./Javascript/WorkSpace.js">
-    </script>
-    <div id="TestCase">
-      <div>
-        <div class="ToolBox">
-          <h6>ToolBox</h6>
-          <div id="ActionList"></div>
-        </div>
-        <div class="Editor">
-          <div class="Tab">
-            <div id="TabList"></div>
-          </div>
-          <h6>Editor</h6>
-          <div id="TestSteps"></div>
+    <body onload="brython()">
+      <div id="Menu-Bar"> <img src="logo.svg"/>
+        <div>
+          <ul>
+            <li>Load</li>
+            <li>Save</li>
+            <li>Redo</li>
+            <li>Undo</li>
+            <li>Run All</li>
+            <li>Run This</li>
+            <li>Clear</li>
+          </ul>
         </div>
       </div>
-    </div>
-    <div id="ScreenShot">
-      <h6>ScreenShot</h6>
-    </div>
-  </div>
-  <div class="row3">
-    <div id="NodeTree">
-      <h6>NodeTree</h6>
-      <div id="Nodes"></div>
-    </div>
-    <div id="Message">
-      <h6>Message</h6>
-      <div id="MessageList"></div>
-    </div>
-  </div>
+      <div class="row2">
+        <div id="Project-Manager">
+          <h6>Work Space</h6>
+          <div id="FileStructure"></div>
+        </div>
+        <div id="TestCase">
+          <div>
+            <div class="ToolBox">
+              <h6>ToolBox</h6>
+              <div id="ActionList"></div>
+            </div>
+            <div class="Editor">
+              <div class="Tab">
+                <div id="TabList"></div>
+              </div>
+              <h6>Editor</h6>
+              <div id="TestSteps"></div>
+            </div>
+          </div>
+        </div>
+        <div id="ScreenShot">
+          <h6>ScreenShot</h6>
+        </div>
+      </div>
+      <div class="row3">
+        <div id="NodeTree">
+          <h6>NodeTree</h6>
+          <div id="Nodes"></div>
+        </div>
+        <div id="Message">
+          <h6>Message</h6>
+          <div id="MessageList"></div>
+        </div>
+      </div>
 
-  <script type="text/python">
-  from browser import window, document
-  class View:
-      def __init__(self):
-          self.workspace = window.WorkSpace.new()
-          self.workspace.update()
-  view = View()
-  </script>
-</body>
+      <script src="./Javascript/WorkSpace.js"></script>
+      <script type="text/python" src="main.py"></script>
+    </body>
 </html>

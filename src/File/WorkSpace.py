@@ -11,6 +11,8 @@ class WorkSpace:
         name = project[0]
 
         if not os.path.isdir(path + "/" + name):
+            print(path + '/' + name)
+            print(os.path.isdir(path + '/' + name))
             raise Exception('Project: "' + name + '" is not in the path')
 
         projectPath = path + '/' + name
