@@ -5,7 +5,7 @@ from File.TestCase import TestCase
 class TestSuite:
     def __init__(self, caseList, path):
         self.path = path
-        self.check(caseList)
+        # self.check(caseList)
         self.cases = []
         self.insert(caseList)
 

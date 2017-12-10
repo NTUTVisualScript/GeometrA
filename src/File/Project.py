@@ -4,7 +4,7 @@ import os, shutil
 class Project:
     def __init__(self, path, suites):
         self.path = path
-        self.check(suites)
+        # self.check(suites)
         self.suites = {}
         self.getSuites(suites)
 

@@ -1,27 +1,24 @@
-<html lang="en">
+<html>
   <head>
     <title>VisualScript</title>
     <meta charset="utf-8"/>
     <meta name="description" content="This project is for user to write acceptance test for android platform applications. ">
     <meta name="author" content="Visual Script team: Patrick, Denny, Mario, Hsin">
 
-    <link rel="stylesheet" type="text/css" href="style_home_page.css">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet"/> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_home_page.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet"/>
 
+    <script src="{{url_for('static', filename='javascript/jquery/jquery-3.2.1.min.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='javascript/jquery/jstree/dist/themes/default/style.min.css')}}" />
+    <script src="{{url_for('static', filename='javascript/jquery/jstree/dist/jstree.min.js')}}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link rel="shortcut icon" href="./favicon.ico"/>
-
-    <script  src="./brython.js"></script>
-    <script  src="./brython_stdlib.js"></script>
-    <script src="./Javascript/jquery/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="./Javascript/jquery/jstree/dist/themes/default/style.min.css" />
-    <script src="./Javascript/jquery/jstree/dist/jstree.min.js"></script>
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}"/>
   </head>
-    <body onload="brython()">
-      <div id="Menu-Bar"> <img src="logo.svg"/>
+    <body >
+      <div id="Menu-Bar"> <img src="{{url_for('static', filename='logo.svg')}}"/>
         <div>
           <ul>
-            <li>Load</li>
+            <li id="load">Load</li>
             <li>Save</li>
             <li>Redo</li>
             <li>Undo</li>
@@ -34,7 +31,11 @@
       <div class="row2">
         <div id="Project-Manager">
           <h6>Work Space</h6>
-          <div id="FileStructure"></div>
+          <div id="FileStructure">
+
+          </div>
+          <script src="{{url_for('static', filename='javascript/WorkSpace.js')}}"></script>
+
         </div>
         <div id="TestCase">
           <div>
@@ -44,7 +45,8 @@
             </div>
             <div class="Editor">
               <div class="Tab">
-                <div id="TabList"></div>
+                <div id="TabList">
+                </div>
               </div>
               <h6>Editor</h6>
               <div id="TestSteps"></div>
@@ -66,7 +68,5 @@
         </div>
       </div>
 
-      <script src="./Javascript/WorkSpace.js"></script>
-      <script type="text/python" src="main.py"></script>
     </body>
 </html>
