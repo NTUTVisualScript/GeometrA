@@ -1,6 +1,5 @@
 import os, shutil
 
-from File.TestCase import TestCase
 
 class TestSuite:
     def __init__(self, caseList, path):

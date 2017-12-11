@@ -22,17 +22,16 @@ h6 {
     margin-bottom: 5px;
 }
 
-/*#Menu-Bar img, */
-#Menu-Bar ul, #Menu-Bar li, #Menu-Bar div {
+#Menu-Bar img, #Menu-Bar ul, #Menu-Bar li, #Menu-Bar div {
     vertical-align: middle;
     display: inline-block;
 }
 
-/*#Menu-Bar img {
+#Menu-Bar img {
     height: 120px;
     -webkit-transform: translateX(-50%) rotateY(-50%);
     transform: translateX(-50%) rotateY(-50%);
-}*/
+}
 
 #Menu-Bar li {
     font-family: "Barlow Semi Condensed", Georgia, Serif;

@@ -1,4 +1,4 @@
-from File.TestSuite import TestSuite
+from src.File.TestSuite import TestSuite
 import os, shutil
 
 class Project:

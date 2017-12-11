@@ -2,6 +2,7 @@ src/AndroidKeycode.py
 src/NewWindow.py
 src/TestCaseActionCombobox.py
 src/TestCaseEntry.py
+src/View.py
 src/VisualScript.py
 src/__init__.py
 src/adbRobot.py

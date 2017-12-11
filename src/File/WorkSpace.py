@@ -1,6 +1,6 @@
 import os
 
-from File.Project import Project
+from src.File.Project import Project
 
 class WorkSpace:
     def __init__(self, path, project):

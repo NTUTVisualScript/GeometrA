@@ -13,6 +13,20 @@ function WorkSpace() {
     //           ]}
     //       ]}
     //   });
+    $(document).ready( function() {
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:5000" + "/VisualScript/getWorkSpace",
+            data: {path:"D:/Project"},
+            success: function(response) {
+                $("#FileStructure").jstree({
+                    'core' : {
+                      'data' : response
+                    }
+                  });
+            },
+        });
+    });
     this.update = function() {
         $("#FileStructure").jstree({
             'core' : {
@@ -28,7 +42,7 @@ function WorkSpace() {
                   ]}
               ]}
           });
-    }
+    };
     this.right = function(e, d) {
         console.log("The selected nodes are:");
         console.log(data.selected);
@@ -36,13 +50,13 @@ function WorkSpace() {
     $('#FileStructure').on("changed.jstree", function (e, data) {
         // console.log("The selected nodes are:");
         // console.log(data.selected);
-        this.right(e, data.selected)
+        this.right(e, data.selected);
       });
-}
+};
 
-tree = WorkSpace()
+tree = WorkSpace();
 
-export FIleTree = tree
+
 // var tree = WorkSpace()
 
 // [
