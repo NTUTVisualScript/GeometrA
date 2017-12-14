@@ -3,7 +3,7 @@ Branch from https://github.com/Swind/Sikuli-Img
 
 # 開啟方法
 
-1.完成下方[環境建置] 或 執行 'auto.bat'
+1.完成下方[環境建置] 或 以系統管理員身份執行 'auto.bat'
 2.執行根目錄下 'run.bat'
 3.打開browser，連線到 "http://127.0.0.1:5000"
 
@@ -47,6 +47,14 @@ Branch from https://github.com/Swind/Sikuli-Img
     Value   %Android_HOME%\platform-tools  
 
 ![](/pic/SystemPath.PNG)
+
+6.Install Flask
+
+    pip install flask
+
+7.Install flask-cors
+
+    pip install -U flask-cors
 
 
 # 使用教學
