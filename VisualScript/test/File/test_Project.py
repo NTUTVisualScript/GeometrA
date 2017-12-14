@@ -1,9 +1,13 @@
 import unittest
 import os, shutil
 import sys
-sys.path.append('../../src')
+import flaskr
+import tempfile
 
-from File.Project import Project
+
+sys.path.append('../../')
+
+from src.File.Project import Project
 
 class ProjectTestSuite(unittest.TestCase):
     @classmethod
@@ -11,10 +15,21 @@ class ProjectTestSuite(unittest.TestCase):
         shutil.rmtree('./Project1', True)
 
     def setUp(self):
+        #unittest setUp for flask
+        self.db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
+        flaskr.app.testing = True
+        self.app = flaskr.app.test_client()
+        with flaskr.app.app_context():
+            flaskr.init_db()
+
         self.path = os.getcwd() + '/Project1'
         shutil.copytree('./Project', './Project1')
 
     def tearDown(self):
+        #unittest tearDown for flask
+        os.close(self.db_fd)
+        os.unlink(flaskr.app.config['DATABASE'])
+
         shutil.rmtree('./Project1', True)
 
     def testConstructor(self):

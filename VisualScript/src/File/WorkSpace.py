@@ -1,6 +1,6 @@
 import os
 
-from src.File.Project import Project
+from VisualScript.src.File.Project import Project
 
 class WorkSpace:
     def __init__(self, path, project):
@@ -10,10 +10,10 @@ class WorkSpace:
     def add(self, path, project):
         name = project[0]
 
-        # if not os.path.isdir(path + "/" + name):
-        #     print(path + '/' + name)
-        #     print(os.path.isdir(path + '/' + name))
-        #     raise Exception('Project: "' + name + '" is not in the path')
+        if not os.path.isdir(path + "/" + name):
+            print(path + '/' + name)
+            print(os.path.isdir(path + '/' + name))
+            raise Exception('Project: "' + name + '" is not in the path')
 
         projectPath = path + '/' + name
         self.projects[name] = Project(projectPath, project[1][name])

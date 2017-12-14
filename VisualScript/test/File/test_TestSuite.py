@@ -2,11 +2,11 @@ import unittest
 
 import os, shutil
 import sys
-sys.path.append('../../src')
+sys.path.append('../..')
 
 import subprocess
 
-from File.TestSuite import TestSuite
+from src.File.TestSuite import TestSuite
 
 class TestSuiteTestSuite(unittest.TestCase):
     @classmethod

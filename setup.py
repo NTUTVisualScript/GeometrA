@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-    name='src',
-    packages=['src'],
+    name='VisualScript',
+    packages=['VisualScript'],
     include_package_data=True,
     install_requires=[
         'flask',

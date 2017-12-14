@@ -4,4 +4,4 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-from src import View
+from VisualScript import View
