@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter.ttk import Separator
 from PIL import Image, ImageTk
-from FileLoader import FileLoader
-from TestCaseUI import TestCaseUI as UI
+from VisualScript.src.Controller.FileLoader import FileLoader
+from VisualScript.src.GUI.TestCaseUI import TestCaseUI as UI
 
 
 class Toolbar(Frame):

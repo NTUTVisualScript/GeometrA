@@ -1,7 +1,7 @@
 from tkinter import *
 import threading
-import Controller.ScreenShotController as SSCtrl
-from Controller.Mouse import Mouse
+import VisualScript.src.Controller.ScreenShotController as SSCtrl
+from VisualScript.src.Controller.Mouse import Mouse
 
 class ScreenshotUI(Canvas):
     __single = None

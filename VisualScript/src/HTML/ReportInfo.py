@@ -1,4 +1,4 @@
-from adbRobot import ADBRobot
+from VisualScript.src.ADB.adbRobot import ADBRobot
 import datetime
 
 class Info:

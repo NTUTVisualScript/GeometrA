@@ -1,15 +1,12 @@
 from tkinter import *
 from PIL import ImageTk
-from TestStepUI import TestStepUI
-from Controller.FileLoader import FileLoader
-from Action import *
-import StepOperate
-import Value
+from VisualScript.src.GUI.TestCase.TestStepUI import TestStepUI
+from VisualScript.src.Controller.FileLoader import FileLoader
+from VisualScript.src.GUI.TestCase.Action import *
+import VisualScript.src.GUI.TestCase.StepOperate
+import VisualScript.src.GUI.TestCase.Value
 
-import sys
-
-sys.path.append('../TestCase/')
-from TestController import TestController
+from VisualScript.src.Controller.TestController import TestController
 
 filePath = None
 

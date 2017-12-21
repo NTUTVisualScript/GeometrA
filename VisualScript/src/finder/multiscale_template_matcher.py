@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from utils import FindResult
+from VisualScript.src.finder.utils import FindResult
 
 class MultiScaleTemplateMatcher:
     def __init__(self, source_img, target_img):

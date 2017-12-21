@@ -1,72 +1,72 @@
 <html>
-  <head>
+
+<head>
     <title>VisualScript</title>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <meta name="description" content="This project is for user to write acceptance test for android platform applications. ">
     <meta name="author" content="Visual Script team: Patrick, Denny, Mario, Hsin">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_home_page.css') }}">
-    <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet" />
 
     <script src="{{url_for('static', filename='javascript/jquery/jquery-3.2.1.min.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='javascript/jquery/jstree/dist/themes/default/style.min.css')}}" />
     <script src="{{url_for('static', filename='javascript/jquery/jstree/dist/jstree.min.js')}}"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}"/>
-  </head>
-    <body >
-      <div id="Menu-Bar"> <img src="{{url_for('static', filename='logo.svg')}}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}" />
+
+</head>
+
+<body>
+    <div id="Menu-Bar"> <img src="{{url_for('static', filename='logo.svg')}}" />
         <div>
-          <ul>
-            <li id="load">Load</li>
-            <li>Save</li>
-            <li>Redo</li>
-            <li>Undo</li>
-            <li>Run All</li>
-            <li>Run This</li>
-            <li>Clear</li>
-          </ul>
+            <ul>
+                <li id="CreateBtn">Load</li>
+                <li id="loadBtn">Load</li>
+                <li>Save</li>
+                <li>Redo</li>
+                <li>Undo</li>
+                <li>Run All</li>
+                <li>Run This</li>
+                <li>Clear</li>
+            </ul>
         </div>
-      </div>
-      <div class="row2">
+    </div>
+    <div class="row2">
         <div id="Project-Manager">
-          <h6>Work Space</h6>
-          <div id="FileStructure">
-
-          </div>
-          <script src="{{url_for('static', filename='javascript/WorkSpace.js')}}"></script>
-
+            <h6>Work Space</h6>
+            <div id="FileStructure"></div>
+            <script src="{{url_for('static', filename='javascript/WorkSpace.js')}}"></script>
         </div>
         <div id="TestCase">
-          <div>
             <div class="ToolBox">
-              <h6>ToolBox</h6>
-              <div id="ActionList"></div>
+                <h6>ToolBox</h6>
+                <div id="ActionList"></div>
+            </div>
+            <div class="Tab">
+                <div id="TabList"></div>
             </div>
             <div class="Editor">
-              <div class="Tab">
-                <div id="TabList">
-                </div>
-              </div>
-              <h6>Editor</h6>
-              <div id="TestSteps"></div>
+                <h6>Editor</h6>
+                <div id="TestSteps"></div>
             </div>
-          </div>
+
         </div>
         <div id="ScreenShot">
-          <h6>ScreenShot</h6>
+            <h6>ScreenShot</h6>
         </div>
-      </div>
-      <div class="row3">
+    </div>
+    <div class="row3">
         <div id="NodeTree">
-          <h6>NodeTree</h6>
-          <div id="Nodes"></div>
+            <h6>NodeTree</h6>
+            <div id="Nodes"></div>
         </div>
         <div id="Message">
-          <h6>Message</h6>
-          <div id="MessageList"></div>
+            <h6>Message</h6>
+            <div id="MessageList"></div>
         </div>
-      </div>
+    </div>
 
-    </body>
+</body>
+
 </html>

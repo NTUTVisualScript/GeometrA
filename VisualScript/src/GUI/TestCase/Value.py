@@ -1,4 +1,4 @@
-from TestCaseEntry import TestCaseValue
+from VisualScript.src.TestCaseEntry import TestCaseValue
 from tkinter import *
 
 def testCaseImage(stepList, line, image = None):

@@ -2,19 +2,15 @@ import json
 import os
 from tkinter import filedialog
 from PIL import Image
-from TestScript.TestCase import TestCase
-from TestScript.TestStep import Step
-from MessageUI import Message
-from GUI.DialogueForm import  DialogueForm
-
+from VisualScript.src.TestScript.TestCase import TestCase
+from VisualScript.src.TestScript.TestStep import Step
 
 class SaveFile:
     def saveButtonClick(self, event=None):
-        from TestCaseUI import TestCaseUI
+        from  VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI
         if TestCaseUI.getTestCaseUI().ctrl.save:
             return
         self.saveFile()
-        Message.getMessage().fileSaved(self._filePath)
 
     def saveAsButtonClick(self, event=None):
         self._filePath = ''
@@ -28,14 +24,13 @@ class SaveFile:
             self.getFolderName()
             if self._filePath == '': return
             self.jsonEncoder()
-            from TestCaseUI import TestCaseUI
+            from VisualScript.src.TestCase.TestCaseUI import TestCaseUI
             TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
         except Exception as step:
             self._filePath = ''
-            DialogueForm.Messagebox("Insert Error!","The Value of Step "+str(step)+" is wrong!")
 
     def checkEntryValid(self):
-        from TestCaseUI import TestCaseUI
+        from VisualScript.src.TestCase.TestCaseUI import TestCaseUI
         for i in range(len(TestCaseUI.getTestCaseUI().stepList)):
             value = TestCaseUI.getTestCaseUI().stepList[i].value
             if str(value.__class__) == "<class 'TestCaseEntry.TestCaseValue'>":
@@ -55,8 +50,8 @@ class SaveFile:
             self._fileName = _f.split('/').pop().rstrip('.json')
 
     def jsonEncoder(self):
-        from TestCaseUI import TestCaseUI
-        from TreeController import Tree
+        from  VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI
+        from  VisualScript.src.Controller.TreeController import Tree
         _dataDict = {}
         _case = TestCaseUI.getTestCaseUI().ctrl.case
         for i in range(_case.getSize()):
@@ -86,16 +81,15 @@ class SaveFile:
 
 class LoadFile:
     def loadButtonClick(self, event=None):
-        from TestCaseUI import TestCaseUI
+        from  VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI
         self.loadFile()
         if self._filePath != '':
             self.modelConnect()
             TestCaseUI.getTestCaseUI().reloadTestCaseUI()
             TestCaseUI.getTestCaseUI().ctrl.caseSaved(True)
-        Message.getMessage().fileLoaded(self._filePath)
 
     def loadFile(self, path=None):
-        from GUI.TestCase.TestCaseUI import TestCaseUI
+        from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI
         try:
             if path:
                 self._filePath = path
@@ -107,7 +101,6 @@ class LoadFile:
             self.jsonDecoder()
         except Exception as e:
             print(e)
-            # DialogueForm.Messagebox("Load Test Case Error!","The file '"+ self._filePath.split('/')[-1] + "' is invalid format.")
             self._filePath = ''
             TestCaseUI.getTestCaseUI().ctrl.clearTestCase()
 
@@ -140,8 +133,8 @@ class LoadFile:
             self.case.insert(step=step)
 
     def modelConnect(self):
-        from TestCaseUI import TestCaseUI
-        from Executor import Executor
+        from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI
+        from VisualScript.src.TestScript.Executor import Executor
         TestCaseUI.getTestCaseUI().ctrl.case = self.case
         TestCaseUI.getTestCaseUI().ctrl.exe = Executor(self.case)
 

@@ -1,5 +1,5 @@
 from tkinter import *
-from TestCaseUI import TestCaseUI
+from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI
 
 class ClearButton:
     def __init__(self, parent = None):

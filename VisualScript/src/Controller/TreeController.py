@@ -9,13 +9,13 @@
 
 from PIL import Image as IMG, ImageTk
 import xml.etree.cElementTree as ET
-from adbRobot import ADBRobot
-from GUI.TreeUI import TreeUI
-from ScreenShotController import GetScreenShot
+from VisualScript.src.ADB.adbRobot import ADBRobot
+from VisualScript.src.GUI.TreeUI import TreeUI
+from VisualScript.src.Controller.ScreenShotController import GetScreenShot
 from tkinter import *
-from ScreenshotUI import ScreenshotUI
-from TestCaseUI import TestCaseUI as TCUI
-from cv2img import CV2Img
+from VisualScript.src.GUI.ScreenshotUI import ScreenshotUI
+from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI as TCUI
+from VisualScript.src.finder.cv2img import CV2Img
 
 class Tree(TreeUI):
     single = None

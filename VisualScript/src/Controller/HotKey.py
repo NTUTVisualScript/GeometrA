@@ -1,5 +1,5 @@
-from FileLoader import FileLoader
-from TestCaseUI import TestCaseUI
+from VisualScript.src.Controller.FileLoader import FileLoader
+from VisualScript.src.GUI.TestCaseUI import TestCaseUI
 
 class HotKey:
     __single = None

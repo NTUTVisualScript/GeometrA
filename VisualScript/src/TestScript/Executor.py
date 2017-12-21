@@ -1,16 +1,12 @@
-import sys
-sys.path.append('../')
-sys.path.append('../Save')
 import time
-from cv2img import CV2Img
-from adbRobot import ADBRobot
-from Controller.FileLoader import FileLoader
-from MessageUI import Message
-from finder.template_finder import TemplateFinder
+from VisualScript.src.finder.cv2img import CV2Img
+from VisualScript.src.ADB.adbRobot import ADBRobot
+from VisualScript.src.Controller.FileLoader import FileLoader
+from VisualScript.src.finder.template_finder import TemplateFinder
 
 class Executor():
     def __init__(self, case):
-        if str(case.__class__) != '<class \'TestScript.TestCase.TestCase\'>':
+        if str(case.__class__) != '<class \'VisualScript.src.TestScript.TestCase.TestCase\'>':
             raise Exception('Not a executable case')
         self.case = case
         self.robot = ADBRobot()
@@ -98,7 +94,7 @@ class Executor():
             return self.nodeFinder(step)
 
     def nodeFinder(self, step):
-        from TreeController import Tree
+        from VisualScript.src.Controller.TreeController import Tree
         node = step.getNode()
         if node is None:
             return 'Failed'

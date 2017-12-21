@@ -1,12 +1,12 @@
-from TestCase import TestCase
-from Executor import Executor
+from VisualScript.src.TestScript.TestCase import TestCase
+from VisualScript.src.TestScript.Executor import Executor
 import threading
-from Record import *
-import Value
-from MessageUI import Message
-from DeviceCheck import Check
-from GUI.DialogueForm import  DialogueForm
-from HTML.Report import Report
+from VisualScript.src.Controller.Record import Redo, Undo
+import VisualScript.src.GUI.TestCase.Value
+from VisualScript.src.GUI.MessageUI import Message
+from VisualScript.src.Controller.DeviceCheck import Check
+from VisualScript.src.GUI.DialogueForm import  DialogueForm
+from VisualScript.src.HTML.Report import Report
 
 class TestController:
     def __init__(self):
@@ -63,7 +63,7 @@ class TestController:
         self.save = status
 
     def undoClick(self, event=None):
-        from TestCaseUI import TestCaseUI as UI
+        from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI as UI
         self.redo.push(self.case)
         self.case = self.undo.pop()
         UI.getTestCaseUI().reloadTestCaseUI()
@@ -71,7 +71,7 @@ class TestController:
     def redoClick(self, event=None):
         if self.redo.getSize() == 0: return
 
-        from TestCaseUI import TestCaseUI as UI
+        from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI as UI
         self.undo.push(self.case)
         self.case = self.redo.pop()
         UI.getTestCaseUI().reloadTestCaseUI()
@@ -112,7 +112,7 @@ class TestController:
 
     # Set step information to model
     def putValue(self, n, stepExist, image, node=None):
-        from TestCaseUI import TestCaseUI as UI
+        from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI as UI
         stepList = UI.getTestCaseUI().stepList
         try:
             if stepExist:
@@ -138,7 +138,7 @@ class TestController:
 
 
     def clearTestCase(self):
-        from TestCaseUI import TestCaseUI as UI
+        from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI as UI
         self.case.clear()
         UI.getTestCaseUI().clearUI()
         Message.getMessage().reset()

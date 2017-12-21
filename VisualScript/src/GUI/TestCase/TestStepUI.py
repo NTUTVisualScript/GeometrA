@@ -1,9 +1,7 @@
 from tkinter import *
-from TestCaseActionCombobox import TestCaseAction
-from TestCaseEntry import TestCaseValue
+from VisualScript.src.TestCaseActionCombobox import TestCaseAction
+from VisualScript.src.TestCaseEntry import TestCaseValue
 
-import sys
-sys.path.append('../../TestCase/')
 
 class TestStepUI():
     def __init__(self, parent, n):

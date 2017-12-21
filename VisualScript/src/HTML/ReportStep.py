@@ -1,8 +1,8 @@
-from adbRobot import ADBRobot
+from VisualScript.src.ADB.adbRobot import ADBRobot
 import base64
 import io
-from cv2img import CV2Img
-from finder.template_finder import TemplateFinder
+from VisualScript.src.finder.cv2img import CV2Img
+from VisualScript.src.finder.template_finder import TemplateFinder
 
 class Step:
     def __init__(self):

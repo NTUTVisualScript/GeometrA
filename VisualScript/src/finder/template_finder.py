@@ -1,5 +1,5 @@
-from finder.template_matcher import TemplateMatcher
-from finder import  ResultGenerator, Finder
+from VisualScript.src.finder.template_matcher import TemplateMatcher
+from VisualScript.src.finder import  ResultGenerator, Finder
 
 class TemplateFinder(Finder):
     DEFAULT_PYRAMID_MIN_TARGET_DIMENSION = 12

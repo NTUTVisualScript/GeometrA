@@ -4,11 +4,9 @@ Get Screenshot from device and return to UI
 
 from PIL import Image, ImageTk
 import threading
-import sys
-sys.path.append('../')
-from adbRobot import ADBRobot
-from DeviceCheck import Check
-from MessageUI import Message
+from VisualScript.src.ADB.adbRobot import ADBRobot
+from VisualScript.src.Controller.DeviceCheck import Check
+from VisualScript.src.GUI.MessageUI import Message
 
 class GetScreenShot:
     x = 450

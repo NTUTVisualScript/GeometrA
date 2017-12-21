@@ -5,7 +5,7 @@ from tkinter import ttk
 
 from PIL import ImageTk
 
-from adb_roboot import ADBRobot
+from VisualScript.src.ADB.adb_roboot import ADBRobot
 
 ROOT_DIR = os.path.dirname(__file__)
 RESOURCES_XML = os.path.join(ROOT_DIR, "dumpXML")

@@ -49,3 +49,4 @@ src.egg-info/SOURCES.txt
 src.egg-info/top_level.txt
 *.txt
 VisualScript.egg-info/PKG-INFO
+VisualScript/static/prepros-6.config

@@ -1,7 +1,7 @@
 from tkinter import *
 from PIL import Image, ImageTk
-from Controller.ScreenShotController import GetScreenShot
-from TestCaseUI import TestCaseUI
+from VisualScript.src.Controller.ScreenShotController import GetScreenShot
+from VisualScript.src.GUI.TestCase.TestCaseUI import TestCaseUI
 import math
 
 
@@ -84,7 +84,7 @@ class Mouse():
         self.UI.ctrl.setStep(self.UI.focus)
 
     def cropPhoto(self, event):
-        from TreeController import Tree
+        from VisualScript.src.Controller.TreeController import Tree
 
         if (self.startX < self.endX) and (self.startY < self.endY):
             self.coor = (self.startX, self.startY, self.endX, self.endY)

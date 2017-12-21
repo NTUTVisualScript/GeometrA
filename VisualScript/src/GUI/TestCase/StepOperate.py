@@ -1,4 +1,4 @@
-import Value
+import VisualScript.src.GUI.TestCase.Value
 
 def insert(stepList, n):
     for i in range(len(stepList)-1, n, -1):

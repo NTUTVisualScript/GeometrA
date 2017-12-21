@@ -1,10 +1,10 @@
 import os
 import datetime
-from HTML.ReportInfo import Info
-import HTML.ReportUI
-from FileLoader import FileLoader
-from HTML.ReportStep import Step
-from MessageUI import Message
+from VisualScript.src.HTML.ReportInfo import Info
+import VisualScript.src.HTML.ReportUI
+from VisualScript.src.Controller.FileLoader import FileLoader
+from VisualScript.src.HTML.ReportStep import Step
+from VisualScript.src.GUI.MessageUI import Message
 
 PATH = lambda p: os.path.abspath(p)
 

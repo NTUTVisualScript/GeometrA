@@ -1,7 +1,7 @@
 from tkinter import *
 import threading
-from ScreenshotUI import ScreenshotUI
-from TreeController import Tree
+from VisualScript.src.GUI.ScreenshotUI import ScreenshotUI
+from VisualScript.src.Controller.TreeController import Tree
 
 class DumpButton:
     def __init__(self, master):
