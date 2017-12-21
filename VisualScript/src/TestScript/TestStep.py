@@ -1,5 +1,5 @@
 import time
-from VisualScript.src.AndroidKeycode import AndroidKeycode as key
+from VisualScript.src.ADB.AndroidKeycode import AndroidKeycode as key
 
 class Step:
     def __init__(self, act, val, node=None):
