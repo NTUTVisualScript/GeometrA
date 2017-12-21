@@ -47,3 +47,5 @@ src.egg-info/PKG-INFO
 src.egg-info/requires.txt
 src.egg-info/SOURCES.txt
 src.egg-info/top_level.txt
+*.txt
+VisualScript.egg-info/PKG-INFO

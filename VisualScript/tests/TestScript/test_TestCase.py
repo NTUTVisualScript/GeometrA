@@ -1,19 +1,28 @@
+import os
+import flaskr
 import unittest
+
 from PIL import Image, ImageTk
 
 import sys
 sys.path.append('../src')
-from TestScript.TestCase import TestCase
-from TestScript.TestStep import Step
+from VisualScript.src.TestScript.TestCase import TestCase
+from VisualScript.src.TestScript.TestStep import Step
 
 class TestCaseTestSuite(unittest.TestCase):
+    def setUp(self):
+        flaskr.app.testing = True
+        self.app = flaskr.app.test_client()
+
+        self.image = Image.open(os.getcwd() + './TestCase/Test/image/exist.png')
+
     def testConstructer(self):
         case = TestCase()
         self.assertEqual(0, case.getSize())
 
     def testInsert(self):
         case = TestCase()
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='Click', val=self.image)
         case.insert(act='Sleep(s)', val='1')
         case.insert(n=0, act='Android Keycode', val='KEYCODE_HOME')
         case.insert(step=Step('Set Text', 'Hello World'))
@@ -25,7 +34,7 @@ class TestCaseTestSuite(unittest.TestCase):
 
     def testRefrash(self):
         case = TestCase()
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='Click', val=self.image)
         case.insert(act='', val='')
         case.insert(act='Sleep(s)', val='1')
 
@@ -37,7 +46,7 @@ class TestCaseTestSuite(unittest.TestCase):
 
     def testSetAction(self):
         case = TestCase()
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='Click', val=self.image)
         case.setAction(0, 'Sleep(s)')
         self.assertEqual('Sleep(s)', case.getSteps(0).getAction())
 
@@ -57,7 +66,7 @@ class TestCaseTestSuite(unittest.TestCase):
     def testGetSteps(self):
         case = TestCase()
         case.insert(act='Sleep(s)', val='1')
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='Click', val=self.image)
         stepList = case.getSteps()
         self.assertEqual('Sleep(s)', stepList[0].getAction())
         self.assertEqual('1', stepList[0].getValue())
@@ -66,7 +75,7 @@ class TestCaseTestSuite(unittest.TestCase):
     def testDelete(self):
         case = TestCase()
         case.insert(act='Android Keycode', val='KEYCODE_HOME')
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='Click', val=self.image)
         case.insert(act='Sleep(s)', val='1')
         case.delete(1)
         self.assertEqual(2, case.getSize())
@@ -75,12 +84,12 @@ class TestCaseTestSuite(unittest.TestCase):
 
     def testSetStatus(self):
         case = TestCase()
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='Click', val=self.image)
         self.assertEqual('Success', case.setStatus(0, 'Success'))
 
     def testGetStatus(self):
         case = TestCase()
-        case.insert(act='Click', val=Image.open('./TestCase/Test/image/exist.png'))
+        case.insert(act='Click', val=self.image)
         case.setStatus(0, 'Success')
         self.assertEqual('Success', case.getStatus(0))
 
