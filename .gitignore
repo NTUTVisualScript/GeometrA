@@ -50,3 +50,4 @@ src.egg-info/top_level.txt
 *.txt
 VisualScript.egg-info/PKG-INFO
 VisualScript/static/prepros-6.config
+tests/screenshot_pic/before.png
