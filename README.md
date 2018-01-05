@@ -15,12 +15,16 @@ Branch from https://github.com/Swind/Sikuli-Img
 
     Check: "The version SHOULD BE **3** !!"
 
-3.Install [Android Studio](https://developer.android.com/studio/index.html)  
+3.Install [Android Studio](https://developer.android.com/studio/index.html) (If you are in windows.)
 
-4.請以*系統管理員身分執行專案根目錄下的 auto.bat*
+4.
+  On Windows: *系統管理員身分執行專案根目錄下的 auto.bat*
+  On Mac OS: *Execute the following command in terminal of the path of the project*
+    sh setup.sh
   或是*執行以下的環境設定*
 
 # 環境設定
+
 
 1.Install PIL  
 
@@ -30,31 +34,39 @@ Branch from https://github.com/Swind/Sikuli-Img
 
     pip install opencv_python
 
-3.Install numpy  
 
-    pip install numpy  
+3.Install Flask
 
-4.Set environment variable  
+    pip install flask
+
+4.Install flask-cors
+
+    pip install -U flask-cors
+
+
+## Windows
+
+5.Set environment variable  
 
     Variable    Android_HOME    
     Value   Android SDK 的安裝路徑  
 
 ![](/pic/Environmental.PNG)
 
-5.Set environment variable path  
+6.Set environment variable path  
 
     Variable    Path    
     Value   %Android_HOME%\platform-tools  
 
 ![](/pic/SystemPath.PNG)
 
-6.Install Flask
+## Mac OS (OS X)
 
-    pip install flask
+5.Install brew: If you don't got one.
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-7.Install flask-cors
-
-    pip install -U flask-cors
+6.Install ADB
+    brew install android-platform-tools
 
 
 # 使用教學
