@@ -18,10 +18,9 @@ $base_line_size: 2px
     padding: 0px
     font-family: 'sans-serif',"微軟正黑體"
     letter-spacing: 0.3px
+
+body
     background-color: $background_color
-
-body,html
-
 
 @mixin size($w,$h)
     width: $w
@@ -101,6 +100,7 @@ h6
 
 .row3
     #Nodetree,#Message
+        background-color: $background_color
         transition-duration: 1s
         cursor: pointer
         position: fixed

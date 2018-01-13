@@ -4,7 +4,9 @@
   margin: 0px;
   padding: 0px;
   font-family: 'sans-serif',"微軟正黑體";
-  letter-spacing: 0.3px;
+  letter-spacing: 0.3px; }
+
+body {
   background-color: #F2F2D9; }
 
 h6 {
@@ -90,6 +92,7 @@ h6 {
     height: 100%; }
 
 .row3 #Nodetree, .row3 #Message {
+  background-color: #F2F2D9;
   -webkit-transition-duration: 1s;
   -o-transition-duration: 1s;
   transition-duration: 1s;
