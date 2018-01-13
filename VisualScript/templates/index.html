@@ -6,14 +6,15 @@
     <meta name="description" content="This project is for user to write acceptance test for android platform applications. ">
     <meta name="author" content="Visual Script team: Patrick, Denny, Mario, Hsin">
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_home_page.css') }}">
-    <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet" />
-
     <script src="{{url_for('static', filename='javascript/jquery/jquery-3.2.1.min.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='javascript/jquery/jstree/dist/themes/default/style.min.css')}}" />
     <script src="{{url_for('static', filename='javascript/sweetalert2/dist/sweetalert2.min.js')}}"></script>
-    <link rel="stylesheet" href="{{url_for('static', filename='javascript/sweetalert2/dist/sweetalert2.min.css')}}" <script src="{{url_for('static', filename='javascript/jquery/jstree/dist/jstree.min.js')}}">
-    </script>
+    <link rel="stylesheet" href="{{url_for('static', filename='javascript/sweetalert2/dist/sweetalert2.min.css')}}" />
+    <script src="{{url_for('static', filename='javascript/jquery/jstree/dist/jstree.min.js')}}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_home_page.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed" rel="stylesheet" />
+    <script src="{{url_for('static', filename='javascript/initializePage.js')}}"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}" />
@@ -24,7 +25,7 @@
     <div id="Menu-Bar"> <img src="{{url_for('static', filename='logo.svg')}}" />
         <div>
             <ul>
-                <li id="CreateBtn">Load</li>
+                <li id="CreateBtn">Create</li>
                 <li id="loadBtn">Load</li>
                 <li>Save</li>
                 <li>Redo</li>
