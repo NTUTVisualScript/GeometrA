@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 from VisualScript import app
 from VisualScript.src.File.WorkSpace import WorkSpace
-import pprint
 import json
 
 from flask import Flask, request, render_template
