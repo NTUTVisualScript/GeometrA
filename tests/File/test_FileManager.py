@@ -1,18 +1,17 @@
 import unittest
 import os, shutil
 
-from VisualScript.src.File.Creator import Creator
+from VisualScript.src.File.FileManager import *
 
-class CreatorTestSuite(unittest.TestCase):
+class FileManagerTestSuite(unittest.TestCase):
     def testNew(self):
-        creator = Creator()
         info = {
             'project' : 'Project1',
             'suite' : 'Suite1',
             'case' : 'Case1',
             'path' : './',
         }
-        creator.new(info)
+        new(info)
         self.assertTrue(os.path.isdir('./Project1'))
         self.assertTrue(os.path.isdir('./Project1/Suite1'))
         self.assertTrue(os.path.isdir('./Project1/Suite1/Case1'))
@@ -21,7 +20,6 @@ class CreatorTestSuite(unittest.TestCase):
         shutil.rmtree('./Project1', True)
 
     def testNewException(self):
-        creator = Creator()
         info = {
             'project' : 'TestCase',
             'suite': 'Suite1',
@@ -29,4 +27,4 @@ class CreatorTestSuite(unittest.TestCase):
             'path': './',
         }
 
-        self.assertRaisesRegex(Exception, 'The directory is exist!', creator.new, info)
+        self.assertRaisesRegex(Exception, 'The directory is exist!', new, info)
