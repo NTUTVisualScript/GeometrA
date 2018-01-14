@@ -28,3 +28,12 @@ class FileManagerTestSuite(unittest.TestCase):
         }
 
         self.assertRaisesRegex(Exception, 'The directory is exist!', new, info)
+
+    def testLoad(self):
+        path = './File/Project0'
+        path2 = './File/Project'
+        p = ['Project', {'Project':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+        ws = WorkSpace(path2, p)
+
+        self.assertTrue(load(path, workspace=ws))
