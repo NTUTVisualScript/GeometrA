@@ -16,10 +16,10 @@ class WorkSpaceRouter():
         path = info['path']
         jsonPath = path + '/' + info['project'] + '/' + info['project'] + '.json'
         project = json.load(open(jsonPath))
-        self.ws = WorkSpace(path, project)
+        self.workspace = WorkSpace(path, project)
 
     def getWorkSpace(self):
-        return jsonify(self.ws.getTreeJSON())
+        return jsonify(self.workspace.getTreeJSON())
 
 wsr = WorkSpaceRouter()
 
