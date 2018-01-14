@@ -1,10 +1,8 @@
 from flask import Flask, request, render_template, jsonify
 from VisualScript import app
-from VisualScript.src.File.WorkSpace import WorkSpace
-import json
 
-from flask import Flask, request, render_template
-from flask_cors import CORS
+from VisualScript.src.main import WORKSPACE
+from VisualScript.src.File.FileManager import *
 
 class WorkSpaceRouter():
     def html(self):
@@ -12,14 +10,16 @@ class WorkSpaceRouter():
 
 
     def createProject(self, info):
-        self.creator.new(info)
-        path = info['path']
-        jsonPath = path + '/' + info['project'] + '/' + info['project'] + '.json'
-        project = json.load(open(jsonPath))
-        self.workspace = WorkSpace(path, project)
+        try:
+            new(info)
+            path = info['path']
+            jsonPath = path + '/' + info['project'] + '/' + info['project'] + '.json'
+            return load(jsonPath)
+        except:
+            return False
 
     def getWorkSpace(self):
-        return jsonify(self.workspace.getTreeJSON())
+        return jsonify(WORKSPACE.getTreeJSON())
 
 wsr = WorkSpaceRouter()
 
@@ -35,7 +35,7 @@ def createProject():
         'case' : request.form['case'],
         'path' : request.form['path']
     }
-    wsr.createProject(req)
+    return wsr.createProject(req)
 
 @app.route('/VisualScript/getWorkSpace')
 def getWorkSpace():

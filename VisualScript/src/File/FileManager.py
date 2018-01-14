@@ -1,6 +1,9 @@
 import os
 import json
 
+from VisualScript.src.main import WORKSPACE
+from VisualScript.src.File.WorkSpace import WorkSpace
+
 def new(info):
     # Decode information
     path = info['path']
@@ -33,3 +36,15 @@ def writeJSON(info, path):
     # Out put the file.
     with open(jsonPath, 'w') as f:
         f.write(log)
+
+def load(path, workspace=None):
+    # ws as a component for unittest
+    if not workspace:
+        workspace = WORKSPACE
+
+    with open(path, 'r') as f:
+        data = json.load(f)
+
+    projectPath = path[:path.rindex('/', 0, path.rindex('/'))]
+    workspace.add(projectPath, data)
+    return True
