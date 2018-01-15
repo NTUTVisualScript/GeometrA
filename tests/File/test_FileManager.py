@@ -2,6 +2,7 @@ import unittest
 import os, shutil
 
 from VisualScript.src.File.FileManager import *
+from VisualScript.src.File.WorkSpace import WorkSpace
 
 class FileManagerTestSuite(unittest.TestCase):
     def testNew(self):
