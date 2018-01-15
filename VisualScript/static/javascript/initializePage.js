@@ -16,8 +16,11 @@ $(document).ready(function() {
             swal({
                 width: '200%',
                 title: 'Load your test!',
-                html: '<div>The path on your device</div>' +
-                    '<input id="projectPath" type="file"  placeholder="" value="" class="swal2-input">',
+                html: '<div>Select the json file of the project on your device</div>' +
+                      '<button type="button" id="SelectFile">Select File</button>' +
+                      '<div id="Create"></div>',
+                    // '<input id="projectPath" type="file"  placeholder="" value="" class="swal2-input" \
+                    // accept="text/json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"/>',
                 focusConfirm: false,
                 showCancelButton: false,
                 allowEscapeKey: false,
@@ -26,12 +29,19 @@ $(document).ready(function() {
                     var data = {
                         "projectPath": ($('#projectPath').val())
                     }
-                    //console.log(JSON.stringify(data));
-                    Post('/login', data, function(msg) {
-                        swal(msg);
+                    Post('/VisualScript/WorkSpace/load', data, function(msg) {
+                        if (msg)
+                            swal("Project load successfully! ")
+                        else
+                            swal("It's not a project file! ")
                     });
                 }
             });
+            document.getElementById("SelectFile").onclick = function() {
+                Get('/VisualScript/WorkSpace/getFilePath', function(path) {
+                    $("#Create").html('<div id="projectPath">' + path + "</div>")
+                })
+            }
             // result.dismiss can be 'cancel', 'overlay',
             // 'close', and 'timer'
         } else if (result.dismiss === 'cancel') {
@@ -47,7 +57,8 @@ $(document).ready(function() {
                     '<div>Case name</div>' +
                     '<input id="caseName" type="text"  placeholder="" value="" class="swal2-input">' +
                     '<div>The path on your device</div>' +
-                    '<input id="projectPath" type="file"  placeholder="" value="" class="swal2-input">',
+                    '<button type="button" id="SelectFolder">Select Path</button>' +
+                    '<div id="projectPath"></div>',
                 focusConfirm: false,
                 showCancelButton: false,
                 allowEscapeKey: false,
@@ -65,7 +76,7 @@ $(document).ready(function() {
                     });
                 }
             });
-
         }
+
     })
 });
