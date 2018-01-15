@@ -2,6 +2,7 @@ from flask import request, jsonify
 from tkinter import filedialog, Tk
 
 from VisualScript import app
+from VisualScript.src import WORKSPACE
 from VisualScript.src.File.FileManager import *
 
 import pprint
@@ -13,26 +14,32 @@ def getWorkSpace():
 
 @app.route('/VisualScript/WorkSpace/create', methods=['POST'])
 def createProject():
-    print("HIHIHI")
     info = {
-        'project' : request.form['project'],
-        'suite' : request.form['suite'],
-        'case' : request.form['case'],
-        'path' : request.form['path']
+        'project' : request.form['projectName'],
+        'suite' : request.form['suiteName'],
+        'case' : request.form['caseName'],
+        'path' : request.form['projectPath']
     }
     try:
-        pprint.pprint(info)
         new(info)
         path = info['path']
         jsonPath = path + '/' + info['project'] + '/' + info['project'] + '.json'
-        return load(jsonPath)
-    except:
-        return False
+        load(jsonPath)
+        return "Success"
+    except Exception as e:
+        print(e)
+        return "Failed"
 
 @app.route('/VisualScript/WorkSpace/load', methods=['POST'])
 def loadProjects():
-    path = request.form['path']
-    return load(path)
+    path = request.form['projectPath']
+    try:
+        load(path)
+        return "Success"
+    except Exception as e:
+        print(e)
+        return "Failed"
+
 
 @app.route('/VisualScript/WorkSpace/getFilePath')
 def getFilePath():

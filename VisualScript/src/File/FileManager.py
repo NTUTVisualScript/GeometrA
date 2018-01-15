@@ -1,6 +1,8 @@
 import os
 import json
 
+from VisualScript.src import WORKSPACE
+
 def new(info):
     # Decode information
     path = info['path']

@@ -29,22 +29,27 @@ $(document).ready(function() {
                     var data = {
                         projectPath: ($('#projectPath').val())
                     }
+                    console.log(data)
                     $.ajax({
                         type: "POST",
-                        url: "127.0.0.1:5000/VisualScript/WorkSpace/load",
+                        url: "http://127.0.0.1:5000/VisualScript/WorkSpace/load",
                         data: data,
                         success: function(msg) {
-                            if (msg)
+                            if (msg == 'Success') {
                                 swal("Project load successfully! ")
-                            else
-                                swal("It's not a project file! ")
+                                WorkSpace()
+                            }
+                            else {
+                                swal("Not a project file!")
+                                window.location('/VisualScript')
+                            }
                         },
                     });
                 }
             });
             document.getElementById("SelectFile").onclick = function() {
                 Get('/VisualScript/WorkSpace/getFilePath', function(path) {
-                    $("#Create").html('<div id="projectPath">' + path + "</div>")
+                    $("#Create").html('<input id="projectPath" disabled="disabled" value="' + path + '" class="swal2-input">')
                 })
             }
             // result.dismiss can be 'cancel', 'overlay',
@@ -75,16 +80,19 @@ $(document).ready(function() {
                         caseName: ($('#caseName').val()),
                         projectPath: ($('#projectPath').val())
                     }
-                    console.log(JSON.stringify(data));
                     $.ajax({
                         type: "POST",
                         url: "http://127.0.0.1:5000/VisualScript/WorkSpace/create",
                         data: data,
                         success: function(msg) {
-                            if (msg)
+                            if (msg == 'Success') {
                                 swal("Project load successfully! ")
-                            else
-                                swal("It's not a project file! ")
+                                WorkSpace()
+                            }
+                            else {
+                                swal("Creation Failed ")
+                                window.location('/VisualScript')
+                            }
                         },
                     });
                 }

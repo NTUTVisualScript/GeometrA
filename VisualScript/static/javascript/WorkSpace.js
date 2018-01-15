@@ -1,4 +1,15 @@
 function WorkSpace() {
+    $.ajax({
+        type: "Get",
+        url: "http://127.0.0.1:5000" + "/VisualScript/WorkSpace",
+        success: function(response) {
+            $("#FileStructure").jstree({
+                'core' : {
+                  'data' : response
+                }
+              });
+        },
+    });
     // $(document).ready( function() {
     //     $.ajax({
     //         type: "POST",
