@@ -1,0 +1,9 @@
+[
+    "Projct",
+    {
+        "Project0":{
+            "Suite1": ["case1", "case2"],
+            "Suite2": ["case2"]
+        }
+    }
+]
