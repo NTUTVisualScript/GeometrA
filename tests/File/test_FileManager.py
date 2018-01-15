@@ -36,9 +36,16 @@ class FileManagerTestSuite(unittest.TestCase):
         p = ['Project', {'Project':{'Suite1': ['case1', 'case2'],
                           'Suite2': ['case2']}}]
         ws = WorkSpace(path2, p)
-
-        self.assertTrue(load(path, workspace=ws))
-
         ans = ['Project0', {'Project0':{'Suite1': ['case1', 'case2'],
                           'Suite2': ['case2']}}]
+        load(path, ws)
         self.assertEqual(ans, ws.getJSON('Project0'))
+
+    def testLoadException(self):
+        path = './File/ErrorProject/Project0.json'
+        path2 = './File'
+        p = ['Project', {'Project':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+        ws = WorkSpace(path2, p)
+
+        self.assertRaisesRegex(Exception, 'Project: Projct is not in the path')

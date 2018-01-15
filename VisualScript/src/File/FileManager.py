@@ -41,7 +41,8 @@ def load(path, workspace=None):
 
     with open(path, 'r') as f:
         data = json.load(f)
-
-    projectPath = path[:path.rindex('/', 0, path.rindex('/'))]
-    workspace.add(projectPath, data)
-    return True
+    try:
+        projectPath = path[:path.rindex('/', 0, path.rindex('/'))]
+        workspace.add(projectPath, data)
+    except Exception as e:
+        raise e
