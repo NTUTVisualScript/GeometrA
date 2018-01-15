@@ -27,13 +27,18 @@ $(document).ready(function() {
                 allowOutsideClick: false,
                 preConfirm: () => {
                     var data = {
-                        "projectPath": ($('#projectPath').val())
+                        projectPath: ($('#projectPath').val())
                     }
-                    Post('/VisualScript/WorkSpace/load', data, function(msg) {
-                        if (msg)
-                            swal("Project load successfully! ")
-                        else
-                            swal("It's not a project file! ")
+                    $.ajax({
+                        type: "POST",
+                        url: "127.0.0.1:5000/VisualScript/WorkSpace/load",
+                        data: data,
+                        success: function(msg) {
+                            if (msg)
+                                swal("Project load successfully! ")
+                            else
+                                swal("It's not a project file! ")
+                        },
                     });
                 }
             });
@@ -58,24 +63,37 @@ $(document).ready(function() {
                     '<input id="caseName" type="text"  placeholder="" value="" class="swal2-input">' +
                     '<div>The path on your device</div>' +
                     '<button type="button" id="SelectFolder">Select Path</button>' +
-                    '<div id="projectPath"></div>',
+                    '<div id="Create"></div>',
                 focusConfirm: false,
                 showCancelButton: false,
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 preConfirm: () => {
                     var data = {
-                        "projectName": ($('#projectName').val()),
-                        "suiteName": ($('#suiteName').val()),
-                        "caseName": ($('#caseName').val()),
-                        "projectPath": ($('#projectPath').val())
+                        projectName: ($('#projectName').val()),
+                        suiteName: ($('#suiteName').val()),
+                        caseName: ($('#caseName').val()),
+                        projectPath: ($('#projectPath').val())
                     }
-                    //console.log(JSON.stringify(data));
-                    Post('/login', data, function(msg) {
-                        swal(msg);
+                    console.log(JSON.stringify(data));
+                    $.ajax({
+                        type: "POST",
+                        url: "http://127.0.0.1:5000/VisualScript/WorkSpace/create",
+                        data: data,
+                        success: function(msg) {
+                            if (msg)
+                                swal("Project load successfully! ")
+                            else
+                                swal("It's not a project file! ")
+                        },
                     });
                 }
             });
+            document.getElementById("SelectFolder").onclick = function() {
+                Get('/VisualScript/WorkSpace/getProjectPath', function(path) {
+                    $("#Create").html('<input id="projectPath" disabled="disabled" value="' + path + '" class="swal2-input">')
+                })
+            }
         }
 
     })

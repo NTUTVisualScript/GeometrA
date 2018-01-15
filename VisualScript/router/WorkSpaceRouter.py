@@ -4,6 +4,8 @@ from tkinter import filedialog, Tk
 from VisualScript import app
 from VisualScript.src.File.FileManager import *
 
+import pprint
+
 
 @app.route('/VisualScript/WorkSpace')
 def getWorkSpace():
@@ -11,6 +13,7 @@ def getWorkSpace():
 
 @app.route('/VisualScript/WorkSpace/create', methods=['POST'])
 def createProject():
+    print("HIHIHI")
     info = {
         'project' : request.form['project'],
         'suite' : request.form['suite'],
@@ -18,6 +21,7 @@ def createProject():
         'path' : request.form['path']
     }
     try:
+        pprint.pprint(info)
         new(info)
         path = info['path']
         jsonPath = path + '/' + info['project'] + '/' + info['project'] + '.json'
@@ -37,3 +41,10 @@ def getFilePath():
     root.destroy()
     filePath = f.name
     return filePath
+
+@app.route('/VisualScript/WorkSpace/getProjectPath')
+def getProjectPath():
+    root = Tk()
+    projectPath = filedialog.askdirectory()
+    root.destroy()
+    return projectPath
