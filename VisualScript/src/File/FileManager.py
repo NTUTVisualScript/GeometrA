@@ -6,7 +6,7 @@ from VisualScript.src import WORKSPACE
 def new(info):
     # Decode information
     path = info['path']
-    projectPath = path + info['project']
+    projectPath = path + '/' + info['project']
     if os.path.isdir(projectPath):
         raise Exception('The directory is exist!')
     suitePath = projectPath + '/' + info['suite']
