@@ -40,8 +40,9 @@ $(document).ready(function() {
                                 WorkSpace()
                             }
                             else {
-                                swal("Not a project file!")
-                                window.location('/VisualScript')
+                                swal("Not a project file!").then(function(){
+                                    window.location = '/VisualScript'
+                                });    
                             }
                         },
                     });
@@ -90,8 +91,9 @@ $(document).ready(function() {
                                 WorkSpace()
                             }
                             else {
-                                swal("Creation Failed ")
-                                window.location('/VisualScript')
+                                swal("Creation Failed ").then(function() {
+                                    window.location = '/VisualScript'
+                                });
                             }
                         },
                     });

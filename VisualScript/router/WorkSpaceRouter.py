@@ -14,6 +14,9 @@ def getWorkSpace():
 
 @app.route('/VisualScript/WorkSpace/create', methods=['POST'])
 def createProject():
+    if ('projectName' not in request.form) or ('suiteName' not in request.form) or \
+        ('caseName' not in request.form) or ('projectPath' not in request.form):
+        return "Failed"
     info = {
         'project' : request.form['projectName'],
         'suite' : request.form['suiteName'],
@@ -32,6 +35,8 @@ def createProject():
 
 @app.route('/VisualScript/WorkSpace/load', methods=['POST'])
 def loadProjects():
+    if 'projectPath' not in request.form:
+        return "Failed"
     path = request.form['projectPath']
     try:
         load(path)
