@@ -32,3 +32,11 @@ class WorkSpace:
             d["children"] = self.projects[p].getTreeJSON()
             result.append(d)
         return result
+
+    def log(self):
+        pathList = []
+        for p in self.projects:
+            pathList.append(self.projects[p].path + '/' + p + '.json')
+        return pathList
+        # with open('./record.log', 'w') as f:
+        #     f.write(str(pathList).replace("'", '"'))

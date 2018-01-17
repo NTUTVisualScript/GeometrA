@@ -71,3 +71,10 @@ class WorkSpaceTestSuite(unittest.TestCase):
         ]
 
         self.assertEqual(result, ws.getTreeJSON())
+
+    def testLog(self):
+        p = ['Project1', {'Project1':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+        path = self.path
+        ws = WorkSpace(path, p)
+        self.assertEqual([self.path])
