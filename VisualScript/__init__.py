@@ -2,8 +2,10 @@ from flask import Flask, request, render_template
 from flask_cors import CORS
 
 import os
+import json
 
 from VisualScript.src import WORKSPACE as ws
+from VisualScript.src.Record import *
 
 app = Flask(__name__)
 CORS(app)
@@ -20,13 +22,16 @@ def checkLog():
 
 @app.route('/VisualScript/saveLog')
 def saveLog():
-    wslog = ws.log()
-    log = {
-        'WorkSpace': wslog,
-    }
     try:
-        with open('./record.log', 'w') as f:
-            f.write(str(log).replace("'", '"'))
+        exportLog()
+        return 'Success'
+    except Exception as e:
+        return 'Fail'
+
+@app.route('/VisualScript/log')
+def log():
+    try:
+        loadLog()
         return 'Success'
     except Exception as e:
         print(e)
