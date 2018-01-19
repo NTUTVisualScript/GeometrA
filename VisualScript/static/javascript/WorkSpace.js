@@ -1,15 +1,18 @@
 function WorkSpace() {
-    $.ajax({
-        type: "Get",
-        url: "http://127.0.0.1:5000" + "/VisualScript/WorkSpace",
-        success: function(response) {
-            $("#FileStructure").jstree({
-                'core' : {
-                  'data' : response
-                }
-              });
-        },
+    Get("/VisualScript/WorkSpace", function(response) {
+        $("#FileStructure").jstree({
+            'core': {
+                'data': response
+            }
+        });
+
+        Get('/VisualScript/saveLog', function(result) {
+            if (result == 'Fail')
+                alert("Saving Log File Failed");
+        });
     });
+
+
     // $(document).ready( function() {
     //     $.ajax({
     //         type: "POST",

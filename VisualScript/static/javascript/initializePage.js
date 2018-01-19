@@ -1,4 +1,16 @@
 $(document).ready(function() {
+    function callback(result) {
+        if (result == 'exist') {
+            Log();
+        }
+        else {
+            InitializePage()
+        }
+    }
+    Get('/VisualScript/checkLog', callback)
+})
+
+function InitializePage() {
     swal({
         title: 'Welcome to VisualScript',
         text: "Please load a project or create a new one",
@@ -18,4 +30,15 @@ $(document).ready(function() {
             Create()
         }
     })
-});
+}
+
+function Log() {
+    Get('/VisualScript/log', function (result) {
+        if (result == 'Success') {
+            WorkSpace();
+        }
+        else {
+            InitializePage()
+        }
+    });
+}

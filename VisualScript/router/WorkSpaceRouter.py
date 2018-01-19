@@ -4,9 +4,7 @@ from tkinter import filedialog, Tk
 from VisualScript import app
 from VisualScript.src import WORKSPACE
 from VisualScript.src.File.FileManager import *
-
-import pprint
-
+from VisualScript.src.File.WorkSpace import WorkSpace
 
 @app.route('/VisualScript/WorkSpace')
 def getWorkSpace():

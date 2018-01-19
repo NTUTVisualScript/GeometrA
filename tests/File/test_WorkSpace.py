@@ -77,4 +77,5 @@ class WorkSpaceTestSuite(unittest.TestCase):
                           'Suite2': ['case2']}}]
         path = self.path
         ws = WorkSpace(path, p)
-        self.assertEqual([self.path])
+        ans = [self.path + '/' + p[0] + '/' + p[0] + '.json']
+        self.assertEqual(ans, ws.log())

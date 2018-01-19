@@ -52,3 +52,4 @@ VisualScript.egg-info/PKG-INFO
 VisualScript/static/prepros-6.config
 tests/screenshot_pic/before.png
 tests/.coverage
+record.log

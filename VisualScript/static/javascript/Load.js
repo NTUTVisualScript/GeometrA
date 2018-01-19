@@ -25,7 +25,6 @@ function Load() {
                     });
                 }
             }
-            console.log("HIHIHI")
             Post("/VisualScript/WorkSpace/load", data, callback);
         }
     });
