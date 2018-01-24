@@ -37,4 +37,5 @@ def log():
         print(e)
         return 'Fail'
 
+from VisualScript import main
 from VisualScript.router import WorkSpaceRouter
