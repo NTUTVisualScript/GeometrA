@@ -1,9 +1,18 @@
 function WorkSpace() {
     Get("/VisualScript/WorkSpace", function(response) {
+
         $("#FileStructure").jstree({
             'core': {
+                'check_callback': true,
                 'data': response
-            }
+            },
+            'checkbox': {
+              'three_state' : false, // to avoid that fact that checking a node also check others
+              'whole_node' : false,  // to avoid checking the box just clicking the node
+              'tie_selection' : false, // for checking without selecting and selecting without checking
+              'cascade' : "down"
+            },
+            'plugins':["contextmenu", "checkbox", "state", "dnd", "unique"]
         });
 
         Get('/VisualScript/saveLog', function(result) {
