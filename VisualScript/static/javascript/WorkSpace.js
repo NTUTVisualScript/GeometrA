@@ -38,9 +38,10 @@ function Menu(node) {
             action: function(data) {
                 var inst = $.jstree.reference(data.reference);
                 var obj = inst.get_node(data.reference);
-                if (obj["parents"].length == 1) {
+                console.log(inst)
+                console.log(data.reference)
+                console.log(inst.get_node(obj["parent"]))
                     createSuite(inst, obj);
-                }
             },
         },
     };
@@ -52,6 +53,7 @@ function Menu(node) {
 }
 
 function createSuite(inst, obj) {
+    console.log(obj)
     var addSuite = function (msg) {
         inst.create_node(obj, {}, "last", function (new_node) {
             try {
@@ -64,7 +66,7 @@ function createSuite(inst, obj) {
         });
     };
     var data = {
-        "Project" = obj["text"],
+        "Project": obj["text"],
     };
-    Post("/VisualScript/WorkSpace/AddSuite", data, addSuite);
+    Post("/VisualScript/WorkSpace/addSuite", data, addSuite);
 }

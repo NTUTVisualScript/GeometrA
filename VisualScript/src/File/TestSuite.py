@@ -1,5 +1,5 @@
 import os, shutil
-
+import json
 
 class TestSuite:
     def __init__(self, caseList, path):
@@ -21,14 +21,17 @@ class TestSuite:
                 raise Exception('Empty case name!')
             if self.cases.count(cases) != 0:
                 raise Exception('Case exist!')
-
             self.cases.append(cases)
+            os.mkdir(self.path + '/' + cases)
+            with open(self.path + '/' + cases + '/testcase.json', 'w') as f:
+                f.write(json.dumps({}))
         else:
             raise Exception('Invalid case name!')
 
     def delete(self, case):
         n = self.cases.index(case)
         self.cases.pop(n)
+        print(self.path + '/' + case)
         shutil.rmtree(self.path + '/' + case)
         return self.cases
 

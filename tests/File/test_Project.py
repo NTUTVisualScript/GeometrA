@@ -1,6 +1,6 @@
 import unittest
 import os, shutil
-
+import json
 
 from VisualScript.src.File.Project import Project
 
@@ -29,6 +29,43 @@ class ProjectTestSuite(unittest.TestCase):
         self.assertEqual(os.getcwd() + '/File/Project1/Suite2', project.suites['Suite2'].path)
         self.assertEqual(1, len(project.suites))
         self.assertEqual(self.path, project.path)
+
+    def testAdd(self):
+        d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
+        project = Project(self.path, d)
+        project.add("Suite3")
+        result = {'Suite1':['case1', 'case2'], 'Suite2':['case2'], 'Suite3':[]}
+        self.assertEqual(result, project.getJSON())
+        self.assertTrue(os.path.isdir('./File/Project1/Suite3'))
+        self.assertTrue(os.path.isfile('./File/Project1/Project1.json'))
+
+        with open ('./File/Project1/Project1.json', 'r') as f:
+            data = json.load(f)
+        recordResult = [
+            'Project1',
+            {
+                'Project1': {
+                    'Suite1': ['case1', 'case2'],
+                    'Suite2': ['case2'],
+                    'Suite3': []
+                }
+            }
+        ]
+        self.assertEqual(recordResult, data)
+
+    def testAddCase(self):
+        d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
+        project = Project(self.path, d)
+        project.add("Suite1", "case3")
+        result = {'Suite1':['case1', 'case2', 'case3'], 'Suite2':['case2']}
+        self.assertEqual(result, project.getJSON())
+        self.assertTrue(os.path.isdir('./File/Project1/Suite1/case3'))
+        self.assertTrue(os.path.isfile('./File/Project1/Suite1/case3/case3.json'))
+    def testAddException(self):
+        d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
+        project = Project(self.path, d)
+        message = 'Suite: "Suite1" is already exists!'
+        self.assertRaisesRegex(Exception, message, project.add, 'Suite1')
 
     def testDelete(self):
         d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}

@@ -58,6 +58,8 @@ class TestSuiteTestSuite(unittest.TestCase):
         suite.insert(case)
         self.assertEqual(3, len(suite.cases))
         self.assertEqual('case3', suite.cases[2])
+        self.assertTrue(os.path.isdir('./File/Project1/Suite1/case3'))
+        self.assertTrue(os.path.isfile('./File/Project1/Suite1/case3/testcase.json'))
     def testInsertEmptyExcept(self):
         cases1 = ['case1', 'case2']
         suite = TestSuite(cases1, self.path)

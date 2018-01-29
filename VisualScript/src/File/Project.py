@@ -1,5 +1,6 @@
 from VisualScript.src.File.TestSuite import TestSuite
 import os, shutil
+import json
 
 class Project:
     def __init__(self, path, suites):
@@ -26,6 +27,23 @@ class Project:
             raise Exception('Suite already exists')
         self.suites[new] = self.suites.pop(origin)
         os.rename(self.path + '/' + origin, self.path + '/' + new)
+
+    def add(self, suite, case = None):
+        if not case:
+            if os.path.isdir(self.path + '/' + suite):
+                raise Exception('Suite: "' + suite + '" is already exists!')
+            self.suites[suite] = TestSuite([], self.path + '/' + suite)
+            os.mkdir(self.path + '/' + suite)
+        else:
+            self.suites[suite].insert(case)
+        self.updateRecord()
+
+    def updateRecord(self):
+        d = self.getJSON()
+        projectName = self.path.split('/')[-1]
+        data = [ projectName, { projectName: d } ]
+        with open (self.path + '/' + projectName + '.json', 'w') as f:
+            f.write(json.dumps(data))
 
     def delete(self, suite):
         self.suites.pop(suite)
