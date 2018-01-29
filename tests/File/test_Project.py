@@ -71,11 +71,11 @@ class ProjectTestSuite(unittest.TestCase):
         d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
         result = [
            {"text" : "Suite1", "children" : [
-               {"text":"case1"},
-               {"text":"case2"}
+               {"text":"case1", 'type': 'itsfile'},
+               {"text":"case2", 'type': 'itsfile'}
            ]},
            {"text" : "Suite2", "children" : [
-               {"text":"case2"}
+               {"text":"case2", 'type': 'itsfile'}
            ]}
         ]
         project = Project(self.path, d)

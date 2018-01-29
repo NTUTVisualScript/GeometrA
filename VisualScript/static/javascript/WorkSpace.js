@@ -1,7 +1,12 @@
 function WorkSpace() {
     Get("/VisualScript/WorkSpace", function(response) {
-
+        console.log($.jstree.version);
         $("#FileStructure").jstree({
+            'types': {
+                'itsfile': {
+                    'icon': 'jstree-file',
+                },
+            },
             'core': {
                 'check_callback': true,
                 'data': response
@@ -12,7 +17,11 @@ function WorkSpace() {
               'tie_selection' : false, // for checking without selecting and selecting without checking
               'cascade' : "down"
             },
-            'plugins':["contextmenu", "checkbox", "state", "dnd", "unique"]
+            'contextmenu': {
+                show_at_node: true,
+                items: Menu,
+            },
+            'plugins':["contextmenu", "checkbox", "types"]
         });
 
         Get('/VisualScript/saveLog', function(result) {
@@ -20,47 +29,42 @@ function WorkSpace() {
                 alert("Saving Log File Failed");
         });
     });
-
-
-    // $(document).ready( function() {
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "http://127.0.0.1:5000" + "/VisualScript/getWorkSpace",
-    //         data: {path:"D:/Project"},
-    //         success: function(response) {
-    //             $("#FileStructure").jstree({
-    //                 'core' : {
-    //                   'data' : response
-    //                 }
-    //               });
-    //         },
-    //     });
-    // });
-    // this.update = function() {
-    //     $("#FileStructure").jstree({
-    //         'core' : {
-    //           'data' : [
-    //             { "text" : "Project1", "children" : [
-    //                 { "text" : "Suite1" , "children":[
-    //                     {"text":"case1"},
-    //                     {"text":"case2"}
-    //                 ]},
-    //                 { "text" : "Suite2" , "children": [
-    //                     {"text":"case2"}
-    //                 ]}
-    //               ]}
-    //           ]}
-    //       });
-    // };
-    // this.right = function(e, d) {
-    //     console.log("The selected nodes are:");
-    //     console.log(data.selected);
-    // };
-    // $('#FileStructure').on("changed.jstree", function (e, data) {
-    //     // console.log("The selected nodes are:");
-    //     // console.log(data.selected);
-    //     this.right(e, data.selected);
-    //   });
 };
 
-// tree = WorkSpace();
+function Menu(node) {
+    var items = {
+        CreateItem: {
+            label: "Create",
+            action: function(data) {
+                var inst = $.jstree.reference(data.reference);
+                var obj = inst.get_node(data.reference);
+                if (obj["parents"].length == 1) {
+                    createSuite(inst, obj);
+                }
+            },
+        },
+    };
+
+    if (node["parents"].length == 3) {
+        delete items.CreateItem;
+    }
+    return items;
+}
+
+function createSuite(inst, obj) {
+    var addSuite = function (msg) {
+        inst.create_node(obj, {}, "last", function (new_node) {
+            try {
+                inst.edit(new_node, null, function (msg) {
+                    console.log(msg);
+                });
+            } catch (ex) {
+                setTimeout(function () { inst.edit(new_node); }, 0);
+            }
+        });
+    };
+    var data = {
+        "Project" = obj["text"],
+    };
+    Post("/VisualScript/WorkSpace/AddSuite", data, addSuite);
+}

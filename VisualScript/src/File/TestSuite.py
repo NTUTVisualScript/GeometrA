@@ -53,5 +53,6 @@ class TestSuite:
         for i in self.cases:
             d = {}
             d["text"] = i
+            d["type"] = "itsfile"
             result.append(d)
         return result

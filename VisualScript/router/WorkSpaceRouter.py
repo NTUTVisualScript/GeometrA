@@ -2,13 +2,13 @@ from flask import request, jsonify
 from tkinter import filedialog, Tk
 
 from VisualScript import app
-from VisualScript.src import WORKSPACE
+from VisualScript.src import WORKSPACE as ws
 from VisualScript.src.File.FileManager import *
 from VisualScript.src.File.WorkSpace import WorkSpace
 
 @app.route('/VisualScript/WorkSpace')
 def getWorkSpace():
-    return jsonify(WORKSPACE.getTreeJSON())
+    return jsonify(ws.getTreeJSON())
 
 @app.route('/VisualScript/WorkSpace/create', methods=['POST'])
 def createProject():
@@ -58,3 +58,7 @@ def getProjectPath():
     projectPath = filedialog.askdirectory()
     root.destroy()
     return projectPath
+
+@app.route('/VisualScript/WorkSpace/addSuite')
+def addSuite():
+    projectName = request.form['Project']

@@ -51,21 +51,21 @@ class WorkSpaceTestSuite(unittest.TestCase):
             {"text" : "Project1",
              "children" : [
                 {"text" : "Suite1", "children" : [
-                    {"text":"case1"},
-                    {"text":"case2"}
+                    {"text":"case1", "type": "itsfile"},
+                    {"text":"case2", "type": "itsfile"}
                 ]},
                 {"text" : "Suite2", "children" : [
-                    {"text":"case2"}
+                    {"text":"case2", "type": "itsfile"}
                 ]}
              ]},
              {"text" : "Project2",
              "children" : [
                 {"text" : "Suite1", "children" : [
-                    {"text":"case1"},
-                    {"text":"case2"}
+                    {"text":"case1", "type": "itsfile"},
+                    {"text":"case2", "type": "itsfile"}
                 ]},
                 {"text" : "Suite2", "children" : [
-                    {"text":"case2"}
+                    {"text":"case2", "type": "itsfile"}
                 ]}
              ]}
         ]

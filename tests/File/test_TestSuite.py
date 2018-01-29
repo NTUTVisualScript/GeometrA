@@ -119,8 +119,8 @@ class TestSuiteTestSuite(unittest.TestCase):
     def testGetTreeJSON(self):
         cases = ['case1', 'case2']
         result = [
-            {"text": 'case1'},
-            {"text": 'case2'}
+            {"text": 'case1', 'type': 'itsfile'},
+            {"text": 'case2', 'type': 'itsfile'}
         ]
         suite = TestSuite(cases, self.path)
         self.assertEqual(result, suite.getTreeJSON())
