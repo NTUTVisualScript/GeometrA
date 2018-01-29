@@ -50,7 +50,23 @@ function Menu(node) {
             action: function(data) {
                 var inst = $.jstree.reference(data.reference);
                 var obj = inst.get_node(data.reference);
-                FileDelete(inst, obj);
+                swal({
+                    title: 'Deletion',
+                    text: "Are you sure to delete: " + obj["text"],
+                    type: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel',
+                    buttonsStyling: true,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                }).then((result) => {
+                    if (result.value) {
+                    FileDelete(inst, obj);
+                    }
+                })
             }
         }
     };
