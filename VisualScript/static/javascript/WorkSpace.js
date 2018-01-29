@@ -40,19 +40,24 @@ function Menu(node) {
                 if (obj["parents"].length == 1) {
                     createSuite(inst, obj);
                 }
-                else if (obj["parents"].length == 3) {
-                    console.log(obj)
-                }
                 else {
                     createCase(inst, obj);
                 }
             },
         },
+        DeleteItem: {
+            label: "Delete",
+            action: function(data) {
+                var inst = $.jstree.reference(data.reference);
+                var obj = inst.get_node(data.reference);
+                FileDelete(inst, obj);
+            }
+        }
     };
 
-    // if (node["parents"].length >= 3) {
-    //     delete items.CreateItem;
-    // }
+    if (node["parents"].length >= 3) {
+        delete items.CreateItem;
+    }
     return items;
 }
 
@@ -89,5 +94,29 @@ function createCase(inst, obj) {
             console.log(ex);
             setTimeout(function () { inst.edit(new_node); }, 0);
         }
+    });
+}
+
+function FileDelete(inst, obj) {
+    if (obj["parents"].length == 1) {
+        var data = {
+            Project: obj["text"],
+        };
+    }
+    else if (obj["parents"].length == 2) {
+        var data = {
+            Project: inst.get_node(obj["parent"])["text"],
+            Suite: obj["text"],
+        };
+    }
+    else {
+        var data = {
+            Project: inst.get_node(inst.get_node(obj["parent"])["parent"])["text"],
+            Suite: inst.get_node(obj["parent"])["text"],
+            Case: obj["text"],
+        };
+    }
+    Post("/VisualScript/WorkSpace/delete", data, function(msg) {
+        inst.delete_node(obj)
     });
 }

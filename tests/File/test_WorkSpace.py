@@ -62,6 +62,16 @@ class WorkSpaceTestSuite(unittest.TestCase):
         message = 'Project: "Project1" is already exists!'
         self.assertRaisesRegex(Exception, message, ws.add, self.path, 'Project1')
 
+    def testDelete(self):
+        p1 = ['Project1', {'Project1':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+        ws = WorkSpace(self.path, p1)
+        ws.add(self.path, 'Project3')
+        ws.delete('Project3')
+        message = 'Project: "Project3" not exist'
+        self.assertRaisesRegex(Exception, message, ws.getJSON, 'Project3')
+        self.assertFalse(os.path.isdir('./File/Project3'))
+
     def testGetJSON(self):
         p = ['Project1', {'Project1':{'Suite1': ['case1', 'case2'],
                           'Suite2': ['case2']}}]

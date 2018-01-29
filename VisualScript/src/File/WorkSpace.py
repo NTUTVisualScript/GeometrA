@@ -1,4 +1,4 @@
-import os
+import os, shutil
 import json
 
 from VisualScript.src.File.Project import Project
@@ -30,9 +30,15 @@ class WorkSpace:
             data = json.load(f)
         self.load(path, data)
 
+    def delete(self, name):
+        if not name in self.projects:
+            raise Exception('Project: "' + name +'" not exist')
+        shutil.rmtree(self.projects[name].path)
+        del self.projects[name]
+
     def getJSON(self, p):
         if not p in self.projects:
-            raise Exception('Project: "' + name +'" not exist')
+            raise Exception('Project: "' + p +'" not exist')
         d = self.projects[p].getJSON()
         result = [p, {p:d}]
         return result

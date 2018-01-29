@@ -73,3 +73,20 @@ def addCase():
     case = request.form['Case']
     ws.projects[project].add(suite, case)
     return ""
+
+@app.route('/VisualScript/WorkSpace/delete', methods=['POST'])
+def deleteFile():
+    if 'Case' in request.form:
+        case = request.form['Case']
+        suite = request.form['Suite']
+        project = request.form['Project']
+        ws.projects[project].suites[suite].delete(case)
+    elif 'Suite' in request.form:
+        suite = request.form['Suite']
+        project = request.form['Project']
+        ws.projects[project].delete(suite)
+    else:
+        project = request.form['Project']
+        ws.delete(project)
+
+    return ""
