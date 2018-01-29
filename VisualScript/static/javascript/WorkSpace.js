@@ -1,6 +1,5 @@
 function WorkSpace() {
     Get("/VisualScript/WorkSpace", function(response) {
-        console.log($.jstree.version);
         $("#FileStructure").jstree({
             'types': {
                 'itsfile': {
@@ -38,35 +37,57 @@ function Menu(node) {
             action: function(data) {
                 var inst = $.jstree.reference(data.reference);
                 var obj = inst.get_node(data.reference);
-                console.log(inst)
-                console.log(data.reference)
-                console.log(inst.get_node(obj["parent"]))
+                if (obj["parents"].length == 1) {
                     createSuite(inst, obj);
+                }
+                else if (obj["parents"].length == 3) {
+                    console.log(obj)
+                }
+                else {
+                    createCase(inst, obj);
+                }
             },
         },
     };
 
-    if (node["parents"].length == 3) {
-        delete items.CreateItem;
-    }
+    // if (node["parents"].length >= 3) {
+    //     delete items.CreateItem;
+    // }
     return items;
 }
 
 function createSuite(inst, obj) {
-    console.log(obj)
-    var addSuite = function (msg) {
-        inst.create_node(obj, {}, "last", function (new_node) {
-            try {
-                inst.edit(new_node, null, function (msg) {
-                    console.log(msg);
-                });
-            } catch (ex) {
-                setTimeout(function () { inst.edit(new_node); }, 0);
-            }
-        });
-    };
-    var data = {
-        "Project": obj["text"],
-    };
-    Post("/VisualScript/WorkSpace/addSuite", data, addSuite);
+    inst.create_node(obj, {}, "last", function (new_node) {
+        try {
+            inst.edit(new_node, null, function (node) {
+                var data = {
+                    Project: obj["text"],
+                    Suite: node["text"],
+                };
+                Post("/VisualScript/WorkSpace/addSuite", data, function() {});
+            });
+        } catch (ex) {
+            console.log(ex);
+            setTimeout(function () { inst.edit(new_node); }, 0);
+        }
+    });
+}
+
+function createCase(inst, obj) {
+    inst.create_node(obj, {}, "last", function (new_node) {
+        try {
+            inst.edit(new_node, null, function (node) {
+                inst.set_type("itsfile", node)
+                var data = {
+                    Project: inst.get_node(obj["parent"])["text"],
+                    Suite: obj["text"],
+                    Case: node["text"],
+                };
+                Post("/VisualScript/WorkSpace/addCase", data, function() {});
+            });
+        } catch (ex) {
+            console.log(ex);
+            setTimeout(function () { inst.edit(new_node); }, 0);
+        }
+    });
 }

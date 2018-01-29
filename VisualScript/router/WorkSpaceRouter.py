@@ -59,6 +59,17 @@ def getProjectPath():
     root.destroy()
     return projectPath
 
-@app.route('/VisualScript/WorkSpace/addSuite')
+@app.route('/VisualScript/WorkSpace/addSuite', methods=['POST'])
 def addSuite():
-    projectName = request.form['Project']
+    project = request.form['Project']
+    suite = request.form['Suite']
+    ws.projects[project].add(suite)
+    return ""
+
+@app.route('/VisualScript/WorkSpace/addCase', methods=['POST'])
+def addCase():
+    project = request.form['Project']
+    suite = request.form['Suite']
+    case = request.form['Case']
+    ws.projects[project].add(suite, case)
+    return ""
