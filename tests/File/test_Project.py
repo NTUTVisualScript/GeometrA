@@ -60,7 +60,7 @@ class ProjectTestSuite(unittest.TestCase):
         result = {'Suite1':['case1', 'case2', 'case3'], 'Suite2':['case2']}
         self.assertEqual(result, project.getJSON())
         self.assertTrue(os.path.isdir('./File/Project1/Suite1/case3'))
-        self.assertTrue(os.path.isfile('./File/Project1/Suite1/case3/case3.json'))
+        self.assertTrue(os.path.isfile('./File/Project1/Suite1/case3/testcase.json'))
     def testAddException(self):
         d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
         project = Project(self.path, d)
