@@ -84,9 +84,10 @@ class ProjectTestSuite(unittest.TestCase):
         project.rename('Suite1', 'Suite 1')
         self.assertFalse('Suite1' in project.suites)
         self.assertTrue('Suite 1' in project.suites)
+        self.assertEqual(self.path + '/Suite 1', project.suites['Suite 1'].path)
         self.assertTrue(os.path.isdir('./File/Project1/Suite 1'))
         self.assertFalse(os.path.isdir('./File/Project1/Suite1'))
-    def testRenameExcept(self):
+    def testRenameNoSuiteExcept(self):
         d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
         project = Project(self.path, d)
         origin = 'Suite3'

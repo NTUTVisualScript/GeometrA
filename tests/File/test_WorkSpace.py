@@ -1,6 +1,6 @@
 import unittest
 
-import os, shutil
+import os, shutil, json
 from VisualScript.src.File.WorkSpace import WorkSpace
 
 class WorkSpaceTestSuite(unittest.TestCase):
@@ -17,6 +17,28 @@ class WorkSpaceTestSuite(unittest.TestCase):
         shutil.copytree('./File/Project', './File/Project1')
         shutil.copytree('./File/Project', './File/Project2')
         self.path = os.getcwd() + '/File'
+        with open (self.path + '/Project1/Project1.json', 'w') as f:
+            data = [
+                "Project1",
+                {
+                    "Project1":{
+                        "Suite1": ["case1", "case2"],
+                        "Suite2": ["case2"]
+                    }
+                }
+            ]
+            f.write(json.dumps(data))
+        with open (self.path + '/Project2/Project2.json', 'w') as f:
+            data = [
+                "Project2",
+                {
+                    "Project2":{
+                        "Suite1": ["case1", "case2"],
+                        "Suite2": ["case2"]
+                    }
+                }
+            ]
+            f.write(json.dumps(data))
 
     def tearDown(self):
         if os.path.isdir('./File/Project1'):
@@ -84,10 +106,13 @@ class WorkSpaceTestSuite(unittest.TestCase):
         p3 = ['Project3', {'Project3':{'Suite1': ['case1', 'case2'],
                           'Suite2': ['case2']}}]
 
-        self.assertEqual(p3, ws.getJSON())
+        self.assertFalse('Project1' in ws.projects)
+        self.assertEqual(p3, ws.getJSON('Project3'))
+        self.assertEqual(self.path + '/Project3', ws.projects['Project3'].path)
+        self.assertEqual(self.path + '/Project3/Suite2', ws.projects['Project3'].suites['Suite2'].path)
         self.assertTrue(os.path.isdir('./File/Project3'))
         self.assertFalse(os.path.isdir('./File/Project1'))
-        self.assertTrue(os.path.isdir('./File/Project3/Project3.json'))
+        self.assertTrue(os.path.isfile('./File/Project3/Project3.json'))
 
     def testGetJSON(self):
         p = ['Project1', {'Project1':{'Suite1': ['case1', 'case2'],

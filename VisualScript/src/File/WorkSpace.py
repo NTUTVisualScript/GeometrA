@@ -37,7 +37,15 @@ class WorkSpace:
         del self.projects[name]
 
     def rename(self, origin, new):
-        projectPath = 
+        projectPath = self.projects[origin].path
+        newProjectPath = projectPath[0:projectPath.rindex('/')] + '/' + new
+        os.remove(projectPath + '/' + origin + '.json')
+        os.rename(projectPath, newProjectPath)
+        self.projects[new] = self.projects.pop(origin)
+        self.projects[new].path = newProjectPath
+        for suite in self.projects[new].suites:
+            self.projects[new].suites[suite].path = newProjectPath + '/' + suite
+        self.projects[new].updateRecord()
 
     def getJSON(self, p):
         if not p in self.projects:

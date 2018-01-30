@@ -23,10 +23,14 @@ class Project:
             suites.pop(suite)
 
     def rename(self, origin, new):
+        if not origin in self.suites:
+            raise KeyError(origin + " not in the project")
         if new in self.suites:
             raise Exception('Suite already exists')
-        self.suites[new] = self.suites.pop(origin)
         os.rename(self.path + '/' + origin, self.path + '/' + new)
+        self.suites[new] = self.suites.pop(origin)
+        self.suites[new].path = self.path + '/' + new
+        self.updateRecord()
 
     def add(self, suite, case = None):
         if not case:
