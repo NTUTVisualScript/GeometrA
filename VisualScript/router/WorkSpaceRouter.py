@@ -90,3 +90,21 @@ def deleteFile():
         ws.delete(project)
 
     return ""
+
+@app.route('/VisualScript/WorkSpace/rename', methods=['POST'])
+def rename():
+    new = request.form['new']
+    if 'Case' in request.form:
+        case = request.form['Case']
+        suite = request.form['Suite']
+        project = request.form['Project']
+        ws.projects[project].suites[suite].rename(case, new)
+    elif 'Suite' in request.form:
+        suite = request.form['Suite']
+        project = request.form['Project']
+        ws.projects[project].rename(suite, new)
+    else:
+        project = request.form['Project']
+        ws.rename(project, new)
+
+    return ""

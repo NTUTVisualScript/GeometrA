@@ -67,7 +67,17 @@ function Menu(node) {
                     FileDelete(inst, obj);
                     }
                 })
-            }
+            },
+        },
+        RenameItem: {
+            label: "Rename",
+            action: function(data) {
+                var inst = $.jstree.reference(data.reference);
+                var obj = inst.get_node(data.reference);
+
+                Rename(inst, obj);
+
+            },
         }
     };
 
@@ -134,5 +144,33 @@ function FileDelete(inst, obj) {
     }
     Post("/VisualScript/WorkSpace/delete", data, function(msg) {
         inst.delete_node(obj)
+    });
+}
+
+function Rename(inst, obj) {
+    if (obj["parents"].length == 1) {
+        var data = {
+            Project: obj["text"],
+            new:"",
+        };
+    }
+    else if (obj["parents"].length == 2) {
+        var data = {
+            Project: inst.get_node(obj["parent"])["text"],
+            Suite: obj["text"],
+            new:"",
+        };
+    }
+    else {
+        var data = {
+            Project: inst.get_node(inst.get_node(obj["parent"])["parent"])["text"],
+            Suite: inst.get_node(obj["parent"])["text"],
+            Case: obj["text"],
+            new:"",
+        };
+    }
+    inst.edit(obj, null, function(node) {
+        data["new"] = node["text"]
+        Post('/VisualScript/WorkSpace/rename', data, function() {});
     });
 }

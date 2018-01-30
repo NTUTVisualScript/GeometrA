@@ -6,8 +6,10 @@ from VisualScript.src.File.WorkSpace import WorkSpace
 class WorkSpaceTestSuite(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        shutil.rmtree('./File/Project1', True)
-        shutil.rmtree('./File/Project2', True)
+        if os.path.isdir('./File/Project1'):
+            shutil.rmtree('./File/Project1', True)
+        if os.path.isdir('./File/Project2'):
+            shutil.rmtree('./File/Project2', True)
         if os.path.isdir('./File/Project3'):
             shutil.rmtree('./File/Project3', True)
 
@@ -17,8 +19,10 @@ class WorkSpaceTestSuite(unittest.TestCase):
         self.path = os.getcwd() + '/File'
 
     def tearDown(self):
-        shutil.rmtree('./File/Project1', True)
-        shutil.rmtree('./File/Project2', True)
+        if os.path.isdir('./File/Project1'):
+            shutil.rmtree('./File/Project1', True)
+        if os.path.isdir('./File/Project2'):
+            shutil.rmtree('./File/Project2', True)
         if os.path.isdir('./File/Project3'):
             shutil.rmtree('./File/Project3', True)
 
@@ -71,6 +75,19 @@ class WorkSpaceTestSuite(unittest.TestCase):
         message = 'Project: "Project3" not exist'
         self.assertRaisesRegex(Exception, message, ws.getJSON, 'Project3')
         self.assertFalse(os.path.isdir('./File/Project3'))
+
+    def testRename(self):
+        p1 = ['Project1', {'Project1':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+        ws = WorkSpace(self.path, p1)
+        ws.rename('Project1', 'Project3')
+        p3 = ['Project3', {'Project3':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+
+        self.assertEqual(p3, ws.getJSON())
+        self.assertTrue(os.path.isdir('./File/Project3'))
+        self.assertFalse(os.path.isdir('./File/Project1'))
+        self.assertTrue(os.path.isdir('./File/Project3/Project3.json'))
 
     def testGetJSON(self):
         p = ['Project1', {'Project1':{'Suite1': ['case1', 'case2'],

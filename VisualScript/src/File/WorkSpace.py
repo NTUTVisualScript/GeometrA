@@ -36,6 +36,9 @@ class WorkSpace:
         shutil.rmtree(self.projects[name].path)
         del self.projects[name]
 
+    def rename(self, origin, new):
+        projectPath = 
+
     def getJSON(self, p):
         if not p in self.projects:
             raise Exception('Project: "' + p +'" not exist')
