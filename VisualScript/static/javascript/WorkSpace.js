@@ -31,6 +31,7 @@ function WorkSpace() {
 };
 
 function Menu(node) {
+    console.log(node)
     var items = {
         CreateItem: {
             label: "Create",
@@ -89,6 +90,7 @@ function Menu(node) {
 
 function createSuite(inst, obj) {
     inst.create_node(obj, {}, "last", function (new_node) {
+        new_node.text = "New Suite"
         try {
             inst.edit(new_node, null, function (node) {
                 var data = {
@@ -106,9 +108,12 @@ function createSuite(inst, obj) {
 
 function createCase(inst, obj) {
     inst.create_node(obj, {}, "last", function (new_node) {
+        new_node.icon = 'jstree-file'
+        new_node.type = "itsfile"
+        new_node.text = "New Case"
+
         try {
             inst.edit(new_node, null, function (node) {
-                inst.set_type("itsfile", node)
                 var data = {
                     Project: inst.get_node(obj["parent"])["text"],
                     Suite: obj["text"],
