@@ -59,20 +59,40 @@ def getProjectPath():
     root.destroy()
     return projectPath
 
+def checkName(path, name, n=0):
+    print(os.listdir(path))
+    print(n)
+    if n != 0:
+        fName = name + '(' + str(n) + ')'
+    else:
+        fName = name
+    print(fName)
+    if fName in os.listdir(path):
+        return checkName(path, name, n = n + 1)
+    return n
+
+
 @app.route('/VisualScript/WorkSpace/addSuite', methods=['POST'])
 def addSuite():
     project = request.form['Project']
-    suite = request.form['Suite']
+    suite = 'New Suite'
+    n = checkName(ws.projects[project].path, suite)
+    if n != 0:
+        suite = suite + '(' + str(n) + ')'
+
     ws.projects[project].add(suite)
-    return ""
+    return suite
 
 @app.route('/VisualScript/WorkSpace/addCase', methods=['POST'])
 def addCase():
     project = request.form['Project']
     suite = request.form['Suite']
-    case = request.form['Case']
+    case = 'New Case'
+    n = checkName(ws.projects[project].suites[suite].path, case)
+    if n != 0:
+        case = case + '(' + str(n) + ')'
     ws.projects[project].add(suite, case)
-    return ""
+    return case
 
 @app.route('/VisualScript/WorkSpace/delete', methods=['POST'])
 def deleteFile():
@@ -94,17 +114,25 @@ def deleteFile():
 @app.route('/VisualScript/WorkSpace/rename', methods=['POST'])
 def rename():
     new = request.form['new']
-    if 'Case' in request.form:
-        case = request.form['Case']
-        suite = request.form['Suite']
-        project = request.form['Project']
-        ws.projects[project].suites[suite].rename(case, new)
-    elif 'Suite' in request.form:
-        suite = request.form['Suite']
-        project = request.form['Project']
-        ws.projects[project].rename(suite, new)
-    else:
-        project = request.form['Project']
-        ws.rename(project, new)
-
-    return ""
+    try:
+        if 'Case' in request.form:
+            case = request.form['Case']
+            suite = request.form['Suite']
+            project = request.form['Project']
+            if case == new:
+                return ''
+            ws.projects[project].suites[suite].rename(case, new)
+        elif 'Suite' in request.form:
+            suite = request.form['Suite']
+            project = request.form['Project']
+            if suite == new:
+                return ''
+            ws.projects[project].rename(suite, new)
+        else:
+            project = request.form['Project']
+            if project == new:
+                return ''
+            ws.rename(project, new)
+        return ''
+    except Exception as e:
+        return new

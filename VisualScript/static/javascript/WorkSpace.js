@@ -31,7 +31,6 @@ function WorkSpace() {
 };
 
 function Menu(node) {
-    console.log(node)
     var items = {
         CreateItem: {
             label: "Create",
@@ -89,43 +88,38 @@ function Menu(node) {
 }
 
 function createSuite(inst, obj) {
-    inst.create_node(obj, {}, "last", function (new_node) {
-        new_node.text = "New Suite"
-        try {
-            inst.edit(new_node, null, function (node) {
-                var data = {
-                    Project: obj["text"],
-                    Suite: node["text"],
-                };
-                Post("/VisualScript/WorkSpace/addSuite", data, function() {});
-            });
-        } catch (ex) {
-            console.log(ex);
-            setTimeout(function () { inst.edit(new_node); }, 0);
-        }
+    var data = {
+        Project: obj["text"],
+    };
+    Post ('/VisualScript/WorkSpace/addSuite', data, function(suite_name) {
+        inst.create_node(obj, {}, "last", function (new_node) {
+            new_node.text = suite_name
+            Rename(inst, new_node)
+        });
     });
 }
 
 function createCase(inst, obj) {
-    inst.create_node(obj, {}, "last", function (new_node) {
-        new_node.icon = 'jstree-file'
-        new_node.type = "itsfile"
-        new_node.text = "New Case"
+    var data = {
+        Project: inst.get_node(obj["parent"])["text"],
+        Suite: obj["text"],
+    };
+    Post('/VisualScript/WorkSpace/addCase', data, function(case_name) {
+        inst.create_node(obj, {}, "last", function (new_node) {
+            new_node.icon = 'jstree-file';
+            new_node.type = "itsfile";
+            new_node.text = case_name;
 
-        try {
-            inst.edit(new_node, null, function (node) {
-                var data = {
-                    Project: inst.get_node(obj["parent"])["text"],
-                    Suite: obj["text"],
-                    Case: node["text"],
-                };
-                Post("/VisualScript/WorkSpace/addCase", data, function() {});
-            });
-        } catch (ex) {
-            console.log(ex);
-            setTimeout(function () { inst.edit(new_node); }, 0);
-        }
+            Rename(inst, new_node);
+        });
     });
+}
+
+function checkName (inst, obj, name) {
+    children_id = inst.get_node(obj.parent).children
+    for (var i = 0; i < children_id.length; i++) {
+        inst.get_node()
+    }
 }
 
 function FileDelete(inst, obj) {
@@ -174,8 +168,17 @@ function Rename(inst, obj) {
             new:"",
         };
     }
+    old_name = obj.text
     inst.edit(obj, null, function(node) {
         data["new"] = node["text"]
-        Post('/VisualScript/WorkSpace/rename', data, function() {});
+        Post('/VisualScript/WorkSpace/rename', data, function(msg) {
+            if (msg != '') {
+                swal("The name: '" + msg + "' has been used!\n \
+                    Please Rename it. " + old_name).then(function () {
+                        node.text = old_name;
+                        Rename(inst, node);
+                    });
+            }
+        });
     });
 }
