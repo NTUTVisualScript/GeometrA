@@ -18,6 +18,10 @@ class RecordTestSuite(unittest.TestCase):
         shutil.copytree('./File/Project0', './Project0')
 
     def tearDown(self):
+        if os.path.isfile(self.recordFile):
+            os.remove(self.recordFile)
+
+    def tearDown(self):
         shutil.rmtree('./Project0', True)
 
     def testExportLog(self):
@@ -28,16 +32,17 @@ class RecordTestSuite(unittest.TestCase):
 
         exportLog(workspace = ws)
         self.assertTrue(os.path.isfile(self.recordFile))
-        os.remove(self.recordFile)
 
     def testLog(self):
-        log = {
-            'WorkSpace': self.path + '/Project0/Project0.json'
-        }
-        with open('./record.log', 'w') as f:
-            f.write(str(log).replace("'", '"'))
+        p = ['Project0', {'Project0':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+        path = self.path
+        ws1 = WorkSpace(self.path, p)
+
+        exportLog(workspace = ws1)
 
         ws = WorkSpace()
         loadLog(ws)
 
-        self.assertEqual([log['WorkSpace']], ws.log())
+        log = [os.getcwd() + '/Project0/Project0.json']
+        self.assertEqual(log, ws.log())
