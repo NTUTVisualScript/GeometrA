@@ -1,32 +1,32 @@
-# Visual Script
-Branch from https://github.com/Swind/Sikuli-Img
+Visual Script is a tool for users to write automated acceptance test for applications on Android applications.
 
-# 開啟方法
+# Old Version
+[1.0](https://github.com/NTUTVisualScript/Visual_Script/tree/Old_Version)
 
-1.完成下方[環境建置] 或 以系統管理員身份執行 'auto.bat'
-2.執行根目錄下 'run.bat'
-3.打開browser，連線到 "http://127.0.0.1:5000"
+# How to start
 
-# 環境建置
-
-1.[Clone本專案](https://github.com/NTUTVisualScript/Visual_Script.git)
+1.[Clone the project](https://github.com/NTUTVisualScript/Visual_Script.git)
 
 2.Install [Python3](https://www.python.org/downloads/)  
 
     Check: "The version SHOULD BE **3** !!"
 
-3.Install [Android Studio](https://developer.android.com/studio/index.html) (If you are in windows.)
+3.On Windows: *Execute "auto.bat" as administrator*
 
-4.On Windows: *系統管理員身分執行專案根目錄下的 auto.bat*
-
-On Mac OS: *Execute the following command in terminal of the path of the project*
+\tOn Mac OS: *Execute the following command in terminal of the path of the project*
 
     sh setup.sh
 
-  或是*執行以下的環境設定*
+\tOr follow the "Environmental Setting"
 
-# 環境設定
+4.
 
+    python -m VisualScript.api
+
+6.Connect to "http://127.0.0.1:5000/VisualScript"
+
+
+# Environmental Setting
 
 1.Install PIL  
 
@@ -55,7 +55,9 @@ On Mac OS: *Execute the following command in terminal of the path of the project
 
 ![](/pic/Environmental.PNG)
 
-6.Set environment variable path  
+6.Install [Android Studio](https://developer.android.com/studio/index.html)
+
+7.Set environment variable path  
 
     Variable    Path    
     Value   %Android_HOME%\platform-tools  
@@ -73,70 +75,68 @@ On Mac OS: *Execute the following command in terminal of the path of the project
     brew install android-platform-tools
 
 
-# 使用教學
-使用Python 執行 專案中的 src/VisualScript.py  
-
-    python D:\VS_project\Visual_Script\src\VisualScript.py
-
-## 介面介紹
+## Interface Introduction
 
 ![](/pic/View_Introduction.png)
 
 	================================
-	Dump UI Button 會對手機下達ADB指令
+	Dump UI Button sends adb command to android device
 	1. adb shell screencap
 	2. adb shell uiautomator dump
 
-	將screencap的圖片顯示在Screenshot View中
-	將dump下來的XML檔解讀顯示在Tree View中
+    Display the picture on Screenshot View.
+    Analysis the xml file and display the information on Tree View.
 	================================
 	+ Button
-	在此插入一行
+    Insert a line.
 	================================
 	- Button
-	刪除這一行
+    Delete a line.
 	================================
 	▶ Button
-	執行單一這行
+    Execute a step.
 	================================
 	Run Button
-	執行TestCase View中的腳本
+    Execute the test case.
 	================================
 	Reset TestCase Button
-	重置TestCase Virw中的所有動作
+    Delete all steps.
 	================================
 	Action Combobox
-	動作選擇
+	Select the action of the step.  
 	================================
 	Values Text
-	根據動作自動或被動地填入內容
+    Input the value according to the action.
 
 
 
-## Action動作介紹
+## Test Action Introduction.
 ### Click
+Click a spot of the android device.
 
-可從ScreenShot中點選物件，或從Tree View中直接點擊節點
+Click a node on Tree View as the value to click.
 ![](/pic/Click.gif)
 
-也可以用拖拉的方式，來尋找物件中的某個畫面
+Drag and drop on Screenshot View to crop a image as value.
 ![](/pic/Click2.gif)
 
 
-### Drag
+### Swipe
+Swipe on the device.
 ![](/pic/Drag.gif)
 
-### Input
+### Set Text
+Input a string on the device.
 ![](/pic/Input.gif)
 
-### Send Key
+### Android Keycode
 
 ![](/pic/Send_key.gif)
 
-可根據自行想使用的ADB keycode來自行輸入
-keycode指令請參考
 
-[Keycode 列表](http://blog.csdn.net/jlminghui/article/details/39268419)
+Execute ADB command according to the keycode.
+
+[Keycode List](http://blog.csdn.net/jlminghui/article/details/39268419)
 
 	0 -->  "KEYCODE_UNKNOWN"
 	1 -->  "KEYCODE_MENU"
@@ -226,5 +226,7 @@ keycode指令請參考
 	85 -->  "TAG_LAST_KEYCODE"
 
 
-### Exists
-與Click功能用法一樣，是用來驗證該物件的節點路徑是否相同，以及該物件的畫面是否一致
+### Assert Exists
+Make sure if the object exist in the screen.
+
+The usage is similar to "Click" action. 
