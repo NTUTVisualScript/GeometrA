@@ -136,7 +136,7 @@ Input a string on the device.
 
 Execute ADB command according to the keycode.
 
-[Keycode List](http://blog.csdn.net/jlminghui/article/details/39268419)
+[Keycode List](https://developer.android.com/reference/android/view/KeyEvent.html)
 
 	0 -->  "KEYCODE_UNKNOWN"
 	1 -->  "KEYCODE_MENU"
@@ -229,4 +229,4 @@ Execute ADB command according to the keycode.
 ### Assert Exists
 Make sure if the object exist in the screen.
 
-The usage is similar to "Click" action. 
+The usage is similar to "Click" action.
