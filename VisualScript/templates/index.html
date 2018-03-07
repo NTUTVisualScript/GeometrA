@@ -47,17 +47,27 @@
             <div id="FileStructure"></div>
         </div>
         <div id="TestCase">
-            <div class="ToolBox">
-                <h6>ToolBox</h6>
-                <div id="ActionList"></div>
+            <script src="{{url_for('static', filename='blockly/blockly_compressed.js')}}"></script>
+            <script src="{{url_for('static', filename='blockly/blocks_compressed.js')}}"></script>
+            <script src="{{url_for('static', filename='blockly/msg/js/en.js')}}"></script>
+            <div id="blocklyDiv">
+                <xml id="toolbox" style="display:none">
+                    <block type="controls_if"></block>
+                    <block type="controls_repeat_ext"></block>
+                    <block type="logic_compare"></block>
+                    <blcok type="math_number"></block>
+                    <block type="math_arithmetic"></block>
+                    <block type="text"></block>
+                    <blcok type="text_print"></block>
+                </xml>
+                <script>
+                    var workspacePlayground = Blockly.inject('blocklyDiv',
+                         {toolbox: document.getElementById('toolbox')});
+                </script>
             </div>
-            <div class="Tab">
+            <!-- <div class="Tab">
                 <div id="TabList"></div>
-            </div>
-            <div class="Editor">
-                <h6>Editor</h6>
-                <div id="TestSteps"></div>
-            </div>
+            </div> -->
 
         </div>
         <div id="ScreenShot">
