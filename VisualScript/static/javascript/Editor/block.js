@@ -1,3 +1,15 @@
+Blockly.Blocks['main'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Main");
+    this.setInputsInline(true);
+    this.setNextStatement(true, null);
+    this.setColour(197);
+ this.setTooltip("This is the start of workspace. ");
+ this.setHelpUrl("");
+  }
+};
+
 Blockly.Blocks['sleep'] = {
   init: function() {
     this.appendDummyInput()

@@ -53,15 +53,16 @@
             <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
             <div id="blocklyDiv">
                 <xml id="toolbox" style="display:none">
-                    <block type="sleep">
-                        </script>
+                    <block type="main"></block>
+                    <block type="sleep"></block>
                 </xml>
                 <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
                 <script>
-                    var workspacePlayground = Blockly.inject('blocklyDiv', {
+                    var workspace = Blockly.inject('blocklyDiv', {
                         toolbox: document.getElementById('toolbox')
                     });
                 </script>
+                <script src="{{url_for('static', filename='javascript/Editor/Action.js')}}"></script>
             </div>
             <!-- <div class="Tab">
                 <div id="TabList"></div>
