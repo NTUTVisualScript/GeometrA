@@ -50,19 +50,17 @@
             <script src="{{url_for('static', filename='javascript/blockly/blockly_compressed.js')}}"></script>
             <script src="{{url_for('static', filename='javascript/blockly/blocks_compressed.js')}}"></script>
             <script src="{{url_for('static', filename='javascript/blockly/msg/js/en.js')}}"></script>
+            <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
             <div id="blocklyDiv">
                 <xml id="toolbox" style="display:none">
-                    <block type="controls_if"></block>
-                    <block type="controls_repeat_ext"></block>
-                    <block type="logic_compare"></block>
-                    <blcok type="math_number"></block>
-                    <block type="math_arithmetic"></block>
-                    <block type="text"></block>
-                    <blcok type="text_print"></block>
+                    <block type="sleep">
+                        </script>
                 </xml>
+                <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
                 <script>
-                    var workspacePlayground = Blockly.inject('blocklyDiv',
-                         {toolbox: document.getElementById('toolbox')});
+                    var workspacePlayground = Blockly.inject('blocklyDiv', {
+                        toolbox: document.getElementById('toolbox')
+                    });
                 </script>
             </div>
             <!-- <div class="Tab">
