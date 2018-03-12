@@ -1,19 +1,26 @@
-function onChange(event) {
+function mainDisabled(event) {
     console.log(event.type);
-    console.log(workspace);
-    console.log(workspace.getBlockById(event.blockId));
-    console.log(event.group);
-    var block = workspace.getBlockById(event.blockId);
-    if (block != null && block.type == 'main') {
+    console.log( workspace);
+    if ( workspace.getBlockById(event.blockId) != null &&
+        workspace.getBlockById(event.blockId).type == 'main') {
         if (event.type == 'create') {
-            block.disabled = true;
-            console.log("HIHIHI");
+            // workspace.flyout_.workspace_.topBlocks_[0].element = true;
+            new Blockly.Events.BlockChange(workspace.flyout_.workspace_.topBlocks_[0], "disabled", "Used", false, true);
         }
         else if (event.type == 'delete') {
-            block.disabled = false;
+            // workspace.flyout_.workspace_.topBlocks_[0].element['disabled'] = false;
+            new Blockly.Events.BlockChange(workspace.flyout_.workspace_.topBlocks_[0], "disabled", "unUsed", true, false);
         }
     }
+};
 
-}
+workspace.addChangeListener(mainDisabled);
 
-workspace.addChangeListener(onChange);
+// Disabled the blocks don't attached to main.
+workspace.addChangeListener(Blockly.Events.disableOrphans);
+
+// function actionAdd(event) {
+//     if (event.type == "change") {
+//
+//     }
+// }

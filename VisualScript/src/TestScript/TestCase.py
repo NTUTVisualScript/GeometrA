@@ -15,13 +15,13 @@ class TestCase:
         self.stepDict[n].setAction(action)
 
     def getAction(self, n):
-        self.stepDict[n].getAction()
+        return self.stepDict[n].getAction()
 
     def setValue(self, n, value):
         self.stepDict[n].setValue(value)
 
     def getValue(self, n):
-        self.stepDict[n].getValue()
+        return self.stepDict[n].getValue()
 
     def setNode(self, n, node):
         self.stepDict[n].setNode(node)
