@@ -11,10 +11,10 @@ function WorkSpace() {
                 'data': response
             },
             'checkbox': {
-              'three_state' : false, // to avoid that fact that checking a node also check others
+              'three_state' : true, // to avoid that fact that checking a node also check others
               'whole_node' : false,  // to avoid checking the box just clicking the node
               'tie_selection' : false, // for checking without selecting and selecting without checking
-              'cascade' : "down"
+              //'cascade' : ""
             },
             'contextmenu': {
                 show_at_node: true,

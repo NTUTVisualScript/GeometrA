@@ -2,6 +2,7 @@ $(document).ready(function() {
     function callback(result) {
         if (result == 'exist') {
             Log();
+            BindButtonClicks()
         }
         else {
             InitializePage()
@@ -9,6 +10,10 @@ $(document).ready(function() {
     }
     Get('/VisualScript/checkLog', callback)
 })
+
+// function RunAll(){
+//     console.log(data)
+// }
 
 function InitializePage() {
     swal({
@@ -41,4 +46,17 @@ function Log() {
             InitializePage()
         }
     });
+}
+
+function BindButtonClicks(){
+    $("#runAllBtn").on("click", function(){
+        var data = $("#FileStructure").jstree("get_checked",null,true)
+        console.log(data);
+    })
+    $("#saveBtn").on("click", function(){
+        var xml = Blockly.Xml.workspaceToDom(workspace);
+        var xml_text = Blockly.Xml.domToText(xml);
+        //var xml_text = Blockly.Xml.domToPrettyText(xml);
+        console.log(xml_text);
+    })
 }

@@ -20,6 +20,9 @@
     <script src="{{url_for('static', filename='javascript/Create.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/Load.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/initializePage.js')}}"></script>
+    <!-- <script src="{{url_for('static', filename='javascript/Editor/Tabs.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.css')}}" /> -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}" />
@@ -32,10 +35,10 @@
             <ul>
                 <li id="CreateBtn">Create</li>
                 <li id="loadBtn">Load</li>
-                <li>Save</li>
+                <li id="saveBtn">Save</li>
                 <li>Redo</li>
                 <li>Undo</li>
-                <li>Run All</li>
+                <li id="runAllBtn">Run All</li>
                 <li>Run This</li>
                 <li>Clear</li>
             </ul>
@@ -64,9 +67,14 @@
                 </script>
                 <script src="{{url_for('static', filename='javascript/Editor/Action.js')}}"></script>
             </div>
-            <!-- <div class="Tab">
-                <div id="TabList"></div>
-            </div> -->
+            <div id="tabs">
+              <ul>
+                <li><a href="#tabs-1">Nunc tincidunt</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
+              </ul>
+              <div id="tabs-1">
+                <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+              </div>
+            </div>
 
         </div>
         <div id="ScreenShot">
