@@ -11,10 +11,6 @@ $(document).ready(function() {
     Get('/VisualScript/checkLog', callback)
 })
 
-// function RunAll(){
-//     console.log(data)
-// }
-
 function InitializePage() {
     swal({
         title: 'Welcome to VisualScript',
@@ -56,7 +52,6 @@ function BindButtonClicks(){
     $("#saveBtn").on("click", function(){
         var xml = Blockly.Xml.workspaceToDom(workspace);
         var xml_text = Blockly.Xml.domToText(xml);
-        //var xml_text = Blockly.Xml.domToPrettyText(xml);
         console.log(xml_text);
     })
 }

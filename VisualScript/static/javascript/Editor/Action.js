@@ -4,12 +4,16 @@ function mainDisabled(event) {
     if ( workspace.getBlockById(event.blockId) != null &&
         workspace.getBlockById(event.blockId).type == 'main') {
         if (event.type == 'create') {
-            // workspace.flyout_.workspace_.topBlocks_[0].element = true;
-            new Blockly.Events.BlockChange(workspace.flyout_.workspace_.topBlocks_[0], "disabled", "Used", false, true);
+            workspace.updateToolbox("<xml id='toolbox' style='display:none'> \
+                <block type='main' disabled = 'true'></block> \
+                <block type='sleep'></block> \
+            </xml>")
         }
         else if (event.type == 'delete') {
-            // workspace.flyout_.workspace_.topBlocks_[0].element['disabled'] = false;
-            new Blockly.Events.BlockChange(workspace.flyout_.workspace_.topBlocks_[0], "disabled", "unUsed", true, false);
+            workspace.updateToolbox("<xml id='toolbox' style='display:none'> \
+                <block type='main' disabled = 'false'></block> \
+                <block type='sleep'></block> \
+            </xml>")
         }
     }
 };
