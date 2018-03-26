@@ -83,16 +83,31 @@ class WorkSpace:
     def getFocusPath(self):
         project = self.projects[self.focus['Project']]
         suite = project.suites[self.focus['Suite']]
-        path = suite.path + '/' + self.focus['Case'] + '/testcase.xml'
+        path = suite.path + '/' + self.focus['Case']
         return path
 
-    def save(self, data):
-        path = self.getFocusPath();
-        with open(path, 'w') as f:
+    def save(self, data, case):
+        xml_path = self.getFocusPath() + '/testcase.xml'
+        with open(xml_path, 'w') as f:
             f.write(data)
+        case_path = self.getFocusPath() + '/testcase.json'
+        case_temp = case.split(';')
+
+        case_data = {}
+        for i in range(1, len(case_temp) - 1):
+            action = case_temp[i].split(',')[0]
+            print(action)
+            value = case_temp[i].split(',')[1]
+            case_data[i] = {
+                "Action": action,
+                "Value": value,
+            }
+        case_json = {case_temp[0]: case_data}
+        with open(case_path, 'w') as f:
+            json.dump(case_json, f)
 
     def open(self):
-        path = self.getFocusPath()
+        path = self.getFocusPath() + '/testcase.xml'
         with open(path, 'r') as f:
             xml = f.read()
         return xml

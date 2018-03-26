@@ -10,6 +10,11 @@ Blockly.Blocks['main'] = {
   }
 };
 
+Blockly.Python['main'] = function(block) {
+    var code = "Main;";
+    return code;
+}
+
 Blockly.Blocks['sleep'] = {
   init: function() {
     this.appendDummyInput()
@@ -23,3 +28,8 @@ Blockly.Blocks['sleep'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Python['sleep'] = function(block) {
+    var code = "Sleep(s)," + block.getFieldValue("Time") + ';';
+    return code;
+}

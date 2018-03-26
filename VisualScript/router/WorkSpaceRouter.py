@@ -4,7 +4,6 @@ from tkinter import filedialog, Tk
 from VisualScript import app
 from VisualScript.src import WORKSPACE as ws
 from VisualScript.src.File.FileManager import *
-from VisualScript.src.File.WorkSpace import WorkSpace
 
 @app.route('/VisualScript/WorkSpace')
 def getWorkSpace():
@@ -139,7 +138,8 @@ def rename():
 @app.route('/VisualScript/WorkSpace/save', methods=['POST'])
 def save():
     xml = request.form['xml']
-    ws.save(xml)
+    code = request.form['code']
+    ws.save(xml, code)
     return 'success'
 
 @app.route('/VisualScript/WorkSpace/open', methods=['POST'])

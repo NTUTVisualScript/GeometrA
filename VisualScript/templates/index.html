@@ -24,6 +24,7 @@
     <!-- <script src="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script> -->
     <!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.css')}}" /> -->
 
+    <script src="{{url_for('static', filename='javascript/ToolBar.js')}}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}" />
 
@@ -33,12 +34,12 @@
     <div id="Menu-Bar"> <img src="{{url_for('static', filename='logo.svg')}}" />
         <div>
             <ul>
-                <li id="CreateBtn">Create</li>
-                <li id="loadBtn">Load</li>
-                <li id="saveBtn">Save</li>
+                <li id="CreateButton">Create</li>
+                <li id="loadButton">Load</li>
+                <li id="saveButton">Save</li>
                 <li>Redo</li>
                 <li>Undo</li>
-                <li id="runAllBtn">Run All</li>
+                <li id="runButton">Run</li>
                 <li>Run This</li>
                 <li>Clear</li>
             </ul>
@@ -52,6 +53,7 @@
         <div id="TestCase">
             <script src="{{url_for('static', filename='javascript/blockly/blockly_compressed.js')}}"></script>
             <script src="{{url_for('static', filename='javascript/blockly/blocks_compressed.js')}}"></script>
+            <script src="{{url_for('static', filename='javascript/blockly/python_compressed.js')}}"></script>
             <script src="{{url_for('static', filename='javascript/blockly/msg/js/en.js')}}"></script>
             <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
             <div id="blocklyDiv">

@@ -1,8 +1,8 @@
 $(document).ready(function() {
     function callback(result) {
+        ToolBar();
         if (result == 'exist') {
             Log();
-            BindButtonClicks()
         }
         else {
             InitializePage()
@@ -42,11 +42,4 @@ function Log() {
             InitializePage()
         }
     });
-}
-
-function BindButtonClicks(){
-    $("#runAllBtn").on("click", function(){
-        var data = $("#FileStructure").jstree("get_checked",null,true)
-        console.log(data);
-    })
 }

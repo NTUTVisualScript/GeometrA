@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from VisualScript.src.TestScript import TestScript
 from VisualScript.src.TestScript.TestCase import TestCase
@@ -37,3 +38,15 @@ class TestScriptTestSuite(unittest.TestCase):
             },
         }
         script.modified(name1, changedData)
+
+    def testLoad(self):
+        path = './TestScript/Project/Suite/Case'
+        script = TestScript()
+        script.load(path)
+        self.assertEqual('Sleep(s)', script.getCase(path).getAction(0))
+
+    def testRunAll(self):
+        path = './TestScript/Project/Suite/Case'
+        script = TestScript()
+        script.load(path)
+        self.assertEqual('success',script.runAll())

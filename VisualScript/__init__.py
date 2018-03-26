@@ -38,3 +38,4 @@ def log():
         return 'Fail'
 
 from VisualScript.router import WorkSpaceRouter
+from VisualScript.router import TestScriptRouter

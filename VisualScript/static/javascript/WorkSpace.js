@@ -14,7 +14,7 @@ function WorkSpace() {
               'three_state' : true, // to avoid that fact that checking a node also check others
               'whole_node' : false,  // to avoid checking the box just clicking the node
               'tie_selection' : false, // for checking without selecting and selecting without checking
-              //'cascade' : ""
+              'cascade' : "down",
             },
             'contextmenu': {
                 show_at_node: true,
@@ -199,11 +199,3 @@ function Rename(inst, obj) {
         });
     });
 }
-
-// $("#FileStructure").on("dblclick.jstree",'.jstree-anchor', function(event){
-//     var tree = $.jstree.reference(this);
-//     var node = tree.get_node(this);
-//     var nodePath = tree.get_path(node).join("/");
-//      console.log(node);
-//      console.log(nodePath);
-// });

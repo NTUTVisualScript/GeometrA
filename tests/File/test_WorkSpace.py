@@ -160,6 +160,7 @@ class WorkSpaceTestSuite(unittest.TestCase):
             </block>
             </xml>
         '''
+        code = "Main;Sleep(s),1"
         p = [
             "Project1",
             {
@@ -176,10 +177,14 @@ class WorkSpaceTestSuite(unittest.TestCase):
         }
         ws = WorkSpace(self.path, p)
         ws.setFocus(focus)
-        ws.save(xml)
+        ws.save(xml, code)
         with open(self.path + "/Project1/Suite1/case1/testcase.xml", 'r') as f:
             result = f.read()
-        self.assertEqual(result, xml)
+        self.assertEqual(xml, result)
+        with open(self.path + "/Project1/Suite1/case1/testcase.json", 'r') as f:
+            result = f.read()
+        ans ='{"Main": {"1": {"Action": "Sleep(s)", "Value": "1"}}}'
+        self.assertEqual(ans, result);
 
     def testGetFocusPath(self):
         focus = {
@@ -192,7 +197,7 @@ class WorkSpaceTestSuite(unittest.TestCase):
         path = self.path
         ws = WorkSpace(path, p)
         ws.setFocus(focus)
-        self.assertEqual(path + '/Project1/Suite1/case1/testcase.xml', ws.getFocusPath())
+        self.assertEqual(path + '/Project1/Suite1/case1', ws.getFocusPath())
 
     def testOpen(self):
         xml = '''
@@ -205,6 +210,7 @@ class WorkSpaceTestSuite(unittest.TestCase):
             </block>
             </xml>
         '''
+        code = "Main; Sleep(s), 1"
         p = [
             "Project1",
             {
@@ -221,6 +227,6 @@ class WorkSpaceTestSuite(unittest.TestCase):
         }
         ws = WorkSpace(self.path, p)
         ws.setFocus(focus)
-        ws.save(xml)
+        ws.save(xml, code)
         result = ws.open()
         self.assertEqual(xml, result)
