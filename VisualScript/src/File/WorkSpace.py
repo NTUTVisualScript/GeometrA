@@ -1,6 +1,8 @@
 import os, shutil
 import json
 
+from xml.etree import ElementTree as ET
+
 from VisualScript.src.File.Project import Project
 
 class WorkSpace:
@@ -74,3 +76,17 @@ class WorkSpace:
         for p in self.projects:
             pathList.append(self.projects[p].path + '/' + p + '.json')
         return pathList
+
+    def setFocus(self, focus):
+        self.focus = focus
+
+    def getFocusPath(self):
+        project = self.projects[self.focus['Project']]
+        suite = project.suites[self.focus['Suite']]
+        path = suite.path + '/' + self.focus['Case'] + '/testcase.xml'
+        return path
+
+    def save(self, data):
+        path = self.getFocusPath();
+        with open(path, 'w') as f:
+            f.write(data)

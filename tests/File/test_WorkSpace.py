@@ -2,6 +2,7 @@ import unittest
 
 import os, shutil, json
 from VisualScript.src.File.WorkSpace import WorkSpace
+from xml.etree import ElementTree as ET
 
 class WorkSpaceTestSuite(unittest.TestCase):
     @classmethod
@@ -168,13 +169,30 @@ class WorkSpaceTestSuite(unittest.TestCase):
                 }
             }
         ]
-        data = {
+        focus = {
             "Project":"Project1",
             "Suite":"Suite1",
             "Case":"case1"
         }
         ws = WorkSpace(self.path, p)
-        ws.save(focus=data, xml)
+        tree = ET.XML(xml)
+        ws.setFocus(focus)
+        ws.save(xml)
+        data = str(ET.tostring(tree))
+        data = data[data.find("'") + 1 : data.rfind("'")]
         with open(self.path + "/Project1/Suite1/case1/testcase.xml", 'r') as f:
             result = f.read()
         self.assertEqual(result, xml)
+
+    def testGetFocusPath(self):
+        focus = {
+            'Project': 'Project1',
+            'Suite': 'Suite1',
+            'Case': 'case1',
+        }
+        p = ['Project1', {'Project1':{'Suite1': ['case1', 'case2'],
+                          'Suite2': ['case2']}}]
+        path = self.path
+        ws = WorkSpace(path, p)
+        ws.setFocus(focus)
+        self.assertEqual(path + '/Project1/Suite1/case1/testcase.xml', ws.getFocusPath())
