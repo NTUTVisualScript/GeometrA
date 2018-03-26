@@ -23,7 +23,7 @@ class TestSuite:
                 raise Exception('Case exist!')
             self.cases.append(cases)
             os.mkdir(self.path + '/' + cases)
-            with open(self.path + '/' + cases + '/testcase.json', 'w') as f:
+            with open(self.path + '/' + cases + '/testcase.xml', 'w') as f:
                 f.write(json.dumps({}))
         else:
             raise Exception('Invalid case name!')

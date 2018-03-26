@@ -71,7 +71,6 @@ def checkName(path, name, n=0):
         return checkName(path, name, n = n + 1)
     return n
 
-
 @app.route('/VisualScript/WorkSpace/addSuite', methods=['POST'])
 def addSuite():
     project = request.form['Project']
@@ -137,7 +136,16 @@ def rename():
     except Exception as e:
         return new
 
-# @app.route('VisualScript/WorkSpace/save', methods=['POST'])
-# def save():
-#     xml = request.form['xml']
-#     ws.save(xml)
+@app.route('/VisualScript/WorkSpace/save', methods=['POST'])
+def save():
+    xml = request.form['xml']
+
+    # Here is fake data for focus to used.
+    focus = {
+        'Project': 'Project',
+        'Suite': 'Suite',
+        'Case': 'Case',
+    }
+    ws.setFocus(focus)
+    ws.save(xml)
+    return 'success'
