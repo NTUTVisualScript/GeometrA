@@ -8,6 +8,12 @@ class WorkSpace:
         self.projects = {}
         if path and project:
             self.load(path, project)
+        self.focus = {
+            "Project":"",
+            "Suite":"",
+            "Case":"",
+        }
+
 
     def load(self, path, project):
         name = project[0]

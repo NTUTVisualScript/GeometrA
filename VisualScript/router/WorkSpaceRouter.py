@@ -136,3 +136,8 @@ def rename():
         return ''
     except Exception as e:
         return new
+
+# @app.route('VisualScript/WorkSpace/save', methods=['POST'])
+# def save():
+#     xml = request.form['xml']
+#     ws.save(xml)
