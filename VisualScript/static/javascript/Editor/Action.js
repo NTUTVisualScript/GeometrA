@@ -1,6 +1,4 @@
 function mainDisabled(event) {
-    console.log(event.type);
-    console.log( workspace);
     if ( workspace.getBlockById(event.blockId) != null &&
         workspace.getBlockById(event.blockId).type == 'main') {
         if (event.type == 'create') {
@@ -18,13 +16,26 @@ function mainDisabled(event) {
     }
 };
 
-workspace.addChangeListener(mainDisabled);
+function saveOnChange(event) {
+    if (event.type == 'move' || event.type == 'change') {
+        var xml = Blockly.Xml.workspaceToDom(workspace);
+        var xml_text = Blockly.Xml.domToText(xml);
+        var data = {
+            xml: xml_text,
+        }
+        Post('/VisualScript/WorkSpace/save', data, function (msg) {
+            console.log(msg);
+        })
+    }
+}
 
+function openTestCase(xml){
+    var dom = Blockly.Xml.textToDom(xml);
+    Blockly.mainWorkspace.clear();
+    Blockly.Xml.domToWorkspace(dom, workspace);
+}
+
+workspace.addChangeListener(mainDisabled);
+workspace.addChangeListener(saveOnChange);
 // Disabled the blocks don't attached to main.
 workspace.addChangeListener(Blockly.Events.disableOrphans);
-
-// function actionAdd(event) {
-//     if (event.type == "change") {
-//
-//     }
-// }

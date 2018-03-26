@@ -90,3 +90,9 @@ class WorkSpace:
         path = self.getFocusPath();
         with open(path, 'w') as f:
             f.write(data)
+
+    def open(self):
+        path = self.getFocusPath()
+        with open(path, 'r') as f:
+            xml = f.read()
+        return xml

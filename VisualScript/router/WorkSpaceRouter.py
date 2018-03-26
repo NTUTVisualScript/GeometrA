@@ -139,13 +139,12 @@ def rename():
 @app.route('/VisualScript/WorkSpace/save', methods=['POST'])
 def save():
     xml = request.form['xml']
-
-    # Here is fake data for focus to used.
-    focus = {
-        'Project': 'Project',
-        'Suite': 'Suite',
-        'Case': 'Case',
-    }
-    ws.setFocus(focus)
     ws.save(xml)
     return 'success'
+
+@app.route('/VisualScript/WorkSpace/open', methods=['POST'])
+def open():
+    focus = request.form
+    ws.setFocus(focus)
+    xml = ws.open()
+    return xml

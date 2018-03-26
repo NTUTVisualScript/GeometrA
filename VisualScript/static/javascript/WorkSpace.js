@@ -22,6 +22,23 @@ function WorkSpace() {
             },
             'plugins':["contextmenu", "checkbox", "types"]
         });
+        //open the case whne double click testcase
+        $("#FileStructure").on("dblclick.jstree",'.jstree-anchor', function(event){
+            var tree = $.jstree.reference(this);
+            var node = tree.get_node(this);
+            var nodePath = tree.get_path(node).join("/");
+            var caseInfo = nodePath.split("/");
+            if(caseInfo.length != 3)
+                return;
+            var data = {
+                Project: caseInfo[0],
+                Suite: caseInfo[1],
+                Case: caseInfo[2]
+            }
+            Post('/VisualScript/WorkSpace/open', data, function(xml){
+                openTestCase(xml);
+            });
+        });
 
         Get('/VisualScript/saveLog', function(result) {
             if (result == 'Fail')
@@ -182,3 +199,11 @@ function Rename(inst, obj) {
         });
     });
 }
+
+// $("#FileStructure").on("dblclick.jstree",'.jstree-anchor', function(event){
+//     var tree = $.jstree.reference(this);
+//     var node = tree.get_node(this);
+//     var nodePath = tree.get_path(node).join("/");
+//      console.log(node);
+//      console.log(nodePath);
+// });

@@ -151,14 +151,14 @@ class WorkSpaceTestSuite(unittest.TestCase):
 
     def testSave(self):
         xml = '''
-<xml xmlns="http://www.w3.org/1999/xhtml">
-<variables></variables>
-<block type="main" id="MvP*eIp|Z5#uW};@Q}^$" x="162" y="36">
-    <next>
-        <block type="sleep" id="C-ko,K})FR1SZLwgXF;p"><field name="Time">0</field></block>
-    </next>
-</block>
-</xml>
+            <xml xmlns="http://www.w3.org/1999/xhtml">
+            <variables></variables>
+            <block type="main" id="MvP*eIp|Z5#uW};@Q}^$" x="162" y="36">
+                <next>
+                    <block type="sleep" id="C-ko,K})FR1SZLwgXF;p"><field name="Time">0</field></block>
+                </next>
+            </block>
+            </xml>
         '''
         p = [
             "Project1",
@@ -175,11 +175,8 @@ class WorkSpaceTestSuite(unittest.TestCase):
             "Case":"case1"
         }
         ws = WorkSpace(self.path, p)
-        tree = ET.XML(xml)
         ws.setFocus(focus)
         ws.save(xml)
-        data = str(ET.tostring(tree))
-        data = data[data.find("'") + 1 : data.rfind("'")]
         with open(self.path + "/Project1/Suite1/case1/testcase.xml", 'r') as f:
             result = f.read()
         self.assertEqual(result, xml)
@@ -196,3 +193,34 @@ class WorkSpaceTestSuite(unittest.TestCase):
         ws = WorkSpace(path, p)
         ws.setFocus(focus)
         self.assertEqual(path + '/Project1/Suite1/case1/testcase.xml', ws.getFocusPath())
+
+    def testOpen(self):
+        xml = '''
+            <xml xmlns="http://www.w3.org/1999/xhtml">
+            <variables></variables>
+            <block type="main" id="MvP*eIp|Z5#uW};@Q}^$" x="162" y="36">
+                <next>
+                    <block type="sleep" id="C-ko,K})FR1SZLwgXF;p"><field name="Time">0</field></block>
+                </next>
+            </block>
+            </xml>
+        '''
+        p = [
+            "Project1",
+            {
+                "Project1":{
+                    "Suite1": ["case1", "case2"],
+                    "Suite2": ["case2"]
+                }
+            }
+        ]
+        focus = {
+            "Project":"Project1",
+            "Suite":"Suite1",
+            "Case":"case1"
+        }
+        ws = WorkSpace(self.path, p)
+        ws.setFocus(focus)
+        ws.save(xml)
+        result = ws.open()
+        self.assertEqual(xml, result)

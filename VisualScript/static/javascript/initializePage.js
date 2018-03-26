@@ -49,16 +49,4 @@ function BindButtonClicks(){
         var data = $("#FileStructure").jstree("get_checked",null,true)
         console.log(data);
     })
-    $("#saveBtn").on("click", function(){
-        var xml = Blockly.Xml.workspaceToDom(workspace);
-        var xml_text = Blockly.Xml.domToText(xml);
-        var data = {
-            xml: xml_text,
-        }
-        Post('/VisualScript/WorkSpace/save', data, function (msg) {
-            if (msg == 'success') {
-                swal('Save Success')
-            }
-        })
-    })
 }
