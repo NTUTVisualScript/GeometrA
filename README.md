@@ -1,4 +1,4 @@
-#GeometrA
+# GeometrA
 GeometrA is a tool for users to write automated acceptance test for applications on Android applications.
 
 ## Over view of the tools

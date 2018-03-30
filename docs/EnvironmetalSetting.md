@@ -41,4 +41,4 @@
     Variable    Path    
     Value   %Android_HOME%\platform-tools  
 
-![](/pic/SystemPath.PNG)
+![](/docs/pic/SystemPath.PNG)
