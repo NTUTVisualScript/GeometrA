@@ -1,12 +1,12 @@
 import unittest
-import VisualScript
+import GeometrA
 
-from VisualScript.src.TestScript.TestStep import Step
+from GeometrA.src.TestScript.TestStep import Step
 
 class StepTestSuite(unittest.TestCase):
     def setUp(self):
-        VisualScript.app.testing = True
-        self.app = VisualScript.app.test_client()
+        GeometrA.app.testing = True
+        self.app = GeometrA.app.test_client()
 
     def testConstructer(self):
         step = Step('Sleep(s)', '1')

@@ -11,9 +11,9 @@ Branch from https://github.com/Swind/Sikuli-Img
 ![](/pic/Environmental.PNG)
 
 
-使用Python 執行 專案中的 src/VisualScript.py
+使用Python 執行 專案中的 src/GeometrA.py
 
-	python D:\VS_project\Visual_Script\src\VisualScript.py
+	python D:\VS_project\Visual_Script\src\GeometrA.py
 
 ##介面介紹
 ![](/pic/View_Introduction.png)

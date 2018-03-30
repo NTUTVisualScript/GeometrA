@@ -47,8 +47,8 @@ src.egg-info/requires.txt
 src.egg-info/SOURCES.txt
 src.egg-info/top_level.txt
 *.txt
-VisualScript.egg-info/PKG-INFO
-VisualScript/static/prepros-6.config
+GeometrA.egg-info/PKG-INFO
+GeometrA/static/prepros-6.config
 tests/screenshot_pic/before.png
 tests/.coverage
 record.log

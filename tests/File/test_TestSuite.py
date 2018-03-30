@@ -4,7 +4,7 @@ import os, shutil
 
 import subprocess
 
-from VisualScript.src.File.TestSuite import TestSuite
+from GeometrA.src.File.TestSuite import TestSuite
 
 class TestSuiteTestSuite(unittest.TestCase):
     @classmethod
@@ -21,14 +21,14 @@ class TestSuiteTestSuite(unittest.TestCase):
     def testConstructor(self):
         cases = ['case1', 'case2']
         suite = TestSuite(cases, self.path)
-        self.assertEqual("<class 'VisualScript.src.File.TestSuite.TestSuite'>", str(suite.__class__))
+        self.assertEqual("<class 'GeometrA.src.File.TestSuite.TestSuite'>", str(suite.__class__))
         self.assertEqual('case1', suite.cases[0])
         self.assertEqual('case2', suite.cases[1])
 
     def testConstructorNotExist(self):
         cases = ['case1', 'case']
         suite = TestSuite(cases, self.path)
-        self.assertEqual("<class 'VisualScript.src.File.TestSuite.TestSuite'>", str(suite.__class__))
+        self.assertEqual("<class 'GeometrA.src.File.TestSuite.TestSuite'>", str(suite.__class__))
         self.assertEqual('case1', suite.cases[0])
         self.assertEqual(1, len(suite.cases))
 

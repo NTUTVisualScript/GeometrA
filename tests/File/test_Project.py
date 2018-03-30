@@ -2,7 +2,7 @@ import unittest
 import os, shutil
 import json
 
-from VisualScript.src.File.Project import Project
+from GeometrA.src.File.Project import Project
 
 class ProjectTestSuite(unittest.TestCase):
     @classmethod
@@ -19,13 +19,13 @@ class ProjectTestSuite(unittest.TestCase):
     def testConstructor(self):
         d = {'Suite1':['case1', 'case2'], 'Suite2':['case2']}
         project = Project(self.path, d)
-        self.assertEqual("<class 'VisualScript.src.File.Project.Project'>", str(project.__class__))
+        self.assertEqual("<class 'GeometrA.src.File.Project.Project'>", str(project.__class__))
         self.assertEqual(2, len(project.suites))
         self.assertEqual(self.path, project.path)
     def testConstructorNotExist(self):
         d = {'Suite3':['case1', 'case2'], 'Suite2':['case2']}
         project = Project(self.path, d)
-        self.assertEqual("<class 'VisualScript.src.File.Project.Project'>", str(project.__class__))
+        self.assertEqual("<class 'GeometrA.src.File.Project.Project'>", str(project.__class__))
         self.assertEqual(os.getcwd() + '/File/Project1/Suite2', project.suites['Suite2'].path)
         self.assertEqual(1, len(project.suites))
         self.assertEqual(self.path, project.path)

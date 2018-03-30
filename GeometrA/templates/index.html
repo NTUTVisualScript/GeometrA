@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <title>GeometrA</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="This project is for user to write acceptance test for android platform applications. ">
+    <meta name="author" content="Visual Script team: Patrick, Denny, Mario, Hsin">
+
+    <script src="{{url_for('static', filename='javascript/jquery/jquery-3.2.1.min.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='javascript/jquery/jstree/dist/themes/default/style.min.css')}}" />
+    <script src="{{url_for('static', filename='javascript/sweetalert2/dist/sweetalert2.min.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='javascript/sweetalert2/dist/sweetalert2.min.css')}}" />
+    <script src="{{url_for('static', filename='javascript/ajax.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/jquery/jstree/dist/jstree.min.js')}}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_home_page.css') }}">
+    <link href="{{url_for('static', filename='googleapis.css')}}" rel="stylesheet" />
+
+    <script src="{{url_for('static', filename='javascript/WorkSpace.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/Create.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/Load.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/initializePage.js')}}"></script>
+    <!-- <script src="{{url_for('static', filename='javascript/Editor/Tabs.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.css')}}" /> -->
+
+    <script src="{{url_for('static', filename='javascript/ToolBar.js')}}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}" />
+
+</head>
+
+<body>
+    <div id="Menu-Bar"> <img src="{{url_for('static', filename='logo.svg')}}" />
+        <div>
+            <ul>
+                <li id="CreateButton">Create</li>
+                <li id="loadButton">Load</li>
+                <li id="saveButton">Save</li>
+                <li>Redo</li>
+                <li>Undo</li>
+                <li id="runButton">Run</li>
+                <li>Run This</li>
+                <li>Clear</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row2">
+        <div id="Project-Manager">
+            <h6>Work Space</h6>
+            <div id="FileStructure"></div>
+        </div>
+        <div id="TestCase">
+            <script src="{{url_for('static', filename='javascript/blockly/blockly_compressed.js')}}"></script>
+            <script src="{{url_for('static', filename='javascript/blockly/blocks_compressed.js')}}"></script>
+            <script src="{{url_for('static', filename='javascript/blockly/python_compressed.js')}}"></script>
+            <script src="{{url_for('static', filename='javascript/blockly/msg/js/en.js')}}"></script>
+            <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
+            <div id="blocklyDiv">
+                <xml id="toolbox" style="display:none">
+                    <block type="main"></block>
+                    <block type="sleep"></block>
+                </xml>
+                <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
+                <script>
+                    var workspace = Blockly.inject('blocklyDiv', {
+                        toolbox: document.getElementById('toolbox')
+                    });
+                </script>
+                <script src="{{url_for('static', filename='javascript/Editor/Action.js')}}"></script>
+            </div>
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">Nunc tincidunt</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
+                </ul>
+                <div id="tabs-1">
+                    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean
+                        tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci
+                        tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+                </div>
+            </div>
+
+        </div>
+        <div id="ScreenShot">
+            <h6>ScreenShot</h6>
+        </div>
+    </div>
+    <div class="row3">
+        <div id="NodeTree">
+            <h6>NodeTree</h6>
+            <div id="Nodes"></div>
+        </div>
+        <div id="Message">
+            <h6>Message</h6>
+            <div id="MessageList"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

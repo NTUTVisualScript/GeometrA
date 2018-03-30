@@ -1,7 +1,7 @@
 import unittest
 
 import os, shutil, json
-from VisualScript.src.File.WorkSpace import WorkSpace
+from GeometrA.src.File.WorkSpace import WorkSpace
 from xml.etree import ElementTree as ET
 
 class WorkSpaceTestSuite(unittest.TestCase):
@@ -54,7 +54,7 @@ class WorkSpaceTestSuite(unittest.TestCase):
                           'Suite2': ['case2']}}]
         path = self.path
         ws = WorkSpace(path, p)
-        self.assertEqual("<class 'VisualScript.src.File.WorkSpace.WorkSpace'>", str(ws.__class__))
+        self.assertEqual("<class 'GeometrA.src.File.WorkSpace.WorkSpace'>", str(ws.__class__))
         self.assertEqual(1, len(ws.projects))
         self.assertEqual(True, 'Project1' in ws.projects)
     def testConstructorExcept(self):

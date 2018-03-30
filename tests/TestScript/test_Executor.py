@@ -1,21 +1,21 @@
 import unittest
-import VisualScript
+import GeometrA
 
 from PIL import Image, ImageTk
 
-from VisualScript.src.TestScript.Executor import Executor
-from VisualScript.src.TestScript.TestStep import Step
-from VisualScript.src.TestScript.TestCase import TestCase
+from GeometrA.src.TestScript.Executor import Executor
+from GeometrA.src.TestScript.TestStep import Step
+from GeometrA.src.TestScript.TestCase import TestCase
 
 class ExecutorTestSuite(unittest.TestCase):
     def setUp(self):
-        VisualScript.app.testing = True
-        self.app = VisualScript.app.test_client()
+        GeometrA.app.testing = True
+        self.app = GeometrA.app.test_client()
 
     def testConstructer(self):
         case = TestCase()
         exe = Executor(case)
-        self.assertEqual('<class \'VisualScript.src.TestScript.TestCase.TestCase\'>', str(exe.case.__class__))
+        self.assertEqual('<class \'GeometrA.src.TestScript.TestCase.TestCase\'>', str(exe.case.__class__))
     def testConstructerExcept(self):
         step = Step('Set Text', 'Hello World')
         self.assertRaisesRegex(Exception, 'Not a executable case', Executor, step)

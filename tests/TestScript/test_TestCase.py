@@ -1,16 +1,16 @@
 import os
 import unittest
-import VisualScript
+import GeometrA
 
 from PIL import Image, ImageTk
 
-from VisualScript.src.TestScript.TestCase import TestCase
-from VisualScript.src.TestScript.TestStep import Step
+from GeometrA.src.TestScript.TestCase import TestCase
+from GeometrA.src.TestScript.TestStep import Step
 
 class TestCaseTestSuite(unittest.TestCase):
     def setUp(self):
-        VisualScript.app.testing = True
-        self.app = VisualScript.app.test_client()
+        GeometrA.app.testing = True
+        self.app = GeometrA.app.test_client()
         self.image = Image.open(os.getcwd() + './TestCase/Test/image/exist.png')
 
     def testConstructer(self):

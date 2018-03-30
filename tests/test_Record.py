@@ -2,8 +2,8 @@ import unittest
 
 import os, shutil
 
-from VisualScript.src.Record import *
-from VisualScript.src.File.WorkSpace import WorkSpace
+from GeometrA.src.Record import *
+from GeometrA.src.File.WorkSpace import WorkSpace
 
 RECORD_FILE = './record.log'
 

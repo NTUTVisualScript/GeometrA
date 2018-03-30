@@ -1,9 +1,9 @@
 import unittest
 from PIL import Image, ImageTk
 
-from VisualScript.src.TestScript.Executor import Executor
-from VisualScript.src.TestScript.TestStep import Step
-from VisualScript.src.TestScript.TestCase import TestCase
+from GeometrA.src.TestScript.Executor import Executor
+from GeometrA.src.TestScript.TestStep import Step
+from GeometrA.src.TestScript.TestCase import TestCase
 
 class ExecutorActionTestSuite(unittest.TestCase):
     def testExecuteClick(self):

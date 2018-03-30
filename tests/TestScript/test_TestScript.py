@@ -1,8 +1,8 @@
 import unittest
 import os
 
-from VisualScript.src.TestScript import TestScript
-from VisualScript.src.TestScript.TestCase import TestCase
+from GeometrA.src.TestScript import TestScript
+from GeometrA.src.TestScript.TestCase import TestCase
 
 class TestScriptTestSuite(unittest.TestCase):
     def testAddCase(self):
