@@ -6,7 +6,6 @@ $(document).ready(function(){
         var active = $('#tabs').tabs('option', 'active') + 1;
         var target = "#d_tab" + active;
         var data = JSON.parse($(target).text());
-        console.log(data);
         Post('/GeometrA/WorkSpace/open', data, function(xml){
             openTestCase(xml);
         });

@@ -39,3 +39,4 @@ def log():
 
 from GeometrA.router import WorkSpaceRouter
 from GeometrA.router import TestScriptRouter
+from GeometrA.router import ScreenRouter

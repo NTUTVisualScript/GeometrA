@@ -36,7 +36,7 @@ class ADBRobot(Robot):
         subprocess.call(command, shell=True)
 
     def screenshot(self):
-        path = "./screenshot_pic"
+        path = "./GeometrA/static/screenshot_pic"
         wait = "adb wait-for-device"
         subprocess.call(wait, shell=True)
         fileName = "tmp.png"
@@ -50,7 +50,7 @@ class ADBRobot(Robot):
         return path + "/" + fileName
 
     def before_screenshot(self):
-        path = "./screenshot_pic"
+        path = "./GeometrA/static/screenshot_pic"
 
         wait = "adb wait-for-device"
         subprocess.call(wait, shell=True)
@@ -68,7 +68,7 @@ class ADBRobot(Robot):
         return path + "/" + fileName
 
     def after_screenshot(self):
-        path = "./screenshot_pic"
+        path = "./GeometrA/static/screenshot_pic"
 
         wait = "adb wait-for-device"
         subprocess.call(wait, shell=True)

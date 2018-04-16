@@ -20,7 +20,7 @@ class GetScreenShot:
 
     def capture():
         screenShot = GetScreenShot()
-        # Set size  should be bootstrap
+        # Set size should be bootstrap
         screenShot.setSize(GetScreenShot.x, GetScreenShot.y)
         return ImageTk.PhotoImage(GetScreenShot.screenShot)
 
