@@ -53,3 +53,4 @@ tests/screenshot_pic/before.png
 tests/.coverage
 record.log
 */report.html
+*.png
