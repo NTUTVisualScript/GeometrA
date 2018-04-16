@@ -21,8 +21,8 @@ function ToolBar() {
 
     $("#dumpButton").on("click", function() {
         Get('/GeometrA/Screen', function(path) {
-            image = "<img src='../static/screenshot_pic/tmp.png')}}' style='width:100%; height:100%; display:block' />"
-            $("#ScreenShot").append(image)
+            image = "<img src='../static/screenshot_pic/tmp.png')}}' style='width:100%; height:100%; display:block; position:absolute; top:0px; ' />"
+            $("#ScreenCapture").html(image);
         });
     });
 }
