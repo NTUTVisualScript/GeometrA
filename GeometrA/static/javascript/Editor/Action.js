@@ -1,20 +1,20 @@
-function mainDisabled(event) {
-    if ( workspace.getBlockById(event.blockId) != null &&
-        workspace.getBlockById(event.blockId).type == 'main') {
-        if (event.type == 'create') {
-            workspace.updateToolbox("<xml id='toolbox' style='display:none'> \
-                <block type='main' disabled = 'true'></block> \
-                <block type='sleep'></block> \
-            </xml>")
-        }
-        else if (event.type == 'delete') {
-            workspace.updateToolbox("<xml id='toolbox' style='display:none'> \
-                <block type='main' disabled = 'false'></block> \
-                <block type='sleep'></block> \
-            </xml>")
-        }
-    }
-};
+// function mainDisabled(event) {
+//     if ( workspace.getBlockById(event.blockId) != null &&
+//         workspace.getBlockById(event.blockId).type == 'main') {
+//         if (event.type == 'create') {
+//             workspace.updateToolbox("<xml id='toolbox' style='display:none'> \
+//                 <block type='main' disabled = 'true'></block> \
+//                 <block type='sleep'></block> \
+//             </xml>")
+//         }
+//         else if (event.type == 'delete') {
+//             workspace.updateToolbox("<xml id='toolbox' style='display:none'> \
+//                 <block type='main' disabled = 'false'></block> \
+//                 <block type='sleep'></block> \
+//             </xml>")
+//         }
+//     }
+// };
 
 function saveOnChange(event) {
     if (event.type == 'move' || event.type == 'change') {
@@ -26,7 +26,6 @@ function saveOnChange(event) {
             code: code,
         }
         Post('/GeometrA/WorkSpace/save', data, function (msg) {
-            console.log(msg);
         })
     }
 }
@@ -37,7 +36,7 @@ function openTestCase(xml){
     Blockly.Xml.domToWorkspace(dom, workspace);
 }
 
-workspace.addChangeListener(mainDisabled);
+// workspace.addChangeListener(mainDisabled);
 workspace.addChangeListener(saveOnChange);
 // Disabled the blocks don't attached to main.
 workspace.addChangeListener(Blockly.Events.disableOrphans);

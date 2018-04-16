@@ -120,6 +120,7 @@ def rename():
             if case == new:
                 return ''
             ws.projects[project].suites[suite].rename(case, new)
+            ws.projects[project].updateRecord()
         elif 'Suite' in request.form:
             suite = request.form['Suite']
             project = request.form['Project']

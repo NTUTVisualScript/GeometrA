@@ -22,6 +22,7 @@ function WorkSpace() {
             },
             'plugins':["contextmenu", "checkbox", "types"]
         });
+
         //open the case whne double click testcase
         $("#FileStructure").on("dblclick.jstree",'.jstree-anchor', function(event){
             var tree = $.jstree.reference(this);
@@ -35,9 +36,17 @@ function WorkSpace() {
                 Suite: caseInfo[1],
                 Case: caseInfo[2]
             }
-            Post('/GeometrA/WorkSpace/open', data, function(xml){
-                openTestCase(xml);
-            });
+            //Create Tab when double click a case
+            Tab(data);
+            if(!Tab.checkTab()) {
+                Post('/GeometrA/WorkSpace/open', data, function(xml){
+                    openTestCase(xml);
+                });
+                Tab.createTab();
+                Tab.selectTab();
+            } else {
+                Tab.selectTab();
+            }
         });
 
         Get('/GeometrA/saveLog', function(result) {
@@ -45,6 +54,45 @@ function WorkSpace() {
                 alert("Saving Log File Failed");
         });
     });
+};
+
+function Tab(data){
+    var index = -1;
+    function createTab() {
+        var _data = JSON.stringify(data);
+        var num_tabs = $("div#tabs ul li").length + 1;
+
+        $("div#tabs ul").append(
+            "<li><a href='#tab" + num_tabs + "'>" + data['Case'] +
+            "<p id='d_tab" + num_tabs + "' style='display:none;'>" + _data + "</p>" +
+            "</a>"+"<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>"+"</li>"
+        );
+
+        $("div#tabs").append(
+            "<div id='tab" + num_tabs + "'></div>"
+        );
+
+        $("div#tabs").tabs("refresh");
+    };
+    function checkTab(){
+        var path = data.Project + '/' + data.Suite + '/' + data.Case;
+        var numberOfList = $("div#tabs ul li").length + 1;
+        for( index=1; index < numberOfList; ++index){
+            var target = "#d_tab" + index;
+            var _data = JSON.parse($(target).text());
+            var checkPath = _data.Project + '/' + _data.Suite + '/' + _data.Case;
+            if(path == checkPath){
+                return true;
+            }
+        }
+        return false;
+    };
+    function selectTab () {
+        $("#tabs").tabs({active: index-1});
+    };
+    Tab.createTab = createTab;
+    Tab.checkTab = checkTab;
+    Tab.selectTab = selectTab;
 };
 
 function Menu(node) {
