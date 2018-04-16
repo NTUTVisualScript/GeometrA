@@ -89,6 +89,7 @@ function Tab(data){
     };
     function selectTab () {
         $("#tabs").tabs({active: index-1});
+        Post('/GeometrA/WorkSpace/Focus', data, function(msg) {});
     };
     Tab.createTab = createTab;
     Tab.checkTab = checkTab;

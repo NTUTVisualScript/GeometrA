@@ -91,13 +91,13 @@ class WorkSpace:
         with open(xml_path, 'w') as f:
             f.write(data)
         case_path = self.getFocusPath() + '/testcase.json'
-        case_temp = case.split(';')
+        case_temp = case.split('\\')
 
         case_data = {}
         for i in range(1, len(case_temp) - 1):
-            action = case_temp[i].split(',')[0]
+            action = case_temp[i].split('|')[0]
             print(action)
-            value = case_temp[i].split(',')[1]
+            value = case_temp[i].split('|')[1]
             case_data[i] = {
                 "Action": action,
                 "Value": value,

@@ -149,3 +149,9 @@ def open():
     ws.setFocus(focus)
     xml = ws.open()
     return xml
+
+@app.route('/GeometrA/WorkSpace/Focus', methods=['POST'])
+def focus():
+    focus = request.form
+    ws.setFocus(focus)
+    return "Success"

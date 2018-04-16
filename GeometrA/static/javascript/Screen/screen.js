@@ -1,10 +1,15 @@
 initDraw(document.getElementById('Screen'));
 
 function initDraw(canvas) {
+    var widthMulti;
+    var heightMulti;
+
     function getPos() {
         var screenElement = document.getElementById("ScreenCapture");
         var bound = (screenElement.getBoundingClientRect());
-
+        // We should get real number instead of 1080x1920 as default.
+        widthMulti = 1080/bound.width;
+        heightMulti = 1920/bound.height;
         return {x:bound.x, y: bound.y};
     }
 
@@ -40,20 +45,30 @@ function initDraw(canvas) {
         }
     }
 
-    canvas.onclick = function (e) {
-        if (element !== null) {
-            element = null;
-            canvas.style.cursor = "default";
-        } else {
-            mouse.startX = mouse.x;
-            mouse.startY = mouse.y;
-            element = document.createElement('div');
-            element.className = 'rectangle'
-            element.style.left = mouse.x + 'px';
-            element.style.top = mouse.y + 'px';
-            canvas.removeChild(canvas.lastChild);
-            canvas.appendChild(element);
-            canvas.style.cursor = "crosshair";
+    canvas.onmousedown = function (e) {
+        mouse.startX = mouse.x;
+        mouse.startY = mouse.y;
+        element = document.createElement('div');
+        element.className = 'rectangle'
+        element.style.left = mouse.x + 'px';
+        element.style.top = mouse.y + 'px';
+        canvas.removeChild(canvas.lastChild);
+        canvas.appendChild(element);
+        canvas.style.cursor = "crosshair";
+    }
+    canvas.onmouseup = function (e) {
+        element = null;
+        canvas.style.cursor = "default";
+        var data = {
+            startX: mouse.startX * widthMulti,
+            startY: mouse.startY * heightMulti,
+            x: mouse.x * widthMulti,
+            y: mouse.y * heightMulti
         }
+        Post("/GeometrA/Screen/Crop", data, function(path){
+            Get("/GeometrA/Screen/tmp.png", function (data) {
+                Blockly.selected.update(new Blockly.FieldImage(data, 100, 100, "*"), "myfield");
+            })
+        });
     }
 }
