@@ -62,11 +62,12 @@ function initDraw(canvas) {
         var data = {
             startX: mouse.startX * widthMulti,
             startY: mouse.startY * heightMulti,
-            x: mouse.x * widthMulti,
-            y: mouse.y * heightMulti
+            endX: mouse.x * widthMulti,
+            endY: mouse.y * heightMulti
         }
-        Post("/GeometrA/Screen/Crop", data, function(path){
-            Get("/GeometrA/Screen/tmp.png", function (data) {
+        Post("/GeometrA/Screen/Crop", data, function(image){
+
+            Get("/GeometrA/Screen/"+ image, function (data) {
                 Blockly.selected.update(new Blockly.FieldImage(data, 100, 100, "*"), "myfield");
             })
         });

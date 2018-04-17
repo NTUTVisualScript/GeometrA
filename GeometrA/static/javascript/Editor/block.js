@@ -62,7 +62,6 @@ Blockly.Python['swipe'] = function(block) {
   var text_starty = block.getFieldValue('startY');
   var text_endx = block.getFieldValue('EndX');
   var text_endy = block.getFieldValue('EndY');
-  // TODO: Assemble Python into code variable.
   var code = "Swipe|start x=" + text_startx + ", y=" + text_starty + ", end x=" + text_endx + ", y=" + text_endy + "\\";
   return code;
 };
@@ -83,7 +82,6 @@ Blockly.Blocks['set_text'] = {
 
 Blockly.Python['set_text'] = function(block) {
   var text_content = block.getFieldValue('content');
-  // TODO: Assemble Python into code variable.
   var code = 'Set Text|' + text_content + '\\';
   return code;
 };
@@ -104,7 +102,6 @@ Blockly.Blocks['android_keycode'] = {
 
 Blockly.Python['android_keycode'] = function(block) {
   var text_keycode = block.getFieldValue('keycode');
-  // TODO: Assemble Python into code variable.
   var code = 'Android Keycode|' + text_keycode + "\\";
   return code;
 };
@@ -127,7 +124,6 @@ Blockly.Blocks['loop'] = {
 Blockly.Python['loop'] = function(block) {
   var number_times = block.getFieldValue('times');
   var statements_loop = Blockly.Python.statementToCode(block, 'Loop');
-  // TODO: Assemble Python into code variable.
   var code = '...\n';
   return code;
 };
@@ -154,7 +150,8 @@ Blockly.Blocks['click'] = {
 };
 
 Blockly.Python['click'] = function(block) {
-  // TODO: Assemble Python into code variable.
-  var code = '...\n';
-  return code;
+    // var image = block.getInput("clickInput").getField("myfield").src_;
+    // console.log(image);
+    // var code = 'Click|' + image + '\\';
+    return "";
 };

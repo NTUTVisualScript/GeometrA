@@ -1,7 +1,8 @@
 import base64
+from flask import request, jsonify
 
 from GeometrA import app
-from GeometrA.src.Screen import capture
+from GeometrA.src.Screen import *
 
 @app.route('/GeometrA/Screen')
 def getScreenshotPath():
@@ -9,7 +10,7 @@ def getScreenshotPath():
 
 @app.route('/GeometrA/Screen/Crop', methods=['POST'])
 def crop():
-    return "./GeometrA/static/screenshot_pic/tmp.png"
+    return cropPhoto(request.form)
 
 @app.route('/GeometrA/Screen/<image>')
 def getImage(image):
