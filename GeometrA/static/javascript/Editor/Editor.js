@@ -3,9 +3,10 @@ $(document).ready(function(){
     $("#tabs").tabs();
 
     $("#tabs").on("tabsactivate", function(){
-        var active = $('#tabs').tabs('option', 'active') + 1;
-        var target = "#d_tab" + active;
-        var data = JSON.parse($(target).text());
+        var active = $('#tabs ul .ui-tabs-active').attr("id");
+        // var target = active.attr("id");
+        // console.log(active);
+        var data = JSON.parse(active);
         Post('/GeometrA/WorkSpace/open', data, function(xml){
             openTestCase(xml);
         });

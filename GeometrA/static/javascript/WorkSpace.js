@@ -63,7 +63,7 @@ function Tab(data){
         var num_tabs = $("div#tabs ul li").length + 1;
 
         $("div#tabs ul").append(
-            "<li><a href='#tab" + num_tabs + "'>" + data['Case'] +
+            "<li id='"+ _data + "'>" + "<a href='#tab" + num_tabs + "'>" + data['Case'] +
             "<p id='d_tab" + num_tabs + "' style='display:none;'>" + _data + "</p>" +
             "</a>"+"<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>"+"</li>"
         );
@@ -77,15 +77,34 @@ function Tab(data){
     function checkTab(){
         var path = data.Project + '/' + data.Suite + '/' + data.Case;
         var numberOfList = $("div#tabs ul li").length + 1;
-        for( index=1; index < numberOfList; ++index){
-            var target = "#d_tab" + index;
-            var _data = JSON.parse($(target).text());
-            var checkPath = _data.Project + '/' + _data.Suite + '/' + _data.Case;
-            if(path == checkPath){
-                return true;
+        var check = false;
+        $("ul#ul_tabs li").each(function(){
+            var _data = $(this).attr("id");
+            console.log(_data);
+            if(data == _data){
+                check = true;
+
+            }else{
+                check = false;
             }
-        }
-        return false;
+
+        });
+        // for( index=1; index < numberOfList; ++index){
+        //     var target = $("ul#ul_tabs li").first();
+        //     console.log(target);
+        //     var id = $(target).attr("id");
+        //     if(!_data){
+        //         continue;
+        //     }
+        //     var _data = JSON.parse(id);
+        //     console.log(_data);
+        //     var checkPath = _data.Project + '/' + _data.Suite + '/' + _data.Case;
+        //     if(_data == data){
+        //         return true;
+        //     }
+        //     target = $("ul#ul_tabs li").next();
+        // }
+        return check;
     };
     function selectTab () {
         $("#tabs").tabs({active: index-1});
