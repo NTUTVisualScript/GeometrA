@@ -57,7 +57,7 @@ function WorkSpace() {
 };
 
 function Tab(data){
-    var index = -1;
+     var index = 1;
     function createTab() {
         var _data = JSON.stringify(data);
         var num_tabs = $("div#tabs ul li").length + 1;
@@ -74,38 +74,19 @@ function Tab(data){
         $("div#tabs").tabs("refresh");
     };
     function checkTab(){
-        // var path = data.Project + '/' + data.Suite + '/' + data.Case;
-        // var numberOfList = $("div#tabs ul li").length + 1;
         var check = false;
         $("ul#ul_tabs li").each(function(){
             var _data = $(this).attr("id");
-            console.log(_data);
             var dataString = JSON.stringify(data);
-            console.log(dataString);
             if(_data == dataString){
                 check =  true;
             }
         });
-        // for( index=1; index < numberOfList; ++index){
-        //     var target = $("ul#ul_tabs li").first();
-        //     console.log(target);
-        //     var id = $(target).attr("id");
-        //     if(!_data){
-        //         continue;
-        //     }
-        //     var _data = JSON.parse(id);
-        //     console.log(_data);
-        //     var checkPath = _data.Project + '/' + _data.Suite + '/' + _data.Case;
-        //     if(_data == data){
-        //         return true;
-        //     }
-        //     target = $("ul#ul_tabs li").next();
-        // }
-        console.log(check);
         return check;
     };
     function selectTab () {
-        $("#tabs").tabs({active: index-1});
+        var index = $("li", $tabs).index()
+        $("#tabs").tabs({active: index});
         Post('/GeometrA/WorkSpace/Focus', data, function(msg) {});
     };
     Tab.createTab = createTab;
