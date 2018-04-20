@@ -64,7 +64,6 @@ function Tab(data){
 
         $("div#tabs ul").append(
             "<li id='"+ _data + "'>" + "<a href='#tab" + num_tabs + "'>" + data['Case'] +
-            "<p id='d_tab" + num_tabs + "' style='display:none;'>" + _data + "</p>" +
             "</a>"+"<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>"+"</li>"
         );
 
@@ -75,19 +74,17 @@ function Tab(data){
         $("div#tabs").tabs("refresh");
     };
     function checkTab(){
-        var path = data.Project + '/' + data.Suite + '/' + data.Case;
-        var numberOfList = $("div#tabs ul li").length + 1;
+        // var path = data.Project + '/' + data.Suite + '/' + data.Case;
+        // var numberOfList = $("div#tabs ul li").length + 1;
         var check = false;
         $("ul#ul_tabs li").each(function(){
             var _data = $(this).attr("id");
             console.log(_data);
-            if(data == _data){
-                check = true;
-
-            }else{
-                check = false;
+            var dataString = JSON.stringify(data);
+            console.log(dataString);
+            if(_data == dataString){
+                check =  true;
             }
-
         });
         // for( index=1; index < numberOfList; ++index){
         //     var target = $("ul#ul_tabs li").first();
@@ -104,6 +101,7 @@ function Tab(data){
         //     }
         //     target = $("ul#ul_tabs li").next();
         // }
+        console.log(check);
         return check;
     };
     function selectTab () {
