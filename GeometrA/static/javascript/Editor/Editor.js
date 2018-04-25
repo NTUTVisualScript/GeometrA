@@ -14,6 +14,10 @@ $(document).ready(function(){
     $("#tabs").on( "click", "span.ui-icon-close", function() {
         var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
         $( "#" + panelId ).remove();
+        if($("div#tabs ul li").length == 0){
+            Blockly.mainWorkspace.clear();
+        }
         $("#tabs").tabs( "refresh" );
+
     });
 });
