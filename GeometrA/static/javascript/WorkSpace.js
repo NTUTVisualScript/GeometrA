@@ -43,9 +43,9 @@ function WorkSpace() {
                     openTestCase(xml);
                 });
                 Tab.createTab();
-                Tab.selectTab();
+                Tab.selectTab(JSON.stringify(data));
             } else {
-                Tab.selectTab();
+                Tab.selectTab(JSON.stringify(data));
             }
         });
 
@@ -54,44 +54,6 @@ function WorkSpace() {
                 alert("Saving Log File Failed");
         });
     });
-};
-
-function Tab(data){
-     var index = 1;
-    function createTab() {
-        var _data = JSON.stringify(data);
-        var num_tabs = $("div#tabs ul li").length + 1;
-
-        $("div#tabs ul").append(
-            "<li id='"+ _data + "'>" + "<a href='#tab" + num_tabs + "'>" + data['Case'] +
-            "</a>"+"<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>"+"</li>"
-        );
-
-        $("div#tabs").append(
-            "<div id='tab" + num_tabs + "'></div>"
-        );
-
-        $("div#tabs").tabs("refresh");
-    };
-    function checkTab(){
-        var check = false;
-        $("ul#ul_tabs li").each(function(){
-            var _data = $(this).attr("id");
-            var dataString = JSON.stringify(data);
-            if(_data == dataString){
-                check =  true;
-            }
-        });
-        return check;
-    };
-    function selectTab () {
-        var index = $("li", $tabs).index()
-        $("#tabs").tabs({active: index});
-        Post('/GeometrA/WorkSpace/Focus', data, function(msg) {});
-    };
-    Tab.createTab = createTab;
-    Tab.checkTab = checkTab;
-    Tab.selectTab = selectTab;
 };
 
 function Menu(node) {
