@@ -61,14 +61,19 @@
                 <ul id="ul_tabs">
                 </ul>
                 <div id="blocklyDiv">
-                    <xml id="toolbox" style="display:none">
-                        <block type="main"></block>
-                        <block type="click"></block>
-                        <block type="sleep"></block>
-                        <block type="swipe"></block>
-                        <block type="set_text"></block>
-                        <block type="android_keycode"></block>
-                        <block type="loop"></block>
+                    <xml id="toolbox" style="display:none;">
+
+                        <category name="Action">
+                            <block type="click"></block>
+                            <block type="sleep"></block>
+                            <block type="swipe"></block>
+                            <block type="set_text"></block>
+                            <block type="android_keycode"></block>
+                        </category>
+                        <category name="Logic">
+                            <block type="main"></block>
+                            <block type="loop"></block>
+                        </category>
                     </xml>
                     <script>
                         var workspace = Blockly.inject('blocklyDiv', {
