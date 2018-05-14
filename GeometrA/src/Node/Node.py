@@ -6,7 +6,7 @@ class Node:
         self.xml = []
 
     def data(self):
-        return self.xml[0]
+        return self.xml
 
     def export(self):
         self.xmlPath = ADBRobot().get_uiautomator_dump()
@@ -16,16 +16,16 @@ class Node:
     def treeInfo(self, info, xml):
         for elem in info.findall('node'):
             if elem is None: return
-            # child_id = self.insert(id, 'end', elem, \
-            #                         text='(' + str(elem.get('index')) + ') ' + str(elem.get('class')) + '  ', \
-            #                         values=( str(elem.get('text')), str(elem.get('bounds')) ), open=True)
             _index = str(elem.get('index'))
             _class = str(elem.get('class'))
             _text = str(elem.get('text'))
+            _bounds = str(elem.get('bounds'))
             data = {}
-            data['index'] = _index
-            data['class'] = _class
-            data['name'] = _text
+            data['text'] = _text
+            data['data'] = {}
+            data['data']['class'] = _class
+            data['data']['index'] = _index
+            data['data']['bounds'] = _bounds
             data['children'] = []
             xml.append(data)
             self.treeInfo(elem, data['children'])
