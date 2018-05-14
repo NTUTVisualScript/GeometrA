@@ -9,8 +9,7 @@ class Node:
         return self.xml[0]
 
     def export(self):
-        # self.xmlPath = ADBRobot().get_uiautomator_dump()
-        self.xmlPath = './dumpXML/uidump.xml'
+        self.xmlPath = ADBRobot().get_uiautomator_dump()
         self.xmlFile = ET.ElementTree(file=self.xmlPath)
         self.treeInfo(self.xmlFile, self.xml)
 
