@@ -13,6 +13,7 @@
     <script src="{{url_for('static', filename='javascript/ajax.js')}}"></script>
 
     <script src="{{url_for('static', filename='javascript/jquery/jstree/dist/jstree.min.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/jquery/jstree/jstreegrid.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='javascript/jquery/jstree/dist/themes/default/style.min.css')}}" />
     <script src="{{url_for('static', filename='javascript/sweetalert2/dist/sweetalert2.min.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='javascript/sweetalert2/dist/sweetalert2.min.css')}}" />
@@ -101,7 +102,9 @@
     <div class="row3">
         <div id="NodeTree">
             <h6>NodeTree</h6>
-            <div id="Nodes"></div>
+            <div id="NodesBlock">
+                <div id="Nodes"></div>
+            </div>
         </div>
         <div id="Message">
             <h6>Message</h6>

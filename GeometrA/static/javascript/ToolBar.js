@@ -24,35 +24,21 @@ function ToolBar() {
             document.getElementById("CurrentScreen").src = "../static/screenshot_pic/tmp.png?time=" + new Date().getTime();
         });
         Get('/GeometrA/Node', function(data) {
-            console.log(data);
             $("#Nodes").jstree({
-                'types': {
-                    'itsfile': {
-                        'icon': 'jstree-file',
-                    },
+                grid: {
+                    columns: [
+                        {width:'30%', header: "Index"},
+                        {width:'30%', header: "Class", value: "class"},
+                        {width:'40%', header: "Bounds", value: 'bounds'}
+                    ],
+                    width: document.getElementById('Nodes').width
                 },
                 'core': {
                     'check_callback': true,
                     'data': data,
                 },
-                'plugins':["types"]
+                'plugins':["core", "ui", "grid"]
             });
-            // LoadElement(-1, data);
         })
     });
-
-    function LoadElement(node, branch) {
-        data = {
-            data: branch.index,
-            attr: branch.class,
-            state: branch.name
-        };
-        var node = $.jstree.reference(document.getElementById("Nodes")).create_node(
-            node, data, 'last', function(new_node) {}
-        );
-        if (typeof branch.children === 'undefined') return false;
-        for (var i=0; i < branch.children.length; i++) {
-            LoadElement(node, branch.children[i]);
-        }
-    }
 }
