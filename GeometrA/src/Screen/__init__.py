@@ -7,7 +7,7 @@ TMP = ""
 
 def capture():
     if not Check().checkDevices():
-        return None
+        return ""
     TMP = Screen().getImagePath()
     return TMP
 

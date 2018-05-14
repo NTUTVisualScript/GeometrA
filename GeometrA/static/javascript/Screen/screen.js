@@ -68,7 +68,7 @@ function initDraw(canvas) {
         Post("/GeometrA/Screen/Crop", data, function(image){
 
             Get("/GeometrA/Screen/"+ image, function (data) {
-                Blockly.selected.update(new Blockly.FieldImage(data, 100, 100, "*"), "myfield");
+                // Blockly.selected.update(new Blockly.FieldImage(data, 100, 100, "*"), "myfield");
             })
         });
     }

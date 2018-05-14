@@ -14,15 +14,25 @@ function ToolBar() {
         };
         Post('/GeometrA/TestScript/run', data, function(msg){
             if(msg=='success'){
-                swal("Success!");
+                $("#MessageList").append("<p>Executed Success!</p>");
             }
         });
     });
 
     $("#dumpButton").on("click", function() {
-        Get('/GeometrA/Screen', function(html) {
-            document.getElementById("CurrentScreen").src = "../static/screenshot_pic/tmp.png?time=" + new Date().getTime();
+        Get('/GeometrA/Screen', function(path) {
+            // "../static/screenshot_pic/tmp.png?time=" + new Date().getTime()
+            if(!path) {
+                $("#MessageList").append("<p>Device is not connected.</p>");
+            }
+            else{
+                var _path = path.replace("./GeometrA", "..") +
+                         "?time=" + new Date().getTime()
+                document.getElementById("CurrentScreen").src = _path;
+                $("#MessageList").append("<p>Get ScreenShot Success.</p>");
+            }
         });
+
         Get('/GeometrA/Node', function(data) {
             console.log(data);
             $("#Nodes").jstree({
@@ -37,7 +47,7 @@ function ToolBar() {
                 },
                 'plugins':["types"]
             });
-            // LoadElement(-1, data);
+            LoadElement(-1, data);
         })
     });
 
