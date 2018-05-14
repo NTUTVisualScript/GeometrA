@@ -54,3 +54,4 @@ tests/.coverage
 record.log
 */report.html
 *.png
+*.xml
