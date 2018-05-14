@@ -20,9 +20,8 @@ function ToolBar() {
     });
 
     $("#dumpButton").on("click", function() {
-        Get('/GeometrA/Screen', function(path) {
-            image = "<img src='../static/screenshot_pic/tmp.png')}}' style='width:100%; height:100%; display:block; position:absolute; top:0px; ' />"
-            $("#ScreenCapture").html(image);
+        Get('/GeometrA/Screen', function(html) {
+            document.getElementById("CurrentScreen").src = "../static/screenshot_pic/tmp.png?time=" + new Date().getTime();
         });
     });
 }
