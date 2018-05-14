@@ -1,5 +1,6 @@
 function ToolBar() {
     $("#runButton").on("click", function(){
+        document.getElementById("loader").style.display = "block";
         var nodes = $("#FileStructure").jstree("get_checked",true);
         var data = [];
         for (i = 0; i < nodes.length; ++i) {
@@ -14,16 +15,19 @@ function ToolBar() {
         };
         Post('/GeometrA/TestScript/run', data, function(msg){
             if(msg=='success'){
-                $("#MessageList").append("<p>Executed Success!</p>");
+                document.getElementById("loader").style.display = "none";
             }
+            $("#MessageList").append("<p>Executed Success!</p>");
         });
     });
 
     $("#dumpButton").on("click", function() {
+        document.getElementById("loader").style.display = "block";
         Get('/GeometrA/Screen', function(path) {
             // "../static/screenshot_pic/tmp.png?time=" + new Date().getTime()
             if(!path) {
                 $("#MessageList").append("<p>Device is not connected.</p>");
+                document.getElementById("loader").style.display = "none";
             }
             else{
                 var _path = path.replace("./GeometrA", "..") +
@@ -49,6 +53,7 @@ function ToolBar() {
                 },
                 'plugins':["core", "ui", "grid"]
             });
+            document.getElementById("loader").style.display = "none";
         })
     });
 }

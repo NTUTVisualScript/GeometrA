@@ -149,11 +149,12 @@ h6 {
 }
 
 #loader {
-    /* display: none; */
-    border: 16px solid #f3f3f3;
+    display: none;
+    float:right;
+    border: 12px solid #f3f3f3;
     border-radius: 50%;
-    border-top: 16px solid #3498db;
-    border-bottom: 16px solid #3498db;
+    border-top: 10px solid #3498db;
+    border-bottom: 12px solid #3498db;
     width: 20px;
     height: 20px;
     -webkit-animation: spin 2s linear infinite;
