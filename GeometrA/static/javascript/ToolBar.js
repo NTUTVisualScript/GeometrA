@@ -38,6 +38,9 @@ function ToolBar() {
         });
 
         Get('/GeometrA/Node', function(data) {
+            var tmp = $.jstree.reference("#Nodes");
+            if(tmp)
+                tmp.destroy();
             $("#Nodes").jstree({
                 grid: {
                     columns: [
@@ -53,6 +56,7 @@ function ToolBar() {
                 },
                 'plugins':["core", "ui", "grid"]
             });
+
             document.getElementById("loader").style.display = "none";
         })
     });
