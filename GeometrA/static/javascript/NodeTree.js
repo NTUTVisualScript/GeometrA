@@ -23,12 +23,4 @@ function NodeTree(){
             document.getElementById("loader").style.display = "none";
         })
     });
-
-
-    $("#Nodes").on("dblclick.jstree", ".jstree-anchor", function() {
-        var tree = $.jstree.reference(this);
-        var node = tree.get_node(this);
-        console.log("jkk");
-    });
-
 }

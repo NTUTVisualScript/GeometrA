@@ -23,7 +23,7 @@ function WorkSpace() {
             'plugins':["contextmenu", "checkbox", "types"]
         });
 
-        //open the case whne double click testcase
+        //open the case when double click testcase
         $("#FileStructure").on("dblclick.jstree",'.jstree-anchor', function(event){
             var tree = $.jstree.reference(this);
             var node = tree.get_node(this);
