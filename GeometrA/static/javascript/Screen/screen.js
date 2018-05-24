@@ -15,6 +15,7 @@ function initDraw(canvas) {
 
     var pos = getPos();
     function setMousePosition(e) {
+        pos = getPos();
         var ev = e || window.event; //Moz || IE
         if (ev.pageX) { //Moz
             mouse.x = ev.pageX - pos.x;
