@@ -17,13 +17,13 @@ class Node:
         for elem in info.findall('node'):
             if elem is None: return
             _index = str(elem.get('index'))
-            _class = str(elem.get('class'))
-            _text = str(elem.get('text'))
+            _name = str(elem.get('text'))
+            _text = str(elem.get('class'))
             _bounds = str(elem.get('bounds'))
             data = {}
             data['text'] = _text
             data['data'] = {}
-            data['data']['class'] = _class
+            data['data']['name'] = _name
             data['data']['index'] = _index
             data['data']['bounds'] = _bounds
             data['children'] = []

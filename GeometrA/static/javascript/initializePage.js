@@ -1,6 +1,7 @@
 $(document).ready(function() {
     function callback(result) {
         ToolBar();
+        NodeTree();
         if (result == 'exist') {
             Log();
         }
