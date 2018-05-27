@@ -133,19 +133,17 @@ Blockly.Blocks['click'] = {
   init: function() {
     this.appendDummyInput("clickInput")
         .appendField("Click")
-        .appendField(new Blockly.FieldImage("", 100, 100, "*"), "myfield");
+        .appendField(new Blockly.FieldImage("https://neil.fraser.name/common/yes.gif", 100, 100, "*"), "image");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(220);
- this.setTooltip("This is an action for you to click on your device.");
- this.setHelpUrl("");
+    this.getField('image').EDITABLE = true;
+    this.setTooltip("This is an action for you to click on your device.");
+    this.setHelpUrl("");
   },
   update: function(data){
-        this.removeInput("clickInput");
-        this.appendDummyInput("clickInput")
-            .appendField("Click")
-            .appendField(data);
+        Blockly.selected.getField("image").setValue(data);
   }
 };
 

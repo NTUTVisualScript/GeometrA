@@ -17,7 +17,6 @@
 // };
 
 function saveOnChange(event) {
-    if (event.type == 'move' || event.type == 'change') {
         var xml = Blockly.Xml.workspaceToDom(workspace);
         var xml_text = Blockly.Xml.domToText(xml);
         var code = Blockly.Python.workspaceToCode(workspace);
@@ -27,7 +26,6 @@ function saveOnChange(event) {
         }
         Post('/GeometrA/WorkSpace/save', data, function (msg) {
         })
-    }
 }
 
 function openTestCase(xml){
