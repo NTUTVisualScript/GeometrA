@@ -133,7 +133,7 @@ Blockly.Blocks['click'] = {
   init: function() {
     this.appendDummyInput("clickInput")
         .appendField("Click")
-        .appendField(new Blockly.FieldImage("https://neil.fraser.name/common/yes.gif", 100, 100, "*"), "image");
+        .appendField(new Blockly.FieldImage("", 100, 100, "*"), "image");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -143,12 +143,60 @@ Blockly.Blocks['click'] = {
     this.setHelpUrl("");
   },
   update: function(data){
-        this.getField("image").setValue(data);
+     this.getField("image").setValue(data);
   }
 };
 
 Blockly.Python['click'] = function(block) {
     var image = block.getFieldValue('image');
     var code = 'Click|' + image + '\\';
+    return code;
+};
+
+Blockly.Blocks['assert_exist'] = {
+  init: function() {
+    this.appendDummyInput("assertInput")
+        .appendField("Assert Exist")
+        .appendField(new Blockly.FieldImage("", 100, 100, "*"), "image");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(220);
+    this.getField('image').EDITABLE = true;
+    this.setTooltip("This is an action for you to assert if image exist, return true if exist");
+    this.setHelpUrl("");
+  },
+  update: function(data){
+        this.getField("image").setValue(data);
+  }
+};
+
+Blockly.Python['assert_exist'] = function(block) {
+    var image = block.getFieldValue('image');
+    var code = 'Assert Exist|' + image + '\\';
+    return code;
+};
+
+Blockly.Blocks['assert_not_exist'] = {
+  init: function() {
+    this.appendDummyInput("assertInput")
+        .appendField("Assert Not Exist")
+        .appendField(new Blockly.FieldImage("", 100, 100, "*"), "image");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(220);
+    this.getField('image').EDITABLE = true;
+    this.setTooltip("This is an action for you to assert if image exist, return true if not exist.");
+    this.setHelpUrl("");
+  },
+  update: function(data){
+        this.getField("image").setValue(data);
+  }
+};
+
+Blockly.Python['assert_not_exist'] = function(block) {
+    var image = block.getFieldValue('image');
+    var code = 'Assert Not Exist|' + image + '\\';
     return code;
 };

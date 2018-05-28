@@ -1,4 +1,7 @@
 import json
+from io import BytesIO
+import base64
+from PIL import Image, ImageTk
 
 from GeometrA.src.TestScript.TestCase import TestCase
 from GeometrA.src.TestScript.Executor import Executor
@@ -33,7 +36,11 @@ class TestScript:
         main_data = case_data['Main']
         for i in main_data:
             action = main_data[i]["Action"]
-            value = main_data[i]["Value"]
+            from GeometrA.src import IMAGEACTIONLIST
+            if action in IMAGEACTIONLIST:
+                value = Image.open(BytesIO(base64.b64decode(main_data[i]["Value"].replace("data:image/png;base64,", ""))))
+            else:
+                value = main_data[i]["Value"]
             case.insert(act=action, val=value)
 
     def runAll(self):

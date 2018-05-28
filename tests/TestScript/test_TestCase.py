@@ -3,6 +3,8 @@ import unittest
 import GeometrA
 
 from PIL import Image, ImageTk
+from io import BytesIO
+import base64
 
 from GeometrA.src.TestScript.TestCase import TestCase
 from GeometrA.src.TestScript.TestStep import Step
@@ -10,8 +12,12 @@ from GeometrA.src.TestScript.TestStep import Step
 class TestCaseTestSuite(unittest.TestCase):
     def setUp(self):
         GeometrA.app.testing = True
+        buffered = BytesIO()
+        tmp_image = Image.open(os.getcwd() + './tests/TestCase/Test/image/exist.png')
+        tmp_image.save(buffered, format="PNG")
+        img_string = base64.b64encode(buffered.getvalue())
         self.app = GeometrA.app.test_client()
-        self.image = Image.open(os.getcwd() + './TestCase/Test/image/exist.png')
+        self.image = Image.open(BytesIO(base64.b64decode(img_string)))
 
     def testConstructer(self):
         case = TestCase()

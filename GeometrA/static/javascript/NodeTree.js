@@ -67,7 +67,8 @@ function NodeTree(){
         Post("/GeometrA/Screen/Crop", data, function(image){
 
             Get("/GeometrA/Screen/"+ image, function (data) {
-                if(( Blockly.selected.getField().text_ ) == "Click") {
+                var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
+                if(actionImageList.includes( Blockly.selected.getField().text_ )) {
                     Blockly.selected.update(data);
                     workspace.fireChangeListener(saveOnChange);
                 }
