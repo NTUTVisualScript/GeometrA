@@ -13,12 +13,17 @@ function ToolBar() {
         data = {
             cases: data.join(','),
         };
-        Post('/GeometrA/TestScript/run', data, function(msg){
-            if(msg=='success'){
-                document.getElementById("loader").style.display = "none";
-            }
-            $("#MessageList").append("<p>Executed Success!</p>");
-        });
+        if(data.cases){
+            Post('/GeometrA/TestScript/run', data, function(msg){
+                if(msg=='success'){
+                    document.getElementById("loader").style.display = "none";
+                }
+                $("#MessageList").append("<p>Executed Success!</p>");
+            });
+        }
+        else{
+            swal("Please select some cases that you want to run!")
+        }
     });
 
     $("#dumpButton").on("click", function() {

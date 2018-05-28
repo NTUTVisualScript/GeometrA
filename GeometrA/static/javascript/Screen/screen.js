@@ -70,7 +70,7 @@ function initDraw(canvas) {
 
             Get("/GeometrA/Screen/"+ image, function (data) {
                 var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
-                if(actionImageList.includes( Blockly.selected.getField().text_ )) {
+                if( (Blockly.selected) && actionImageList.includes( Blockly.selected.getField().text_ )) {
                     Blockly.selected.update(data);
                     workspace.fireChangeListener(saveOnChange);
                 }
