@@ -23,7 +23,7 @@ function NodeTree(){
             document.getElementById("loader").style.display = "none";
         })
     });
-    
+
     var widthMulti;
     var heightMulti;
     function getPos() {
@@ -56,5 +56,24 @@ function NodeTree(){
         canvas.removeChild(canvas.lastChild);
         canvas.appendChild(element);
         canvas.style.cursor = "crosshair";
+
+        var data = {
+            startX: x1 * widthMulti,
+            startY: y1 * heightMulti,
+            endX: x2 * widthMulti,
+            endY: y2 * heightMulti
+        }
+
+        Post("/GeometrA/Screen/Crop", data, function(image){
+
+            Get("/GeometrA/Screen/"+ image, function (data) {
+                if(( Blockly.selected.getField().text_ ) == "Click") {
+                    Blockly.selected.update(data);
+                    workspace.fireChangeListener(saveOnChange);
+                }
+                else{
+                    swal("You don't select an action that needs an image!");                }
+            })
+        });
     });
 }

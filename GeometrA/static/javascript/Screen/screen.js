@@ -69,8 +69,12 @@ function initDraw(canvas) {
         Post("/GeometrA/Screen/Crop", data, function(image){
 
             Get("/GeometrA/Screen/"+ image, function (data) {
-                Blockly.selected.update(data);
-                workspace.fireChangeListener(saveOnChange);
+                if(( Blockly.selected.getField().text_ ) == "Click") {
+                    Blockly.selected.update(data);
+                    workspace.fireChangeListener(saveOnChange);
+                }
+                else{
+                    swal("You don't select an action that needs an image!");                }
             })
         });
     }

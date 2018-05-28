@@ -17,7 +17,6 @@
 // };
 
 function saveOnChange(event) {
-        console.log("HEHE");
         var xml = Blockly.Xml.workspaceToDom(workspace);
         var xml_text = Blockly.Xml.domToText(xml);
         var code = Blockly.Python.workspaceToCode(workspace);
