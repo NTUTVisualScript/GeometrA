@@ -143,13 +143,12 @@ Blockly.Blocks['click'] = {
     this.setHelpUrl("");
   },
   update: function(data){
-        Blockly.selected.getField("image").setValue(data);
+        this.getField("image").setValue(data);
   }
 };
 
 Blockly.Python['click'] = function(block) {
-    // var image = block.getInput("clickInput").getField("myfield").src_;
-    // console.log(image);
-    // var code = 'Click|' + image + '\\';
-    return "";
+    var image = block.getFieldValue('image');
+    var code = 'Click|' + image + '\\';
+    return code;
 };
