@@ -1,6 +1,6 @@
 function ToolBar() {
     $("#runButton").on("click", function(){
-        document.getElementById("loader").style.display = "block";
+        Message.running();
         var nodes = $("#FileStructure").jstree("get_checked",true);
         var data = [];
         for (i = 0; i < nodes.length; ++i) {
@@ -16,30 +16,30 @@ function ToolBar() {
         if(data.cases){
             Post('/GeometrA/TestScript/run', data, function(msg){
                 if(msg=='success'){
-                    document.getElementById("loader").style.display = "none";
+                    Message.executedCaseSuccess();    
                 }
-                $("#MessageList").append("<p>Executed Success!</p>");
+                Message.done();
             });
         }
         else{
-            swal("Please select some cases that you want to run!")
+            swal("Please select cases that you want to run!")
         }
     });
 
     $("#dumpButton").on("click", function() {
-        document.getElementById("loader").style.display = "block";
+        Message.running();
         Get('/GeometrA/Screen', function(path) {
             // "../static/screenshot_pic/tmp.png?time=" + new Date().getTime()
             if(!path) {
-                $("#MessageList").append("<p>Device is not connected.</p>");
-                document.getElementById("loader").style.display = "none";
+                Message.deviceNotConnected();
             }
             else{
                 var _path = path.replace("./GeometrA", "..") +
                          "?time=" + new Date().getTime()
                 document.getElementById("CurrentScreen").src = _path;
-                $("#MessageList").append("<p>Get ScreenShot Success.</p>");
+                Message.getScreenShotSuccess();
             }
+            Message.done();
         });
     });
 }

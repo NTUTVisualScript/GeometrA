@@ -17,7 +17,7 @@
 // };
 
 function saveOnChange(event) {
-    if(event.type != 'ui'){
+    if(event.type != 'ui' && event.type != 'delete'){
         var xml = Blockly.Xml.workspaceToDom(workspace);
         var xml_text = Blockly.Xml.domToText(xml);
         var code = Blockly.Python.workspaceToCode(workspace);
