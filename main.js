@@ -18,7 +18,7 @@ app.on('window-all-closed', function() {
 
 app.on('ready', function() {
   // call python?
-  var subpy = require('child_process').spawn('python', ['GeometrA.api']);
+  var subpy = require('child_process').spawn('python3', ['./main.py']);
   var rq = require('request-promise');
   var mainAddr = 'http://localhost:5000';
 
@@ -32,6 +32,12 @@ app.on('ready', function() {
       subpy.kill('SIGINT');
     });
   };
+
+  app.on('activate', function () {
+      if (mainWindow === null) {
+        openWindow()
+      }
+    })
 
   var startUp = function(){
     rq(mainAddr)
