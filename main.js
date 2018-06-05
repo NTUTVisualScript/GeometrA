@@ -18,7 +18,10 @@ app.on('window-all-closed', function() {
 
 app.on('ready', function() {
   // call python?
-  var subpy = require('child_process').spawn('python3', ['./main.py']);
+  if (process.platform === "win32")
+    var subpy = require('child_process').spawn('py', ['./main.py']);
+  else
+    var subpy = require('child_process').spawn('python3', ['./main.py']);
   var rq = require('request-promise');
   var mainAddr = 'http://localhost:5000';
 
