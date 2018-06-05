@@ -10,7 +10,7 @@ from GeometrA.src.Record import *
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/GeometrA')
+@app.route('/')
 def html():
     return render_template('index.html')
 

@@ -1,0 +1,29 @@
+{
+  "name": "GeometrA",
+  "version": "0.1.0",
+  "main": "main.js",
+  "dependencies": {
+    "electron-prebuilt": "*",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  },
+  "description": "GeometrA is a tool for users to write automated acceptance test for applications on Android applications.",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NTUTVisualScript/GeometrA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NTUTVisualScript/GeometrA/issues"
+  },
+  "homepage": "https://github.com/NTUTVisualScript/GeometrA#readme"
+}
