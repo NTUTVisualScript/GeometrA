@@ -6,6 +6,7 @@ pip3 install -U flask-cors
 
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew install android-platform-tools
+npm install electron-prebuilt -g
 
 read -n 1 -p "Press any key to continue..." INP
 if [ $INP != '' ] ; then

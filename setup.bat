@@ -5,4 +5,5 @@ setx /m Android_HOME "%USERPROFILE%\AppData\Local\Android\sdk"
 setx /m PATH "%PATH%;%Android_HOME%\platform-tools"
 pip3 install flask
 pip3 install -U flask-cors
+npm install electron-prebuilt -g
 PAUSE
