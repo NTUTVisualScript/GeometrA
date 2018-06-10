@@ -7,6 +7,8 @@
     <meta name="author" content="Visual Script team: Patrick, Denny, Mario, Hsin">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+    <script> if( typeof module === 'object' ) { window.module = module; module = undefined;} </script>
+
     <script src="{{url_for('static', filename='javascript/jquery/jquery-3.2.1.min.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='javascript/jquery/jquery-ui-1.12.1/jquery-ui.css')}}" />
@@ -116,6 +118,7 @@
             <div id="MessageList"></div>
         </div>
     </div>
+    <script>if (window.module) module = window.module; </script>
 </body>
 
 </html>
