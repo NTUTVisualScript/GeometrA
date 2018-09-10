@@ -13,6 +13,13 @@ Click [here](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/Overv
 
 3. Connect to "http://127.0.0.1:5000/GeometrA"
 
+## Start with electron
+```
+npm install electron-prebuilt -g    // Install electron in your device: 
+
+electron .    // Start the Application
+```
+
 ## Features
 - Executing automated acceptance test.
 - Applying for Android devices.
