@@ -10,7 +10,7 @@ function initDraw(canvas) {
         // We should get real number instead of 1080x1920 as default.
         widthMulti = 1080/bound.width;
         heightMulti = 1920/bound.height;
-        return {x:bound.x, y: bound.y};
+        return {x:bound.left, y: bound.top};
     }
 
     var pos = getPos();
@@ -60,6 +60,7 @@ function initDraw(canvas) {
     canvas.onmouseup = function (e) {
         element = null;
         canvas.style.cursor = "default";
+
         var data = {
             startX: mouse.startX * widthMulti,
             startY: mouse.startY * heightMulti,
