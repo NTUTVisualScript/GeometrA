@@ -76,13 +76,9 @@ class Step:
 
     def reportStep(self):
         stepResult = self.HTMLStep + r"""
-        </body>
-        <script src="https://cdn.jsdelivr.net/jquery/1.11.3/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
-        <script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/vue/1.0.24/vue.min.js"></script>
-        """
+  </div>
+</body>
+</html>"""
         self.clearStep()
         return stepResult
 
@@ -101,8 +97,8 @@ class Step:
 
         act = step.getAction()
         self.HTMLStep = self.HTMLStep + r"""
-	<div class="panel panel-""" + bg_color + """">
-      <div class="panel-heading"><h4>""" + " Step "+ str(n + 1) + " " + step.getAction() + " : </br></br>" +self.actionvalue + """</h4></div>
+    <div class="panel panel-""" + bg_color +"""">
+      <div class="panel-heading"><h4>""" + " Step "+ str(n + 1) + " " + step.getAction() + " : <br/><br/>" +self.actionvalue + """</h4></div>
 """
         if act != 'Sleep(s)':
             self.HTMLStep = self.HTMLStep + r"""
@@ -110,22 +106,18 @@ class Step:
         <div class="col-md-6">
           <ul class="device-info">
             <li><h4>Before</h4></li>
-            <li>"""+ self.beforeImg + """</li>
+            <li>""" + self.beforeImg + """</li>
           </ul>
         </div>
 """
-            if (act != 'Assert Exist') & (act != 'Assert Not Exist'):
-                self.HTMLStep = self.HTMLStep + r"""
+        if (act != 'Assert Exist') & (act != 'Assert Not Exist'):
+            self.HTMLStep = self.HTMLStep + r"""
         <div class="col-md-6">
           <ul class="device-info">
             <li><h4>After</h4></li>
             <li>"""+ self.afterImg + """</li>
           </ul>
         </div>
-"""
-            self.HTMLStep = self.HTMLStep + r"""
       </div>
-"""
-        self.HTMLStep = self.HTMLStep + r"""
     </div>
 """

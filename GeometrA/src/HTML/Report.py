@@ -13,8 +13,8 @@ class Report:
         self.htmlfile = ""
         self.day = ""
         self.time = ""
-        title = FileLoader.getFileLoader().getFileName()
-        self.insert(HTML.ReportUI.getTitle(title))
+        self.title = FileLoader.getFileLoader().getFileName()
+        self.insert(HTML.ReportUI.getTitle(self.title))
 
     def start(self):
         self.info = Info()
@@ -48,9 +48,9 @@ class Report:
             os.makedirs(self.path)
 
     def exportHTML(self):
-        with open(str(self.path) + '/' + self.time + '.html', 'w') as htmlReport:
+        self.filePath = str(self.path) + '/' + self.title + '.html'
+        with open(self.filePath, 'w') as htmlReport:
             htmlReport.write(self.htmlfile)
-        self.filePath = str(self.path) + '/' + self.time + '.html'
         return self.filePath
 
     def insert(self, html):

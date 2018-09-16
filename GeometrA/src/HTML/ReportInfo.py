@@ -23,10 +23,10 @@ class Info:
 
     def setResult(self, result):
         if result == "Success":
-            self.result = '<p class="text-success"><span class="info-name ">Result:</span>'+ result + '</p>'
+            self.result = result
             self.color = "primary"
         else:
-            self.result = '<p class="text-danger"><span class="info-name ">Result:</span>'+ result + '</p>'
+            self.result = result
             self.color = "danger"
 
     def getDate(self):
@@ -47,11 +47,13 @@ class Info:
 
     def report_info(self):
         self.setExeTime()
-        information = r"""
+        information = r"""<!-- Body -->
   <div class="container">
+
+    <!-- Information -->
     <div class="panel panel-""" + str(self.color) + """">
       <div class="panel-heading">
-        <h4>Base Infomation</h4>
+        <h4>Base Information</h4>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
@@ -59,7 +61,7 @@ class Info:
             <li>
               <span class="info-name">SerialNo:</span>""" + str(self.No) + """</li>
             <li>
-              <span class="info-name">TestDate:</span>""" + str(self.testDate) + """</li>
+              <span class="info-name">Start:</span>""" + str(self.testDate) + """</li>
             <li>
               <span class="info-name">StepCount:</span>""" + str(self.stepCount) + """</li>
           </ul>
@@ -69,12 +71,12 @@ class Info:
             <li>
               <span class="info-name">Display:</span>"""+ str(self.pWidth) +" x " + str(self.pHeight) +"""</li>
             <li>
-              <span class="info-name">ExecuteTime:</span>"""+ str(self.exeTime) +"""</li>
+              <span class="info-name">Execution Time:</span>"""+ str(self.exeTime) +"""</li>
             <li>
-              """+ str(self.result) +"""</li>
+              <p class="text-danger"><span class="info-name ">Result:</span>"""+ str(self.result) +"""</p></li>
           </ul>
         </div>
       </div>
     </div>
-    """
+"""
         return information
