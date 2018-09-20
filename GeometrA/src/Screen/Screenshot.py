@@ -2,13 +2,15 @@ from PIL import Image
 from GeometrA.src.ADB.adbRobot import ADBRobot
 
 class Screen:
-    x = 1080
-    y = 1920
     screenShot = None
 
     def __init__(self):
         self.path = ADBRobot().screenshot()
-        self.setSize(Screen.x, Screen.y)
+        size = self.getScreenSize()
+        widthHeight = size.split('x')
+        self.x = int(widthHeight[0])
+        self.y = int(widthHeight[1])
+        self.setSize(self.x, self.y)
 
     def setSize(self, x, y):
         Screen.screenShot = Image.open(self.path)
@@ -17,3 +19,6 @@ class Screen:
 
     def getImagePath(self):
         return self.path
+
+    def getScreenSize(self):
+        return ADBRobot().get_device_size() #ex: 1920x1080

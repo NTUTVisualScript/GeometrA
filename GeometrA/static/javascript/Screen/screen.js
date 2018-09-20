@@ -1,15 +1,26 @@
-initDraw(document.getElementById('Screen'));
-
-function initDraw(canvas) {
+function Screen(canvas) {
     var widthMulti;
     var heightMulti;
+    this.screenWidth;
+    this.screenHeight;
 
+   function initScreenSize(data) {
+       widthHeight = data.split("x");
+       this.screenWidth = parseInt(widthHeight[0]);
+       this.screenHeight = parseInt(widthHeight[1]);
+   }
+
+    (function init() {
+        Get("/GeometrA/Screen/Size",function(data){
+            initScreenSize(data);
+        });
+    })();
+   
     function getPos() {
         var screenElement = document.getElementById("ScreenCapture");
         var bound = (screenElement.getBoundingClientRect());
-        // We should get real number instead of 1080x1920 as default.
-        widthMulti = 1080/bound.width;
-        heightMulti = 1920/bound.height;
+        widthMulti = this.screenWidth/bound.width;
+        heightMulti = this.screenHeight/bound.height;
         return {x:bound.left, y: bound.top};
     }
 
@@ -37,7 +48,7 @@ function initDraw(canvas) {
 
     canvas.onmousemove = function (e) {
         setMousePosition(e);
-
+        
         if (element !== null) {
             element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
             element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
@@ -69,6 +80,7 @@ function initDraw(canvas) {
         }
         Post("/GeometrA/Screen/Crop", data, function(image){
 
+            
             Get("/GeometrA/Screen/"+ image, function (data) {
                 var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
                 if( (Blockly.selected) && actionImageList.includes( Blockly.selected.getField().text_ )) {

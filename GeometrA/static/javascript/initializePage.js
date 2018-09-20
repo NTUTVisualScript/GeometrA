@@ -2,6 +2,7 @@ $(document).ready(function() {
     function callback(result) {
         ToolBar();
         NodeTree();
+        Screen(document.getElementById('Screen'));
         if (result == 'exist') {
             Log();
         }
