@@ -19,7 +19,7 @@ class Info:
         self.stepCount = n
 
     def setDisplay(self):
-        self.pWidth, self.pHeight = ADBRobot().get_display()
+        self.screenSize = ADBRobot().get_device_size()
 
     def setResult(self, result):
         if result == "Success":
@@ -69,7 +69,7 @@ class Info:
         <div class="col-md-6">
           <ul class="device-info">
             <li>
-              <span class="info-name">Display:</span>"""+ str(self.pWidth) +" x " + str(self.pHeight) +"""</li>
+              <span class="info-name">Display:</span>"""+ self.screenSize +"""</li>
             <li>
               <span class="info-name">Execution Time:</span>"""+ str(self.exeTime) +"""</li>
             <li>

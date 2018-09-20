@@ -19,9 +19,7 @@ class Report:
         self.serialNumber = ADBRobot().get_devices()
 
     def setDisplay(self):
-        # pWidth, pHeight = ADBRobot().get_display()
-        # self.display = str(pWidth) + ' x ' + str(pHeight)
-        self.display = '1080 x 1920'
+        self.display = ADBRobot().get_device_size()
 
     def getReport(self):
         self.time = str(datetime.datetime.now()).split('.')[0]
