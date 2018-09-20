@@ -1,8 +1,8 @@
 import unittest
 
-from GeometrA.src.HTML.ReportUI import *;
+from GeometrA.src.Report.ReportUI import *;
 
-class ReoprtUiTestSuite(unittest.TestCase):
+class ReportUiTestSuite(unittest.TestCase):
     def testReportUI(self):
         result = getTitle("Test")
         self.assertEqual(result, r'''<!DOCTYPE html>

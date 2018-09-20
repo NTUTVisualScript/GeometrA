@@ -1,20 +1,20 @@
 import os
 import datetime
-from GeometrA.src.HTML.ReportInfo import Info
-import GeometrA.src.HTML.ReportUI
+from GeometrA.src.Report.ReportInfo import Info
+import GeometrA.src.Report.ReportUI
 from GeometrA.src.Controller.FileLoader import FileLoader
-from GeometrA.src.HTML.ReportStep import Step
+from GeometrA.src.Report.ReportStep import Step
 from GeometrA.src.GUI.MessageUI import Message
 
 PATH = lambda p: os.path.abspath(p)
 
-class Report:
+class CaseReport:
     def __init__(self):
         self.htmlfile = ""
         self.day = ""
         self.time = ""
         self.title = FileLoader.getFileLoader().getFileName()
-        self.insert(HTML.ReportUI.getTitle(self.title))
+        self.insert(Report.ReportUI.getTitle(self.title))
 
     def start(self):
         self.info = Info()

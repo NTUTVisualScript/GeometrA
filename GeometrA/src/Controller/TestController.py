@@ -6,7 +6,7 @@ import GeometrA.src.GUI.TestCase.Value
 from GeometrA.src.GUI.MessageUI import Message
 from GeometrA.src.Controller.DeviceCheck import Check
 from GeometrA.src.GUI.DialogueForm import  DialogueForm
-from GeometrA.src.HTML.Report import Report
+from GeometrA.src.Report import CaseReport
 
 class TestController:
     def __init__(self):
@@ -34,7 +34,7 @@ class TestController:
         threading.Thread(target=self.runCase).start()
 
     def runCase(self):
-        self.report = Report()
+        self.report = CaseReport()
         self.report.start()
         result = self.runAll()
         self.report.end(result, self.case.getSize())
