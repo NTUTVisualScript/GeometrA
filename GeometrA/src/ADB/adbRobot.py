@@ -123,11 +123,11 @@ class ADBRobot(Robot):
         result = subprocess.check_output('adb shell dumpsys display | grep mBaseDisplayInfo', shell=True).__str__()
         match = re.search(real_size_pattern, result)
         return (match.group(1), match.group(2))
-    
+
     def get_device_size(self):
         result = subprocess.getoutput('adb shell wm size')
         sizeList = result.split('\n')
-        if len(sizeList) is 1:
+        if sizeList[1] is "":
             sizeList = sizeList[0].split(':') #Only physical size
         else:
             sizeList = sizeList[1].split(':') #Override size
