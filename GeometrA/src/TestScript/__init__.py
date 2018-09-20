@@ -44,7 +44,8 @@ class TestScript:
             case.insert(act=action, val=value)
 
     def runAll(self):
-        for caseName in self._caseList:
-            exe = Executor(self._caseList[caseName])
+        for casePath in self._caseList:
+            print(casePath)
+            exe = Executor(self._caseList[casePath])
             exe.runAll()
         return 'success'

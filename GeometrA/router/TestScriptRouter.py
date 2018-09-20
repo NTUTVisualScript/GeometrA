@@ -2,7 +2,7 @@ from flask import request, jsonify
 
 from GeometrA import app
 from GeometrA.src import WORKSPACE as ws
-from GeometrA.src.TestScript import TestScript
+from GeometrA.src import TestScript
 
 @app.route('/GeometrA/TestScript/run', methods=['POST'])
 def run():
