@@ -1,3 +1,5 @@
+from GeometrA.src.Report.CaseReport import CaseReport
+
 import datetime
 from jinja2 import Environment, PackageLoader, select_autoescape
 from GeometrA.src.ADB.adbRobot import ADBRobot
@@ -59,3 +61,4 @@ class Report:
         os.mkdir(reportTime)
         with open(reportTime + '/index.html', 'w') as f:
             f.write(report)
+        return reportTime

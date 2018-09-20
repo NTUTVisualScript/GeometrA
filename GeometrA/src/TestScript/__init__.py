@@ -5,6 +5,9 @@ from PIL import Image, ImageTk
 
 from GeometrA.src.TestScript.TestCase import TestCase
 from GeometrA.src.TestScript.Executor import Executor
+from GeometrA.src.Report import CaseReport
+from GeometrA.src.Report import Report
+
 class TestScript:
     def __init__(self):
         self._caseList = {}
@@ -44,8 +47,39 @@ class TestScript:
             case.insert(act=action, val=value)
 
     def runAll(self):
+        reportIndex = Report()
+        reportList = []
         for casePath in self._caseList:
-            print(casePath)
+            suitePath = casePath[:casePath.rfind('/')]
+            projectPath = suitePath[:suitePath.rfind('/')]
             exe = Executor(self._caseList[casePath])
-            exe.runAll()
-        return 'success'
+            result, report = self.execute(exe, casePath)
+            reportList.append(report)
+            reportIndex.addCase(casePath, result)
+        reportPath = reportIndex.generate()
+        for report in reportList:
+            report.exportHTML(reportPath)
+        return 'Success'
+
+    def execute(self, exe, path):
+        name = path.split('/')[-1]
+        report = CaseReport(name)
+        size = exe.case.getSize()
+        i = 0
+        status = ''
+        report.start()
+        while i < size:
+            step = exe.case.getSteps(i)
+            report.stepStart(step)
+            status = exe.execute(i)
+            report.stepEnd(step, i)
+            loop = 'Loop'
+            if step.getAction() == loop:
+                i = exe.loopEnd(i)
+            f = 'Failed'
+            e = 'Error'
+            if (status == f) or status == e:
+                break;
+            i = i+1
+        report.end(status, size)
+        return (status, report)

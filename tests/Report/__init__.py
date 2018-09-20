@@ -22,7 +22,7 @@ from GeometrA.src.Report import Report
 #             projects = {
 #                 'project': {
 #                     'suite': {
-#                         'cas1': 'success',
+#                         'cas1': 'Success',
 #                         'case2': 'failed'
 #                     }
 #                 }
@@ -43,7 +43,7 @@ class ReportTestSuite(unittest.TestCase):
 
     def testAddCase(self):
         path1 = "./tests/Report/project1/suite1/case1"
-        status = 'success'
+        status = 'Success'
         self.report.addCase(path1, status)
         self.assertEqual(self.report.projects, {
             "project1": {
@@ -97,13 +97,13 @@ class ReportTestSuite(unittest.TestCase):
 
     def testGetReportPath(self):
         path1 = "./tests/Report/project1/suite1/case1"
-        status = 'success'
+        status = 'Success'
         self.report.addCase(path1, status)
         self.assertEqual(self.report.getReportPath(), './tests/Report/project1/report')
 
     def testGenerateReport(self):
         path1 = "./tests/Report/project1/suite1/case1"
-        status = 'success'
+        status = 'Success'
         self.report.addCase(path1, status)
         self.report.generate()
         reportPath = "./tests/Report/project1/report"

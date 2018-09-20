@@ -49,4 +49,4 @@ class TestScriptTestSuite(unittest.TestCase):
         path = './TestScript/Project/Suite/Case'
         script = TestScript()
         script.load(path)
-        self.assertEqual('success',script.runAll())
+        self.assertEqual('Success',script.runAll())
