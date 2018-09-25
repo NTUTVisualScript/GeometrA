@@ -2,7 +2,6 @@ function Screen() {
     var widthMulti;
     var heightMulti;
     var canvas = document.getElementById('Screen');
-    var context = canvas.getContext("2d");
 
     var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
 
