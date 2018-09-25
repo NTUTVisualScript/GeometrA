@@ -1,8 +1,24 @@
+var screenWidth;
+var screenHeight;
 $(document).ready(function() {
+
+    //init screen size
+    (function init() {
+        Get("/GeometrA/Screen/Size",function(data){
+            initScreenSize(data);
+        });
+    })();
+
+    function initScreenSize(data) {
+        widthHeight = data.split("x");
+        screenWidth = parseInt(widthHeight[0]);
+        screenHeight = parseInt(widthHeight[1]);
+    }
+
     function callback(result) {
         ToolBar();
         NodeTree();
-        Screen(document.getElementById('Screen'));
+        Screen();
         if (result == 'exist') {
             Log();
         }

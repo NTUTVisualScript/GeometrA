@@ -1,26 +1,17 @@
-function Screen(canvas) {
+function Screen() {
     var widthMulti;
     var heightMulti;
-    this.screenWidth;
-    this.screenHeight;
+    var canvas = document.getElementById('Screen');
+    var context = canvas.getContext("2d");
 
-   function initScreenSize(data) {
-       widthHeight = data.split("x");
-       this.screenWidth = parseInt(widthHeight[0]);
-       this.screenHeight = parseInt(widthHeight[1]);
-   }
+    var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
 
-    (function init() {
-        Get("/GeometrA/Screen/Size",function(data){
-            initScreenSize(data);
-        });
-    })();
-   
+ 
     function getPos() {
         var screenElement = document.getElementById("ScreenCapture");
         var bound = (screenElement.getBoundingClientRect());
-        widthMulti = this.screenWidth/bound.width;
-        heightMulti = this.screenHeight/bound.height;
+        widthMulti = screenWidth/bound.width;
+        heightMulti = screenHeight/bound.height;
         return {x:bound.left, y: bound.top};
     }
 
@@ -37,7 +28,6 @@ function Screen(canvas) {
         }
     };
 
-
     var mouse = {
         x: 0,
         y: 0,
@@ -48,7 +38,7 @@ function Screen(canvas) {
 
     canvas.onmousemove = function (e) {
         setMousePosition(e);
-        
+    
         if (element !== null) {
             element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
             element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
@@ -71,7 +61,7 @@ function Screen(canvas) {
     canvas.onmouseup = function (e) {
         element = null;
         canvas.style.cursor = "default";
-
+        
         var data = {
             startX: mouse.startX * widthMulti,
             startY: mouse.startY * heightMulti,
@@ -80,9 +70,7 @@ function Screen(canvas) {
         }
         Post("/GeometrA/Screen/Crop", data, function(image){
 
-            
             Get("/GeometrA/Screen/"+ image, function (data) {
-                var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
                 if( (Blockly.selected) && actionImageList.includes( Blockly.selected.getField().text_ )) {
                     Blockly.selected.update(data);
                     workspace.fireChangeListener(saveOnChange);

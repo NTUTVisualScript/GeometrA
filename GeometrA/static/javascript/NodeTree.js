@@ -26,12 +26,13 @@ function NodeTree(){
 
     var widthMulti;
     var heightMulti;
+
     function getPos() {
         var screenElement = document.getElementById("ScreenCapture");
         var bound = (screenElement.getBoundingClientRect());
         // We should get real number instead of 1080x1920 as default.
-        widthMulti = 1080/bound.width;
-        heightMulti = 1920/bound.height;
+        widthMulti = screenWidth/bound.width;
+        heightMulti = screenHeight/bound.height;
     }
 
     $("#Nodes").on('changed.jstree', function (e, data) {
@@ -64,17 +65,16 @@ function NodeTree(){
             endY: y2 * heightMulti
         }
 
-        Post("/GeometrA/Screen/Crop", data, function(image){
+        var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
+        
+        if((Blockly.selected) && actionImageList.includes( Blockly.selected.getField().text_ )) {
+            Post("/GeometrA/Screen/Crop", data, function(image){
 
-            Get("/GeometrA/Screen/"+ image, function (data) {
-                var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
-                if((Blockly.selected) && actionImageList.includes( Blockly.selected.getField().text_ )) {
-                    Blockly.selected.update(data);
-                    workspace.fireChangeListener(saveOnChange);
-                }
-                else{
-                    swal("You don't select an action that needs an image!");                }
-            })
-        });
+                Get("/GeometrA/Screen/"+ image, function (data) {
+                        Blockly.selected.update(data);
+                        workspace.fireChangeListener(saveOnChange);   
+                    })
+                });
+        }
     });
 }
