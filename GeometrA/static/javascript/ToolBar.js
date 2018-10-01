@@ -42,4 +42,12 @@ function ToolBar() {
             Message.done();
         });
     });
+
+    $("#loadButton").on("click", function() {
+        Load();
+    });
+
+    $("#createButton").on("click", function() {
+        Create();
+    });
 }

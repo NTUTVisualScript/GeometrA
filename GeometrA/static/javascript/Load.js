@@ -6,7 +6,7 @@ function Load() {
               '<button type="button" id="SelectFile">Select File</button>' +
               '<div id="Create"></div>',
         focusConfirm: false,
-        showCancelButton: false,
+        showCancelButton: true,
         allowEscapeKey: false,
         allowOutsideClick: false,
         preConfirm: () => {
@@ -17,7 +17,14 @@ function Load() {
             function callback(msg) {
                 if (msg == 'Success') {
                     swal("Project load successfully! ");
-                    WorkSpace();
+                    if ($('#FileStructure').jstree(true) != false){
+                        Get("/GeometrA/WorkSpace", function(response) {
+                            $('#FileStructure').jstree(true).settings.core.data = response;
+                            $("#FileStructure").jstree(true).refresh();
+                        });
+                    }else {
+                        WorkSpace();
+                    }
                 }
                 else {
                     swal("Not a project file!").then(function(){

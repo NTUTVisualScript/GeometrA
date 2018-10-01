@@ -12,7 +12,7 @@ function Create() {
             '<button type="button" id="SelectFolder">Select Path</button>' +
             '<div id="Create"></div>',
         focusConfirm: false,
-        showCancelButton: false,
+        showCancelButton: true,
         allowEscapeKey: false,
         allowOutsideClick: false,
         preConfirm: () => {
@@ -25,7 +25,14 @@ function Create() {
             function callback(msg) {
                 if (msg == 'Success') {
                     swal("Project load successfully! ");
-                    WorkSpace();
+                    if ($('#FileStructure').jstree(true) != false){
+                        Get("/GeometrA/WorkSpace", function(response) {
+                            $('#FileStructure').jstree(true).settings.core.data = response;
+                            $("#FileStructure").jstree(true).refresh();
+                        });
+                    }else {
+                        WorkSpace();
+                    }
                 }
                 else {
                     swal("Creation Failed ").then(function() {

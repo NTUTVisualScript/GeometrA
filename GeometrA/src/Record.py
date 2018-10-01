@@ -2,6 +2,7 @@ from GeometrA.src import WORKSPACE
 from GeometrA.src.File.FileManager import load
 
 import json
+import os
 
 RECORD_FILE = './record.log'
 
@@ -25,4 +26,8 @@ def loadLog(workspace = None):
 
     log = json.loads(result)
     for p in log['WorkSpace']:
-        load(p, workspace = workspace)
+        try:
+            load(p, workspace = workspace)
+        except Exception as e:
+            os.remove(RECORD_FILE) #TODO: need to fix
+            raise e
