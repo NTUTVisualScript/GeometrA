@@ -97,12 +97,12 @@ class Step:
 
         act = step.getAction()
         self.HTMLStep = self.HTMLStep + r"""
-    <div class="panel panel-""" + bg_color +"""">
-      <div class="panel-heading"><h4>""" + " Step "+ str(n + 1) + " " + step.getAction() + " : <br/><br/>" +self.actionvalue + """</h4></div>
+<div class="panel panel-""" + bg_color +"""">
+    <div class="panel-heading"><h4>""" + " Step "+ str(n + 1) + " " + step.getAction() + " : <br/><br/>" +self.actionvalue + """</h4></div>
 """
         if act != 'Sleep(s)':
             self.HTMLStep = self.HTMLStep + r"""
-      <div class="panel-body">
+    <div class="panel-body">
         <div class="col-md-6">
           <ul class="device-info">
             <li><h4>Before</h4></li>
@@ -118,6 +118,9 @@ class Step:
             <li>"""+ self.afterImg + """</li>
           </ul>
         </div>
-      </div>
-    </div>
+      
 """
+        self.HTMLStep = self.HTMLStep + r"""
+    </div>
+</div>"""
+
