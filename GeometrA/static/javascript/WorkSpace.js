@@ -169,6 +169,10 @@ function FileDelete(inst, obj) {
     }
     Post("/GeometrA/WorkSpace/delete", data, function(msg) {
         inst.delete_node(obj)
+        Get('/GeometrA/saveLog', function(result) {
+            if (result == 'Fail')
+                alert("Saving Log File Failed");
+        });
     });
 }
 

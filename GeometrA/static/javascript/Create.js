@@ -25,10 +25,15 @@ function Create() {
             function callback(msg) {
                 if (msg == 'Success') {
                     swal("Project load successfully! ");
-                    if ($('#FileStructure').jstree(true) != false){
+                    //update workspace jstree and record.log after create new project
+                    if ($('#FileStructure').jstree(true) != false){ 
                         Get("/GeometrA/WorkSpace", function(response) {
                             $('#FileStructure').jstree(true).settings.core.data = response;
                             $("#FileStructure").jstree(true).refresh();
+                            Get('/GeometrA/saveLog', function(result) {
+                                if (result == 'Fail')
+                                    alert("Saving Log File Failed");
+                            });
                         });
                     }else {
                         WorkSpace();

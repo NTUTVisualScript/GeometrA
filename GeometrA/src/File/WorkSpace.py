@@ -19,7 +19,7 @@ class WorkSpace:
 
     def load(self, path, project):
         name = project[0]
-
+        
         if not os.path.isdir(path + "/" + name):
             raise Exception('Project: "' + name + '" is not in the path')
 

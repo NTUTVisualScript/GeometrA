@@ -29,5 +29,5 @@ def loadLog(workspace = None):
         try:
             load(p, workspace = workspace)
         except Exception as e:
-            os.remove(RECORD_FILE) #TODO: need to fix
+            os.remove(RECORD_FILE) #TODO: maybe other good idea
             raise e
