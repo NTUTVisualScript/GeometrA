@@ -14,10 +14,12 @@ function ToolBar() {
             cases: data.join(','),
         };
         if(data.cases){
-            Post('/GeometrA/TestScript/run', data, function(msg){
-                if(msg=='success'){
+            Post('/GeometrA/TestScript/run', data, function(result){
+                var jsonResult = JSON.parse(result)
+                if(jsonResult["state"]=='success'){
                     Message.executedCaseSuccess();    
                 }
+                Message.reportPath(jsonResult["reportPath"]);
                 Message.done();
             });
         }

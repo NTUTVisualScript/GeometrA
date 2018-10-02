@@ -26,7 +26,7 @@ app.on('ready', function() {
   var mainAddr = 'http://localhost:5000';
 
   var openWindow = function(){
-    mainWindow = new BrowserWindow({width: 800, height: 600});
+    mainWindow = new BrowserWindow({width: 800, height: 600, webPreferences: { webSecurity: false}});
     // mainWindow.loadURL('file://' + __dirname + '/index.html');
     mainWindow.loadURL('http://localhost:5000');
     mainWindow.webContents.openDevTools();

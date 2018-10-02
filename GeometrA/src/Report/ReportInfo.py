@@ -24,7 +24,7 @@ class Info:
     def setResult(self, result):
         if result == "Success":
             self.result = result
-            self.color = "primary"
+            self.color = "success"
         else:
             self.result = result
             self.color = "danger"
@@ -73,7 +73,7 @@ class Info:
             <li>
               <span class="info-name">Execution Time:</span>"""+ str(self.exeTime) +"""</li>
             <li>
-              <p class="text-danger"><span class="info-name ">Result:</span>"""+ str(self.result) +"""</p></li>
+              <p class="text-""" + self.color + """"><span class=info-name ">Result:</span>"""+ str(self.result) +"""</p></li>
           </ul>
         </div>
       </div>

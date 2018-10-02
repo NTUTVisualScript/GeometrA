@@ -86,9 +86,9 @@
                   <div class="card-header">
                   {% for cname, cresult in suite.items() %}
                     {% if cresult == 'Success'%}
-                      <a href="{{ cname }}.html" class="list-group-item list-group-item-action list-group-item-success testcase">{{ cname }}</a>
+                      <a href="{{ cname }}.html" class="list-group-item list-group-item-action list-group-item-success testcase" target="_blank" >{{ cname }}</a>
                     {% else %}
-                      <a href="{{ cname }}.html" class="list-group-item list-group-item-action list-group-item-danger testcase">{{ cname }}</a>
+                      <a href="{{ cname }}.html" class="list-group-item list-group-item-action list-group-item-danger testcase" target="_blank">{{ cname }}</a>
                     {% endif %}
                   {% endfor %}
                   </div>

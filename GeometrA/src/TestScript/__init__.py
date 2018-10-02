@@ -59,7 +59,7 @@ class TestScript:
         reportPath = reportIndex.generate()
         for report in reportList:
             report.exportHTML(reportPath)
-        return 'Success'
+        return json.dumps({'state': 'success', 'reportPath': reportPath + '/index.html'})
 
     def execute(self, exe, path):
         name = path.split('/')[-1]

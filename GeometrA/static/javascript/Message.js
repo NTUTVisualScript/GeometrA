@@ -19,4 +19,8 @@ var Message = {
     getScreenShotSuccess: function(){
         $("#MessageList").append("<p>Get ScreenShot Success.</p>");
     },
+
+    reportPath: function(path) {
+        $("#MessageList").append("<p>Report: <a href= " + path + " target=_blank>" + path + "</a></p>")
+    }
 }
