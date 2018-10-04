@@ -52,8 +52,15 @@ Blockly.Blocks['swipe'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("This is an action for you to swipe on the device!");
- this.setHelpUrl("");
+    this.setTooltip("This is an action for you to swipe on the device!");
+    this.setHelpUrl("");
+  },
+  update: function(data){
+    console.log(data)
+    this.getField("startX").setValue(Math.round(data.startX));
+    this.getField("startY").setValue(Math.round(data.startY));
+    this.getField("EndX").setValue(Math.round(data.endX));
+    this.getField("EndY").setValue(Math.round(data.endY));
   }
 };
 

@@ -17,7 +17,6 @@ function Screen() {
     var pos = getPos();
     function setMousePosition(e) {
         pos = getPos();
-        if (1) {
         var ev = e || window.event; //Moz || IE
         if (ev.pageX) { //Moz
             mouse.x = ev.pageX - pos.x;
@@ -25,7 +24,6 @@ function Screen() {
         } else if (ev.clientX) { //IE
             mouse.x = ev.clientX + document.body.scrollLeft;
             mouse.y = ev.clientY + document.body.scrollTop;
-        }
         }
     };
 
@@ -83,8 +81,7 @@ function Screen() {
             endY: mouse.y * heightMulti
         }
         if (document.getElementById("swipe-canvas")) {
-            let data = {100, 100, 100, 100}
-            Blockly.selected.update(data); 
+            Blockly.selected.update(data);
         }
         else {
             Post("/GeometrA/Screen/Crop", data, function(image) {
