@@ -106,7 +106,8 @@ h6 {
 .row3 #NodeTree {
   width: 45%;
   height: 4%;
-  left: 10%; }
+  left: 10%;
+  z-index: 999;}
   .row3 #NodeTree:hover {
     width: 55%;
     height: 40%;
@@ -124,7 +125,8 @@ h6 {
 .row3 #Message {
   width: 35%;
   height: 4%;
-  right: 5%; }
+  right: 5%;
+  z-index: 999;}
   .row3 #Message:hover {
     width: 45%;
     height: 40%;
