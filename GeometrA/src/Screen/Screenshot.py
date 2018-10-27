@@ -1,12 +1,13 @@
-from PIL import Image
+from PIL import Image, ImageFile
 from GeometrA.src.ADB.adbRobot import ADBRobot
 
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 class Screen:
     screenShot = None
 
     def __init__(self):
         self.path = ADBRobot().screenshot()
-        size = self.getScreenSize()
+        size = Screen.getScreenSize()
         widthHeight = size.split('x')
         self.x = int(widthHeight[0])
         self.y = int(widthHeight[1])
@@ -20,5 +21,5 @@ class Screen:
     def getImagePath(self):
         return self.path
 
-    def getScreenSize(self):
+    def getScreenSize():
         return ADBRobot().get_device_size() #ex: 1920x1080
