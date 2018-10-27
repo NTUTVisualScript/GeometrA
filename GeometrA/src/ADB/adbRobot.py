@@ -119,7 +119,7 @@ class ADBRobot(Robot):
     def get_device_size(self):
         result = subprocess.getoutput('adb shell wm size')
         sizeList = result.split('\n')
-        if sizeList[1] is "":
+        if len(sizeList) == 1 or sizeList[1] is "":
             sizeList = sizeList[0].split(':') #Only physical size
         else:
             sizeList = sizeList[1].split(':') #Override size
