@@ -17,7 +17,7 @@ app.on('window-all-closed', function() {
   app.quit();
   //}
 });
-
+app.commandLine.appendSwitch("--disable-http-cache")
 app.on('ready', function() {
   // call python?
   if (process.platform === 'win32')
