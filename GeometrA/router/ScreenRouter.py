@@ -22,4 +22,4 @@ def getImage(image):
 
 @app.route('/GeometrA/Screen/Size')
 def getScreenSize():
-    return Screen().getScreenSize()
+    return Screen.getScreenSize()

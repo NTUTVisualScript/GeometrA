@@ -25,6 +25,7 @@ function saveOnChange(event) {
             xml: xml_text,
             code: code,
         }
+        // console.log(code); 
         Post('/GeometrA/WorkSpace/save', data, function (msg) {
         })
     }
@@ -36,7 +37,9 @@ function openTestCase(xml){
     Blockly.Xml.domToWorkspace(dom, workspace);
 }
 
-// workspace.addChangeListener(mainDisabled);
-workspace.addChangeListener(saveOnChange);
-// Disabled the blocks don't attached to main.
-workspace.addChangeListener(Blockly.Events.disableOrphans);
+$(document).ready(function() {
+  // workspace.addChangeListener(mainDisabled);
+  workspace.addChangeListener(saveOnChange);
+  // Disabled the blocks don't attached to main.
+  workspace.addChangeListener(Blockly.Events.disableOrphans);
+});

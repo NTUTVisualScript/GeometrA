@@ -68,7 +68,7 @@ exports.selectDirectory =
       callback);
 }
 
-    exports.selectProject = function(callback) {
+exports.selectProject = function(callback) {
   const dialogOption = {
     filters: [
       {name: 'Test Project', extensions: ['json']},

@@ -3,11 +3,10 @@ var screenHeight;
 $(document).ready(function() {
 
     //init screen size
-    (function init() {
-        Get("/GeometrA/Screen/Size",function(data){
-            initScreenSize(data);
-        });
-    })();
+    Get("/GeometrA/Screen/Size",function(data){
+        initScreenSize(data);
+    });
+    
 
     function initScreenSize(data) {
         widthHeight = data.split("x");
