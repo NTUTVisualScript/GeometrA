@@ -131,7 +131,7 @@ Blockly.Blocks['loop'] = {
 Blockly.Python['loop'] = function(block) {
   var number_times = block.getFieldValue('times');
   var statements_loop = Blockly.Python.statementToCode(block, 'Loop');
-  var code = '...\n';
+  var code = 'Loop Begin|' + number_times + '\\' + statements_loop.replace('  ', '') + 'Loop End| \\'
   return code;
 };
 
