@@ -1,6 +1,8 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const dialog = electron.dialog;
+
 electron.crashReporter.start({
   productName: 'GeometrA',
   companyName: 'NTUT',
@@ -57,3 +59,21 @@ app.on('ready', function() {
   // fire!
   startUp();
 });
+
+exports.selectDirectory = function (callback) {
+    dialog.showOpenDialog(mainWindow, {
+        properties: ['openDirectory'],
+        multiSelections: false
+    }, callback);
+}
+
+exports.selectProject = function (callback) {
+  const dialogOption = {
+      filters: [
+          { name: "Test Project", extensions: ["json"] },
+      ],
+      properties: ["openFile"],
+      multiSelections: false
+  };
+  dialog.showOpenDialog(mainWindow, dialogOption, callback);
+}

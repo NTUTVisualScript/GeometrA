@@ -26,7 +26,7 @@ function Create() {
                 if (msg == 'Success') {
                     swal("Project load successfully! ");
                     //update workspace jstree and record.log after create new project
-                    if ($('#FileStructure').jstree(true) != false){ 
+                    if ($('#FileStructure').jstree(true) != false){
                         Get("/GeometrA/WorkSpace", function(response) {
                             $('#FileStructure').jstree(true).settings.core.data = response;
                             $("#FileStructure").jstree(true).refresh();
@@ -45,13 +45,19 @@ function Create() {
                     });
                 }
             }
-            
+
             Post('/GeometrA/WorkSpace/create', data, callback);
         }
     });
     document.getElementById("SelectFolder").onclick = function() {
-        Get('/GeometrA/WorkSpace/getProjectPath', function(path) {
-            $("#Create").html('<input id="projectPath" disabled="disabled" value="' + path + '" class="swal2-input">')
-        })
+        const electron = require('electron');
+        const remote = electron.remote;
+        const mainProcess = remote.require('./main');
+        mainProcess.selectDirectory( function(path) {
+            $("#Create").html('<input id="projectPath" disabled="disabled" value="' + path[0] + '" class="swal2-input">');
+        });
+        // Get('/GeometrA/WorkSpace/getProjectPath', function(path) {
+        //     $("#Create").html('<input id="projectPath" disabled="disabled" value="' + path + '" class="swal2-input">')
+        // })
     };
 }

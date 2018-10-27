@@ -41,9 +41,16 @@ function Load() {
         }
     });
     document.getElementById("SelectFile").onclick = function() {
-        Get('/GeometrA/WorkSpace/getFilePath', function(path) {
-            $("#Create").html('<input id="projectPath" disabled="disabled" \
-                                value="' + path + '" class="swal2-input">')
-        })
+        const electron = require('electron');
+        const remote = electron.remote;
+        const mainProcess = remote.require('./main');
+        mainProcess.selectProject( function(path) {
+          let pathString = path[0].split('\\').join('/');
+          $("#Create").html('<input id="projectPath" disabled="disabled" value="' + pathString + '" class="swal2-input">');
+        });
+        // Get('/GeometrA/WorkSpace/getFilePath', function(path) {
+        //     $("#Create").html('<input id="projectPath" disabled="disabled" \
+        //                         value="' + path + '" class="swal2-input">')
+        // })
     }
 }
