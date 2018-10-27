@@ -40,13 +40,11 @@ class ADBRobot(Robot):
         wait = "adb wait-for-device"
         subprocess.call(wait, shell=True)
         fileName = "tmp.png"
-        capture = "adb shell screencap -p ./data/local/tmp/" + fileName
-        subprocess.call(capture, shell=True)
         if not os.path.isdir(path):
             os.makedirs(path)
-        pull = "adb pull ./data/local/tmp/" + fileName + " " + path
-        subprocess.call(pull ,shell=True)
-        print("success")
+        capture = "adb exec-out screencap -p > " + path + "/" + fileName
+        subprocess.call(capture, shell=True)
+        print("get tmp.png success")
         return path + "/" + fileName
 
     def before_screenshot(self):
@@ -56,15 +54,12 @@ class ADBRobot(Robot):
         subprocess.call(wait, shell=True)
 
         fileName = "before.png"
-        capture = "adb shell screencap -p ./data/local/tmp/" + fileName
-        subprocess.call(capture, shell=True)
 
         if not os.path.isdir(path):
             os.makedirs(path)
-
-        pull = "adb pull ./data/local/tmp/" + fileName + " " + path
-        subprocess.call(pull, shell=True)
-        print("success")
+        capture = "adb exec-out screencap -p > " + path + "/" + fileName
+        subprocess.call(capture, shell=True)
+        print("get before.png success")
         return path + "/" + fileName
 
     def after_screenshot(self):
@@ -73,15 +68,12 @@ class ADBRobot(Robot):
         wait = "adb wait-for-device"
         subprocess.call(wait, shell=True)
         fileName = "after.png"
-        capture = "adb shell screencap -p ./data/local/tmp/" + fileName
-        subprocess.call(capture, shell=True)
 
         if not os.path.isdir(path):
             os.makedirs(path)
-
-        pull = "adb pull ./data/local/tmp/" + fileName + " " + path
-        subprocess.call(pull, shell=True)
-        print("success")
+        capture = "adb exec-out screencap -p > " + path + "/" + fileName
+        subprocess.call(capture, shell=True)
+        print("get after.png success")
         return path + "/after.png"
 
     def tap(self, x, y, duration=None):
