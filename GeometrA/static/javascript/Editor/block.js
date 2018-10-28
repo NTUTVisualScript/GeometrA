@@ -215,7 +215,7 @@ Blockly.Blocks['common_action'] = {
         .appendField(new Blockly.FieldDropdown([["home","3"], ["back","4"], ["power","26"], ["enter","66"], ["delete","67"], ["search","84"]]), "keycode");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(180);
+    this.setColour(230);
  this.setTooltip("These are common actions for you to use.");
  this.setHelpUrl("");
   }
