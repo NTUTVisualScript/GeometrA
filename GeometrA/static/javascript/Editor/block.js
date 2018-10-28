@@ -4,7 +4,7 @@ Blockly.Blocks['main'] = {
         .appendField("Main");
     this.setInputsInline(true);
     this.setNextStatement(true, null);
-    this.setColour(197);
+    this.setColour(0);
  this.setTooltip("This is the start of workspace. ");
  this.setHelpUrl("");
   }
@@ -168,7 +168,7 @@ Blockly.Blocks['assert_exist'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(220);
+    this.setColour(285);
     this.getField('image').EDITABLE = true;
     this.setTooltip("This is an action for you to assert if image exist, return true if exist");
     this.setHelpUrl("");
@@ -192,7 +192,7 @@ Blockly.Blocks['assert_not_exist'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(220);
+    this.setColour(285);
     this.getField('image').EDITABLE = true;
     this.setTooltip("This is an action for you to assert if image exist, return true if not exist.");
     this.setHelpUrl("");
@@ -206,4 +206,23 @@ Blockly.Python['assert_not_exist'] = function(block) {
     var image = block.getFieldValue('image');
     var code = 'Assert Not Exist|' + image + '\\';
     return code;
+};
+
+Blockly.Blocks['common_action'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Common Action")
+        .appendField(new Blockly.FieldDropdown([["home","3"], ["back","4"], ["power","26"], ["enter","66"], ["delete","67"], ["search","84"]]), "keycode");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(180);
+ this.setTooltip("These are common actions for you to use.");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['common_action'] = function(block) {
+  var dropdown_keycode = block.getFieldValue('keycode');
+  var code = 'Android Keycode|' + dropdown_keycode + "\\";
+  return code;
 };
