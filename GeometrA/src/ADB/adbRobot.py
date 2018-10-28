@@ -8,11 +8,40 @@ PATH = lambda p: os.path.abspath(p)
 
 KEYCODE = ANDROID_KEYCODE
 
+def getAppsInfo():
+    # Get informations of all apps in aos device.
+    getAppsInfoScript = "sh ./GeometrA/static/aos_info.sh"
+    subprocess.call(getAppsInfoScript, shell=True)
+
+    # Read the data from of apps
+    aosData = []
+    with open('aos_info.txt', 'r') as f:
+        for line in f:
+            aosData.append(line.replace("\n", ""))
+
+    # Generate the dictionary we need
+    appsData = {}
+    for app in aosData:
+        dataStrings = app.split("'")
+        # The index of package/app name in dataString is depends on the format of aos_info.txt
+        packageName = dataStrings[1]
+        appName = dataStrings[5]
+
+        data = {appName: packageName}
+        appsData.update(data)
+    return appsData
 
 class ADBRobot(Robot):
     def open_app(self, appName):
-        command = "adb shell am start -n " + appName
-        subprocess.check_output(command, shell=True)
+        appsData = getAppsInfo()
+
+        try:
+            self.targetPkg = appsData[appName]
+            command = "adb shell monkey -p " + self.targetPkg + " -c android.intent.category.LAUNCHER 1"
+            subprocess.call(command, shell=True)
+            return "Success"
+        except:
+            return "Error"
 
     def close_app(self, appName):
         command = "adb shell am force-stop " + appName
