@@ -73,7 +73,7 @@ class TestScript:
             report.stepStart(step)
             status = exe.execute(i)
             report.stepEnd(step, i)
-            loop = 'Loop'
+            loop = 'Loop Begin'
             if step.getAction() == loop:
                 i = exe.loopEnd(i)
             f = 'Failed'
