@@ -28,8 +28,6 @@ goog.provide('Blockly.Bubble');
 
 goog.require('Blockly.Touch');
 goog.require('Blockly.Workspace');
-goog.require('goog.dom');
-goog.require('goog.math');
 goog.require('goog.math.Coordinate');
 goog.require('goog.userAgent');
 
@@ -40,7 +38,7 @@ goog.require('goog.userAgent');
  *     bubble.
  * @param {!Element} content SVG content for the bubble.
  * @param {Element} shape SVG element to avoid eclipsing.
- * @param {!goog.math.Coodinate} anchorXY Absolute position of bubble's anchor
+ * @param {!goog.math.Coordinate} anchorXY Absolute position of bubble's anchor
  *     point.
  * @param {?number} bubbleWidth Width of bubble, or null if not resizable.
  * @param {?number} bubbleHeight Height of bubble, or null if not resizable.
@@ -56,7 +54,7 @@ Blockly.Bubble = function(workspace, content, shape, anchorXY,
   if (this.workspace_.RTL) {
     angle = -angle;
   }
-  this.arrow_radians_ = goog.math.toRadians(angle);
+  this.arrow_radians_ = Blockly.utils.toRadians(angle);
 
   var canvas = workspace.getBubbleCanvas();
   canvas.appendChild(this.createDom_(content, !!(bubbleWidth && bubbleHeight)));
@@ -283,6 +281,16 @@ Blockly.Bubble.prototype.getSvgRoot = function() {
 };
 
 /**
+ * Expose the block's ID on the bubble's top-level SVG group.
+ * @param {string} id ID of block.
+ */
+Blockly.Bubble.prototype.setSvgId = function(id) {
+  if (this.bubbleGroup_.dataset) {
+    this.bubbleGroup_.dataset.blockId = id;
+  }
+};
+
+/**
  * Handle a mouse-down on bubble's border.
  * @param {!Event} e Mouse down event.
  * @private
@@ -292,6 +300,25 @@ Blockly.Bubble.prototype.bubbleMouseDown_ = function(e) {
   if (gesture) {
     gesture.handleBubbleStart(e, this);
   }
+};
+
+/**
+ * Show the context menu for this bubble.
+ * @param {!Event} _e Mouse event.
+ * @private
+ */
+Blockly.Bubble.prototype.showContextMenu_ = function(_e) {
+  // NOP on bubbles, but used by the bubble dragger to pass events to
+  // workspace comments.
+};
+
+/**
+ * Get whether this bubble is deletable or not.
+ * @return {boolean} True if deletable.
+ * @package
+ */
+Blockly.Bubble.prototype.isDeletable = function() {
+  return false;
 };
 
 /**
@@ -345,11 +372,16 @@ Blockly.Bubble.prototype.registerResizeEvent = function(callback) {
 
 /**
  * Move this bubble to the top of the stack.
+ * @return {!boolean} Whether or not the bubble has been moved.
  * @private
  */
 Blockly.Bubble.prototype.promote_ = function() {
   var svgGroup = this.bubbleGroup_.parentNode;
-  svgGroup.appendChild(this.bubbleGroup_);
+  if (svgGroup.lastChild !== this.bubbleGroup_) {
+    svgGroup.appendChild(this.bubbleGroup_);
+    return true;
+  }
+  return false;
 };
 
 /**
@@ -572,7 +604,7 @@ Blockly.Bubble.prototype.setColour = function(hexColour) {
 Blockly.Bubble.prototype.dispose = function() {
   Blockly.Bubble.unbindDragEvents_();
   // Dispose of and unlink the bubble.
-  goog.dom.removeNode(this.bubbleGroup_);
+  Blockly.utils.removeNode(this.bubbleGroup_);
   this.bubbleGroup_ = null;
   this.bubbleArrow_ = null;
   this.bubbleBack_ = null;

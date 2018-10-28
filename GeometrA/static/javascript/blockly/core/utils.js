@@ -32,25 +32,10 @@
  **/
 goog.provide('Blockly.utils');
 
-goog.require('Blockly.Touch');
 goog.require('goog.dom');
-goog.require('goog.events.BrowserFeature');
 goog.require('goog.math.Coordinate');
 goog.require('goog.userAgent');
 
-
-/**
- * To allow ADVANCED_OPTIMIZATIONS, combining variable.name and variable['name']
- * is not possible. To access the exported Blockly.Msg.Something it needs to be
- * accessed through the exact name that was exported. Note, that all the exports
- * are happening as the last thing in the generated js files, so they won't be
- * accessible before JavaScript loads!
- * @return {!Object.<string, string>} The message array.
- * @private
- */
-Blockly.utils.getMessageArray_ = function() {
-  return goog.global['Blockly']['Msg'];
-};
 
 /**
  * Remove an attribute from a element even if it's in IE 10.
@@ -122,11 +107,21 @@ Blockly.utils.removeClass = function(element, className) {
  * @param {!Element} element DOM element to check.
  * @param {string} className Name of class to check.
  * @return {boolean} True if class exists, false otherwise.
- * @private
+ * @package
  */
 Blockly.utils.hasClass = function(element, className) {
   var classes = element.getAttribute('class');
   return (' ' + classes + ' ').indexOf(' ' + className + ' ') != -1;
+};
+
+/**
+ * Removes a node from its parent. No-op if not attached to a parent.
+ * @param {Node} node The node to remove.
+ * @return {Node} The node removed if removed; else, null.
+ */
+// Copied from Closure goog.dom.removeNode
+Blockly.utils.removeNode = function(node) {
+  return node && node.parentNode ? node.parentNode.removeChild(node) : null;
 };
 
 /**
@@ -210,9 +205,8 @@ Blockly.utils.getInjectionDivXY_ = function(element) {
   var y = 0;
   while (element) {
     var xy = Blockly.utils.getRelativeXY(element);
-    var scale = Blockly.utils.getScale_(element);
-    x = (x * scale) + xy.x;
-    y = (y * scale) + xy.y;
+    x = x + xy.x;
+    y = y + xy.y;
     var classes = element.getAttribute('class') || '';
     if ((' ' + classes + ' ').indexOf(' injectionDiv ') != -1) {
       break;
@@ -220,25 +214,6 @@ Blockly.utils.getInjectionDivXY_ = function(element) {
     element = element.parentNode;
   }
   return new goog.math.Coordinate(x, y);
-};
-
-/**
- * Return the scale of this element.
- * @param {!Element} element  The element to find the coordinates of.
- * @return {!number} number represending the scale applied to the element.
- * @private
- */
-Blockly.utils.getScale_ = function(element) {
-  var scale = 1;
-  var transform = element.getAttribute('transform');
-  if (transform) {
-    var transformComponents =
-        transform.match(Blockly.utils.getScale_.REGEXP_);
-    if (transformComponents && transformComponents[0]) {
-      scale = parseFloat(transformComponents[0]);
-    }
-  }
-  return scale;
 };
 
 /**
@@ -252,15 +227,6 @@ Blockly.utils.getScale_ = function(element) {
  */
 Blockly.utils.getRelativeXY.XY_REGEX_ =
     /translate\(\s*([-+\d.e]+)([ ,]\s*([-+\d.e]+)\s*\))?/;
-
-
-/**
- * Static regex to pull the scale values out of a transform style property.
- * Accounts for same exceptions as XY_REGEXP_.
- * @type {!RegExp}
- * @private
- */
-Blockly.utils.getScale_REGEXP_ = /scale\(\s*([-+\d.e]+)\s*\)/;
 
 /**
  * Static regex to pull the x,y,z values out of a translate3d() style property.
@@ -445,7 +411,7 @@ Blockly.utils.tokenizeInterpolation = function(message) {
  * @return {!string} String with message references replaced.
  */
 Blockly.utils.replaceMessageReferences = function(message) {
-  if (!goog.isString(message)) {
+  if (typeof message != 'string') {
     return message;
   }
   var interpolatedResult = Blockly.utils.tokenizeInterpolation_(message, false);
@@ -464,7 +430,7 @@ Blockly.utils.replaceMessageReferences = function(message) {
 Blockly.utils.checkMessageReferences = function(message) {
   var validSoFar = true;
 
-  var msgTable = Blockly.utils.getMessageArray_();
+  var msgTable = Blockly.Msg;
 
   // TODO(#1169): Implement support for other string tables, prefixes other than BKY_.
   var regex = /%{(BKY_[A-Z][A-Z0-9_]*)}/gi;
@@ -553,9 +519,9 @@ Blockly.utils.tokenizeInterpolation_ = function(message,
     } else if (state == 3) {  // String table reference
       if (c == '') {
         // Premature end before closing '}'
-        buffer.splice(0, 0, '%{'); // Re-insert leading delimiter
+        buffer.splice(0, 0, '%{');  // Re-insert leading delimiter
         i--;  // Parse this char again.
-        state = 0; // and parse as string literal.
+        state = 0;  // and parse as string literal.
       } else if (c != '}') {
         buffer.push(c);
       } else  {
@@ -567,11 +533,11 @@ Blockly.utils.tokenizeInterpolation_ = function(message,
           // BKY_ is the prefix used to namespace the strings used in Blockly
           // core files and the predefined blocks in ../blocks/. These strings
           // are defined in ../msgs/ files.
-          var bklyKey = goog.string.startsWith(keyUpper, 'BKY_') ?
+          var bklyKey = Blockly.utils.startsWith(keyUpper, 'BKY_') ?
               keyUpper.substring(4) : null;
-          if (bklyKey && bklyKey in Blockly.utils.getMessageArray_()) {
-            var rawValue = Blockly.utils.getMessageArray_()[bklyKey];
-            if (goog.isString(rawValue)) {
+          if (bklyKey && bklyKey in Blockly.Msg) {
+            var rawValue = Blockly.Msg[bklyKey];
+            if (typeof rawValue == 'string') {
               // Attempt to dereference substrings, too, appending to the end.
               Array.prototype.push.apply(tokens,
                   Blockly.utils.tokenizeInterpolation_(
@@ -593,7 +559,7 @@ Blockly.utils.tokenizeInterpolation_ = function(message,
         } else {
           tokens.push('%{' + rawKey + '}');
           buffer.length = 0;
-          state = 0; // and parse as string literal.
+          state = 0;  // and parse as string literal.
         }
       }
     }
@@ -875,13 +841,13 @@ Blockly.utils.is3dSupported = function() {
  * Contrast with node.insertBefore function.
  * @param {!Element} newNode New element to insert.
  * @param {!Element} refNode Existing element to precede new node.
- * @private
+ * @package
  */
-Blockly.utils.insertAfter_ = function(newNode, refNode) {
+Blockly.utils.insertAfter = function(newNode, refNode) {
   var siblingNode = refNode.nextSibling;
   var parentNode = refNode.parentNode;
   if (!parentNode) {
-    throw 'Reference node has no parent.';
+    throw Error('Reference node has no parent.');
   }
   if (siblingNode) {
     parentNode.insertBefore(newNode, siblingNode);
@@ -942,4 +908,67 @@ Blockly.utils.getViewportBBox = function() {
     top: scrollOffset.y,
     left: scrollOffset.x
   };
+};
+
+/**
+ * Fast prefix-checker.
+ * Copied from Closure's goog.string.startsWith.
+ * @param {string} str The string to check.
+ * @param {string} prefix A string to look for at the start of `str`.
+ * @return {boolean} True if `str` begins with `prefix`.
+ * @package
+ */
+Blockly.utils.startsWith = function(str, prefix) {
+  return str.lastIndexOf(prefix, 0) == 0;
+};
+
+/**
+ * Removes the first occurrence of a particular value from an array.
+ * @param {!Array} arr Array from which to remove
+ *     value.
+ * @param {*} obj Object to remove.
+ * @return {boolean} True if an element was removed.
+ * @package
+ */
+Blockly.utils.arrayRemove = function(arr, obj) {
+  var i = arr.indexOf(obj);
+  if (i == -1) {
+    return false;
+  }
+  arr.splice(i, 1);
+  return true;
+};
+
+/**
+ * Converts degrees to radians.
+ * Copied from Closure's goog.math.toRadians.
+ * @param {number} angleDegrees Angle in degrees.
+ * @return {number} Angle in radians.
+ * @package
+ */
+Blockly.utils.toRadians = function(angleDegrees) {
+  return angleDegrees * Math.PI / 180;
+};
+
+/**
+ * Converts radians to degrees.
+ * Copied from Closure's goog.math.toDegrees.
+ * @param {number} angleRadians Angle in radians.
+ * @return {number} Angle in degrees.
+ * @package
+ */
+Blockly.utils.toDegrees = function(angleRadians) {
+  return angleRadians * 180 / Math.PI;
+};
+
+/**
+ * Whether a node contains another node.
+ * @param {!Node} parent The node that should contain the other node.
+ * @param {!Node} descendant The node to test presence of.
+ * @return {boolean} Whether the parent node contains the descendant node.
+ * @package
+ */
+Blockly.utils.containsNode = function(parent, descendant) {
+  return !!(parent.compareDocumentPosition(descendant) &
+            Node.DOCUMENT_POSITION_CONTAINED_BY);
 };

@@ -28,7 +28,6 @@
 goog.provide('Blockly.Generator');
 
 goog.require('Blockly.Block');
-goog.require('goog.asserts');
 
 
 /**
@@ -99,7 +98,7 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
   var blocks = workspace.getTopBlocks(true);
   for (var x = 0, block; block = blocks[x]; x++) {
     var line = this.blockToCode(block);
-    if (goog.isArray(line)) {
+    if (Array.isArray(line)) {
       // Value blocks return tuples of code and operator order.
       // Top-level blocks don't care about operator order.
       line = line[0];
@@ -142,7 +141,7 @@ Blockly.Generator.prototype.prefixLines = function(text, prefix) {
  */
 Blockly.Generator.prototype.allNestedComments = function(block) {
   var comments = [];
-  var blocks = block.getDescendants();
+  var blocks = block.getDescendants(true);
   for (var i = 0; i < blocks.length; i++) {
     var comment = blocks[i].getCommentText();
     if (comment) {
@@ -173,31 +172,32 @@ Blockly.Generator.prototype.blockToCode = function(block) {
   }
 
   var func = this[block.type];
-  goog.asserts.assertFunction(func,
-      'Language "%s" does not know how to generate code for block type "%s".',
-      this.name_, block.type);
+  if (typeof func != 'function') {
+    throw Error('Language "' + this.name_ + '" does not know how to generate ' +
+        ' code for block type "' + block.type + '".');
+  }
   // First argument to func.call is the value of 'this' in the generator.
   // Prior to 24 September 2013 'this' was the only way to access the block.
   // The current prefered method of accessing the block is through the second
   // argument to func.call, which becomes the first parameter to the generator.
   var code = func.call(block, block);
-  if (goog.isArray(code)) {
+  if (Array.isArray(code)) {
     // Value blocks return tuples of code and operator order.
-    goog.asserts.assert(block.outputConnection,
-        'Expecting string from statement block "%s".', block.type);
+    if (!block.outputConnection) {
+      throw TypeError('Expecting string from statement block: ' + block.type);
+    }
     return [this.scrub_(block, code[0]), code[1]];
-  } else if (goog.isString(code)) {
+  } else if (typeof code == 'string') {
     var id = block.id.replace(/\$/g, '$$$$');  // Issue 251.
     if (this.STATEMENT_PREFIX) {
-      code = this.STATEMENT_PREFIX.replace(/%1/g, '\'' + id + '\'') +
-          code;
+      code = this.STATEMENT_PREFIX.replace(/%1/g, '\'' + id + '\'') + code;
     }
     return this.scrub_(block, code);
   } else if (code === null) {
     // Block has handled code generation itself.
     return '';
   } else {
-    goog.asserts.fail('Invalid code generated: %s', code);
+    throw SyntaxError('Invalid code generated: ' + code);
   }
 };
 
@@ -212,7 +212,7 @@ Blockly.Generator.prototype.blockToCode = function(block) {
  */
 Blockly.Generator.prototype.valueToCode = function(block, name, outerOrder) {
   if (isNaN(outerOrder)) {
-    goog.asserts.fail('Expecting valid order from block "%s".', block.type);
+    throw TypeError('Expecting valid order from block: ' + block.type);
   }
   var targetBlock = block.getInputTargetBlock(name);
   if (!targetBlock) {
@@ -225,12 +225,13 @@ Blockly.Generator.prototype.valueToCode = function(block, name, outerOrder) {
   }
   // Value blocks must return code and order of operations info.
   // Statement blocks must only return code.
-  goog.asserts.assertArray(tuple, 'Expecting tuple from value block "%s".',
-      targetBlock.type);
+  if (!Array.isArray(tuple)) {
+    throw TypeError('Expecting tuple from value block: ' + targetBlock.type);
+  }
   var code = tuple[0];
   var innerOrder = tuple[1];
   if (isNaN(innerOrder)) {
-    goog.asserts.fail('Expecting valid order from value block "%s".',
+    throw TypeError('Expecting valid order from value block: ' +
         targetBlock.type);
   }
   if (!code) {
@@ -282,8 +283,10 @@ Blockly.Generator.prototype.statementToCode = function(block, name) {
   var code = this.blockToCode(targetBlock);
   // Value blocks must return code and order of operations info.
   // Statement blocks must only return code.
-  goog.asserts.assertString(code, 'Expecting code from statement block "%s".',
-      targetBlock && targetBlock.type);
+  if (typeof code != 'string') {
+    throw TypeError('Expecting code from statement block: ' +
+        (targetBlock && targetBlock.type));
+  }
   if (code) {
     code = this.prefixLines(/** @type {string} */ (code), this.INDENT);
   }
@@ -378,11 +381,9 @@ Blockly.Generator.prototype.provideFunction_ = function(desiredName, code) {
  * Hook for code to run before code generation starts.
  * Subclasses may override this, e.g. to initialise the database of variable
  * names.
- * @param {!Blockly.Workspace} workspace Workspace to generate code from.
+ * @param {!Blockly.Workspace} _workspace Workspace to generate code from.
  */
-Blockly.Generator.prototype.init = function(
-    /* eslint-disable no-unused-vars */ workspace
-    /* eslint-enable no-unused-vars */) {
+Blockly.Generator.prototype.init = function(_workspace) {
   // Optionally override
 };
 
@@ -392,14 +393,12 @@ Blockly.Generator.prototype.init = function(
  * Subclasses may override this, e.g. to generate code for statements following
  * the block, or to handle comments for the specified block and any connected
  * value blocks.
- * @param {!Blockly.Block} block The current block.
+ * @param {!Blockly.Block} _block The current block.
  * @param {string} code The JavaScript code created for this block.
  * @return {string} JavaScript code with comments and subsequent blocks added.
  * @private
  */
-Blockly.Generator.prototype.scrub_ = function(
-    /* eslint-disable no-unused-vars */ block, code
-    /* eslint-enable no-unused-vars */) {
+Blockly.Generator.prototype.scrub_ = function(_block, code) {
   // Optionally override
   return code;
 };
@@ -411,9 +410,7 @@ Blockly.Generator.prototype.scrub_ = function(
  * @param {string} code Generated code.
  * @return {string} Completed code.
  */
-Blockly.Generator.prototype.finish = function(
-    /* eslint-disable no-unused-vars */ code
-    /* eslint-enable no-unused-vars */) {
+Blockly.Generator.prototype.finish = function(code) {
   // Optionally override
   return code;
 };
@@ -426,9 +423,7 @@ Blockly.Generator.prototype.finish = function(
  * @param {string} line Line of generated code.
  * @return {string} Legal line of code.
  */
-Blockly.Generator.prototype.scrubNakedValue = function(
-    /* eslint-disable no-unused-vars */ line
-    /* eslint-enable no-unused-vars */) {
+Blockly.Generator.prototype.scrubNakedValue = function(line) {
   // Optionally override
   return line;
 };

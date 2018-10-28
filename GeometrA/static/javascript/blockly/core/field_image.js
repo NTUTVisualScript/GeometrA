@@ -27,9 +27,9 @@
 goog.provide('Blockly.FieldImage');
 
 goog.require('Blockly.Field');
-goog.require('goog.dom');
+goog.require('Blockly.utils');
+
 goog.require('goog.math.Size');
-goog.require('goog.userAgent');
 
 
 /**
@@ -67,6 +67,7 @@ goog.inherits(Blockly.FieldImage, Blockly.Field);
  *                          alt).
  * @returns {!Blockly.FieldImage} The new field instance.
  * @package
+ * @nocollapse
  */
 Blockly.FieldImage.fromJson = function(options) {
   var src = Blockly.utils.replaceMessageReferences(options['src']);
@@ -118,8 +119,10 @@ Blockly.FieldImage.prototype.init = function() {
  * Dispose of all DOM objects belonging to this text.
  */
 Blockly.FieldImage.prototype.dispose = function() {
-  goog.dom.removeNode(this.fieldGroup_);
-  this.fieldGroup_ = null;
+  if (this.fieldGroup_) {
+    Blockly.utils.removeNode(this.fieldGroup_);
+    this.fieldGroup_ = null;
+  }
   this.imageElement_ = null;
 };
 
@@ -216,3 +219,5 @@ Blockly.FieldImage.prototype.showEditor_ = function() {
     this.clickHandler_(this);
   }
 };
+
+Blockly.Field.register('field_image', Blockly.FieldImage);

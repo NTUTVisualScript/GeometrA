@@ -28,10 +28,10 @@
 
 goog.provide('Blockly.Field');
 
+goog.require('Blockly.Events.BlockChange');
 goog.require('Blockly.Gesture');
+goog.require('Blockly.utils');
 
-goog.require('goog.asserts');
-goog.require('goog.dom');
 goog.require('goog.math.Size');
 goog.require('goog.style');
 goog.require('goog.userAgent');
@@ -40,16 +40,60 @@ goog.require('goog.userAgent');
 /**
  * Abstract class for an editable field.
  * @param {string} text The initial content of the field.
- * @param {Function=} opt_validator An optional function that is called
- *     to validate any constraints on what the user entered.  Takes the new
- *     text as an argument and returns either the accepted text, a replacement
- *     text, or null to abort the change.
+ * @param {function(string):(string|null|undefined)=} opt_validator An optional
+ *     function that is called to validate user input. See setValidator().
  * @constructor
  */
 Blockly.Field = function(text, opt_validator) {
   this.size_ = new goog.math.Size(0, Blockly.BlockSvg.MIN_BLOCK_Y);
   this.setValue(text);
   this.setValidator(opt_validator);
+};
+
+/**
+ * The set of all registered fields, keyed by field type as used in the JSON
+ * definition of a block.
+ * @type {!Object<string, !{fromJson: Function}>}
+ * @private
+ */
+Blockly.Field.TYPE_MAP_ = {};
+
+/**
+ * Registers a field type. May also override an existing field type.
+ * Blockly.Field.fromJson uses this registry to find the appropriate field.
+ * @param {!string} type The field type name as used in the JSON definition.
+ * @param {!{fromJson: Function}} fieldClass The field class containing a
+ *     fromJson function that can construct an instance of the field.
+ * @throws {Error} if the type name is empty, or the fieldClass is not an
+ *     object containing a fromJson function.
+ */
+Blockly.Field.register = function(type, fieldClass) {
+  if ((typeof type != 'string') || (type.trim() == '')) {
+    throw new Error('Invalid field type "' + type + '"');
+  }
+  if (!fieldClass || (typeof fieldClass.fromJson != 'function')) {
+    throw new Error('Field "' + fieldClass +
+        '" must have a fromJson function');
+  }
+  Blockly.Field.TYPE_MAP_[type] = fieldClass;
+};
+
+/**
+ * Construct a Field from a JSON arg object.
+ * Finds the appropriate registered field by the type name as registered using
+ * Blockly.Field.register.
+ * @param {!Object} options A JSON object with a type and options specific
+ *     to the field type.
+ * @returns {?Blockly.Field} The new field instance or null if a field wasn't
+ *     found with the given type name
+ * @package
+ */
+Blockly.Field.fromJson = function(options) {
+  var fieldClass = Blockly.Field.TYPE_MAP_[options['type']];
+  if (fieldClass) {
+    return fieldClass.fromJson(options);
+  }
+  return null;
 };
 
 /**
@@ -124,7 +168,9 @@ Blockly.Field.prototype.EDITABLE = true;
  * @param {!Blockly.Block} block The block containing this field.
  */
 Blockly.Field.prototype.setSourceBlock = function(block) {
-  goog.asserts.assert(!this.sourceBlock_, 'Field already bound to a block.');
+  if (this.sourceBlock_) {
+    throw Error('Field already bound to a block.');
+  }
   this.sourceBlock_ = block;
 };
 
@@ -179,8 +225,10 @@ Blockly.Field.prototype.dispose = function() {
     this.mouseDownWrapper_ = null;
   }
   this.sourceBlock_ = null;
-  goog.dom.removeNode(this.fieldGroup_);
-  this.fieldGroup_ = null;
+  if (this.fieldGroup_) {
+    Blockly.utils.removeNode(this.fieldGroup_);
+    this.fieldGroup_ = null;
+  }
   this.textElement_ = null;
   this.borderRect_ = null;
   this.validator_ = null;
@@ -241,15 +289,25 @@ Blockly.Field.prototype.setVisible = function(visible) {
 };
 
 /**
- * Sets a new validation function for editable fields.
- * @param {Function} handler New validation function, or null.
+ * Sets a new validation function for editable fields, or clears a previously
+ * set validator.
+ *
+ * The validator function takes in the text form of the users input, and
+ * optionally returns the accepted field text. Alternatively, if the function
+ * returns null, the field value change aborts. If the function does not return
+ * anything (or returns undefined), the input value is accepted as valid. This
+ * is a shorthand for fields using the validator function call as a field-level
+ * change event notification.
+ *
+ * @param {?function(string):(string|null|undefined)} handler The validator
+ *     function or null to clear a previous validator.
  */
 Blockly.Field.prototype.setValidator = function(handler) {
   this.validator_ = handler;
 };
 
 /**
- * Gets the validation function for editable fields.
+ * Gets the validation function for editable fields, or null if not set.
  * @return {Function} Validation function, or null.
  */
 Blockly.Field.prototype.getValidator = function() {
@@ -313,10 +371,7 @@ Blockly.Field.prototype.render_ = function() {
   }
 
   // Replace the text.
-  goog.dom.removeChildren(/** @type {!Element} */ (this.textElement_));
-  var textNode = document.createTextNode(this.getDisplayText_());
-  this.textElement_.appendChild(textNode);
-
+  this.textElement_.textContent = this.getDisplayText_();
   this.updateWidth();
 };
 
@@ -529,8 +584,7 @@ Blockly.Field.prototype.setValue = function(newValue) {
  * @param {!Event} e Mouse down event.
  * @private
  */
-Blockly.Field.prototype.onMouseDown_ = function(
-    /* eslint-disable no-unused-vars */ e /* eslint-enable no-unused-vars */) {
+Blockly.Field.prototype.onMouseDown_ = function(e) {
   if (!this.sourceBlock_ || !this.sourceBlock_.workspace) {
     return;
   }
@@ -542,12 +596,10 @@ Blockly.Field.prototype.onMouseDown_ = function(
 
 /**
  * Change the tooltip text for this field.
- * @param {string|!Element} newTip Text for tooltip or a parent element to
+ * @param {string|!Element} _newTip Text for tooltip or a parent element to
  *     link to for its tooltip.
  */
-Blockly.Field.prototype.setTooltip = function(
-    /* eslint-disable no-unused-vars */ newTip
-    /* eslint-enable no-unused-vars */) {
+Blockly.Field.prototype.setTooltip = function(_newTip) {
   // Non-abstract sub-classes may wish to implement this.  See FieldLabel.
 };
 
@@ -559,4 +611,15 @@ Blockly.Field.prototype.setTooltip = function(
  */
 Blockly.Field.prototype.getAbsoluteXY_ = function() {
   return goog.style.getPageOffset(this.borderRect_);
+};
+
+/**
+ * Whether this field references any Blockly variables.  If true it may need to
+ * be handled differently during serialization and deserialization.  Subclasses
+ * may override this.
+ * @return {boolean} True if this field has any variable references.
+ * @package
+ */
+Blockly.Field.prototype.referencesVariables = function() {
+  return false;
 };

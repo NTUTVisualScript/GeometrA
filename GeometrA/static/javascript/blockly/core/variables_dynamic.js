@@ -33,7 +33,8 @@ goog.require('Blockly.constants');
 goog.require('Blockly.VariableModel');
 // TODO Fix circular dependencies
 // goog.require('Blockly.Workspace');
-goog.require('goog.string');
+
+goog.require('goog.dom');
 
 
 Blockly.VariablesDynamic.onCreateVariableButtonClick_String = function(button) {
@@ -54,14 +55,14 @@ Blockly.VariablesDynamic.onCreateVariableButtonClick_Colour = function(button) {
 Blockly.VariablesDynamic.flyoutCategory = function(workspace) {
   var xmlList = [];
   var button = goog.dom.createDom('button');
-  button.setAttribute('text', Blockly.Msg.NEW_STRING_VARIABLE);
+  button.setAttribute('text', Blockly.Msg['NEW_STRING_VARIABLE']);
   button.setAttribute('callbackKey', 'CREATE_VARIABLE_STRING');
   xmlList.push(button);
   button = goog.dom.createDom('button');
-  button.setAttribute('text', Blockly.Msg.NEW_NUMBER_VARIABLE);
+  button.setAttribute('text', Blockly.Msg['NEW_NUMBER_VARIABLE']);
   button.setAttribute('callbackKey', 'CREATE_VARIABLE_NUMBER');
   xmlList.push(button);button = goog.dom.createDom('button');
-  button.setAttribute('text', Blockly.Msg.NEW_COLOUR_VARIABLE);
+  button.setAttribute('text', Blockly.Msg['NEW_COLOUR_VARIABLE']);
   button.setAttribute('callbackKey', 'CREATE_VARIABLE_COLOUR');
   xmlList.push(button);
 
@@ -94,7 +95,7 @@ Blockly.VariablesDynamic.flyoutCategoryBlocks = function(workspace) {
       var gap = 24;
       var blockText = '<xml>' +
           '<block type="variables_set_dynamic" gap="' + gap + '">' +
-          Blockly.Variables.generateVariableFieldXml_(firstVariable) +
+          Blockly.Variables.generateVariableFieldXmlString(firstVariable) +
           '</block>' +
           '</xml>';
       var block = Blockly.Xml.textToDom(blockText).firstChild;
@@ -104,7 +105,7 @@ Blockly.VariablesDynamic.flyoutCategoryBlocks = function(workspace) {
       for (var i = 0, variable; variable = variableModelList[i]; i++) {
         var blockText = '<xml>' +
             '<block type="variables_get_dynamic" gap="8">' +
-            Blockly.Variables.generateVariableFieldXml_(variable) +
+            Blockly.Variables.generateVariableFieldXmlString(variable) +
             '</block>' +
             '</xml>';
         var block = Blockly.Xml.textToDom(blockText).firstChild;

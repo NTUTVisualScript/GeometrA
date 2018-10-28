@@ -26,7 +26,8 @@
 
 goog.provide('Blockly.Icon');
 
-goog.require('goog.dom');
+goog.require('Blockly.utils');
+
 goog.require('goog.math.Coordinate');
 
 
@@ -52,14 +53,14 @@ Blockly.Icon.prototype.SIZE = 17;
 /**
  * Bubble UI (if visible).
  * @type {Blockly.Bubble}
- * @private
+ * @protected
  */
 Blockly.Icon.prototype.bubble_ = null;
 
 /**
  * Absolute coordinate of icon's center.
  * @type {goog.math.Coordinate}
- * @private
+ * @protected
  */
 Blockly.Icon.prototype.iconXY_ = null;
 
@@ -95,7 +96,7 @@ Blockly.Icon.prototype.createIcon = function() {
  */
 Blockly.Icon.prototype.dispose = function() {
   // Dispose of and unlink the icon.
-  goog.dom.removeNode(this.iconGroup_);
+  Blockly.utils.removeNode(this.iconGroup_);
   this.iconGroup_ = null;
   // Dispose of and unlink the bubble.
   this.setVisible(false);
@@ -119,7 +120,7 @@ Blockly.Icon.prototype.isVisible = function() {
 /**
  * Clicking on the icon toggles if the bubble is visible.
  * @param {!Event} e Mouse click event.
- * @private
+ * @protected
  */
 Blockly.Icon.prototype.iconClick_ = function(e) {
   if (this.block_.workspace.isDragging()) {

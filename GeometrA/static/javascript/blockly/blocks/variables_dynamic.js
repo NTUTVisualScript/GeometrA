@@ -36,9 +36,8 @@ goog.require('Blockly');
 
 
 /**
- * Common HSV hue for all blocks in this category.
- * Should be the same as Blockly.Msg.VARIABLES_DYNAMIC_HUE.
- * @readonly
+ * Unused constant for the common HSV hue for all blocks in this category.
+ * @deprecated Use Blockly.Msg['VARIABLES_DYNAMIC_HUE']. (2018 April 5)
  */
 Blockly.Constants.VariablesDynamic.HUE = 310;
 
@@ -105,21 +104,21 @@ Blockly.Constants.VariablesDynamic.CUSTOM_CONTEXT_MENU_VARIABLE_GETTER_SETTER_MI
     var contextMenuMsg;
     if (this.type == 'variables_get_dynamic') {
       opposite_type = 'variables_set_dynamic';
-      contextMenuMsg = Blockly.Msg.VARIABLES_GET_CREATE_SET;
+      contextMenuMsg = Blockly.Msg['VARIABLES_GET_CREATE_SET'];
     } else {
       opposite_type = 'variables_get_dynamic';
-      contextMenuMsg = Blockly.Msg.VARIABLES_SET_CREATE_GET;
+      contextMenuMsg = Blockly.Msg['VARIABLES_SET_CREATE_GET'];
     }
 
-    var option = { enabled: this.workspace.remainingCapacity() > 0 };
-    var name = this.getFieldValue('VAR');
+    var option = {enabled: this.workspace.remainingCapacity() > 0};
+    var name = this.getField('VAR').getText();
     option.text = contextMenuMsg.replace('%1', name);
-    var xmlField = goog.dom.createDom('field', null, name);
+    var xmlField = document.createElement('field');
     xmlField.setAttribute('name', 'VAR');
-    var variableModel = this.workspace.getVariable(name);
-    xmlField.setAttribute('variabletype', variableModel.type);
-    var xmlBlock = goog.dom.createDom('block', null, xmlField);
+    xmlField.appendChild(document.createTextNode(name));
+    var xmlBlock = document.createElement('block');
     xmlBlock.setAttribute('type', opposite_type);
+    xmlBlock.appendChild(xmlField);
     option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
     options.push(option);
   },

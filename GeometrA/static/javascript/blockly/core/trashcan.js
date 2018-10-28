@@ -26,9 +26,8 @@
 
 goog.provide('Blockly.Trashcan');
 
-goog.require('goog.Timer');
-goog.require('goog.dom');
-goog.require('goog.math');
+goog.require('Blockly.utils');
+
 goog.require('goog.math.Rect');
 
 
@@ -229,12 +228,12 @@ Blockly.Trashcan.prototype.init = function(bottom) {
  */
 Blockly.Trashcan.prototype.dispose = function() {
   if (this.svgGroup_) {
-    goog.dom.removeNode(this.svgGroup_);
+    Blockly.utils.removeNode(this.svgGroup_);
     this.svgGroup_ = null;
   }
   this.svgLid_ = null;
   this.workspace_ = null;
-  goog.Timer.clear(this.lidTask_);
+  clearTimeout(this.lidTask_);
 };
 
 /**
@@ -299,7 +298,7 @@ Blockly.Trashcan.prototype.setOpen_ = function(state) {
   if (this.isOpen == state) {
     return;
   }
-  goog.Timer.clear(this.lidTask_);
+  clearTimeout(this.lidTask_);
   this.isOpen = state;
   this.animateLid_();
 };
@@ -310,16 +309,17 @@ Blockly.Trashcan.prototype.setOpen_ = function(state) {
  */
 Blockly.Trashcan.prototype.animateLid_ = function() {
   this.lidOpen_ += this.isOpen ? 0.2 : -0.2;
-  this.lidOpen_ = goog.math.clamp(this.lidOpen_, 0, 1);
+  this.lidOpen_ = Math.min(Math.max(this.lidOpen_, 0), 1);
   var lidAngle = this.lidOpen_ * 45;
   this.svgLid_.setAttribute('transform', 'rotate(' +
       (this.workspace_.RTL ? -lidAngle : lidAngle) + ',' +
       (this.workspace_.RTL ? 4 : this.WIDTH_ - 4) + ',' +
       (this.LID_HEIGHT_ - 2) + ')');
-  var opacity = goog.math.lerp(0.4, 0.8, this.lidOpen_);
+  // Linear interpolation between 0.4 and 0.8.
+  var opacity = 0.4 + this.lidOpen_ * (0.8 - 0.4);
   this.svgGroup_.style.opacity = opacity;
   if (this.lidOpen_ > 0 && this.lidOpen_ < 1) {
-    this.lidTask_ = goog.Timer.callOnce(this.animateLid_, 20, this);
+    this.lidTask_ = setTimeout(this.animateLid_.bind(this), 20);
   }
 };
 

@@ -28,7 +28,8 @@ goog.provide('Blockly.FieldLabel');
 
 goog.require('Blockly.Field');
 goog.require('Blockly.Tooltip');
-goog.require('goog.dom');
+goog.require('Blockly.utils');
+
 goog.require('goog.math.Size');
 
 
@@ -52,6 +53,7 @@ goog.inherits(Blockly.FieldLabel, Blockly.Field);
  * @param {!Object} options A JSON object with options (text, and class).
  * @returns {!Blockly.FieldLabel} The new field instance.
  * @package
+ * @nocollapse
  */
 Blockly.FieldLabel.fromJson = function(options) {
   var text = Blockly.utils.replaceMessageReferences(options['text']);
@@ -93,8 +95,10 @@ Blockly.FieldLabel.prototype.init = function() {
  * Dispose of all DOM objects belonging to this text.
  */
 Blockly.FieldLabel.prototype.dispose = function() {
-  goog.dom.removeNode(this.textElement_);
-  this.textElement_ = null;
+  if (this.textElement_) {
+    Blockly.utils.removeNode(this.textElement_);
+    this.textElement_ = null;
+  }
 };
 
 /**
@@ -114,3 +118,5 @@ Blockly.FieldLabel.prototype.getSvgRoot = function() {
 Blockly.FieldLabel.prototype.setTooltip = function(newTip) {
   this.textElement_.tooltip = newTip;
 };
+
+Blockly.Field.register('field_label', Blockly.FieldLabel);

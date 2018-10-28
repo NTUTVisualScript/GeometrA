@@ -31,7 +31,6 @@
 
 goog.provide('Blockly.BlockDragSurfaceSvg');
 goog.require('Blockly.utils');
-goog.require('goog.asserts');
 goog.require('goog.math.Coordinate');
 
 
@@ -113,8 +112,9 @@ Blockly.BlockDragSurfaceSvg.prototype.createDom = function() {
  * surface.
  */
 Blockly.BlockDragSurfaceSvg.prototype.setBlocksAndShow = function(blocks) {
-  goog.asserts.assert(
-      this.dragGroup_.childNodes.length == 0, 'Already dragging a block.');
+  if (this.dragGroup_.childNodes.length) {
+    throw Error('Already dragging a block.');
+  }
   // appendChild removes the blocks from the previous parent
   this.dragGroup_.appendChild(blocks);
   this.SVG_.style.display = 'block';
@@ -132,10 +132,10 @@ Blockly.BlockDragSurfaceSvg.prototype.translateAndScaleGroup = function(x, y, sc
   this.scale_ = scale;
   // This is a work-around to prevent a the blocks from rendering
   // fuzzy while they are being dragged on the drag surface.
-  x = x.toFixed(0);
-  y = y.toFixed(0);
-  this.dragGroup_.setAttribute('transform', 'translate('+ x + ','+ y + ')' +
-      ' scale(' + scale + ')');
+  var fixedX = x.toFixed(0);
+  var fixedY = y.toFixed(0);
+  this.dragGroup_.setAttribute('transform',
+      'translate(' + fixedX + ',' + fixedY + ') scale(' + scale + ')');
 };
 
 /**
@@ -214,7 +214,8 @@ Blockly.BlockDragSurfaceSvg.prototype.clearAndHide = function(opt_newSurface) {
     this.dragGroup_.removeChild(this.getCurrentBlock());
   }
   this.SVG_.style.display = 'none';
-  goog.asserts.assert(
-      this.dragGroup_.childNodes.length == 0, 'Drag group was not cleared.');
+  if (this.dragGroup_.childNodes.length) {
+    throw Error('Drag group was not cleared.');
+  }
   this.surfaceXY_ = null;
 };

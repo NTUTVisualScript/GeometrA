@@ -27,6 +27,9 @@
 goog.provide('Blockly.RenderedConnection');
 
 goog.require('Blockly.Connection');
+goog.require('Blockly.utils');
+
+goog.require('goog.math.Coordinate');
 
 
 /**
@@ -166,7 +169,7 @@ Blockly.RenderedConnection.prototype.tighten_ = function() {
     var block = this.targetBlock();
     var svgRoot = block.getSvgRoot();
     if (!svgRoot) {
-      throw 'block is not rendered.';
+      throw Error('block is not rendered.');
     }
     // Workspace coordinates.
     var xy = Blockly.utils.getRelativeXY(svgRoot);
@@ -180,16 +183,14 @@ Blockly.RenderedConnection.prototype.tighten_ = function() {
  * Find the closest compatible connection to this connection.
  * All parameters are in workspace units.
  * @param {number} maxLimit The maximum radius to another connection.
- * @param {number} dx Horizontal offset between this connection's location
- *     in the database and the current location (as a result of dragging).
- * @param {number} dy Vertical offset between this connection's location
+ * @param {!goog.math.Coordinate} dxy Offset between this connection's location
  *     in the database and the current location (as a result of dragging).
  * @return {!{connection: ?Blockly.Connection, radius: number}} Contains two
  *     properties: 'connection' which is either another connection or null,
  *     and 'radius' which is the distance.
  */
-Blockly.RenderedConnection.prototype.closest = function(maxLimit, dx, dy) {
-  return this.dbOpposite_.searchForClosest(this, maxLimit, dx, dy);
+Blockly.RenderedConnection.prototype.closest = function(maxLimit, dxy) {
+  return this.dbOpposite_.searchForClosest(this, maxLimit, dxy);
 };
 
 /**
@@ -261,7 +262,7 @@ Blockly.RenderedConnection.prototype.unhideAll = function() {
  * Remove the highlighting around this connection.
  */
 Blockly.RenderedConnection.prototype.unhighlight = function() {
-  goog.dom.removeNode(Blockly.Connection.highlightedPath_);
+  Blockly.utils.removeNode(Blockly.Connection.highlightedPath_);
   delete Blockly.Connection.highlightedPath_;
 };
 
@@ -286,7 +287,7 @@ Blockly.RenderedConnection.prototype.setHidden = function(hidden) {
 Blockly.RenderedConnection.prototype.hideAll = function() {
   this.setHidden(true);
   if (this.targetConnection) {
-    var blocks = this.targetBlock().getDescendants();
+    var blocks = this.targetBlock().getDescendants(false);
     for (var i = 0; i < blocks.length; i++) {
       var block = blocks[i];
       // Hide all connections of all children.
@@ -353,7 +354,7 @@ Blockly.RenderedConnection.prototype.respawnShadow_ = function() {
     Blockly.RenderedConnection.superClass_.respawnShadow_.call(this);
     var blockShadow = this.targetBlock();
     if (!blockShadow) {
-      throw 'Couldn\'t respawn the shadow block that should exist here.';
+      throw Error('Couldn\'t respawn the shadow block that should exist here.');
     }
     blockShadow.initSvg();
     blockShadow.render(false);
