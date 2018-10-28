@@ -226,3 +226,24 @@ Blockly.Python['common_action'] = function(block) {
   var code = 'Android Keycode|' + dropdown_keycode + "\\";
   return code;
 };
+
+Blockly.Blocks['open_app'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("Open App")
+        .appendField("")
+        .appendField(new Blockly.FieldTextInput("Apps Name"), "AppName");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Input the name of the app you want to open");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['open_app'] = function(block) {
+  var appName = block.getFieldValue('AppName')
+  var code = "Open App|" + appName + "\\";
+  return code; 
+}

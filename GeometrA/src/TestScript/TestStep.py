@@ -22,7 +22,7 @@ class Step:
         if self.act == act:
             return
         actList = ['', 'Click', 'Swipe', 'Set Text', 'TestCase', 'Loop Begin', 'Loop End',
-                    'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist']
+                    'Sleep(s)', 'Android Keycode', 'Assert Exist', 'Assert Not Exist', 'Open App']
         if act not in actList:
             raise Exception('Not an action')
         self.act = act
