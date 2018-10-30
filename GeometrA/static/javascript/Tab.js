@@ -1,45 +1,42 @@
-function Tab(data){
-    //create a tab which <li> id is string of its data object.
-    function createTab() {
-        var _data = JSON.stringify(data);
-        var num_tabs = $("div#tabs ul li").length + 1;
+const TabGroup = require('electron-tabs')
+var tabGroup = new TabGroup();
 
-        $("div#tabs ul").append(
-            "<li id='"+ _data + "'>" + "<a href='#tab" + num_tabs + "'>" + data['Case'] +
-            "</a>"+"<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>"+"</li>"
-        );
+tabGroup.on("tab-active", (tab, tabGroup) => { 
+    data = JSON.parse(tab.badge)
+    Post('/GeometrA/WorkSpace/open', data, function(xml){
+        openTestCase(xml);
+    });
+    Post('/GeometrA/WorkSpace/Focus', data, function(msg) {});
+});
 
-        $("div#tabs").append(
-            "<div id='tab" + num_tabs + "'></div>"
-        );
+tabGroup.on("tab-removed", (tab, tabGroup) => { 
+    tabs = tabGroup.getTabs()
+    if (tabs.length == 0) {
+        Blockly.mainWorkspace.clear();
+    }
+});
 
-        $("div#tabs").tabs("refresh");
-    };
-    /*check if the tab has existed by comparing
-    its <li> id with selected file data.*/
-    function checkTab(){
-        var check = false;
-        $("ul#ul_tabs li").each(function(){
-            var _data = $(this).attr("id");
-            var dataString = JSON.stringify(data);
-            if(_data == dataString){
-                check =  true;
-            }
-        });
-        return check;
-    };
-    //To focus on the tab when user double click a case
-    function selectTab (li_id) {
-        //find the tab that its <li> id equals to selected file data.
-        var tab = $("ul#ul_tabs li").filter(function(){
-            return $(this).attr("id") == li_id
-        });
-        var index = $("#tabs li").index(tab);
-        $("#tabs").tabs({active: index});
-        Post('/GeometrA/WorkSpace/Focus', data, function(msg) {});
-    };
-    
-    Tab.createTab = createTab;
-    Tab.checkTab = checkTab;
-    Tab.selectTab = selectTab;
-};
+var Tab = {
+    createTab: function(data) {
+        dataString = JSON.stringify(data)
+        tabGroup.addTab({
+            title: data["Case"],
+            badge: dataString,
+            visible: true,
+            active: true
+        })
+    },
+    checkTabExist: function(data) {
+        checkString = JSON.stringify(data)
+        tabs = tabGroup.getTabs()
+        if (tabs != null){
+            for (var i=0; i< tabs.length; i++) {
+                if(tabs[i].badge == checkString) {
+                    tabs[i].activate()
+                    return true
+                }
+            }     
+        }
+        return false
+    }
+}

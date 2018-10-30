@@ -1,4 +1,4 @@
-function remWS {
+remWS () {
     if [ -z "${1}" ]; then
         cat | tr -d '[:space:]'
     else

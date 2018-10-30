@@ -37,16 +37,9 @@ function WorkSpace() {
                 Case: caseInfo[2]
             }
             //Create Tab when double click a case
-            Tab(data);
-            if(!Tab.checkTab()) {
-                Post('/GeometrA/WorkSpace/open', data, function(xml){
-                    openTestCase(xml);
-                });
-                Tab.createTab();
-                Tab.selectTab(JSON.stringify(data));
-            } else {
-                Tab.selectTab(JSON.stringify(data));
-            }
+            if(!Tab.checkTabExist(data)) {
+                Tab.createTab(data);
+            } 
         });
 
         Get('/GeometrA/saveLog', function(result) {

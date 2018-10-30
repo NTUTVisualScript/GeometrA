@@ -22,10 +22,10 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_home_page.css') }}">
     <link href="{{url_for('static', filename='googleapis.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='electron-tabs.css')}}" rel="stylesheet" />
 
     <script src="{{url_for('static', filename='javascript/Message.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/Editor/Editor.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/Tab.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/WorkSpace.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/Create.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/Load.js')}}"></script>
@@ -61,9 +61,11 @@
             <script src="{{url_for('static', filename='javascript/blockly/python_compressed.js')}}"></script>
             <script src="{{url_for('static', filename='javascript/blockly/msg/js/en.js')}}"></script>
             <script src="{{url_for('static', filename='javascript/Editor/block.js')}}"></script>
-            <div id="tabs">
-                <ul id="ul_tabs">
-                </ul>
+            <div class="etabs-tabgroup">
+                <div class="etabs-tabs"></div>
+                <div class="etabs-buttons"></div>
+            </div>
+            <div class="etabs-views">
                 <div id="blocklyDiv">
                     <xml id="toolbox" style="display:none;">
 
@@ -85,14 +87,31 @@
                     </xml>
                     <script>
                         var workspace = Blockly.inject('blocklyDiv', {
-                            toolbox: document.getElementById('toolbox')
+                            toolbox: document.getElementById('toolbox'),
+                            collapse : true, 
+                            comments : false, 
+                            disable : true, 
+                            maxBlocks : Infinity, 
+                            trashcan : true, 
+                            css : true, 
+                            rtl : false, 
+                            scrollbars : true, 
+                            sounds : true, 
+                            oneBasedIndex : true, 
+                            zoom : {
+                                controls : true, 
+                                wheel : false, 
+                                startScale : 1, 
+                                maxScale : 3, 
+                                minScale : 0.3, 
+                                scaleSpeed : 1.2
+                            }
                         });
                     </script>
                     <script src="{{url_for('static', filename='javascript/Editor/Action.js')}}"></script>
                     <script src="{{url_for('static', filename='javascript/NodeTree.js')}}"></script>
                 </div>
             </div>
-
         </div>
 
         <div id="ScreenShot">
@@ -122,5 +141,6 @@
     </div>
     <script>if (window.module) module = window.module; </script>
 </body>
+<script src="{{url_for('static', filename='javascript/Tab.js')}}"></script>
 
 </html>
