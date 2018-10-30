@@ -115,7 +115,7 @@
 
 .etabs-views {
     border-top: 1px solid #aaa;
-    height: calc(100vh - 33px);
+    /* height: calc(100vh - 33px); */
 }
 
 .etab-view {

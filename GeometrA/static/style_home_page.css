@@ -66,7 +66,8 @@ h6 {
   .row2 #Project-Manager {
     width: 18%;
     height: 100%;
-    text-align: left; }
+    text-align: left;
+    overflow: auto; }
   .row2 #TestCase {
     width: 55%;
     height: 100%; }
