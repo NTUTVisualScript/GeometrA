@@ -10,7 +10,7 @@ KEYCODE = ANDROID_KEYCODE
 
 def getAppsInfo():
     # Get informations of all apps in aos device.
-    getAppsInfoScript = "sh ./GeometrA/static/aos_info.sh"
+    getAppsInfoScript = "bash ./GeometrA/static/aos_info.sh"
     subprocess.call(getAppsInfoScript, shell=True)
 
     # Read the data from of apps
