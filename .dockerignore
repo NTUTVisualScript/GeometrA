@@ -1,0 +1,7 @@
+.git
+setup.bat
+setup.sh
+docs
+dumpXML
+tests
+node_modules

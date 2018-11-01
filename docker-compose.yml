@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+   geometra:
+      build: .
+      image: lab1321/geometra
+      ports:
+       - "5000:5000"
+      volumes:
+       - .:/app
