@@ -69,4 +69,4 @@ Besides, for *Swipe* action, user could also swipe on the current screen to get 
 
 - Message
 
-![](/docs/pic/message.PNG)
+![](/docs/pic/messageLog.PNG)
