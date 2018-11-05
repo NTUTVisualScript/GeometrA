@@ -18,8 +18,8 @@ tests/screenshot_pic/before.png
 tests/.coverage
 record.log
 */report.html
-*.png
 *.xml
 package-lock.json
 node_modules
 aos_info.txt
+GeometrA/static/screenshot_pic/
