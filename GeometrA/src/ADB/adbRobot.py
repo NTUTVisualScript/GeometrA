@@ -43,8 +43,8 @@ class ADBRobot(Robot):
         except:
             return "Error"
 
-    def close_app(self, appName):
-        command = "adb shell am force-stop " + appName
+    def close_app(self):
+        command = "adb shell am force-stop " + self.targetPkg
         subprocess.check_output(command, shell=True)
 
     def get_devices(self):
