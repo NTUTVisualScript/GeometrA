@@ -1,0 +1,5 @@
+Pillow
+nose
+opencv-python
+flask
+flask-cors
