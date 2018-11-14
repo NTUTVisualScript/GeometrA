@@ -58,6 +58,8 @@ class Executor():
                 return self.case.setStatus(n, self.loop(n))
             elif act == 'Open App':
                 return self.case.setStatus(n, self.openApp(n))
+            elif act == 'Close App':
+                return self.case.setStatus(n, self.closeApp(n))
 
     def click(self, n):
         status = self.imageFinder(step=self.case.getSteps(n))
@@ -209,3 +211,7 @@ class Executor():
     def openApp(self, n):
         appName = self.case.getSteps(n).getValue()
         return self.robot.open_app(appName)
+
+    def closeApp(self, n):
+        appName = self.case.getSteps(n).getValue()
+        return self.robot.close_app(appName)

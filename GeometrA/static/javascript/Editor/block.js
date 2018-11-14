@@ -247,3 +247,24 @@ Blockly.Python['open_app'] = function(block) {
   var code = "Open App|" + appName + "\\";
   return code; 
 }
+
+Blockly.Blocks['close_app'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("Close App")
+        .appendField("")
+        .appendField(new Blockly.FieldTextInput("Apps Name"), "AppName");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Input the name of the app you want to close");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['close_app'] = function(block) {
+  var appName = block.getFieldValue('AppName')
+  var code = "Close App|" + appName + "\\";
+  return code; 
+}

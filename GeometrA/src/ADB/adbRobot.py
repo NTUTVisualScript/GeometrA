@@ -32,20 +32,26 @@ def getAppsInfo():
     return appsData
 
 class ADBRobot(Robot):
-    def open_app(self, appName):
-        appsData = getAppsInfo()
+    def __init__(self):
+        self.appsData = getAppsInfo()
 
+    def open_app(self, appName):
+        targetPkg = self.appsData[appName]
         try:
-            self.targetPkg = appsData[appName]
-            command = "adb shell monkey -p " + self.targetPkg + " -c android.intent.category.LAUNCHER 1"
+            command = "adb shell monkey -p " + targetPkg + " -c android.intent.category.LAUNCHER 1"
             subprocess.call(command, shell=True)
             return "Success"
         except:
             return "Error"
 
-    def close_app(self):
-        command = "adb shell am force-stop " + self.targetPkg
-        subprocess.check_output(command, shell=True)
+    def close_app(self, appName):
+        targetPkg = self.appsData[appName]
+        try:
+            command = "adb shell am force-stop " + targetPkg
+            subprocess.check_output(command, shell=True)
+            return "Success"
+        except:
+            return "Error"
 
     def get_devices(self):
         dList = subprocess.getoutput('adb devices')
