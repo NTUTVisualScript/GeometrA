@@ -32,11 +32,9 @@ def getAppsInfo():
     return appsData
 
 class ADBRobot(Robot):
-    def __init__(self):
-        self.appsData = getAppsInfo()
-
     def open_app(self, appName):
-        targetPkg = self.appsData[appName]
+        appsData = getAppsInfo()
+        targetPkg = appsData[appName]
         try:
             command = "adb shell monkey -p " + targetPkg + " -c android.intent.category.LAUNCHER 1"
             subprocess.call(command, shell=True)
@@ -45,7 +43,8 @@ class ADBRobot(Robot):
             return "Error"
 
     def close_app(self, appName):
-        targetPkg = self.appsData[appName]
+        appsData = getAppsInfo()
+        targetPkg = appsData[appName]
         try:
             command = "adb shell am force-stop " + targetPkg
             subprocess.check_output(command, shell=True)
