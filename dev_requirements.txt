@@ -1,5 +1,6 @@
 Pillow
 nose
+coverage
 opencv-python
 flask
 flask-cors

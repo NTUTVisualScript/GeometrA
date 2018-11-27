@@ -36,9 +36,11 @@ class TestScript:
         path = path + '/testcase.json'
         with open(path, 'r') as f:
             case_data = json.loads(f.read())
-        setup_data = case_data['Setup']
-        main_data = case_data['Main']
-        teardown_data = case_data['Teardown']
+        setup_data = case_data["Setup"]
+        main_data = case_data["Main"]
+        teardown_data = case_data["Teardown"]
+        case.setSetupSize(len(setup_data))
+        case.setTeardownSize(len(teardown_data))
         self.insertCase(case, setup_data)
         self.insertCase(case, main_data)
         self.insertCase(case, teardown_data)
@@ -63,6 +65,7 @@ class TestScript:
         name = path.split('/')[-1]
         report = CaseReport(name)
         size = exe.case.getSize()
+        teardownStart = size - exe.case.getTeardownSize()
         i = 0
         status = ''
         report.start()
@@ -76,7 +79,10 @@ class TestScript:
                 i = exe.loopEnd(i)
             f = 'Failed'
             e = 'Error'
-            if (status == f) or status == e:
+            if (status == f) or status == e and i < teardownStart:
+                i = teardownStart
+                continue
+            elif (status == f) or status == e and i >= teardownStart:
                 break
             i = i+1
         report.end(status, size)

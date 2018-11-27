@@ -94,9 +94,9 @@ class WorkSpace:
         parseCase = case.split('\n')
         
         case_json = {
-            'Setup':{},
-            'Main':{},
-            'Teardown':{}
+            "Setup":{},
+            "Main":{},
+            "Teardown":{}
         }
         ## case -> setup, main, teardown
         for case in parseCase: 
@@ -111,7 +111,6 @@ class WorkSpace:
                     "Value": value,
                 }
             case_json[case_temp[0]] = case_data
-        print(case_json)
         with open(case_path, 'w') as f:
             json.dump(case_json, f)
 

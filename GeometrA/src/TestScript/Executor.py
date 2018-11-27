@@ -98,16 +98,16 @@ class Executor():
             return self.nodeFinder(step)
 
     def nodeFinder(self, step):
-        from GeometrA.src.Controller.TreeController import Tree
-        node = step.getNode()
-        if node is None:
-            return 'Failed'
-        result = Tree.getTree().findNode(node)
+        # from GeometrA.src.Controller.TreeController import Tree
+        # node = step.getNode()
+        # if node is None:
+        return 'Failed'
+        # result = Tree.getTree().findNode(node)
 
-        if result == 'Failed': return result
+        # if result == 'Failed': return result
 
-        self.clickX, self.clickY = result
-        return 'Success'
+        # self.clickX, self.clickY = result
+        # return 'Success'
         # return self.imageFinder(step, nodeSource)
 
     def Swipe(self, n):
