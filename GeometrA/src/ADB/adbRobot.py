@@ -76,8 +76,15 @@ class ADBRobot(Robot):
         fileName = "tmp.png"
         if not os.path.isdir(path):
             os.makedirs(path)
-        capture = "adb exec-out screencap -p > " + path + "/" + fileName
+        # capture = "adb exec-out screencap -p > " + path + "/" + fileName
+        # subprocess.call(capture, shell=True)
+        capture = "adb shell screencap -p ./data/local/tmp/" + fileName
         subprocess.call(capture, shell=True)
+        if not os.path.isdir(path):
+            os.makedirs(path)
+        pull = "adb pull ./data/local/tmp/" + fileName + " " + path
+        subprocess.call(pull ,shell=True)
+
         print("get tmp.png success")
         return path + "/" + fileName
 
