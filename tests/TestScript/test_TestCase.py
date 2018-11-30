@@ -13,7 +13,7 @@ class TestCaseTestSuite(unittest.TestCase):
     def setUp(self):
         GeometrA.app.testing = True
         buffered = BytesIO()
-        tmp_image = Image.open(os.getcwd() + './tests/TestCase/Test/image/exist.png')
+        tmp_image = Image.open(os.getcwd() + '/tests/TestCase/Test/image/exist.png')
         tmp_image.save(buffered, format="PNG")
         img_string = base64.b64encode(buffered.getvalue())
         self.app = GeometrA.app.test_client()

@@ -95,7 +95,7 @@ class Executor():
             self.clickX, self.clickY = source.coordinate(results[0])
             return 'Success'
         else:
-            return self.nodeFinder(step)
+            return 'Failed'
 
     def nodeFinder(self, step):
         # from GeometrA.src.Controller.TreeController import Tree
