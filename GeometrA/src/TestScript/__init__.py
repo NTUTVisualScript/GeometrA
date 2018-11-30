@@ -3,7 +3,7 @@ from io import BytesIO
 import base64
 from PIL import Image, ImageTk
 
-from GeometrA.src.TestScript.TestCase import TestCase
+from GeometrA.src.TestScript.TestCase import TestCase as TC
 from GeometrA.src.TestScript.Executor import Executor
 from GeometrA.src.Report import CaseReport
 from GeometrA.src.Report import Report
@@ -22,7 +22,7 @@ class TestScript:
         return self._caseList[name]
 
     def modified(self, name, data):
-        case = TestCase()
+        case = TC()
         for i in range(len(data)):
             act = data[i]['act']
             val = data[i]['val']
@@ -31,7 +31,7 @@ class TestScript:
         self._caseList[name] = case
 
     def load(self, path):
-        case = TestCase()
+        case = TC()
         self._caseList[path] = case
         path = path + '/testcase.json'
         with open(path, 'r') as f:
