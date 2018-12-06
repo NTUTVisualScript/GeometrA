@@ -2,3 +2,4 @@ Pillow
 opencv-python
 flask
 flask-cors
+unittest-xml-reporting
