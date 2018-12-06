@@ -35,11 +35,11 @@ class ExecutorActionTestSuite(unittest.TestCase):
         self.assertEqual('Success', exe.imageFinder(step=target))
         exe.execute(2)
 
-    # def testExecuteTestCase(self):
-    #     case = TestCase()
-    #     exe = Executor(case)
-    #     case.insert(act='TestCase', val='./tests/TestCase/Test/testcase.json')
-    #     self.assertEqual('Success', exe.execute(0))
+    def testExecuteTestCase(self):
+        case = TestCase()
+        exe = Executor(case)
+        case.insert(act='TestCase', val='./tests/TestCase/Test/testcase.json')
+        self.assertEqual('Success', exe.execute(0))
 
     def testExecuteAssertExist(self):
         case = TestCase()
