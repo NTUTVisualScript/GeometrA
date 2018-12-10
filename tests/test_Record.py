@@ -5,24 +5,28 @@ import os, shutil
 from GeometrA.src.Record import *
 from GeometrA.src.File.WorkSpace import WorkSpace
 
-RECORD_FILE = './record.log'
+RECORD_FILE = './tests/record.log'
 
 class RecordTestSuite(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        shutil.rmtree('./Project0', True)
+        path = './tests/Project0'
+        if os.path.isdir(path):
+            shutil.rmtree(path, True)
 
     def setUp(self):
-        self.recordFile = './record.log'
+        self.recordFile = './tests/record.log'
         self.path = os.getcwd()
-        shutil.copytree('./File/Project0', './Project0')
+        shutil.copytree('./tests/File/Project0', './tests/Project0')
 
     def tearDown(self):
         if os.path.isfile(self.recordFile):
             os.remove(self.recordFile)
 
     def tearDown(self):
-        shutil.rmtree('./Project0', True)
+        path = './tests/Project0'
+        if os.path.isdir(path):
+            shutil.rmtree('path', True)
 
     def testExportLog(self):
         p = ['Project0', {'Project0':{'Suite1': ['case1', 'case2'],
@@ -44,5 +48,5 @@ class RecordTestSuite(unittest.TestCase):
         ws = WorkSpace()
         loadLog(ws)
 
-        log = [os.getcwd() + '/Project0/Project0.json']
+        log = [os.getcwd() + '/tests/Project0/Project0.json']
         self.assertEqual(log, ws.log())

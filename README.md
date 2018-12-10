@@ -1,10 +1,13 @@
 # GeometrA
 GeometrA is a the easiest tool for users to write automated acceptance test for applications of Android platform.
 
-GeometrA provides full graphical operations for users to write the graphical acceptance test scripts for Android applications. Through graphical operations, user can easily generate lots of useful test scripts without big efforts. What's event better is that graphical test scripts is very easy to read. As a result, it would be a good tools for either big or small, long or short terms of projects. 
+GeometrA provides full graphical operations for users to write the graphical acceptance test scripts for Android applications. Through graphical operations, user can easily generate lots of useful test scripts without big efforts. What's event better is that graphical test scripts is very easy to read. As a result, it would be a good tools for either big or small, long or short terms of projects.
 
 ## Over view of the tools
 Click [here](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/Overview.md) to see the overview of our tool.
+
+## Developer Guide
+[Developer Guide](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/developer_guide.md)
 
 ## How to start?
 1. Finish the [Environmental Setting](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/EnvironmetalSetting.md)

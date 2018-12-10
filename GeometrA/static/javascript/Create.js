@@ -56,8 +56,5 @@ function Create() {
         mainProcess.selectDirectory( function(path) {
             $("#Create").html('<input id="projectPath" disabled="disabled" value="' + path[0] + '" class="swal2-input">');
         });
-        // Get('/GeometrA/WorkSpace/getProjectPath', function(path) {
-        //     $("#Create").html('<input id="projectPath" disabled="disabled" value="' + path + '" class="swal2-input">')
-        // })
     };
 }

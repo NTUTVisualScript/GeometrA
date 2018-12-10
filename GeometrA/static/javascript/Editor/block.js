@@ -4,7 +4,7 @@ Blockly.Blocks['main'] = {
         .appendField("Main");
     this.setInputsInline(true);
     this.setNextStatement(true, null);
-    this.setColour(0);
+    this.setColour(255);
  this.setTooltip("This is the start of workspace. ");
  this.setHelpUrl("");
   }
@@ -247,3 +247,58 @@ Blockly.Python['open_app'] = function(block) {
   var code = "Open App|" + appName + "\\";
   return code; 
 }
+
+Blockly.Blocks['close_app'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("Close App")
+        .appendField("")
+        .appendField(new Blockly.FieldTextInput("Apps Name"), "AppName");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Input the name of the app you want to close");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['close_app'] = function(block) {
+  var appName = block.getFieldValue('AppName')
+  var code = "Close App|" + appName + "\\";
+  return code; 
+}
+
+Blockly.Blocks['setup'] = {
+  init: function() {
+    this.appendStatementInput("Setup")
+        .setCheck(null)
+        .appendField("Setup");
+    this.setColour(120);
+ this.setTooltip("Setup for your case");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['setup'] = function(block) {
+  var statements_setup = Blockly.Python.statementToCode(block, 'Setup');
+  var code = 'Setup\\' + statements_setup.substring(2);
+  return code;
+};
+
+Blockly.Blocks['teardown'] = {
+  init: function() {
+    this.appendStatementInput("Teardown")
+        .setCheck(null)
+        .appendField("Teardown");
+    this.setColour(120);
+ this.setTooltip("Teardown for your case");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['teardown'] = function(block) {
+  var statements_teardown = Blockly.Python.statementToCode(block, 'Teardown');
+  var code = 'Teardown\\' + statements_teardown.substring(2);
+  return code;
+};

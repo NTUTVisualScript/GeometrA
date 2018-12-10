@@ -34,18 +34,23 @@ def getAppsInfo():
 class ADBRobot(Robot):
     def open_app(self, appName):
         appsData = getAppsInfo()
-
+        targetPkg = appsData[appName]
         try:
-            self.targetPkg = appsData[appName]
-            command = "adb shell monkey -p " + self.targetPkg + " -c android.intent.category.LAUNCHER 1"
+            command = "adb shell monkey -p " + targetPkg + " -c android.intent.category.LAUNCHER 1"
             subprocess.call(command, shell=True)
             return "Success"
         except:
             return "Error"
 
-    def close_app(self):
-        command = "adb shell am force-stop " + self.targetPkg
-        subprocess.check_output(command, shell=True)
+    def close_app(self, appName):
+        appsData = getAppsInfo()
+        targetPkg = appsData[appName]
+        try:
+            command = "adb shell am force-stop " + targetPkg
+            subprocess.check_output(command, shell=True)
+            return "Success"
+        except:
+            return "Error"
 
     def get_devices(self):
         dList = subprocess.getoutput('adb devices')
@@ -64,46 +69,37 @@ class ADBRobot(Robot):
         command = " ".join(["adb shell input swipe", str(start_x), str(start_y), str(end_x), str(end_y)])
         subprocess.call(command, shell=True)
 
-    def screenshot(self):
-        path = "./GeometrA/static/screenshot_pic"
+    def getScreenShot(self, path, fileName):
         wait = "adb wait-for-device"
         subprocess.call(wait, shell=True)
-        fileName = "tmp.png"
         if not os.path.isdir(path):
             os.makedirs(path)
-        capture = "adb exec-out screencap -p > " + path + "/" + fileName
+        capture = "adb shell screencap -p ./data/local/tmp/" + fileName
         subprocess.call(capture, shell=True)
+        if not os.path.isdir(path):
+            os.makedirs(path)
+        # capture = "adb exec-out screencap -p > " + path + "/" + fileName
+        # subprocess.call(capture, shell=True)
+        pull = "adb pull ./data/local/tmp/" + fileName + " " + path
+        subprocess.call(pull ,shell=True)
+
         print("get tmp.png success")
         return path + "/" + fileName
 
+    def screenshot(self):
+        path = "./GeometrA/static/screenshot_pic"
+        fileName = "tmp.png"
+        return self.getScreenShot(path, fileName)
+
     def before_screenshot(self):
         path = "./GeometrA/static/screenshot_pic"
-
-        wait = "adb wait-for-device"
-        subprocess.call(wait, shell=True)
-
         fileName = "before.png"
-
-        if not os.path.isdir(path):
-            os.makedirs(path)
-        capture = "adb exec-out screencap -p > " + path + "/" + fileName
-        subprocess.call(capture, shell=True)
-        print("get before.png success")
-        return path + "/" + fileName
+        return self.getScreenShot(path, fileName)
 
     def after_screenshot(self):
         path = "./GeometrA/static/screenshot_pic"
-
-        wait = "adb wait-for-device"
-        subprocess.call(wait, shell=True)
         fileName = "after.png"
-
-        if not os.path.isdir(path):
-            os.makedirs(path)
-        capture = "adb exec-out screencap -p > " + path + "/" + fileName
-        subprocess.call(capture, shell=True)
-        print("get after.png success")
-        return path + "/after.png"
+        return self.getScreenShot(path, fileName)
 
     def tap(self, x, y, duration=None):
         if duration:

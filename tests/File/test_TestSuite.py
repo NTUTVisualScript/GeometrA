@@ -9,14 +9,14 @@ from GeometrA.src.File.TestSuite import TestSuite
 class TestSuiteTestSuite(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        shutil.rmtree('./File/Project1', True)
+        shutil.rmtree('./tests/File/Project1', True)
 
     def setUp(self):
-        self.path = os.getcwd() + '/File/Project1/Suite1'
-        shutil.copytree('./File/Project/Suite1', './File/Project1/Suite1')
+        self.path = os.getcwd() + '/tests/File/Project1/Suite1'
+        shutil.copytree('./tests/File/Project/Suite1', './tests/File/Project1/Suite1')
 
     def tearDown(self):
-        shutil.rmtree('./File/Project1', True)
+        shutil.rmtree('./tests/File/Project1', True)
 
     def testConstructor(self):
         cases = ['case1', 'case2']
@@ -58,8 +58,8 @@ class TestSuiteTestSuite(unittest.TestCase):
         suite.insert(case)
         self.assertEqual(3, len(suite.cases))
         self.assertEqual('case3', suite.cases[2])
-        self.assertTrue(os.path.isdir('./File/Project1/Suite1/case3'))
-        self.assertTrue(os.path.isfile('./File/Project1/Suite1/case3/testcase.xml'))
+        self.assertTrue(os.path.isdir('./tests/File/Project1/Suite1/case3'))
+        self.assertTrue(os.path.isfile('./tests/File/Project1/Suite1/case3/testcase.xml'))
     def testInsertEmptyExcept(self):
         cases1 = ['case1', 'case2']
         suite = TestSuite(cases1, self.path)
@@ -99,16 +99,16 @@ class TestSuiteTestSuite(unittest.TestCase):
         self.assertEqual(0, suite.cases.count(origin))
         self.assertEqual(2, len(suite.cases))
         self.assertEqual('case3', suite.cases[0])
-        self.assertTrue(os.path.isdir('./File/Project1/Suite1/case3'))
-        self.assertFalse(os.path.isdir('./File/Project1/Suite1/case1'))
+        self.assertTrue(os.path.isdir('./tests/File/Project1/Suite1/case3'))
+        self.assertFalse(os.path.isdir('./tests/File/Project1/Suite1/case1'))
     def testRenameExcept(self):
         cases = ['case1', 'case2']
         suite = TestSuite(cases, self.path)
         origin = 'case3'
         new = 'case4'
         self.assertRaises(ValueError, suite.rename, origin, new)
-        self.assertTrue(os.path.isdir('./File/Project1/Suite1/case1'))
-        self.assertTrue(os.path.isdir('./File/Project1/Suite1/case2'))
+        self.assertTrue(os.path.isdir('./tests/File/Project1/Suite1/case1'))
+        self.assertTrue(os.path.isdir('./tests/File/Project1/Suite1/case2'))
     def testRenameExistExcept(self):
         cases = ['case1', 'case2']
         suite = TestSuite(cases, self.path)

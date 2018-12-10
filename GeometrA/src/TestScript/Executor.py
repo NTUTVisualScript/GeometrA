@@ -58,6 +58,8 @@ class Executor():
                 return self.case.setStatus(n, self.loop(n))
             elif act == 'Open App':
                 return self.case.setStatus(n, self.openApp(n))
+            elif act == 'Close App':
+                return self.case.setStatus(n, self.closeApp(n))
 
     def click(self, n):
         status = self.imageFinder(step=self.case.getSteps(n))
@@ -93,19 +95,19 @@ class Executor():
             self.clickX, self.clickY = source.coordinate(results[0])
             return 'Success'
         else:
-            return self.nodeFinder(step)
+            return 'Failed'
 
     def nodeFinder(self, step):
-        from GeometrA.src.Controller.TreeController import Tree
-        node = step.getNode()
-        if node is None:
-            return 'Failed'
-        result = Tree.getTree().findNode(node)
+        # from GeometrA.src.Controller.TreeController import Tree
+        # node = step.getNode()
+        # if node is None:
+        return 'Failed'
+        # result = Tree.getTree().findNode(node)
 
-        if result == 'Failed': return result
+        # if result == 'Failed': return result
 
-        self.clickX, self.clickY = result
-        return 'Success'
+        # self.clickX, self.clickY = result
+        # return 'Success'
         # return self.imageFinder(step, nodeSource)
 
     def Swipe(self, n):
@@ -209,3 +211,7 @@ class Executor():
     def openApp(self, n):
         appName = self.case.getSteps(n).getValue()
         return self.robot.open_app(appName)
+
+    def closeApp(self, n):
+        appName = self.case.getSteps(n).getValue()
+        return self.robot.close_app(appName)

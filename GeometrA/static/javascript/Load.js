@@ -48,9 +48,5 @@ function Load() {
           let pathString = path[0].split('\\').join('/');
           $("#Create").html('<input id="projectPath" disabled="disabled" value="' + pathString + '" class="swal2-input">');
         });
-        // Get('/GeometrA/WorkSpace/getFilePath', function(path) {
-        //     $("#Create").html('<input id="projectPath" disabled="disabled" \
-        //                         value="' + path + '" class="swal2-input">')
-        // })
     }
 }

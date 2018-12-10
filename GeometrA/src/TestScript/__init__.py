@@ -3,7 +3,7 @@ from io import BytesIO
 import base64
 from PIL import Image, ImageTk
 
-from GeometrA.src.TestScript.TestCase import TestCase
+from GeometrA.src.TestScript.TestCase import TestCase as TC
 from GeometrA.src.TestScript.Executor import Executor
 from GeometrA.src.Report import CaseReport
 from GeometrA.src.Report import Report
@@ -22,7 +22,7 @@ class TestScript:
         return self._caseList[name]
 
     def modified(self, name, data):
-        case = TestCase()
+        case = TC()
         for i in range(len(data)):
             act = data[i]['act']
             val = data[i]['val']
@@ -31,24 +31,24 @@ class TestScript:
         self._caseList[name] = case
 
     def load(self, path):
-        case = TestCase()
+        case = TC()
         self._caseList[path] = case
         path = path + '/testcase.json'
         with open(path, 'r') as f:
             case_data = json.loads(f.read())
-        main_data = case_data['Main']
-        for i in main_data:
-            action = main_data[i]["Action"]
-            from GeometrA.src import IMAGEACTIONLIST
-            if action in IMAGEACTIONLIST:
-                value = Image.open(BytesIO(base64.b64decode(main_data[i]["Value"].replace("data:image/png;base64,", ""))))
-            else:
-                value = main_data[i]["Value"]
-            case.insert(act=action, val=value)
+        setup_data = case_data["Setup"]
+        main_data = case_data["Main"]
+        teardown_data = case_data["Teardown"]
+        case.setSetupSize(len(setup_data))
+        case.setTeardownSize(len(teardown_data))
+        self.insertCase(case, setup_data)
+        self.insertCase(case, main_data)
+        self.insertCase(case, teardown_data)
 
     def runAll(self):
         reportIndex = Report()
         reportList = []
+
         for casePath in self._caseList:
             suitePath = casePath[:casePath.rfind('/')]
             projectPath = suitePath[:suitePath.rfind('/')]
@@ -65,6 +65,7 @@ class TestScript:
         name = path.split('/')[-1]
         report = CaseReport(name)
         size = exe.case.getSize()
+        teardownStart = size - exe.case.getTeardownSize()
         i = 0
         status = ''
         report.start()
@@ -78,8 +79,24 @@ class TestScript:
                 i = exe.loopEnd(i)
             f = 'Failed'
             e = 'Error'
-            if (status == f) or status == e:
-                break;
+            if (status == f) or status == e and i < teardownStart:
+                i = teardownStart
+                continue
+            elif (status == f) or status == e and i >= teardownStart:
+                break
             i = i+1
         report.end(status, size)
         return (status, report)
+
+    def insertCase(self,case, dataDic):
+        if not dataDic:
+            return
+        for i in dataDic:
+            action = dataDic[i]["Action"]
+            from GeometrA.src import IMAGEACTIONLIST
+            if action in IMAGEACTIONLIST:
+                value = Image.open(BytesIO(base64.b64decode(dataDic[i]["Value"].replace("data:image/png;base64,", ""))))
+            else:
+                value = dataDic[i]["Value"]
+            case.insert(act=action, val=value)
+        return

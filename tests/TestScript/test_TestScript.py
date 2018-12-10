@@ -1,5 +1,6 @@
 import unittest
 import os
+import json
 
 from GeometrA.src.TestScript import TestScript
 from GeometrA.src.TestScript.TestCase import TestCase
@@ -40,13 +41,14 @@ class TestScriptTestSuite(unittest.TestCase):
         script.modified(name1, changedData)
 
     def testLoad(self):
-        path = './TestScript/Project/Suite/Case'
+        path = './tests/TestScript/Project/Suite/Case'
         script = TestScript()
         script.load(path)
         self.assertEqual('Sleep(s)', script.getCase(path).getAction(0))
 
     def testRunAll(self):
-        path = './TestScript/Project/Suite/Case'
+        path = './tests/TestScript/Project/Suite/Case'
         script = TestScript()
         script.load(path)
-        self.assertEqual('Success',script.runAll())
+        result = json.loads(script.runAll())
+        self.assertEqual('success', result["state"])

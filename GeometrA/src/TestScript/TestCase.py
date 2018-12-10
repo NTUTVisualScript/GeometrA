@@ -1,8 +1,22 @@
 from GeometrA.src.TestScript.TestStep import Step
 class TestCase:
     def __init__(self, n=0):
+        self.setupSize = 0
+        self.teardownSize = 0
         self.stepDict = {}
 
+    def setSetupSize(self, n):
+        self.setupSize = n
+    
+    def getSetupSize(self):
+        return self.setupSize
+    
+    def setTeardownSize(self, n):
+        self.teardownSize = n
+
+    def getTeardownSize(self):
+        return self.teardownSize
+    
     def getSize(self):
         return len(self.stepDict)
 
