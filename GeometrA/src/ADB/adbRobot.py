@@ -1,8 +1,9 @@
+import os
+import re
+import platform
 import subprocess
 from GeometrA.src.ADB.keycode import ANDROID_KEYCODE
 from GeometrA.src.ADB.robot import Robot
-import os
-import re
 
 PATH = lambda p: os.path.abspath(p)
 
@@ -10,12 +11,16 @@ KEYCODE = ANDROID_KEYCODE
 
 def getAppsInfo():
     # Get informations of all apps in aos device.
-    getAppsInfoScript = "bash ./GeometrA/static/aos_info.sh"
-    subprocess.call(getAppsInfoScript, shell=True)
+    if (platform.system() == 'Windows'):
+        getAppsInfoBatch = [r'./GeometrA/static/aos_info.bat']
+        subprocess.call(getAppsInfoBatch)
+    else:
+        getAppsInfoScript = "bash ./GeometrA/static/aos_info.sh"
+        subprocess.call(getAppsInfoScript, shell=True)
 
     # Read the data from of apps
     aosData = []
-    with open('aos_info.txt', 'r') as f:
+    with open('aos_info.txt', 'r', encoding='utf8') as f:
         for line in f:
             aosData.append(line.replace("\n", ""))
 
