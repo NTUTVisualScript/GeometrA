@@ -6,7 +6,7 @@ const production = true;
 electron.crashReporter.start({
   productName: 'GeometrA',
   companyName: 'NTUT',
-  submitURL: 'https://localhost:5000',
+  submitURL: 'http://localhost:5000',
   uploadToServer: true
 });
 
@@ -25,13 +25,13 @@ app.on('ready', function() {
   else
     var subpy = require('child_process').spawn('python3', ['./main.py']);
   var rq = require('request-promise');
+
   var mainAddr = 'http://localhost:5000';
 
   var openWindow = function() {
     mainWindow = new BrowserWindow(
         {width: 1920, height: 1080, webPreferences: {webSecurity: false}});
-    // mainWindow.loadURL('file://' + __dirname + '/index.html');
-    mainWindow.loadURL('http://localhost:5000');
+    mainWindow.loadURL('file://' + __dirname + '/static/index.html');
     if (!production) mainWindow.webContents.openDevTools();
     mainWindow.on('closed', function() {
       mainWindow = null;
@@ -52,7 +52,7 @@ app.on('ready', function() {
           openWindow();
         })
         .catch(function(err) {
-          // console.log('waiting for the server start...');
+          console.log('waiting for the server start...');
           startUp();
         });
   };

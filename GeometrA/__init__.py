@@ -12,7 +12,8 @@ CORS(app)
 
 @app.route('/')
 def html():
-    return render_template('index.html')
+    return "Hello"
+    # return render_template('index.html')
 
 @app.route('/GeometrA/checkLog')
 def checkLog():

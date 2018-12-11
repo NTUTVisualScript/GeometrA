@@ -1,7 +1,7 @@
 const TabGroup = require('electron-tabs')
 var tabGroup = new TabGroup();
 
-tabGroup.on("tab-active", (tab, tabGroup) => { 
+tabGroup.on("tab-active", (tab, tabGroup) => {
     data = JSON.parse(tab.badge)
     Post('/GeometrA/WorkSpace/open', data, function(xml){
         openTestCase(xml);
@@ -9,7 +9,7 @@ tabGroup.on("tab-active", (tab, tabGroup) => {
     Post('/GeometrA/WorkSpace/Focus', data, function(msg) {});
 });
 
-tabGroup.on("tab-removed", (tab, tabGroup) => { 
+tabGroup.on("tab-removed", (tab, tabGroup) => {
     tabs = tabGroup.getTabs()
     if (tabs.length == 0) {
         Blockly.mainWorkspace.clear();
@@ -35,7 +35,7 @@ var Tab = {
                     tabs[i].activate()
                     return true
                 }
-            }     
+            }
         }
         return false
     }
