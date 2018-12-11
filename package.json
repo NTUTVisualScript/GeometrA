@@ -4,7 +4,6 @@
   "main": "main.js",
   "dependencies": {
     "electron": "^3.0.6",
-    "electron-prebuilt": "*",
     "electron-tabs": "^0.9.4",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
