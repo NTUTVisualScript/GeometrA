@@ -87,17 +87,17 @@ class ADBRobot(Robot):
         return path + "/" + fileName
 
     def screenshot(self):
-        path = "./GeometrA/static/screenshot_pic"
+        path = "./static/screenshot_pic"
         fileName = "tmp.png"
         return self.getScreenShot(path, fileName)
 
     def before_screenshot(self):
-        path = "./GeometrA/static/screenshot_pic"
+        path = "./static/screenshot_pic"
         fileName = "before.png"
         return self.getScreenShot(path, fileName)
 
     def after_screenshot(self):
-        path = "./GeometrA/static/screenshot_pic"
+        path = "./static/screenshot_pic"
         fileName = "after.png"
         return self.getScreenShot(path, fileName)
 

@@ -22,5 +22,5 @@ record.log
 package-lock.json
 node_modules
 aos_info.txt
-GeometrA/static/screenshot_pic/
+static/screenshot_pic/
 tests/TestScript/**/report

@@ -3,8 +3,9 @@ function screenCallback (path) {
   if(!path) {
       Message.deviceNotConnected();
   }
-  else{
-      var _path = path.replace("./GeometrA", "..") +
+  else {
+      console.log(path)
+      var _path = path.replace(".", "..") +
                "?time=" + new Date().getTime()
       document.getElementById("CurrentScreen").src = _path;
       Message.getScreenShotSuccess();
