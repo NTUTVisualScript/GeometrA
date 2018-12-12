@@ -5,7 +5,7 @@ break>tmp1.txt
 break>tmp2.txt
 break>tmp3.txt
 REM Push aapt files to android device
-adb push ./aapt-arm-pie /data/local/tmp
+adb push ./GeometrA/static/aapt-arm-pie /data/local/tmp
 adb shell chmod 0755 /data/local/tmp/aapt-arm-pie
 
 REM adb shell pm list packages -3 -f >> aos_info.txt

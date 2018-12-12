@@ -12,7 +12,7 @@ KEYCODE = ANDROID_KEYCODE
 def getAppsInfo():
     # Get informations of all apps in aos device.
     if (platform.system() == 'Windows'):
-        getAppsInfoBatch = [r'./GeometrA/static/aos_info.bat']
+        getAppsInfoBatch = [r'.\\GeometrA\\static\\aos_info.bat']
         subprocess.call(getAppsInfoBatch)
     else:
         getAppsInfoScript = "bash ./GeometrA/static/aos_info.sh"
