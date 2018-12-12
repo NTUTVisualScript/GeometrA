@@ -27,6 +27,8 @@ def getAppsInfo():
     # Generate the dictionary we need
     appsData = {}
     for app in aosData:
+        if (app.isspace()): 
+            continue
         dataStrings = app.split("'")
         # The index of package/app name in dataString is depends on the format of aos_info.txt
         packageName = dataStrings[1]
