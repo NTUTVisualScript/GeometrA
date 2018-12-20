@@ -14,11 +14,8 @@ Click [here](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/Overv
 
 2. Execute the following command in command line (Required Python 3.6+):
 ```
-    ./node_modules/bin/electron .
-```
-Or, if you get electron installed within your system, you can use:
-```
-    electron .
+    npm install
+    npm run start
 ```
 
 3. Start to write your test.
