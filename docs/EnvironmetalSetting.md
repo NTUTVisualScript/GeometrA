@@ -27,7 +27,8 @@
 
   3. Ubuntu
 ```
-    sudo apt-get install adb
+    sudo apt install adb
+    sudo apt install python3.6-tk  // Or specific for your python version
 ```
 
 5. Install [Node.js 8+](https://nodejs.org/en/download/current/)
