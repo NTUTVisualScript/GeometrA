@@ -81,13 +81,18 @@ exports.selectProject = function(callback) {
 }
 
 exports.startLive = function() {
-  if (screenProcess != null) {
+  if (screenProcess !== null) {
     screenProcess.kill('SIGINT');
   }
   screenProcess = require('child_process').spawn('scrcpy');
+  screenProcess.on('error', function (err) {
+    console.log('scrcpy not installed');
+  }); 
 }
 
 exports.endLive = function() {
+  if (screenProcess === null)
+    return;
   screenProcess.kill('SIGINT');
   screenProcess = null;
 }
