@@ -9,8 +9,12 @@ var Message = {
     },
 
     executedCaseSuccess: function(){
-        $("#MessageList").append("<p>Executed Success!</p>");
+        $("#MessageList").append("<p>Test Success!</p>");
     },
+
+    executedCaseFail: function() {
+        $("#MessageList").append("<p>Test Failed!</p>");
+    }
 
     deviceNotConnected: function(){
         $("#MessageList").append("<p>Device is not connected.</p>");

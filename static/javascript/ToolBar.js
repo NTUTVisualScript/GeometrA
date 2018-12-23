@@ -37,8 +37,11 @@ function ToolBar() {
         if(data.cases){
             Post('/GeometrA/TestScript/run', data, function(result){
                 var jsonResult = JSON.parse(result)
-                if(jsonResult["state"]=='success'){
+                if(jsonResult["state"]=='success') {
                     Message.executedCaseSuccess();
+                }
+                else {
+                    Message.executedCaseFail(); 
                 }
                 mainProcess.endLive();
                 Message.reportPath(jsonResult["reportPath"]);
