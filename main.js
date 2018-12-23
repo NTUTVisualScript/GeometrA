@@ -11,6 +11,7 @@ electron.crashReporter.start({
 });
 
 var mainWindow = null;
+var screenProcess = null;
 
 app.on('window-all-closed', function() {
   // if (process.platform != 'darwin') {
@@ -36,6 +37,7 @@ app.on('ready', function() {
     mainWindow.on('closed', function() {
       mainWindow = null;
       subpy.kill('SIGINT');
+      screenProcess.kill('SIGINT');
     });
   };
 
@@ -61,8 +63,7 @@ app.on('ready', function() {
   startUp();
 });
 
-exports.selectDirectory =
-    function(callback) {
+exports.selectDirectory = function(callback) {
   dialog.showOpenDialog(
       mainWindow, {properties: ['openDirectory'], multiSelections: false},
       callback);
@@ -77,4 +78,16 @@ exports.selectProject = function(callback) {
     multiSelections: false
   };
   dialog.showOpenDialog(mainWindow, dialogOption, callback);
+}
+
+exports.startLive = function() {
+  if (screenProcess != null) {
+    screenProcess.kill('SIGINT');
+  }
+  screenProcess = require('child_process').spawn('scrcpy');
+}
+
+exports.endLive = function() {
+  screenProcess.kill('SIGINT');
+  screenProcess = null;
 }

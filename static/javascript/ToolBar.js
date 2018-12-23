@@ -16,7 +16,11 @@ function getScreen() {
     Get('/GeometrA/Screen', screenCallback);
 }
 function ToolBar() {
-    $("#runButton").on("click", function(){
+    $("#runButton").on("click", function() {
+        const electron = require('electron');
+        const remote = electron.remote;
+        const mainProcess = remote.require('./main');
+        mainProcess.startLive();
         Message.running();
         var nodes = $("#FileStructure").jstree("get_checked",true);
         var data = [];
@@ -36,6 +40,7 @@ function ToolBar() {
                 if(jsonResult["state"]=='success'){
                     Message.executedCaseSuccess();
                 }
+                mainProcess.endLive();
                 Message.reportPath(jsonResult["reportPath"]);
                 Message.done();
             });
