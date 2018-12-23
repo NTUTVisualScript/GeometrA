@@ -37,7 +37,8 @@ app.on('ready', function() {
     mainWindow.on('closed', function() {
       mainWindow = null;
       subpy.kill('SIGINT');
-      screenProcess.kill('SIGINT');
+      if (screenProcess !== null)
+        screenProcess.kill('SIGINT');
     });
   };
 
@@ -87,7 +88,7 @@ exports.startLive = function() {
   screenProcess = require('child_process').spawn('scrcpy');
   screenProcess.on('error', function (err) {
     console.log('scrcpy not installed');
-  }); 
+  });
 }
 
 exports.endLive = function() {
