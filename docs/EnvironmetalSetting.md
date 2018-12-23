@@ -22,7 +22,7 @@
 
   2. Mac OS
 ```
-    brew install android-platform-tools
+    brew cask install android-platform-tools
 ```
 
   3. Ubuntu
