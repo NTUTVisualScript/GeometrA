@@ -14,7 +14,7 @@ var Message = {
 
     executedCaseFail: function() {
         $("#MessageList").append("<p>Test Failed!</p>");
-    }
+    },
 
     deviceNotConnected: function(){
         $("#MessageList").append("<p>Device is not connected.</p>");

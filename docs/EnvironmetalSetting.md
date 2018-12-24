@@ -8,7 +8,7 @@
 
     pip3 install -r requirements.txt
 
-7. Inatlling ADB tool.
+7. Installing ADB tool.
   1. Windows OS
     1. Downloads [platform-tools](https://developer.android.com/studio/releases/platform-tools.html)
 
