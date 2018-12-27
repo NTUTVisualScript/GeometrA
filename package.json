@@ -5,8 +5,11 @@
   "dependencies": {
     "electron": "^3.0.6",
     "electron-tabs": "^0.9.4",
+    "jquery": "^3.3.1",
+    "jsdom": "^13.1.0",
     "request": "^2.87.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "sinon": "^7.2.2"
   },
   "description": "GeometrA is a tool for users to write automated acceptance test for applications on Android applications.",
   "directories": {
@@ -27,5 +30,9 @@
   "bugs": {
     "url": "https://github.com/NTUTVisualScript/GeometrA/issues"
   },
-  "homepage": "https://github.com/NTUTVisualScript/GeometrA#readme"
+  "homepage": "https://github.com/NTUTVisualScript/GeometrA#readme",
+  "devDependencies": {
+    "jasmine-core": "^3.3.0",
+    "mocha": "^5.2.0"
+  }
 }

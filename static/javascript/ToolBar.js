@@ -12,9 +12,11 @@ function screenCallback (path) {
   }
   Message.done();
 }
+
 function getScreen() {
     Get('/GeometrA/Screen', screenCallback);
 }
+
 function ToolBar() {
     $("#runButton").on("click", function() {
         const electron = require('electron');

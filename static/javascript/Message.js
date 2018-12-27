@@ -28,3 +28,7 @@ var Message = {
         $("#MessageList").append("<p>Report: <a href='file://" + path + "' target=_blank>" + path + "</a></p>")
     }
 }
+
+if (exports) {
+    exports.Message = Message
+  }
