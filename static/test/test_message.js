@@ -4,15 +4,17 @@ const {JSDOM} = require('jsdom')
 
 describe('Message', function() {  
     // Build a fake dom by JSDOM
-    const jsdom = new JSDOM(`
-            <div id="Message">
-                <h6>Message</h6>
-                <div id="loader"></div>
-                <div id="MessageList"></div>
-            </div>`)
-    global.window = jsdom.window
-    global.document = jsdom.window.document
-    global.$  = global.jQuery = require('jquery')
+    before(function(){
+        const jsdom = new JSDOM(`
+        <div id="Message">
+            <h6>Message</h6>
+            <div id="loader"></div>
+            <div id="MessageList"></div>
+        </div>`)
+        global.window = jsdom.window
+        global.document = jsdom.window.document
+        global.$  = global.jQuery = require('jquery')
+    })
     
     // Clear the <p> in MessageList if <p> exists after every case
     // to make MessageList clean

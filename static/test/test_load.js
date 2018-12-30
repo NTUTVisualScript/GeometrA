@@ -4,10 +4,13 @@ var assert = require('assert')
 const {JSDOM} = require('jsdom')
 
 const fakeLoadHTML = `<div>Select the json file of the project on your device</div><button type="button" id="SelectFile">Select File</button><div id="Create"></div>`
-describe('Create', function() {
-    const jsdom = new JSDOM(fakeLoadHTML)
-    global.window = jsdom.window
-    global.document = jsdom.window.document
+describe('Load', function() {
+    
+    before(function(){
+        const jsdom = new JSDOM(fakeLoadHTML)
+        global.window = jsdom.window
+        global.document = jsdom.window.document
+    })
 
     beforeEach(function(){
         var swal = sinon.spy()

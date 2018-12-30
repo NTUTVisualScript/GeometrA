@@ -6,10 +6,12 @@ const {JSDOM} = require('jsdom')
 const fakeCreateHTML = `<div>Project name</div><input id="projectName" type="text" placeholder="" value="" class="swal2-input"><div>Suite name</div><input id="suiteName" type="text" placeholder="" value="" class="swal2-input"><div>Case name</div><input id="caseName" type="text"  placeholder="" value="" class="swal2-input"><div>The path on your device</div><button type="button" id="SelectFolder">Select Path</button><div id="Create"></div>`
 
 describe('Create', function() {
-    const jsdom = new JSDOM(fakeCreateHTML)
-    global.window = jsdom.window
-    global.document = jsdom.window.document
-
+    before(function(){
+        const jsdom = new JSDOM(fakeCreateHTML)
+        global.window = jsdom.window
+        global.document = jsdom.window.document    
+    })
+    
     beforeEach(function(){
         var swal = sinon.spy()
         global.swal = swal
