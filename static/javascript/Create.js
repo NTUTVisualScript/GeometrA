@@ -58,3 +58,7 @@ function Create() {
         });
     };
 }
+
+if (exports) {
+    exports.Create = Create
+}

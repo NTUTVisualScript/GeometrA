@@ -50,3 +50,7 @@ function Load() {
         });
     }
 }
+
+if (exports) {
+    exports.Load = Load
+}
