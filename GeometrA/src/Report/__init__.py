@@ -22,6 +22,9 @@ class Report:
 
     def setDisplay(self):
         self.display = ADBRobot().get_device_size()
+    
+    def setCount(self, n):
+        self.count = n
 
     def getReport(self):
         self.time = str(datetime.datetime.now()).split('.')[0]

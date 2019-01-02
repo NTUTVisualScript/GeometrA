@@ -47,11 +47,12 @@ class TestScript:
 
     def runAll(self):
         reportIndex = Report()
+        reportIndex.setCount(len(self._caseList))
         reportList = []
 
         for casePath in self._caseList:
-            suitePath = casePath[:casePath.rfind('/')]
-            projectPath = suitePath[:suitePath.rfind('/')]
+            # suitePath = casePath[:casePath.rfind('/')]
+            # projectPath = suitePath[:suitePath.rfind('/')]
             exe = Executor(self._caseList[casePath])
             result, report = self.execute(exe, casePath)
             reportList.append(report)
@@ -67,26 +68,27 @@ class TestScript:
         size = exe.case.getSize()
         teardownStart = size - exe.case.getTeardownSize()
         i = 0
-        status = ''
+        execResult = 'Success'
         report.start()
         while i < size:
+            f = 'Failed'
+            e = 'Error'
+            loop = 'Loop Begin'
             step = exe.case.getSteps(i)
             report.stepStart(step)
             status = exe.execute(i)
             report.stepEnd(step, i)
-            loop = 'Loop Begin'
             if step.getAction() == loop:
                 i = exe.loopEnd(i)
-            f = 'Failed'
-            e = 'Error'
-            if (status == f) or status == e and i < teardownStart:
+            if status == f or status == e and i < teardownStart:
                 i = teardownStart
+                execResult = status
                 continue
-            elif (status == f) or status == e and i >= teardownStart:
+            elif status == f or status == e and i >= teardownStart:
                 break
             i = i+1
-        report.end(status, size)
-        return (status, report)
+        report.end(execResult, size)
+        return (execResult, report)
 
     def insertCase(self,case, dataDic):
         if not dataDic:

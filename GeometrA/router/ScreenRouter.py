@@ -15,7 +15,7 @@ def crop():
 
 @app.route('/GeometrA/Screen/<image>')
 def getImage(image):
-    with open("./GeometrA/static/screenshot_pic/" + image, 'rb') as f:
+    with open("./static/screenshot_pic/" + image, 'rb') as f:
         result = base64.b64encode(f.read())
     result = 'data:image/png;base64,' + str(result)[2:-1]
     return result

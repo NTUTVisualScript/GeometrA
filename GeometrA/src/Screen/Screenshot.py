@@ -21,5 +21,6 @@ class Screen:
     def getImagePath(self):
         return self.path
 
+    @staticmethod
     def getScreenSize():
         return ADBRobot().get_device_size() #ex: 1920x1080

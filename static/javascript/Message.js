@@ -1,3 +1,5 @@
+var exports
+
 var Message = {
 
     running: function(){
