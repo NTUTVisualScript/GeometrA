@@ -3,18 +3,8 @@ from GeometrA.src.File.FileManager import load
 
 import json
 import os
-import platform
 
-LOG_FILE_NAME = '.geometra.log'
-if (platform.system() == 'Windows'):
-    USER_HOME = os.environ['USERPROFILE'] + '\\'
-else:
-    USER_HOME = os.environ['HOME'] + '/'
-
-RECORD_FILE = USER_HOME + LOG_FILE_NAME
-
-
-def exportLog(workspace = None):
+def exportLog(RECORD_FILE, workspace = None):
     if not workspace:
         workspace = WORKSPACE
     log = {
@@ -25,7 +15,7 @@ def exportLog(workspace = None):
     with open(RECORD_FILE, 'w') as f:
         f.write(info)
 
-def loadLog(workspace = None):
+def loadLog(RECORD_FILE, workspace = None):
     if not workspace:
         workspace = WORKSPACE
 
