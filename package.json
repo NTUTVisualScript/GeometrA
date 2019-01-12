@@ -1,38 +1,27 @@
 {
   "name": "GeometrA",
-  "version": "0.1.0",
+  "author": "NTUT-CSIE lab1321: Patrick Hu, Denny Tsai",
+  "version": "1.0.0",
   "main": "main.js",
+  "description": "GeometrA is a tool for users to write automated acceptance test for applications on Android applications.",
   "dependencies": {
-    "electron": "^3.0.6",
     "electron-tabs": "^0.9.4",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "electron": "^3.0.6",
+    "electron-packager": "^13.0.1",
+    "jasmine-core": "^3.3.0",
     "jquery": "^3.3.1",
     "jsdom": "^13.1.0",
-    "request": "^2.87.0",
-    "request-promise": "^4.2.2",
+    "mocha": "^5.2.0",
     "sinon": "^7.2.2"
-  },
-  "description": "GeometrA is a tool for users to write automated acceptance test for applications on Android applications.",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
   },
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NTUTVisualScript/GeometrA.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NTUTVisualScript/GeometrA/issues"
-  },
-  "homepage": "https://github.com/NTUTVisualScript/GeometrA#readme",
-  "devDependencies": {
-    "jasmine-core": "^3.3.0",
-    "mocha": "^5.2.0"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pyinstaller -y main.py --distpath pydist && npm run pack",
+    "pack": "electron-packager . --out=dist --icon=static/logo --overwrite --ignore=\"pycalc$\" --ignore=\".venv\" --ignore=\"old-post-backup\""
   }
 }

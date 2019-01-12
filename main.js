@@ -1,68 +1,99 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const dialog = electron.dialog;
-const production = true;
-electron.crashReporter.start({
-  productName: 'GeometrA',
-  companyName: 'NTUT',
-  submitURL: 'http://localhost:5000',
-  uploadToServer: true
-});
+const electron = require('electron')
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
+const path = require('path')
+const production = true
+const { dialog } = require('electron')
+const rq = require('request-promise')
 
-var mainWindow = null;
-var screenProcess = null;
+let pyProc = null
+let pyPort = null
 
-app.on('window-all-closed', function() {
-  // if (process.platform != 'darwin') {
-  app.quit();
-  //}
-});
-app.commandLine.appendSwitch("--disable-http-cache")
-app.on('ready', function() {
-  // call python?
-  if (process.platform === 'win32')
-    var subpy = require('child_process').spawn('py', ['./main.py']);
-  else
-    var subpy = require('child_process').spawn('python3', ['./main.py']);
-  var rq = require('request-promise');
-
-  var mainAddr = 'http://localhost:5000';
-
-  var openWindow = function() {
-    mainWindow = new BrowserWindow(
-        {width: 1920, height: 1080, webPreferences: {webSecurity: false}});
-    mainWindow.loadURL('file://' + __dirname + '/static/index.html');
-    if (!production) mainWindow.webContents.openDevTools();
-    mainWindow.on('closed', function() {
-      mainWindow = null;
-      subpy.kill('SIGINT');
-      if (screenProcess !== null)
-        screenProcess.kill('SIGINT');
-    });
-  };
-
-  app.on('activate', function() {
-    if (mainWindow === null) {
-      openWindow()
-    }
+let mainWindow = null
+const createWindow = () => {
+  mainWindow = new BrowserWindow({width: 1920, height: 1080})
+  mainWindow.loadURL(require('url').format({
+    pathname: path.join(__dirname, 'static/index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+  if (!production) mainWindow.webContents.openDevTools()
+  mainWindow.on('closed', () => {
+    mainWindow = null
   })
+}
 
-  var startUp = function() {
-    rq(mainAddr)
-        .then(function(htmlString) {
-          console.log('server started!');
-          openWindow();
-        })
-        .catch(function(err) {
-          console.log('waiting for the server start...');
-          startUp();
-        });
-  };
+const mainAddr = 'http://localhost:5000'
+const startUp = () => {
+  rq(mainAddr)
+    .then(function(htmlString) {
+      console.log('server started!');
+      createWindow();
+    })
+    .catch(function(err) {
+      console.log('waiting for the server start...');
+      startUp();
+    });
+}
+app.on('ready', startUp)
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+app.on('activate', () => {
+  if (mainWindow === null) {
+    startUp()
+  }
+})
 
-  // fire!
-  startUp();
-});
+const selectPort = () => {
+  pyPort = 5000
+  return pyPort
+}
+
+const PY_DIST_FOLDER = 'pydist'
+const PY_FOLDER = 'main'
+const PY_MODULE = 'main' // without .py suffix
+
+const guessPackaged = () => {
+  const fullPath = path.join(__dirname, PY_DIST_FOLDER)
+  return require('fs').existsSync(fullPath)
+}
+
+const getScriptPath = () => {
+  if (!guessPackaged()) {
+    return path.join(__dirname, PY_MODULE + '.py')
+  }
+  if (process.platform === 'win32') {
+    return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE + '.exe')
+  }
+  return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE)
+}
+
+const createPyProc = () => {
+  let port = '' + selectPort()
+  let script = getScriptPath()
+  if (guessPackaged()) {
+    pyProc = require('child_process').execFile(script, [port])
+  } else {
+    pyProc = require('child_process').spawn('python', [script, port])
+  }
+
+  if (pyProc != null) {
+    //console.log(pyProc)
+    console.log('child process success on port ' + port)
+  }
+}
+
+const exitPyProc = () => {
+  pyProc.kill()
+  pyProc = null
+  pyPort = null
+}
+
+app.on('ready', createPyProc)
+app.on('will-quit', exitPyProc)
 
 exports.selectDirectory = function(callback) {
   dialog.showOpenDialog(

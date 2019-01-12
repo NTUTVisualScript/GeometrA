@@ -26,3 +26,4 @@ static/screenshot_pic/
 tests/TestScript/**/report
 dist
 pydist
+main.spec
