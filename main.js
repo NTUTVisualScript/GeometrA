@@ -112,6 +112,7 @@ exports.selectProject = function(callback) {
   dialog.showOpenDialog(mainWindow, dialogOption, callback);
 }
 
+var screenProcess = null;
 exports.startLive = function() {
   if (screenProcess !== null) {
     screenProcess.kill('SIGINT');
