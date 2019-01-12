@@ -27,3 +27,4 @@ tests/TestScript/**/report
 dist
 pydist
 main.spec
+geometra.dmg

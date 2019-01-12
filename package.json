@@ -10,6 +10,7 @@
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
+    "appdmg": "^0.5.2",
     "electron": "^3.0.6",
     "electron-packager": "^13.0.1",
     "jasmine-core": "^3.3.0",
@@ -22,6 +23,7 @@
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "pyinstaller -y main.py --distpath pydist && npm run pack",
-    "pack": "electron-packager . --out=dist --icon=static/logo --overwrite --ignore=\"pycalc$\" --ignore=\".venv\" --ignore=\"old-post-backup\""
+    "pack": "electron-packager . --out=dist --icon=static/logo --overwrite --ignore=\"pycalc$\" --ignore=\".venv\" --ignore=\"old-post-backup\"",
+    "pack-dmg": "appdmg build-dmg.json geometra.dmg"
   }
 }
