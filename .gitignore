@@ -24,3 +24,5 @@ node_modules
 aos_info.txt
 static/screenshot_pic/
 tests/TestScript/**/report
+dist
+pydist
