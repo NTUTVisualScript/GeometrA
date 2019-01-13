@@ -1,12 +1,10 @@
 function screenCallback (path) {
-  // "../static/screenshot_pic/tmp.png?time=" + new Date().getTime()
   if(!path) {
       Message.deviceNotConnected();
   }
   else {
       console.log(path)
-      var _path = path.replace(".", "..") +
-               "?time=" + new Date().getTime()
+      var _path = path + "?time=" + new Date().getTime()
       document.getElementById("CurrentScreen").src = _path;
       Message.getScreenShotSuccess();
   }
@@ -38,15 +36,19 @@ function ToolBar() {
         };
         if(data.cases){
             Post('/GeometrA/TestScript/run', data, function(result){
-                var jsonResult = JSON.parse(result)
-                if(jsonResult["state"]=='success') {
-                    Message.executedCaseSuccess();
-                }
-                else {
-                    Message.executedCaseFail(); 
+                try {
+                    var jsonResult = JSON.parse(result)
+                    if(jsonResult["state"]=='success') {
+                        Message.executedCaseSuccess();
+                    }
+                    else {
+                        Message.executedCaseFail();
+                    }
+                    Message.reportPath(jsonResult["reportPath"]);
+                } catch {
+                    Message.executedCaseFail();
                 }
                 mainProcess.endLive();
-                Message.reportPath(jsonResult["reportPath"]);
                 Message.done();
             });
         }

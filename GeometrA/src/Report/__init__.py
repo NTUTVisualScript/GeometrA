@@ -1,17 +1,19 @@
 from GeometrA.src.Report.CaseReport import CaseReport
 
 import datetime
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from GeometrA.src.ADB.adbRobot import ADBRobot
+from GeometrA.src.path import RESOURCE_PATH
 import os
 
 class Report:
     def __init__(self):
+        path = RESOURCE_PATH + '/templates'
         self.env = Environment(
-            loader=PackageLoader('GeometrA', 'templates'),
+            loader=FileSystemLoader(path),
             autoescape=select_autoescape(['html', 'xml'])
         )
-        self.template = self.env.get_template('Report/report.html')
+        self.template = self.env.get_template('report.html')
         self.setSerialNumber()
         self.setDisplay()
         self.count = 0
@@ -22,7 +24,7 @@ class Report:
 
     def setDisplay(self):
         self.display = ADBRobot().get_device_size()
-    
+
     def setCount(self, n):
         self.count = n
 

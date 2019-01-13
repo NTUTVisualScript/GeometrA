@@ -6,6 +6,7 @@
   "description": "GeometrA is a tool for users to write automated acceptance test for applications on Android applications.",
   "dependencies": {
     "electron-tabs": "^0.9.4",
+    "fix-path": "^2.1.0",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
   },
@@ -22,8 +23,9 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pyinstaller -y main.py --distpath pydist && npm run pack",
-    "pack": "electron-packager . --out=dist --icon=static/logo --overwrite --ignore=\"pycalc$\" --ignore=\".venv\" --ignore=\"old-post-backup\"",
+    "build": "npm run pack-py && rm -rf build && rm -rf main.spec && npm run pack",
+    "pack": "electron-packager . --out=dist --icon=static/logo --overwrite --ignore=\"aos_info.txt\" --ignore=\"build-dmg.json\" --ignore=\"geometra.dmg\" --ignore=\"requirements.txt\" --ignore=\"tests\" --ignore=\"testReport.xml\" --ignore=\"test_requirements.txt\"",
+    "pack-py": "pyinstaller -y main.py --distpath pydist && cp -r resources pydist/main",
     "pack-dmg": "appdmg build-dmg.json geometra.dmg"
   }
 }

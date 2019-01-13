@@ -3,11 +3,15 @@ from flask import request, jsonify, render_template
 
 from GeometrA import app
 from GeometrA.src.Screen import *
+from GeometrA.src.path import GEOMETRA_ROOT
 
 @app.route('/GeometrA/Screen')
 def getScreenshotPath():
-    path = capture()
-    return path
+    try:
+        path = capture()
+        return path
+    except Exception as e:
+        return str(e)
 
 @app.route('/GeometrA/Screen/Crop', methods=['POST'])
 def crop():
@@ -15,7 +19,7 @@ def crop():
 
 @app.route('/GeometrA/Screen/<image>')
 def getImage(image):
-    with open("./static/screenshot_pic/" + image, 'rb') as f:
+    with open(GEOMETRA_ROOT + "/screenshot_pic/" + image, 'rb') as f:
         result = base64.b64encode(f.read())
     result = 'data:image/png;base64,' + str(result)[2:-1]
     return result

@@ -3,26 +3,17 @@ from flask_cors import CORS
 
 import os
 import json
-import platform
 
 from GeometrA.src import WORKSPACE as ws
 from GeometrA.src.Record import *
+from GeometrA.src.path import GEOMETRA_ROOT, RESOURCE_PATH
 
 app = Flask(__name__)
 CORS(app)
 
 
-LOG_FILE_NAME = '.geometra.log'
-if (platform.system() == 'Windows'):
-    GEOMETRA_ROOT = os.environ['USERPROFILE'] + '\\.GeometrA\\'
-else:
-    GEOMETRA_ROOT = os.environ['HOME'] + '/.GeometrA/'
-
-if (not os.path.isdir(GEOMETRA_ROOT)):
-    if (os.path.isfile()):
-        os.remove(GEOMETRA_ROOT)
-    os.mkdir(GEOMETRA_ROOT)
-RECORD_FILE = GEOMETRA_ROOT + LOG_FILE_NAME
+LOG_FILE_NAME = 'record.log'
+RECORD_FILE = GEOMETRA_ROOT + '/' +LOG_FILE_NAME
 
 @app.route('/')
 def html():

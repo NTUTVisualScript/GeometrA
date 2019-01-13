@@ -5,6 +5,9 @@ const path = require('path')
 const production = true
 const { dialog } = require('electron')
 const rq = require('request-promise')
+const fixPath = require('fix-path');
+
+fixPath();
 
 let pyProc = null
 let pyPort = null
@@ -63,7 +66,7 @@ const guessPackaged = () => {
 
 const getScriptPath = () => {
   if (!guessPackaged()) {
-    return path.join(__dirname, PY_MODULE + '.py')
+    return PY_MODULE + '.py'
   }
   if (process.platform === 'win32') {
     return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE + '.exe')
@@ -77,7 +80,7 @@ const createPyProc = () => {
   if (guessPackaged()) {
     pyProc = require('child_process').execFile(script, [port])
   } else {
-    pyProc = require('child_process').spawn('python', [script, port])
+    pyProc = require('child_process').spawn('python', [script])
   }
 
   if (pyProc != null) {
@@ -85,7 +88,6 @@ const createPyProc = () => {
     console.log('child process success on port ' + port)
   }
 }
-
 const exitPyProc = () => {
   pyProc.kill()
   pyProc = null
@@ -113,11 +115,27 @@ exports.selectProject = function(callback) {
 }
 
 var screenProcess = null;
-exports.startLive = function() {
+
+const RESOURCE_FOLDER = 'resources'
+const SCRCPY_RESOURCE_FOLDER = 'scrcpy-resources'
+const ADB_RESOURCE_FOLDER = 'adb_resources'
+const SCRCPY_BIN = 'scrcpy'
+const getScrcpyPath = () => {
+  if (process.platform === 'darwin')
+    return path.join(__dirname, RESOURCE_FOLDER, SCRCPY_RESOURCE_FOLDER, 'mac', SCRCPY_BIN)
+  return 'scrcpy'
+}
+
+exports.startLive = function(callback) {
   if (screenProcess !== null) {
     screenProcess.kill('SIGINT');
   }
-  screenProcess = require('child_process').spawn('scrcpy');
+  const script = getScrcpyPath();
+  if (script === 'scrcpy') {
+    screenProcess = require('child_process').spawn(script);
+  } else {
+    screenProcess = require('child_process').execFile(script);
+  }
   screenProcess.on('error', function (err) {
     console.log('scrcpy not installed');
   });
