@@ -2,3 +2,4 @@ Pillow==5.3.0
 opencv-python
 flask
 flask-cors
+pyinstaller
