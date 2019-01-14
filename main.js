@@ -129,20 +129,20 @@ const getScrcpyPath = () => {
     return path.join(__dirname, RESOURCE_FOLDER, SCRCPY_RESOURCE_FOLDER, 'mac', SCRCPY_BIN)
   }
   if (process.platform === 'win32') {
-    return path.join(__dirname, RESOURCE_FOLDER, SCRCPY_RESOURCE_FOLDER, 'win', SCRCPY_BIN + '.exe')
+    return path.join(__dirname, SCRCPY_BIN + '.exe')
   }
   return 'scrcpy'
 }
 
-exports.startLive = function(callback) {
+exports.startLive = function() {
   if (screenProcess !== null) {
     screenProcess.kill('SIGINT');
   }
   const script = getScrcpyPath();
   if (script === 'scrcpy' ) {
-    screenProcess = require('child_process').spawn(script);
+    return 
   } else if (process.platform === 'win32') {
-    screenProcess = require('child_process').spawn('cmd.exe', [script]);
+    screenProcess = require('child_process').spawn(script);
   } else {
     screenProcess = require('child_process').execFile(script);
   }
