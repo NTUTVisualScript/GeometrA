@@ -8,7 +8,7 @@ from GeometrA.src.path import GEOMETRA_ROOT, RESOURCE_PATH
 
 if (platform.system() == 'Windows'):
     PATH = GEOMETRA_ROOT + '\\screenshot_pic\\'
-    ADB_COMMAND = 'adb'
+    ADB_COMMAND = RESOURCE_PATH.replace('\\', '/') + '/adb_resources/win/adb.exe'
 else:
     PATH = GEOMETRA_ROOT + '/screenshot_pic/'
     ADB_COMMAND = RESOURCE_PATH + '/adb_resources/mac/adb'
@@ -19,8 +19,8 @@ KEYCODE = ANDROID_KEYCODE
 def getAppsInfo():
     # Get informations of all apps in aos device.
     if (platform.system() == 'Windows'):
-        getAppsInfoBatch = [r'.\\GeometrA\\static\\aos_info.bat']
-        subprocess.call(getAppsInfoBatch)
+        getAppsInfoBatch = "set GEOMETRA_AAPT=" + RESOURCE_PATH + "\\aapt-arm-pie && "+ RESOURCE_PATH + "\\aos_info.bat"
+        subprocess.call(getAppsInfoBatch, shell=True)
     else:
         getAppsInfoScript = "export GEOMETRA_RESOURCE=" + RESOURCE_PATH + " && bash " + RESOURCE_PATH + "/aos_info.sh"
         subprocess.call(getAppsInfoScript, shell=True)
@@ -136,7 +136,10 @@ class ADBRobot(Robot):
             return "Error"
 
     def get_uiautomator_dump(self):
-        path = GEOMETRA_ROOT + "/dumpXML"
+        if (platform.system() == 'Windows'):
+            path = GEOMETRA_ROOT + "\\dumpXML"
+        else:
+            path = GEOMETRA_ROOT + "/dumpXML"
 
         wait = ADB_COMMAND + " wait-for-device"
         subprocess.call(wait, shell=True)
@@ -147,7 +150,8 @@ class ADBRobot(Robot):
             os.makedirs(path)
         pull = ADB_COMMAND + " pull ./data/local/tmp/" + fileName + " " + path
         subprocess.call(pull, shell=True)
-        print(path + "/uidump.xml")
+        if (platform.system() == 'Windows'):
+            return path + "\\uidump.xml"
         return path + "/uidump.xml"
 
     def get_display(self):

@@ -80,7 +80,11 @@ const createPyProc = () => {
   if (guessPackaged()) {
     pyProc = require('child_process').execFile(script, [port])
   } else {
-    pyProc = require('child_process').spawn('python', [script])
+    if (process.platform === 'win32') {
+      pyProc = require('child_process').spawn('py', [script])
+    } else {
+      pyProc = require('child_process').spawn('python', [script])
+    }
   }
 
   if (pyProc != null) {
@@ -121,8 +125,12 @@ const SCRCPY_RESOURCE_FOLDER = 'scrcpy-resources'
 const ADB_RESOURCE_FOLDER = 'adb_resources'
 const SCRCPY_BIN = 'scrcpy'
 const getScrcpyPath = () => {
-  if (process.platform === 'darwin')
+  if (process.platform === 'darwin') {
     return path.join(__dirname, RESOURCE_FOLDER, SCRCPY_RESOURCE_FOLDER, 'mac', SCRCPY_BIN)
+  }
+  if (process.platform === 'win32') {
+    return path.join(__dirname, RESOURCE_FOLDER, SCRCPY_RESOURCE_FOLDER, 'win', SCRCPY_BIN + '.exe')
+  }
   return 'scrcpy'
 }
 
@@ -131,8 +139,10 @@ exports.startLive = function(callback) {
     screenProcess.kill('SIGINT');
   }
   const script = getScrcpyPath();
-  if (script === 'scrcpy') {
+  if (script === 'scrcpy' ) {
     screenProcess = require('child_process').spawn(script);
+  } else if (process.platform === 'win32') {
+    screenProcess = require('child_process').spawn('cmd.exe', [script]);
   } else {
     screenProcess = require('child_process').execFile(script);
   }
