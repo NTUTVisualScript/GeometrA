@@ -23,7 +23,7 @@
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-mac": "npm run pack-py && npm run copy-resource-mac && rm -rf build && rm -rf main.spec && npm run pack",
-    "build-win": "npm run pack-py && npm run copy-resource-win && npm run pack",
+    "build-win": "del main.spec && rmdir build /s && rmdir pydist /s && npm run pack-py && npm run copy-resource-win && npm run pack && copy resources\\scrcpy-resources\\win dist\\GeometrA-win32-x64\\resources\\app && copy resources\\scrcpy-resources\\win\\scrcpy-server.jar dist\\GeometrA-win32-x64",
     "pack": "electron-packager . --out=dist --icon=static/logo --overwrite --ignore=\"aos_info.txt\" --ignore=\"build-dmg.json\" --ignore=\"geometra.dmg\" --ignore=\"requirements.txt\" --ignore=\"tests\" --ignore=\"testReport.xml\" --ignore=\"test_requirements.txt\"",
     "pack-py": "pyinstaller -y main.py --distpath pydist",
     "copy-resource-mac": "cp -r resources pydist/main",
