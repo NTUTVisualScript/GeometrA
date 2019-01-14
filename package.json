@@ -22,8 +22,11 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run pack-py && rm -rf build && rm -rf main.spec && npm run pack",
+    "build-mac": "npm run pack-py && npm run copy-resource-mac && rm -rf build && rm -rf main.spec && npm run pack",
+    "build-win": "npm run pack-py && npm run copy-resource-win && npm run pack",
     "pack": "electron-packager . --out=dist --icon=static/logo --overwrite --ignore=\"aos_info.txt\" --ignore=\"build-dmg.json\" --ignore=\"geometra.dmg\" --ignore=\"requirements.txt\" --ignore=\"tests\" --ignore=\"testReport.xml\" --ignore=\"test_requirements.txt\"",
-    "pack-py": "pyinstaller -y main.py --distpath pydist && cp -r resources pydist/main"
+    "pack-py": "pyinstaller -y main.py --distpath pydist",
+    "copy-resource-mac": "cp -r resources pydist/main",
+    "copy-resource-win": "xcopy resources pydist\\main\\resources /e"
   }
 }
