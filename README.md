@@ -13,6 +13,9 @@ Click [here](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/Overv
 ## Developer Guide
 [Developer Guide](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/developer_guide.md)
 
+## User Guide
+[User Guide](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/user_guide.md)
+
 ## How to start?
 1. Finish the [Environmental Setting](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/EnvironmetalSetting.md)
 

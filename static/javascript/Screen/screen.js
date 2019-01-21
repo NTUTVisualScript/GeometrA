@@ -3,7 +3,7 @@ function Screen() {
     var heightMulti;
     var canvas = document.getElementById('Screen');
 
-    var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"];
+    var actionImageList = ["Tap", "Assert Exist", "Assert Not Exist"];
     var actionArrowList = ["Swipe"];
 
     function getPos() {
@@ -95,6 +95,9 @@ function Screen() {
                         swal("You don't select an action that needs an image!");
                     }
                 })
+            });
+            Post("/GeometrA/Screen/Xpath", data, function(){
+
             });
         }
     }

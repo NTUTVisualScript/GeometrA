@@ -139,7 +139,7 @@ Blockly.Python['loop'] = function(block) {
 Blockly.Blocks['click'] = {
   init: function() {
     this.appendDummyInput("clickInput")
-        .appendField("Click")
+        .appendField("Tap")
         .appendField(new Blockly.FieldImage("", 100, 100, "*"), "image");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);

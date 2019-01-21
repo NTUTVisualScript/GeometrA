@@ -65,7 +65,7 @@ function NodeTree(){
             endY: y2 * heightMulti
         }
 
-        var actionImageList = ["Click", "Assert Exist", "Assert Not Exist"]
+        var actionImageList = ["Tap", "Assert Exist", "Assert Not Exist"]
        
         if((Blockly.selected) && actionImageList.includes( Blockly.selected.getField().text_ )) {
             Post("/GeometrA/Screen/Crop", data, function(image){
