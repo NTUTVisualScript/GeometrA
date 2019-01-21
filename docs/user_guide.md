@@ -1,5 +1,14 @@
 # User Guide
 
+## Previous preparation
+
+```
+> An Adroid device.
+> Open the USB debug mode of your android device.
+> An USB which can connect your android device and your computer
+> Install GeometrA and open it
+```
+
 ## 1. Create or load your project!
 
 - Initialize Page
@@ -31,21 +40,21 @@
 > Some actions can get the image argument from the screenshot window.
 [To see more.](https://github.com/NTUTVisualScript/GeometrA/blob/master/docs/Overview.md)
 
-- Start Edit your test case
+- Start to edit your test case
 
 ![](/docs/pic/user_guide_setup.PNG)
 
-> Setup, Main,adn Teardown are three base block you can use to construct your whole case.
+> Setup, Main,and Teardown are three base block you can use to construct your whole case.
 
 ![](/docs/pic/user_guide_edit.PNG)
 
-> You can start to edit your case by drag and drop blocks on the toolbox now! Feel free to edit it!
+> You can start to edit your case by drag and drop the action blocks on the toolbox now! Feel free to edit it!
 
 ## 3. Run your first test case and 
 
 - Selecting the case you want to run
 
-![](/docs/pic/user_guide_selecting.PNG)
+![](/docs/pic/user_guide_select.PNG)
 
 > Choose a case you want to run in the workspace 
 
@@ -69,5 +78,7 @@
 
 ![](/docs/pic/user_guide_result.PNG)
 
-> Success! Your test case report can show you if the test case runs success or failed!
+> Success! Your test case report can show you if the test case runs success or failed! And Click the case to see the detailed result!
+
+# It's time for you to enjoy GeometrA!
 
